@@ -2,15 +2,13 @@ import os
 import re
 import time
 from datetime import datetime, timezone, timedelta
-from collections import defaultdict
-import json
 
 
 SCRIPTS_DIR    = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR       = os.path.dirname(SCRIPTS_DIR)
 
-DATA_PATH         = os.path.join(BASE_DIR, 'input', 'theia') + os.sep
 
+DATA_PATH = os.path.join(BASE_DIR, 'input', 'theia') + os.sep
 
 OUTPUT_PATH       = os.path.join(BASE_DIR, 'output', 'theia') + os.sep
 OUTPUT_PARSED     = os.path.join(BASE_DIR, 'output', 'theia', 'parsed')     + os.sep
@@ -20,14 +18,13 @@ OUTPUT_GRAPHS     = os.path.join(BASE_DIR, 'output', 'theia', 'graphs')     + os
 OUTPUT_FEATURES   = os.path.join(BASE_DIR, 'output', 'theia', 'features')   + os.sep
 OUTPUT_EMBEDDINGS = os.path.join(BASE_DIR, 'output', 'theia', 'embeddings') + os.sep
 OUTPUT_CTI        = os.path.join(BASE_DIR, 'output', 'theia', 'cti')            + os.sep
+OUTPUT_SEQUENCES  = os.path.join(BASE_DIR, 'output', 'theia', 'sequences')      + os.sep
 OUTPUT_BENIGN     = os.path.join(BASE_DIR, 'output', 'theia', 'benign')         + os.sep
 OUTPUT_TRAINING   = os.path.join(BASE_DIR, 'output', 'theia', 'trainingoutput') + os.sep
 
-JSON_FILE      = 'file.json'
 MALICIOUS_FILE = os.path.join(DATA_PATH, 'theia.txt')
-EDGES_FILE     = OUTPUT_PARSED + JSON_FILE + '.txt'
+EDGES_FILE     = OUTPUT_PARSED + 'edges.txt'
 
-#  Regex patterns (CDM18 schema)
 pattern_uuid         = re.compile(r'uuid\":\"(.*?)\"')
 pattern_type         = re.compile(r'type\":\"(.*?)\"')
 pattern_time         = re.compile(r'timestampNanos\":(.*?),')
@@ -54,62 +51,11 @@ ATTACK_START_NS = 1523551440000000000   # 12:44 ET
 ATTACK_END_NS   = 1523553960000000000   # 13:26 ET
 WINDOW_SIZE_NS  = 15 * 60 * int(1e9)   # 15-minute tumbling windows
 
-SCAN_TARGET_IPS = {
-    '128.55.12.73',  '128.55.12.166', '128.55.12.67',
-    '128.55.12.141', '128.55.12.110', '128.55.12.118',
-    '128.55.12.10',  '128.55.12.1',   '128.55.12.55',
-}
-LOCAL_HOST_IP = '128.55.12.167'
 
-IOC_IPS = {
-    '5.214.163.155',
-    '146.153.68.151',
-    '104.228.117.212',
-    '141.43.176.203',
-    '149.52.198.23',
-    '128.55.12.167',
-    '128.55.12.73',  '128.55.12.166', '128.55.12.67',
-    '128.55.12.141', '128.55.12.110', '128.55.12.118',
-    '128.55.12.10',  '128.55.12.1',   '128.55.12.55',
-}
-
-IOC_FILES = {
-    '/var/log/xdev',
-    '/var/log/wdev',
-    '/tmp/memtrace.so',
-    '/var/log/mail',
-    '/home/admin/profile',
-    'libdrakon.linux.x64.so',
-    'loaderDrakon.linux.x64',
-    'microapt.linux.x64',
-}
-
-IOC_KEYWORDS = {
-    'gatech',
-    'sshd',
-}
-
-WINDOW_SEEDS = {
-    1: [
-        '/home/admin/profile',
-        '128.55.12.110',
-        '146.153.68.151',
-        '141.43.176.203',
-        '/var/log/wdev',
-    ],
-    2: [
-        '/home/admin/profile',
-        '128.55.12.110',
-        '/tmp/memtrace.so',
-        '/var/log/wdev',
-        '146.153.68.151',
-    ],
-    3: [
-        '/var/log/mail',
-        '128.55.12.110',
-        '/home/admin/profile',
-    ],
-}
+ROBERTA_MODEL = 'FacebookAI/roberta-base'
+MAX_LEN       = 512
+STRIDE        = 384  
+EMB_DIM       = 768
 
 
 CTI_REPORTS_DIR = os.path.join(BASE_DIR, 'input', 'cti_reports')
@@ -129,14 +75,11 @@ def load_window_cti(scenario=None):
     return cti
 
 
-
 def show(msg):
-    """Print message with current timestamp."""
     print(msg + '  [' + time.strftime('%Y-%m-%d %H:%M:%S') + ']')
 
 
 def update_ts(ts_map, uuid, timestamp):
-    """Update first/last seen timestamps for a node."""
     if uuid not in ts_map:
         ts_map[uuid] = {'first': timestamp, 'last': timestamp}
     else:
@@ -147,7 +90,6 @@ def update_ts(ts_map, uuid, timestamp):
 
 
 def ns_to_et(ns):
-    """Convert nanosecond timestamp → human-readable ET string (UTC-4, date-safe)."""
     if ns == '' or ns is None:
         return 'NO TIMESTAMP'
     utc = datetime.fromtimestamp(int(ns) / 1e9, tz=timezone.utc)
@@ -156,53 +98,6 @@ def ns_to_et(ns):
         et.year, et.month, et.day, et.hour, et.minute, et.second)
 
 
-def matches_ioc(data, ioc_ips=None, ioc_files=None, ioc_keywords=None):
-    if ioc_ips      is None: ioc_ips      = IOC_IPS
-    if ioc_files    is None: ioc_files    = IOC_FILES
-    if ioc_keywords is None: ioc_keywords = IOC_KEYWORDS
-
-    for field in ('remote_ip', 'local_ip'):
-        val = data.get(field, '')
-        if val and val in ioc_ips:
-            return True, val
-    fp = data.get('file_path', '')
-    if fp:
-        fp_lower = fp.lower()
-        for ioc in ioc_files:
-            if ioc.lower() in fp_lower:
-                return True, ioc
-    for field in ('exe_path', 'cmdline'):
-        val = data.get(field, '')
-        if not val:
-            continue
-        v = val.lower()
-        for ioc in ioc_files:
-            if ioc.lower() in v:
-                return True, ioc
-    name = data.get('name', '')
-    if name:
-        n = name.lower()
-        for ioc in ioc_files:
-            if ioc.lower() in n:
-                return True, ioc
-        for kw in ioc_keywords:
-            if kw in n:
-                return True, kw
-    return False, None
-
-
-def load_adj():
-    adj_path = OUTPUT_PARSE + 'adj.json'
-    if not os.path.exists(adj_path):
-        print('  adj.json not found: {}'.format(adj_path))
-        return defaultdict(set)
-    with open(adj_path, 'r', encoding='utf-8') as f:
-        raw = json.load(f)
-    adj = defaultdict(set)
-    for k, v in raw.items():
-        adj[k] = set(v)
-    print('  adj.json loaded : {} nodes'.format(len(adj)))
-    return adj
 
 
 def make_node_dict(uid, maps):
@@ -210,13 +105,10 @@ def make_node_dict(uid, maps):
     id_nodename_map   = maps['id_nodename_map']
     id_exepath_map    = maps['id_exepath_map']
     id_cmdline_map    = maps['id_cmdline_map']
-    id_pid_map        = maps['id_pid_map']
-    id_ppid_map       = maps['id_ppid_map']
-    id_parent_map     = maps['id_parent_map']
-    id_remoteport_map = maps['id_remoteport_map']
-    id_localaddr_map  = maps['id_localaddr_map']
-    id_localport_map  = maps['id_localport_map']
-    id_memaddr_map    = maps.get('id_memaddr_map', {})
+    id_remoteport_map = maps.get('id_remoteport_map', {})
+    id_localaddr_map  = maps.get('id_localaddr_map',  {})
+    id_localport_map  = maps.get('id_localport_map',  {})
+    id_memaddr_map    = maps.get('id_memaddr_map',    {})
     id_ts_map         = maps['id_ts_map']
     malicious_uuids   = maps['malicious_uuids']
 
@@ -231,11 +123,10 @@ def make_node_dict(uid, maps):
         'name'           : id_nodename_map.get(uid, ''),
         'exe_path'       : id_exepath_map.get(uid,    '') if ntype == 'SUBJECT_PROCESS' else '',
         'cmdline'        : id_cmdline_map.get(uid,    '') if ntype == 'SUBJECT_PROCESS' else '',
-        'pid'            : id_pid_map.get(uid,        '') if ntype == 'SUBJECT_PROCESS' else '',
-        'ppid'           : id_ppid_map.get(uid,       '') if ntype == 'SUBJECT_PROCESS' else '',
-        'parent_uuid'    : id_parent_map.get(uid,     '') if ntype == 'SUBJECT_PROCESS' else '',
         'file_path'      : id_nodename_map.get(uid,   '') if 'FILE' in ntype            else '',
-        'remote_ip'      : id_nodename_map.get(uid,   '') if ntype == 'NetFlowObject'   else '',
+        'remote_ip'      : (id_nodename_map.get(uid, '').split(',')[2]
+                            if ntype == 'NetFlowObject' and
+                            len(id_nodename_map.get(uid, '').split(',')) > 2 else ''),
         'remote_port'    : id_remoteport_map.get(uid, '') if ntype == 'NetFlowObject'   else '',
         'local_ip'       : id_localaddr_map.get(uid,  '') if ntype == 'NetFlowObject'   else '',
         'local_port'     : id_localport_map.get(uid,  '') if ntype == 'NetFlowObject'   else '',
