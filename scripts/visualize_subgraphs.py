@@ -15,7 +15,7 @@ from collections import defaultdict
 SCRIPTS_DIR    = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR       = os.path.dirname(SCRIPTS_DIR)
 SUBGRAPHS_PATH = os.path.join(BASE_DIR, 'output', 'theia', 'graphs', 'subgraphs.json')
-GRAPH_PATH     = os.path.join(BASE_DIR, 'output', 'theia', 'graphs', 'graph_output.json')
+GRAPH_PATH     = os.path.join(BASE_DIR, 'output', 'theia', 'graphs', 'graph_output_all.json')
 OUTPUT_VIZ_DIR = os.path.join(BASE_DIR, 'output', 'theia', 'graphs', 'viz')
 
 TYPE_COLOURS = {
@@ -86,7 +86,7 @@ def plot_subgraph(idx, subgraph_data, node_attrs, save=False, tag='subgraph'):
         if isinstance(e, list):
             src   = e[0]
             dst   = e[1]
-            edata = e[2] if len(e) > 2 else {}
+            edata = e[3] if len(e) > 3 else (e[2] if len(e) > 2 and isinstance(e[2], dict) else {})
             G.add_edge(src, dst, edge_type=edata.get('edge_type', ''))
         else:
             G.add_edge(e['src'], e['dst'], edge_type=e.get('edge_type', ''))

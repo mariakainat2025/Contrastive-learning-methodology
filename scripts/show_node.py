@@ -1,5 +1,5 @@
-# python scripts/show_node.py --uuid <UUID>
-# python scripts/show_node.py --uuid <UUID> --sub
+# python scripts/show_node.py --uuid <UUID> --tag all
+# python scripts/show_node.py --uuid <UUID> --tag all --sub
 
 import argparse
 import glob as _glob
@@ -44,7 +44,8 @@ def load_full_graph(tag=None):
     with open(path) as f:
         data = json.load(f)
     nodes = {n['id']: n for n in data['nodes']}
-    return nodes, data['links']
+    links = data.get('links', data.get('edges', []))
+    return nodes, links
 
 
 def load_subgraphs(tag=None):

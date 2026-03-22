@@ -96,7 +96,7 @@ def build_log_sequences(tag):
     print()
     print('  {:<6}  {:<8}  {:<24}  {}'.format('Idx', 'Triples', 'Partition', 'Text preview'))
     print('  ' + '-' * 110)
-    for s in sequences:
+    for s in sequences[:5]:
         part = 'dep#{} part {}/{}'.format(s['dep_id'], s['part_idx'] + 1, s['total_parts'])
         preview = ' '.join(s['sequence'])[:80]
         print('  {:<6}  {:<8}  {:<24}  {}'.format(
