@@ -16,7 +16,9 @@ from scripts.config import (
 )
 from scripts.encoder_utils import embed_text
 from scripts.subgraph_sequence_builder import _rebuild_graph, extract_triples, triples_to_text
-from transformers import RobertaTokenizer, RobertaModel
+from scripts.node_abstraction import abstract_node_name
+from transformers import RobertaTokenizer, RobertaModel, logging as hf_logging
+hf_logging.set_verbosity_error()
 
 EMB_DIM  = 768
 PROJ_DIM = 128
@@ -25,13 +27,13 @@ DROPOUT  = 0.5
 
 TEST_SCENARIOS = [
     {
-        'name'        : 'Phishing_Email_Link',
-        'atk_file'    : 'attack_subgraphs_phishing_email_link.json',
+        'name'        : 'Phishing_Email_Link_full_chain',
+        'atk_file'    : 'phishing_link_attack_chain.json',
         'ground_truth': 'phishing_email_link',
     },
     {
-        'name'        : 'Phishing_Email_Executable_Attachment',
-        'atk_file'    : 'attack_subgraphs_phishing_email_executable_attachment.json',
+        'name'        : 'attachment',
+        'atk_file'    : 'phishing_executable_attachment_attack_chain.json',
         'ground_truth': 'phishing_email_executable_attachment',
     },
 ]
@@ -65,6 +67,33 @@ def tokenize_and_encode(tokenizer, encoder, proj, text, device):
     return emb.cpu()
 
 
+
+def abstract_and_save(in_path, out_path):
+    """Read subgraphs from original in_path, apply abstraction, save to out_path.
+    Always abstracts from the original so test matches training abstraction rules."""
+    with open(in_path) as f:
+        data = json.load(f)
+
+    if isinstance(data, list):
+        subgraphs = data
+    elif 'subgraphs' in data:
+        subgraphs = data['subgraphs']
+    else:
+        subgraphs = [data]
+
+    print('  Abstracting: {}'.format(os.path.basename(in_path)))
+    for sg in subgraphs:
+        for entry in sg.get('nodes', []):
+            node = entry[1] if isinstance(entry, (list, tuple)) and len(entry) > 1 else entry
+            if isinstance(node, dict) and 'name' in node and 'type' in node:
+                node['name'] = abstract_node_name(node['name'], node['type'])
+
+    with open(out_path, 'w') as f:
+        json.dump({'total_subgraphs': len(subgraphs), 'subgraphs': subgraphs}, f, indent=2)
+    print('  Saved: {}'.format(out_path))
+    return subgraphs
+
+
 def sg_to_text(sg):
     G       = _rebuild_graph(sg)
     triples = extract_triples(G)
@@ -72,185 +101,199 @@ def sg_to_text(sg):
     return ' '.join(text) if isinstance(text, list) else text
 
 
-def evaluate():
-    device     = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model_path = os.path.join(OUTPUT_TRAINING, 'theia.pt')
+CHECKPOINTS      = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+THRESHOLD        = 0.3
+USE_ABSTRACTION  = False  # set True to abstract node names, False for raw
 
-    print('  Device: {}'.format(device))
+CTI_DISPLAY_NAMES = {
+    'applejeus_spearphishing': 'Phishing',
+    'Drive-by Compromise'    : 'Drive-by Compromise',
+    'Event Triggered Execution': 'Event Triggered Execution',
+    'Network Service Discovery': 'Network Service Discovery',
+    'Content Injection'      : 'Content Injection',
+}
+EXCLUDE_CTI = {'apt32_network_scanning', 'green_lambert_persistence', 'mustard_tempest_driveby'}
 
-    # ── Load trained model ────────────────────────────────────────────────────
-    checkpoint   = torch.load(model_path, map_location=device)
-    tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
+
+def _load_model(ckpt_path, device):
+    checkpoint   = torch.load(ckpt_path, map_location=device, weights_only=False)
     log_encoder  = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
     text_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
     log_proj     = ProjectionNetwork().to(device)
     text_proj    = ProjectionNetwork().to(device)
-
     log_encoder.load_state_dict(checkpoint['log_encoder'])
     text_encoder.load_state_dict(checkpoint['text_encoder'])
     log_proj.load_state_dict(checkpoint['log_proj'])
     text_proj.load_state_dict(checkpoint['text_proj'])
+    log_encoder.eval(); text_encoder.eval()
+    log_proj.eval();    text_proj.eval()
+    return log_encoder, text_encoder, log_proj, text_proj
 
-    log_encoder.eval()
-    text_encoder.eval()
-    log_proj.eval()
-    text_proj.eval()
-    print('  Model loaded.')
+
+def _load_texts(use_abstraction):
+    """Load benign and attack texts with or without node abstraction."""
+    if use_abstraction:
+        ben_subgraphs = abstract_and_save(
+            in_path=os.path.join(INPUT_TEST, TEST_BEN_SG_FILE),
+            out_path=os.path.join(INPUT_TEST, 'abstracted_' + TEST_BEN_SG_FILE)
+        )
+    else:
+        with open(os.path.join(INPUT_TEST, TEST_BEN_SG_FILE)) as f:
+            data = json.load(f)
+        ben_subgraphs = data['subgraphs'] if isinstance(data, dict) else data
+
+    ben_texts  = [sg_to_text(sg) for sg in ben_subgraphs]
+    atk_texts  = []
+    atk_labels = []
+
+    for scenario in TEST_SCENARIOS:
+        if use_abstraction:
+            atk_subgraphs = abstract_and_save(
+                in_path=os.path.join(INPUT_TEST, scenario['atk_file']),
+                out_path=os.path.join(INPUT_TEST, 'abstracted_' + scenario['atk_file'])
+            )
+        else:
+            with open(os.path.join(INPUT_TEST, scenario['atk_file'])) as f:
+                data = json.load(f)
+            atk_subgraphs = data['subgraphs'] if (isinstance(data, dict) and 'subgraphs' in data) else [data]
+
+        for sg in atk_subgraphs:
+            atk_texts.append(sg_to_text(sg))
+            atk_labels.append('{} dep={} part={} seed={}'.format(
+                scenario['name'], sg['dep_id'], sg.get('part_idx', 0), sg.get('seed_name', '')))
+
+    return ben_subgraphs, ben_texts, atk_texts, atk_labels
+
+
+def _run_checkpoints(device, tokenizer, ben_texts, atk_texts, atk_labels, cti_keys, cti_texts):
+    """Evaluate all checkpoints and return results list."""
+    os.makedirs(OUTPUT_TEST, exist_ok=True)
+    results = []
+
+    print('  {:<30}  {:>12}  {:>12}  {:>14}  {:>14}  {:>10}  {:>10}  {:>10}  {:>10}'.format(
+        'Checkpoint', 'Link→Link', 'Attach→Attach', 'Link→Attach', 'Attach→Link', 'Precision', 'Recall', 'Ben Max', 'Ben Min'))
+    print('  ' + '-' * 130)
+
+    best_link_score = -1
+    best_ckpt       = None
+
+    for epoch in CHECKPOINTS:
+        ckpt_path = os.path.join(OUTPUT_TRAINING, 'theia_epoch{}.pt'.format(epoch))
+        if not os.path.exists(ckpt_path):
+            continue
+
+        ckpt_name = 'theia_epoch{}.pt'.format(epoch)
+        log_encoder, text_encoder, log_proj, text_proj = _load_model(ckpt_path, device)
+
+        cti_embs = torch.cat([tokenize_and_encode(tokenizer, text_encoder, text_proj, t, device)
+                               for t in cti_texts], dim=0)
+        ben_embs = torch.cat([tokenize_and_encode(tokenizer, log_encoder, log_proj, t, device)
+                               for t in ben_texts], dim=0)
+        atk_embs = torch.cat([tokenize_and_encode(tokenizer, log_encoder, log_proj, t, device)
+                               for t in atk_texts], dim=0)
+
+        atk_scores     = atk_embs @ cti_embs.T
+        ben_scores_max = (ben_embs @ cti_embs.T).max(dim=1).values
+        atk_scores_max = atk_scores.max(dim=1).values
+
+        flagged   = (ben_scores_max >= THRESHOLD).sum().item()
+        detected  = (atk_scores_max >= THRESHOLD).sum().item()
+        missed    = (atk_scores_max <  THRESHOLD).sum().item()
+        precision = detected / (detected + flagged) if (detected + flagged) > 0 else 0.0
+        recall    = detected / (detected + missed)  if (detected + missed)  > 0 else 0.0
+        ben_max   = ben_scores_max.max().item()
+        ben_min   = ben_scores_max.min().item()
+
+        # get per-scenario scores (ground truth + cross scores)
+        link_score      = -1
+        attach_score    = -1
+        link_to_attach  = -1  # link subgraph vs attach CTI
+        attach_to_link  = -1  # attach subgraph vs link CTI
+
+        link_gt_key   = TEST_SCENARIOS[0]['ground_truth'] if len(TEST_SCENARIOS) > 0 else ''
+        attach_gt_key = TEST_SCENARIOS[1]['ground_truth'] if len(TEST_SCENARIOS) > 1 else ''
+
+        link_idx   = cti_keys.index(link_gt_key)   if link_gt_key   in cti_keys else -1
+        attach_idx = cti_keys.index(attach_gt_key) if attach_gt_key in cti_keys else -1
+
+        if 0 < len(atk_texts) and link_idx >= 0:
+            link_score     = atk_scores[0, link_idx].item()
+            attach_to_link = atk_scores[1, link_idx].item() if len(atk_texts) > 1 else -1
+        if 1 < len(atk_texts) and attach_idx >= 0:
+            attach_score   = atk_scores[1, attach_idx].item()
+            link_to_attach = atk_scores[0, attach_idx].item()
+
+        print('  {:<30}  {:>12.4f}  {:>12.4f}  {:>14.4f}  {:>14.4f}  {:>10.4f}  {:>10.4f}  {:>10.4f}  {:>10.4f}'.format(
+            ckpt_name, link_score, attach_score, link_to_attach, attach_to_link,
+            precision, recall, ben_max, ben_min))
+
+        if link_score > best_link_score:
+            best_link_score = link_score
+            best_ckpt       = ckpt_name
+
+        results.append({
+            'epoch': epoch, 'checkpoint': ckpt_name,
+            'link_score': link_score, 'attach_score': attach_score,
+            'precision': precision, 'recall': recall,
+            'ben_max': ben_max, 'ben_min': ben_min,
+            'attacks': [{'label': atk_labels[i],
+                         'scores': {cti_keys[j]: atk_scores[i, j].item() for j in range(len(cti_keys))}}
+                        for i in range(len(atk_labels))]
+        })
+
+        del log_encoder, text_encoder, log_proj, text_proj
+        torch.cuda.empty_cache()
+
+    print()
+    print('  Best checkpoint for phishing link: {} (score={:.4f})'.format(best_ckpt, best_link_score))
+    return results
+
+
+def evaluate():
+    device    = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    tokenizer = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
+    print('  Device: {}'.format(device))
     print()
 
-    cti_keys  = []
-    cti_embs  = []
+    # load CTI reports
+    cti_keys, cti_texts = [], []
     for fname in sorted(os.listdir(INPUT_TEST)):
         if fname.endswith('.txt') and not fname.startswith('.'):
-            key  = fname.replace('.txt', '')
             with open(os.path.join(INPUT_TEST, fname)) as f:
-                text = f.read().strip()
-            emb = tokenize_and_encode(tokenizer, text_encoder, text_proj, text, device)
-            cti_keys.append(key)
-            cti_embs.append(emb)
-    cti_embs = torch.cat(cti_embs, dim=0)  # (n_cti, PROJ_DIM)
-    print('  CTI reports loaded: {}'.format(len(cti_keys)))
-    for k in cti_keys:
-        print('    - {}'.format(k))
+                cti_texts.append(f.read().strip())
+            cti_keys.append(fname.replace('.txt', ''))
+    print('  CTI reports: {}'.format(len(cti_keys)))
     print()
 
-    with open(os.path.join(INPUT_TEST, TEST_BEN_SG_FILE)) as f:
-        ben_data = json.load(f)
-    ben_subgraphs = ben_data['subgraphs'] if isinstance(ben_data, dict) else ben_data
+    # load test data
+    mode = 'WITH Node Abstraction (stem + role: e.g. libc library, passwd config, tcexec download)' \
+           if USE_ABSTRACTION else 'WITHOUT Node Abstraction (raw node names)'
+    print('=' * 100)
+    print('  {}'.format(mode))
+    print('=' * 100)
 
-    ben_embs = []
-    for sg in ben_subgraphs:
-        text = sg_to_text(sg)
-        emb  = tokenize_and_encode(tokenizer, log_encoder, log_proj, text, device)
-        ben_embs.append(emb)
-    ben_embs = torch.cat(ben_embs, dim=0)
-    n_ben = len(ben_embs)
-    print('  Benign subgraphs encoded: {}'.format(n_ben))
+    ben_subgraphs, ben_texts, atk_texts, atk_labels = _load_texts(use_abstraction=USE_ABSTRACTION)
+    print('  Benign: {}  Attack: {}'.format(len(ben_texts), len(atk_texts)))
     print()
 
-   
-    all_atk_labels = []
-    all_atk_embs   = [] 
-    for scenario in TEST_SCENARIOS:
-        with open(os.path.join(INPUT_TEST, scenario['atk_file'])) as f:
-            atk_data = json.load(f)
-        atk_subgraphs = atk_data['subgraphs'] if isinstance(atk_data, dict) else atk_data
-        for sg in atk_subgraphs:
-            text     = sg_to_text(sg)
-            enc_tmp  = tokenizer(text, padding=False, truncation=False, return_tensors='pt')
-            n_tokens = enc_tmp['input_ids'].shape[1]
-            from scripts.config import MAX_LEN, STRIDE
-            n_chunks = max(1, (n_tokens - MAX_LEN) // STRIDE + 2) if n_tokens > MAX_LEN else 1
-            print('    dep={} part={}  tokens={:,}  chunks={}'.format(
-                sg['dep_id'], sg.get('part_idx'), n_tokens, n_chunks))
-            emb  = tokenize_and_encode(tokenizer, log_encoder, log_proj, text, device)
-            all_atk_embs.append(emb)
-            all_atk_labels.append('{} dep={} part={} seed={}'.format(
-                scenario['name'], sg['dep_id'], sg['part_idx'], sg.get('seed_name', '')))
-    all_atk_embs = torch.cat(all_atk_embs, dim=0)
-    print('  Attack subgraphs encoded: {}'.format(len(all_atk_embs)))
-    print()
+    # save sequences
+    os.makedirs(INPUT_TEST, exist_ok=True)
+    prefix = 'abstracted_' if USE_ABSTRACTION else ''
+    with open(os.path.join(INPUT_TEST, f'{prefix}benign_sequences.json'), 'w') as f:
+        json.dump([{'dep_id': ben_subgraphs[i].get('dep_id'), 'sequence': ben_texts[i]}
+                   for i in range(len(ben_texts))], f, indent=2)
+    with open(os.path.join(INPUT_TEST, f'{prefix}attack_sequences.json'), 'w') as f:
+        json.dump([{'label': atk_labels[i], 'sequence': atk_texts[i]}
+                   for i in range(len(atk_texts))], f, indent=2)
 
-   
-    # atk_scores_matrix: (n_atk, n_cti)
-    atk_scores_matrix = all_atk_embs @ cti_embs.T
-    ben_scores_matrix = ben_embs @ cti_embs.T
-    # Max score across all CTI reports (for threshold detection)
-    ben_scores_max = ben_scores_matrix.max(dim=1).values
-
-    threshold = 0.3
-
-    print()
-    print('  ── Benign subgraphs vs ALL CTI reports (max score) ──────────────')
-    print()
-    print('    max : {:.4f}'.format(ben_scores_max.max().item()))
-    print('    min : {:.4f}'.format(ben_scores_max.min().item()))
-    print()
-    print('    Top 3 benign scores:')
-    top10_vals, top10_idx = torch.topk(ben_scores_max, min(3, n_ben))
-    for rank, (score, idx) in enumerate(zip(top10_vals, top10_idx), 1):
-        sg      = ben_subgraphs[idx.item()]
-        best_cti_idx = ben_scores_matrix[idx.item()].argmax().item()
-        best_cti = cti_keys[best_cti_idx]
-        print('      #{:02d}  sim={:.4f}  dep={}  part={}  seed={}  → {}'.format(
-            rank, score.item(), sg.get('dep_id', '?'), sg.get('part_idx', '?'),
-            sg.get('seed_name', '?'), best_cti))
-    print()
-
-   
-    atk_scores_max = atk_scores_matrix.max(dim=1).values
-    correct  = (ben_scores_max < threshold).sum().item()
-    flagged  = (ben_scores_max >= threshold).sum().item()
-    detected = (atk_scores_max >= threshold).sum().item()
-    missed   = (atk_scores_max < threshold).sum().item()
-    n_atk    = len(all_atk_embs)
-    precision = detected / (detected + flagged) if (detected + flagged) > 0 else 0.0
-    recall    = detected / (detected + missed)  if (detected + missed)  > 0 else 0.0
-
-    # ── Ground truth vs Technique comparison ─────────────────────────────────
-    # All technique/extra CTI keys (everything except ground truths)
-    gt_keys_set = {s['ground_truth'] for s in TEST_SCENARIOS}
-    EXCLUDE_CTI = {'apt32_network_scanning', 'green_lambert_persistence', 'mustard_tempest_driveby'}
-    all_tq_keys = [k for k in cti_keys if k not in gt_keys_set and k not in EXCLUDE_CTI]
-
-    print()
-    print('  ── Ground Truth vs MITRE Technique Scores ───────────────────────')
-    print()
-    CTI_DISPLAY_NAMES = {
-        'applejeus_spearphishing'   : 'Phishing',
-         'Drive-by Compromise': 'Drive-by Compromise',
-         'Event Triggered Execution': 'Event Triggered Execution',
-         'Network Service Discovery': 'Network Service Discovery',
-         'Content Injection': 'Content Injection',
-         
-    }
-    COL = 16
-    LBL = 40
-    header = '  {:<{}}'.format('Attack Subgraph', LBL)
-    header += '  {:>12}'.format('GT Score')
-    for tq in all_tq_keys:
-        display = CTI_DISPLAY_NAMES.get(tq, tq)[:COL]
-        header += '  {:>{}}'.format(display, COL)
-    print(header)
-    print('  ' + '-' * (LBL + 12 + COL * len(all_tq_keys) + 4 * (len(all_tq_keys) + 1)))
-    for i, label in enumerate(all_atk_labels):
-        scenario  = TEST_SCENARIOS[i]
-        gt_key    = scenario['ground_truth']
-        gt_score  = atk_scores_matrix[i, cti_keys.index(gt_key)].item() if gt_key in cti_keys else -1
-        row = '  {:<{}}'.format(label[:LBL], LBL)
-        row += '  {:>12.4f}'.format(gt_score)
-        for tq in all_tq_keys:
-            tq_score = atk_scores_matrix[i, cti_keys.index(tq)].item() if tq in cti_keys else -1
-            row += '  {:>{}.4f}'.format(tq_score, COL)
-        print(row)
-    print()
-
-    print('  ── Detection (threshold={:.1f}, max across all CTI) ──────────────'.format(threshold))
-    print('    Benign correctly classified : {}/{}'.format(correct, n_ben))
-    print('    Attack correctly detected   : {}/{}'.format(detected, n_atk))
-    print('    Precision : {:.4f}'.format(precision))
-    print('    Recall    : {:.4f}'.format(recall))
-    print()
-
-    # ── Save results ──────────────────────────────────────────────────────────
     os.makedirs(OUTPUT_TEST, exist_ok=True)
-    out = {
-        'cti_reports': cti_keys,
-        'attacks': [
-            {
-                'label' : all_atk_labels[i],
-                'scores': {cti_keys[j]: atk_scores_matrix[i, j].item() for j in range(len(cti_keys))},
-            }
-            for i in range(n_atk)
-        ],
-        'benign': {'max_score': ben_scores_max.max().item(), 'min_score': ben_scores_max.min().item()},
-        'threshold' : threshold,
-        'precision' : precision,
-        'recall'    : recall,
-    }
+    results = _run_checkpoints(device, tokenizer, ben_texts, atk_texts,
+                               atk_labels, cti_keys, cti_texts)
+
+    print()
     out_path = os.path.join(OUTPUT_TEST, 'evaluation_results.json')
     with open(out_path, 'w') as f:
-        json.dump(out, f, indent=2)
+        json.dump({'mode': mode, 'results': results}, f, indent=2)
     print('  Saved: {}'.format(out_path))
 
 

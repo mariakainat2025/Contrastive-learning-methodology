@@ -5,8 +5,25 @@ from collections import defaultdict
 
 import networkx as nx
 from networkx.readwrite import json_graph
+from Levenshtein import ratio as lev_ratio
+from tqdm import tqdm
 
 from scripts.config import OUTPUT_GRAPHS
+
+SIMILAR_FILE_THRESHOLD = 0.7
+SIMILAR_FILE_WINDOW_NS = 30_000_000_000
+
+import re
+
+_TEMP_LOG_CACHE_DIRS = ('/tmp/', '/var/tmp/', '/var/log/', '/var/cache/')
+_TEMP_LOG_CACHE_EXTS = {'.log', '.tmp', '.temp', '.cache', '.lock', '.pid'}
+
+def _is_temp_log_cache(fullpath):
+    for d in _TEMP_LOG_CACHE_DIRS:
+        if d in fullpath:
+            return True
+    _, ext = os.path.splitext(fullpath)
+    return ext.lower() in _TEMP_LOG_CACHE_EXTS
 
 NETFLOW_WINDOW_NS = 1_000_000_000
 
@@ -68,7 +85,8 @@ def reduce_directory_cascade(G: nx.MultiDiGraph):
 
     all_paths = sorted(path_node.keys(), key=lambda p: p.count('/'), reverse=True)
 
-    for child_path in all_paths:
+    pbar = tqdm(all_paths, desc='  dir cascade', unit='path', leave=False)
+    for child_path in pbar:
 
         child_n = path_node.get(child_path)
         if child_n is None or not G.has_node(child_n):
@@ -200,7 +218,7 @@ def reduce_netflow_edges(G: nx.MultiDiGraph):
                 ))
                 merged_local_ports = '_'.join(local_ports) if local_ports else 'null'
 
-                merged_name = f'{local_ip}_{merged_local_ports}_{remote_ip}_{merged_remote_ports}'
+                merged_name = f'{local_ip}_{local_port}_{remote_ip}_{merged_remote_ports}'
 
                 for ts, nf, key, etype in window:
                     edges_to_remove.append((proc, nf, key))
@@ -226,7 +244,9 @@ def reduce_netflow_edges(G: nx.MultiDiGraph):
 
             i = j
 
-    for (proc, remote_ip), events in groups.items():
+    pbar = tqdm(groups.items(), desc='  netflow merge', unit='group', leave=False,
+                total=len(groups))
+    for (proc, remote_ip), events in pbar:
         events.sort(key=lambda x: x[0])
         _apply_window(proc, events)
 
@@ -252,15 +272,127 @@ def reduce_netflow_edges(G: nx.MultiDiGraph):
 
     return G, windows_merged, nodes_before, nodes_after, edges_before, edges_after
 
+def reduce_similar_files(G: nx.MultiDiGraph,
+                         threshold=SIMILAR_FILE_THRESHOLD,
+                         window_ns=SIMILAR_FILE_WINDOW_NS):
+    nodes_before = G.number_of_nodes()
+    edges_before = G.number_of_edges()
+    merged_count = 0
+
+    file_procs = {}
+    for n, d in G.nodes(data=True):
+        if 'FILE' not in d.get('type', '') or not d.get('name'):
+            continue
+        procs = frozenset(
+            nb for nb in list(G.predecessors(n)) + list(G.successors(n))
+            if G.nodes[nb].get('type') == 'SUBJECT_PROCESS'
+        )
+        if procs:
+            file_procs[n] = procs
+
+    dir_groups = defaultdict(list)
+    for n, procs in file_procs.items():
+        name   = G.nodes[n].get('name', '')
+        parent = os.path.dirname(name)
+        if parent:
+            dir_groups[parent].append(
+                (n, os.path.basename(name), G.nodes[n].get('ts', 0), procs)
+            )
+
+    pbar = tqdm(dir_groups.items(), desc='  similar files', unit='dir', leave=False,
+                total=len(dir_groups))
+    for parent_dir, files in pbar:
+        if len(files) < 2:
+            continue
+
+        files.sort(key=lambda x: x[2])
+
+        representative = {}
+        merge_sim      = {}
+
+        for i in range(len(files)):
+            nid_i, bname_i, ts_i, procs_i = files[i]
+            if not G.has_node(nid_i):
+                continue
+            fullpath_i = G.nodes[nid_i].get('name', '')
+            if not _is_temp_log_cache(fullpath_i):
+                continue
+            rep_i = representative.get(nid_i, nid_i)
+
+            for j in range(i + 1, len(files)):
+                nid_j, bname_j, ts_j, procs_j = files[j]
+                fullpath_j = G.nodes[nid_j].get('name', '')
+                if not _is_temp_log_cache(fullpath_j):
+                    continue
+                if nid_j in representative or not G.has_node(nid_j):
+                    continue
+
+                if ts_j - ts_i > window_ns:
+                    break
+
+                if not (procs_i & procs_j):
+                    continue
+
+                sim = lev_ratio(bname_i, bname_j)
+                if sim > threshold:
+                    representative[nid_j] = rep_i
+                    merge_sim[nid_j]      = sim
+
+        if not representative:
+            continue
+
+        for old_node, rep_node in representative.items():
+            if not G.has_node(old_node) or not G.has_node(rep_node):
+                continue
+            existing_in  = {(p, d.get('edge_type'))
+                            for p, _, d in G.in_edges(rep_node, data=True)}
+            existing_out = {(s, d.get('edge_type'))
+                            for _, s, d in G.out_edges(rep_node, data=True)}
+            for pred, _, k, d in list(G.in_edges(old_node, keys=True, data=True)):
+                if pred != rep_node and (pred, d.get('edge_type')) not in existing_in:
+                    G.add_edge(pred, rep_node, **d)
+                    existing_in.add((pred, d.get('edge_type')))
+            for _, succ, k, d in list(G.out_edges(old_node, keys=True, data=True)):
+                if succ != rep_node and (succ, d.get('edge_type')) not in existing_out:
+                    G.add_edge(rep_node, succ, **d)
+                    existing_out.add((succ, d.get('edge_type')))
+            G.remove_node(old_node)
+            merged_count += 1
+
+    nodes_after = G.number_of_nodes()
+    edges_after = G.number_of_edges()
+
+    return G, merged_count, nodes_before, nodes_after, edges_before, edges_after
+
+
 def reduce_graph(G: nx.MultiDiGraph):
     n0, e0 = G.number_of_nodes(), G.number_of_edges()
 
     G, r2_count, r2_removed = reduce_directory_cascade(G)
-    G, r3_windows, r3_nodes_before, r3_nodes_after, r3_edges_before, r3_edges_after = reduce_netflow_edges(G)
-
     n1, e1 = G.number_of_nodes(), G.number_of_edges()
-    print(f'  Nodes  — before: {n0:,}  after: {n1:,}  removed: {n0 - n1:,}')
-    print(f'  Edges  — before: {e0:,}  after: {e1:,}  removed: {e0 - e1:,}')
+    tqdm.write(f'  [1/3] Directory Cascade')
+    tqdm.write(f'        nodes  : {n0:,} → {n1:,}  removed: {n0-n1:,}')
+    tqdm.write(f'        edges  : {e0:,} → {e1:,}  removed: {e0-e1:,}')
+    tqdm.write(f'        merged : {r2_count:,} parent-child path pairs')
+
+    G, r3_windows, r3_nb, r3_na, r3_eb, r3_ea = reduce_netflow_edges(G)
+    n2, e2 = G.number_of_nodes(), G.number_of_edges()
+    tqdm.write(f'  [2/3] NetFlow Merge')
+    tqdm.write(f'        nodes  : {n1:,} → {n2:,}  removed: {n1-n2:,}')
+    tqdm.write(f'        edges  : {e1:,} → {e2:,}  removed: {e1-e2:,}')
+    tqdm.write(f'        windows: {r3_windows:,} merged')
+
+    G, r4_merged, r4_nb, r4_na, r4_eb, r4_ea = reduce_similar_files(G)
+    n3, e3 = G.number_of_nodes(), G.number_of_edges()
+    tqdm.write(f'  [3/3] Similar File Merge')
+    tqdm.write(f'        nodes  : {n2:,} → {n3:,}  removed: {n2-n3:,}')
+    tqdm.write(f'        edges  : {e2:,} → {e3:,}  removed: {e2-e3:,}')
+    tqdm.write(f'        merged : {r4_merged:,} similar file nodes')
+
+    print()
+    print(f'  ── Total ──────────────────────────────')
+    print(f'  nodes  : {n0:,} → {n3:,}  removed: {n0-n3:,}')
+    print(f'  edges  : {e0:,} → {e3:,}  removed: {e0-e3:,}')
 
     out_dir = os.path.join(OUTPUT_GRAPHS, 'reduced_graph')
     os.makedirs(out_dir, exist_ok=True)

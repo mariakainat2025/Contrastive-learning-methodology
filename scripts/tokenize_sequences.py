@@ -35,8 +35,7 @@ def tokenize_texts(tokenizer, texts, desc):
         enc   = tokenizer(
             batch,
             padding       = True,
-            truncation    = True,
-            max_length    = 512,
+            truncation    = False,
             return_tensors= 'pt',
         )
         for j in range(len(batch)):

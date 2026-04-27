@@ -10,6 +10,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from scripts.config import OUTPUT_GRAPHS, OUTPUT_SEQUENCES, OUTPUT_BENIGN, OUTPUT_ATTACK
+from scripts.node_abstraction import abstract_node_name
 
 TRIPLE_SEP = ' '
 
@@ -17,6 +18,36 @@ MAX_NAME_TOKENS = 20
 
 import re
 _IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
+
+EDGE_TO_TEXT = {
+    'EVENT_BOOT'                  : 'boots',
+    'EVENT_READ'                  : 'reads',
+    'EVENT_CONNECT'               : 'connects to',
+    'EVENT_SENDTO'                : 'sends to',
+    'EVENT_RECVMSG'               : 'receives message from',
+    'EVENT_READ_SOCKET_PARAMS'    : 'reads socket parameters from',
+    'EVENT_SENDMSG'               : 'sends message to',
+    'EVENT_CLONE'                 : 'clones',
+    'EVENT_EXECUTE'               : 'executes',
+    'EVENT_RECVFROM'              : 'receives from',
+    'EVENT_WRITE'                 : 'writes to',
+    'EVENT_WRITE_SOCKET_PARAMS'   : 'writes socket parameters to',
+    'EVENT_UNLINK'                : 'unlinks',
+    'EVENT_MODIFY_FILE_ATTRIBUTES': 'modifies attributes of',
+    'EVENT_OPEN'                  : 'opens',
+    'EVENT_ACCEPT'                : 'accepts',
+    'EVENT_BIND'                  : 'binds to',
+    'CONNECT_SENDMSG'             : 'connects and sends message to',
+    'CONNECT_SENDTO'              : 'connects and sends to',
+    'SENDMSG_SENDTO'              : 'sends message and data to',
+    'RECVFROM_RECVMSG'            : 'receives data and message from',
+    'ACCEPT_BIND'                 : 'accepts and binds',
+    'CONNECT_RECVFROM'            : 'connects and receives from',
+    'CONNECT_RECVMSG'             : 'connects and receives message from',
+    'BIND_CONNECT'                : 'binds and connects to',
+    'RECVFROM_SENDTO'             : 'receives and sends to',
+    'RECVMSG_SENDMSG'             : 'receives and sends message to',
+}
 
 def _normalize_name(name):
     if not name:
@@ -38,19 +69,21 @@ def _normalize_name(name):
 def extract_triples(G):
     triples = []
     for src, dst, key, attr in G.edges(keys=True, data=True):
-        src_name = _normalize_name(G.nodes[src].get('name', str(src)))
-        dst_name = _normalize_name(G.nodes[dst].get('name', str(dst)))
+        src_name = G.nodes[src].get('name', str(src))
+        dst_name = G.nodes[dst].get('name', str(dst))
         edge_op  = attr.get('edge_type', 'unknown')
         ts       = attr.get('ts', 0)
         triples.append((src_name, edge_op, dst_name, ts))
     return sorted(triples, key=lambda x: x[3])
 
+def _clean_edge(op):
+    return op.replace('EVENT_', '').lower()
+
 def triples_to_text(triples):
     return [
-        '{} {} {}'.format(src_n, op, dst_n)
+        '{} {} {}.'.format(src_n, _clean_edge(op), dst_n)
         for src_n, op, dst_n, _ in triples
     ]
-
 def _rebuild_graph(sg_dict):
     G = nx.MultiDiGraph()
 
@@ -148,17 +181,28 @@ def build_log_sequences(in_path, out_path, label='unknown', max_subgraphs=None):
 
     return sequences
 
+def _prefer_abstract(path):
+    """Use abstract_ prefixed file if it exists, otherwise use original."""
+    from scripts.node_abstraction import abstract_path
+    abs_path = abstract_path(path)
+    if os.path.exists(abs_path):
+        print(f'  [sequence input] abstract file → {os.path.basename(abs_path)}')
+        return abs_path
+    print(f'  [sequence input] raw file     → {os.path.basename(path)}')
+    return path
+
+
 def run_sequences():
     from scripts.filter_attack_subgraphs import ATTACKS
     os.makedirs(OUTPUT_SEQUENCES, exist_ok=True)
     inputs = [
-        (os.path.join(OUTPUT_BENIGN, 'benign_training.json'),
+        (_prefer_abstract(os.path.join(OUTPUT_BENIGN, 'benign_training.json')),
          os.path.join(OUTPUT_SEQUENCES, 'sequences_benign.json'),
          'benign'),
     ]
     for atk in ATTACKS:
         inputs.append((
-            os.path.join(OUTPUT_ATTACK, f'attack_subgraphs_{atk["name"]}.json'),
+            _prefer_abstract(os.path.join(OUTPUT_ATTACK, f'attack_subgraphs_{atk["name"]}.json')),
             os.path.join(OUTPUT_SEQUENCES, f'sequences_{atk["name"]}.json'),
             'attack',
         ))

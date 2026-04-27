@@ -21,7 +21,7 @@ BENIGN_JSON  = os.path.join(OUTPUT_BENIGN,  'benign_subgraphs.json')
 TRAIN_JSON   = os.path.join(OUTPUT_BENIGN,  'benign_training.json')
 TEST_JSON    = os.path.join(OUTPUT_BENIGN,  'benign_testing.json')
 
-MAX_NODES    = None  
+MAX_NODES    = 50  
 TRAIN_SIZE   = 10000
 TEST_SIZE    = 2000
 
@@ -62,11 +62,8 @@ def main():
         json.dump({'total_subgraphs': len(benign), 'subgraphs': benign}, f, indent=2)
     print(f'\n  Saved -> {BENIGN_JSON}')
 
-    random.seed(42)
-    shuffled  = benign[:]
-    random.shuffle(shuffled)
-    train_sgs = shuffled[:TRAIN_SIZE]
-    test_sgs  = shuffled[TRAIN_SIZE:TRAIN_SIZE + TEST_SIZE]
+    train_sgs = benign[:TRAIN_SIZE]
+    test_sgs  = benign[TRAIN_SIZE:TRAIN_SIZE + TEST_SIZE]
 
     print(f'\n--- Train / Test Split ---')
     print(f'  Total benign subgraphs : {len(benign):,}')

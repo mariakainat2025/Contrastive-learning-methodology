@@ -59,12 +59,6 @@ DEP_TO_CTI = {
         ],
     },
     'firefox_backdoor': {
-        (19710, 0): [
-            'firefox_backdoor_dep19710_part0_fluxbox',
-            'firefox_backdoor_dep19710_part0_fluxbox_aug1',
-            'firefox_backdoor_dep19710_part0_fluxbox_aug2',
-            'firefox_backdoor_dep19710_part0_fluxbox_aug3',
-        ],
         (19710, 1): [
             'firefox_backdoor_dep19710_part1_fluxbox',
             'firefox_backdoor_dep19710_part1_fluxbox_aug1',
@@ -128,8 +122,13 @@ def run_contrastive_train():
     print('  Loading pre-tokenized data from {}'.format(tok_path))
     tok_data = torch.load(tok_path, map_location='cpu')
 
-    ben_ids      = tok_data['benign']['input_ids'][:10000]   
-    ben_mask     = tok_data['benign']['attention_mask'][:10000]
+    MAX_TRAIN_TOKENS = 4096
+    all_ben_ids  = tok_data['benign']['input_ids'][:10000]
+    all_ben_mask = tok_data['benign']['attention_mask'][:10000]
+    n_over = sum(1 for x in all_ben_ids if len(x) > MAX_TRAIN_TOKENS)
+    print('  Benign over {} tokens: {}/{}'.format(MAX_TRAIN_TOKENS, n_over, len(all_ben_ids)))
+    ben_ids  = [x[:MAX_TRAIN_TOKENS] for x in all_ben_ids]
+    ben_mask = [x[:MAX_TRAIN_TOKENS] for x in all_ben_mask]
     ben_cti_ids  = tok_data['benign_cti']['input_ids'][0] 
     ben_cti_mask = tok_data['benign_cti']['attention_mask'][0]
     n_benign     = len(ben_ids)
@@ -178,6 +177,16 @@ def run_contrastive_train():
     print('  Attack per batch : {}'.format(n_attack))
     print('  Benign per batch : {}'.format(n_benign_per_batch))
     print()
+    print('  Attack sequence chunk counts (MAX_LEN={} STRIDE={}):'.format(MAX_LEN, STRIDE))
+    seen = set()
+    for i, ids in enumerate(atk_log_ids_list):
+        if id(ids) in seen:
+            continue
+        seen.add(id(ids))
+        n_tok    = len(ids)
+        n_chunks = max(1, (n_tok - MAX_LEN) // STRIDE + 2) if n_tok > MAX_LEN else 1
+        print('    atk seq {:>2d} : tokens={:,}  chunks={}'.format(i, n_tok, n_chunks))
+    print()
 
     print('  Loading RoBERTa encoders...')
     tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
@@ -191,8 +200,8 @@ def run_contrastive_train():
             for param in model.encoder.layer[i].parameters():
                 param.requires_grad = False
 
-    freeze_lower_layers(log_encoder)
-    freeze_lower_layers(text_encoder)
+    freeze_lower_layers(log_encoder,  n_freeze=9)
+    freeze_lower_layers(text_encoder, n_freeze=9)
 
 
     log_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
@@ -236,7 +245,7 @@ def run_contrastive_train():
     for epoch in range(1, N_EPOCHS + 1):
         epoch_start = time.time()
 
-        perm         = torch.randperm(n_benign).tolist()
+        perm         = list(range(n_benign))
         epoch_losses = []
 
         for start in range(0, n_benign, n_benign_per_batch):
@@ -267,8 +276,8 @@ def run_contrastive_train():
 
             optimizer.zero_grad()
             with torch.amp.autocast('cuda'):
-                v = embed_text(log_encoder,  tokenizer, batch_log_ids,  batch_log_mask, device, truncate=True)
-                u = embed_text(text_encoder, tokenizer, batch_cti_ids,  batch_cti_mask, device, truncate=True)
+                v = embed_text(log_encoder,  tokenizer, batch_log_ids,  batch_log_mask, device, truncate=False)
+                u = embed_text(text_encoder, tokenizer, batch_cti_ids,  batch_cti_mask, device, truncate=False)
 
                 v = log_proj(v)
                 u = text_proj(u)
@@ -295,10 +304,9 @@ def run_contrastive_train():
         })
 
         epoch_time = (time.time() - epoch_start) / 60
-        if epoch == 1 or epoch % 10 == 0:
-            elapsed = (time.time() - train_start) / 60
-            print('  epoch {:>4d}  loss={:.6f}  logit_scale={:.4f}  epoch_time={:.2f}m  total_time={:.2f}m'.format(
-                epoch, epoch_loss, logit_scale.exp().item(), epoch_time, elapsed))
+        elapsed = (time.time() - train_start) / 60
+        print('  epoch {:>4d}  loss={:.6f}  logit_scale={:.4f}  epoch_time={:.2f}m  total_time={:.2f}m'.format(
+            epoch, epoch_loss, logit_scale.exp().item(), epoch_time, elapsed))
 
         if epoch_loss < best_loss - 1e-6:
             best_loss  = epoch_loss
@@ -316,6 +324,23 @@ def run_contrastive_train():
                 print('  Early stopping at epoch {} (no improvement for {} epochs)'.format(
                     epoch, PATIENCE))
                 break
+
+        if epoch % 10 == 0 and best_state:
+            os.makedirs(OUTPUT_TRAINING, exist_ok=True)
+            ckpt_path = os.path.join(OUTPUT_TRAINING, 'theia_epoch{}.pt'.format(epoch))
+            torch.save({
+                'log_encoder' : best_state['log_encoder'],
+                'text_encoder': best_state['text_encoder'],
+                'log_proj'    : best_state['log_proj'],
+                'text_proj'   : best_state['text_proj'],
+                'logit_scale' : best_state['logit_scale'],
+                'proj_dims'   : (EMB_DIM, PROJ_DIM),
+                'scenarios'   : ALL_SCENARIOS,
+                'best_loss'   : best_loss,
+                'history'     : history[:epoch],
+                'seed'        : SEED,
+            }, ckpt_path)
+            print('  [checkpoint] theia_epoch{}.pt saved (best loss={:.6f})'.format(epoch, best_loss))
 
     if best_state:
         log_encoder.load_state_dict(best_state['log_encoder'])

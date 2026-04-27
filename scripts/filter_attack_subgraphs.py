@@ -31,6 +31,7 @@ def ns_to_est(ns):
     utc = datetime.fromtimestamp(ns / 1e9, tz=timezone.utc)
     return (utc - timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
 
+
 def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
 
     subgraphs_path = os.path.join(OUTPUT_GRAPHS,  'subgraphs_all.json')
@@ -100,13 +101,17 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
                         if uuid:
                             attack_specific_uuids.add(uuid)
 
-                # Keep edges where source OR destination is an attack-specific UUID
-                filtered_edges = [
-                    e for e in filtered_edges
-                    if e[0] in attack_specific_uuids and e[1] in attack_specific_uuids
-                ]
+                if sg['dep_id'] == 19710 and sg['part_idx'] == 1:
+                    filtered_edges = [
+                        e for e in filtered_edges
+                        if e[0] in attack_specific_uuids and e[1] in attack_specific_uuids
+                    ]
+                else:
+                    filtered_edges = [
+                        e for e in filtered_edges
+                        if e[0] in attack_specific_uuids or e[1] in attack_specific_uuids
+                    ]
 
-                # Keep nodes referenced in kept edges AND in malicious UUIDs
                 keep_uuids = set()
                 for e in filtered_edges:
                     keep_uuids.add(e[0])
@@ -114,7 +119,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
 
                 filtered_nodes = [
                     n for n in filtered_nodes
-                    if n[1].get('uuid', '') in keep_uuids and n[1].get('uuid', '') in mal_uuids
+                    if n[1].get('uuid', '') in keep_uuids or n[1].get('uuid', '') in mal_uuids
                 ]
         # ─────────────────────────────────────────────────────────────────────
 
