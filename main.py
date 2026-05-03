@@ -16,7 +16,9 @@ from scripts.reduce_graph              import reduce_graph
 from scripts.extract_benign_subgraphs  import main as extract_benign
 from scripts.label_subgraphs           import main as extract_attack
 from scripts.filter_attack_subgraphs   import run_all as filter_attack
+from scripts.node_abstraction          import run_node_abstraction
 from scripts.subgraph_sequence_builder import run_sequences
+from scripts.deduplicate_sequence      import run_deduplication
 from scripts.encode_sequences          import encode_sequences
 from scripts.encode_cti                import encode_cti
 from scripts.tokenize_sequences        import tokenize_all, tokenize_benign_testing
@@ -121,6 +123,16 @@ def main(file=None):
         print('  [cache] skipping stage 6b')
     print()
 
+    show('Stage 6c / 10 — node abstraction')
+    print()
+    cached = _load('stage6c_node_abstraction')
+    if cached is None:
+        run_node_abstraction()
+        _save('stage6c_node_abstraction', True)
+    else:
+        print('  [cache] skipping stage 6c')
+    print()
+
     show('Stage 7 / 10 — log sequence construction')
     print()
     cached = _load('stage7_sequences')
@@ -129,6 +141,16 @@ def main(file=None):
         _save('stage7_sequences', True)
     else:
         print('  [cache] skipping stage 7')
+    print()
+
+    show('Stage 7b / 10 — deduplicate attack sequences')
+    print()
+    cached = _load('stage7b_dedup_attack')
+    if cached is None:
+        run_deduplication()
+        _save('stage7b_dedup_attack', True)
+    else:
+        print('  [cache] skipping stage 7b')
     print()
 
     show('Stage 8 / 10 — tokenize sequences')
