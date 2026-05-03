@@ -1,4 +1,3 @@
-
 import os
 import sys
 import json
@@ -17,6 +16,8 @@ from scripts.config import (
 from scripts.encoder_utils import embed_text
 from scripts.subgraph_sequence_builder import _rebuild_graph, extract_triples, triples_to_text
 from scripts.node_abstraction import abstract_node_name
+from scripts.deduplicate_sequence import deduplicate_sequence, _deduplicate_with_report, save_report, SIMILARITY_THRESHOLD
+from scripts.abstract_cti import abstract_cti_text
 from transformers import RobertaTokenizer, RobertaModel, logging as hf_logging
 hf_logging.set_verbosity_error()
 
@@ -28,11 +29,13 @@ DROPOUT  = 0.5
 TEST_SCENARIOS = [
     {
         'name'        : 'Phishing_Email_Link_full_chain',
+        'display'     : 'Subgraph 1: Phishing_Email_Link',
         'atk_file'    : 'phishing_link_attack_chain.json',
         'ground_truth': 'phishing_email_link',
     },
     {
         'name'        : 'attachment',
+        'display'     : 'Subgraph 2: Phishing_Email_Attachment',
         'atk_file'    : 'phishing_executable_attachment_attack_chain.json',
         'ground_truth': 'phishing_email_executable_attachment',
     },
@@ -65,7 +68,6 @@ def tokenize_and_encode(tokenizer, encoder, proj, text, device):
         emb = proj(emb)
         emb = F.normalize(emb, dim=-1)
     return emb.cpu()
-
 
 
 def abstract_and_save(in_path, out_path):
@@ -101,9 +103,10 @@ def sg_to_text(sg):
     return ' '.join(text) if isinstance(text, list) else text
 
 
-CHECKPOINTS      = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-THRESHOLD        = 0.3
-USE_ABSTRACTION  = False  # set True to abstract node names, False for raw
+CHECKPOINTS        = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+THRESHOLD          = 0.3
+USE_ABSTRACTION    = True   # set True to abstract node names, False for raw
+USE_DEDUPLICATION  = True   # remove exact duplicate sentences from sequences
 
 CTI_DISPLAY_NAMES = {
     'applejeus_spearphishing': 'Phishing',
@@ -132,35 +135,82 @@ def _load_model(ckpt_path, device):
 
 def _load_texts(use_abstraction):
     """Load benign and attack texts with or without node abstraction."""
+    prefix = 'abstracted_' if use_abstraction else ''
+
+    # ── Benign ────────────────────────────────────────────────────────────────
+    original_ben_path = os.path.join(INPUT_TEST, TEST_BEN_SG_FILE)
+
     if use_abstraction:
         ben_subgraphs = abstract_and_save(
-            in_path=os.path.join(INPUT_TEST, TEST_BEN_SG_FILE),
+            in_path=original_ben_path,
             out_path=os.path.join(INPUT_TEST, 'abstracted_' + TEST_BEN_SG_FILE)
         )
     else:
-        with open(os.path.join(INPUT_TEST, TEST_BEN_SG_FILE)) as f:
+        with open(original_ben_path) as f:
             data = json.load(f)
         ben_subgraphs = data['subgraphs'] if isinstance(data, dict) else data
 
-    ben_texts  = [sg_to_text(sg) for sg in ben_subgraphs]
-    atk_texts  = []
-    atk_labels = []
+    # Build sequences and save before dedup
+    ben_raw_texts = [sg_to_text(sg) for sg in ben_subgraphs]
+    abs_ben_file  = '{}benign_sequences.json'.format(prefix)
+    abs_ben_path  = os.path.join(INPUT_TEST, abs_ben_file)
+    with open(abs_ben_path, 'w') as f:
+        json.dump([{'dep_id': ben_subgraphs[i].get('dep_id'), 'sequence': ben_raw_texts[i]}
+                   for i in range(len(ben_raw_texts))], f, indent=2)
+    print('  Saved: {}'.format(abs_ben_path))
+
+    # Dedup from abstracted sequences file and save
+    if USE_DEDUPLICATION:
+        print('  Deduplicating: {}'.format(abs_ben_file))
+    ben_texts = [deduplicate_sequence(t) if USE_DEDUPLICATION else t for t in ben_raw_texts]
+    if USE_DEDUPLICATION:
+        dedup_ben_path = os.path.join(INPUT_TEST, '{}benign_sequences_duplicate_removed.json'.format(prefix))
+        with open(dedup_ben_path, 'w') as f:
+            json.dump([{'dep_id': ben_subgraphs[i].get('dep_id'), 'sequence': ben_texts[i]}
+                       for i in range(len(ben_texts))], f, indent=2)
+        print('  Saved: {}'.format(dedup_ben_path))
+
+    # ── Attack ────────────────────────────────────────────────────────────────
+    atk_raw_texts = []
+    atk_texts     = []
+    atk_labels    = []
 
     for scenario in TEST_SCENARIOS:
+        original_atk_path = os.path.join(INPUT_TEST, scenario['atk_file'])
+
         if use_abstraction:
             atk_subgraphs = abstract_and_save(
-                in_path=os.path.join(INPUT_TEST, scenario['atk_file']),
+                in_path=original_atk_path,
                 out_path=os.path.join(INPUT_TEST, 'abstracted_' + scenario['atk_file'])
             )
         else:
-            with open(os.path.join(INPUT_TEST, scenario['atk_file'])) as f:
+            with open(original_atk_path) as f:
                 data = json.load(f)
             atk_subgraphs = data['subgraphs'] if (isinstance(data, dict) and 'subgraphs' in data) else [data]
 
         for sg in atk_subgraphs:
-            atk_texts.append(sg_to_text(sg))
+            atk_raw_texts.append(sg_to_text(sg))
             atk_labels.append('{} dep={} part={} seed={}'.format(
                 scenario['name'], sg['dep_id'], sg.get('part_idx', 0), sg.get('seed_name', '')))
+
+    # Save attack sequences before dedup
+    abs_atk_file = '{}attack_sequences.json'.format(prefix)
+    abs_atk_path = os.path.join(INPUT_TEST, abs_atk_file)
+    with open(abs_atk_path, 'w') as f:
+        json.dump([{'label': atk_labels[i], 'sequence': atk_raw_texts[i]}
+                   for i in range(len(atk_raw_texts))], f, indent=2)
+    print('  Saved: {}'.format(abs_atk_path))
+
+    # Dedup from abstracted attack sequences file and save
+    if USE_DEDUPLICATION:
+        print('  Deduplicating: {}'.format(abs_atk_file))
+    atk_texts = [deduplicate_sequence(t) if USE_DEDUPLICATION else t for t in atk_raw_texts]
+    if USE_DEDUPLICATION:
+        dedup_atk_path = os.path.join(INPUT_TEST, '{}attack_sequences_duplicate_removed.json'.format(prefix))
+        with open(dedup_atk_path, 'w') as f:
+            json.dump([{'label': atk_labels[i], 'sequence': atk_texts[i]}
+                       for i in range(len(atk_texts))], f, indent=2)
+        print('  Saved: {}'.format(dedup_atk_path))
 
     return ben_subgraphs, ben_texts, atk_texts, atk_labels
 
@@ -169,10 +219,7 @@ def _run_checkpoints(device, tokenizer, ben_texts, atk_texts, atk_labels, cti_ke
     """Evaluate all checkpoints and return results list."""
     os.makedirs(OUTPUT_TEST, exist_ok=True)
     results = []
-
-    print('  {:<30}  {:>12}  {:>12}  {:>14}  {:>14}  {:>10}  {:>10}  {:>10}  {:>10}'.format(
-        'Checkpoint', 'Link→Link', 'Attach→Attach', 'Link→Attach', 'Attach→Link', 'Precision', 'Recall', 'Ben Max', 'Ben Min'))
-    print('  ' + '-' * 130)
+    TOP_K = 3  # show top-3 matches per attack in terminal
 
     best_link_score = -1
     best_ckpt       = None
@@ -194,58 +241,46 @@ def _run_checkpoints(device, tokenizer, ben_texts, atk_texts, atk_labels, cti_ke
 
         atk_scores     = atk_embs @ cti_embs.T
         ben_scores_max = (ben_embs @ cti_embs.T).max(dim=1).values
-        atk_scores_max = atk_scores.max(dim=1).values
+        ben_max        = ben_scores_max.max().item()
+        ben_min        = ben_scores_max.min().item()
 
-        flagged   = (ben_scores_max >= THRESHOLD).sum().item()
-        detected  = (atk_scores_max >= THRESHOLD).sum().item()
-        missed    = (atk_scores_max <  THRESHOLD).sum().item()
-        precision = detected / (detected + flagged) if (detected + flagged) > 0 else 0.0
-        recall    = detected / (detected + missed)  if (detected + missed)  > 0 else 0.0
-        ben_max   = ben_scores_max.max().item()
-        ben_min   = ben_scores_max.min().item()
+        # resolve ground truth key — prefer abstracted version if present
+        link_gt_key = TEST_SCENARIOS[0]['ground_truth'] if len(TEST_SCENARIOS) > 0 else ''
+        if link_gt_key not in cti_keys:
+            link_gt_key = link_gt_key + '_abstracted'
+        link_score = atk_scores[0, cti_keys.index(link_gt_key)].item() \
+                     if link_gt_key in cti_keys and len(atk_texts) > 0 else -1
 
-        # get per-scenario scores (ground truth + cross scores)
-        link_score      = -1
-        attach_score    = -1
-        link_to_attach  = -1  # link subgraph vs attach CTI
-        attach_to_link  = -1  # attach subgraph vs link CTI
-
-        link_gt_key   = TEST_SCENARIOS[0]['ground_truth'] if len(TEST_SCENARIOS) > 0 else ''
-        attach_gt_key = TEST_SCENARIOS[1]['ground_truth'] if len(TEST_SCENARIOS) > 1 else ''
-
-        link_idx   = cti_keys.index(link_gt_key)   if link_gt_key   in cti_keys else -1
-        attach_idx = cti_keys.index(attach_gt_key) if attach_gt_key in cti_keys else -1
-
-        if 0 < len(atk_texts) and link_idx >= 0:
-            link_score     = atk_scores[0, link_idx].item()
-            attach_to_link = atk_scores[1, link_idx].item() if len(atk_texts) > 1 else -1
-        if 1 < len(atk_texts) and attach_idx >= 0:
-            attach_score   = atk_scores[1, attach_idx].item()
-            link_to_attach = atk_scores[0, attach_idx].item()
-
-        print('  {:<30}  {:>12.4f}  {:>12.4f}  {:>14.4f}  {:>14.4f}  {:>10.4f}  {:>10.4f}  {:>10.4f}  {:>10.4f}'.format(
-            ckpt_name, link_score, attach_score, link_to_attach, attach_to_link,
-            precision, recall, ben_max, ben_min))
+        # ── Terminal: top-3 per attack ────────────────────────────────────────
+        print('  {} '.format(ckpt_name))
+        for i, label in enumerate(atk_labels):
+            display = TEST_SCENARIOS[i]['display'] if i < len(TEST_SCENARIOS) else label[:40]
+            scores_i  = [(cti_keys[j], atk_scores[i, j].item()) for j in range(len(cti_keys))]
+            scores_i.sort(key=lambda x: -x[1])
+            top3 = '  |  '.join('{}:{:.4f}'.format(k, v) for k, v in scores_i[:TOP_K])
+            print('    {}  →  {}'.format(display, top3))
+        print()
 
         if link_score > best_link_score:
             best_link_score = link_score
             best_ckpt       = ckpt_name
 
         results.append({
-            'epoch': epoch, 'checkpoint': ckpt_name,
-            'link_score': link_score, 'attach_score': attach_score,
-            'precision': precision, 'recall': recall,
-            'ben_max': ben_max, 'ben_min': ben_min,
-            'attacks': [{'label': atk_labels[i],
-                         'scores': {cti_keys[j]: atk_scores[i, j].item() for j in range(len(cti_keys))}}
-                        for i in range(len(atk_labels))]
+            'epoch'     : epoch,
+            'checkpoint': ckpt_name,
+            'ben_max'   : ben_max,
+            'ben_min'   : ben_min,
+            'attacks'   : [{'label': atk_labels[i],
+                            'scores': {cti_keys[j]: round(atk_scores[i, j].item(), 4)
+                                       for j in range(len(cti_keys))}}
+                           for i in range(len(atk_labels))]
         })
 
         del log_encoder, text_encoder, log_proj, text_proj
         torch.cuda.empty_cache()
 
     print()
-    print('  Best checkpoint for phishing link: {} (score={:.4f})'.format(best_ckpt, best_link_score))
+    print('  Best checkpoint: {}  (Link score={:.4f})'.format(best_ckpt, best_link_score))
     return results
 
 
@@ -255,13 +290,34 @@ def evaluate():
     print('  Device: {}'.format(device))
     print()
 
-    # load CTI reports
+    # load CTI reports — prefer _abstracted.txt if it exists, else abstract on the fly
     cti_keys, cti_texts = [], []
     for fname in sorted(os.listdir(INPUT_TEST)):
-        if fname.endswith('.txt') and not fname.startswith('.'):
+        if not fname.endswith('.txt') or fname.startswith('.') or fname.endswith('_abstracted.txt'):
+            continue
+        abs_fname = fname.replace('.txt', '_abstracted.txt')
+        abs_path  = os.path.join(INPUT_TEST, abs_fname)
+        if os.path.exists(abs_path):
+            # use saved abstracted version — key uses abstracted filename
+            with open(abs_path) as f:
+                text = f.read().strip()
+            key = abs_fname.replace('.txt', '')
+            print('  [cti] using abstracted: {}'.format(abs_fname))
+        else:
+            # abstract on the fly and save if changed
             with open(os.path.join(INPUT_TEST, fname)) as f:
-                cti_texts.append(f.read().strip())
-            cti_keys.append(fname.replace('.txt', ''))
+                raw = f.read().strip()
+            text = abstract_cti_text(raw)
+            if text != raw:
+                with open(abs_path, 'w') as f:
+                    f.write(text)
+                key = abs_fname.replace('.txt', '')
+                print('  [cti abstracted] {}  →  {}'.format(fname, abs_fname))
+            else:
+                key = fname.replace('.txt', '')
+                print('  [cti] {}'.format(fname))
+        cti_texts.append(text)
+        cti_keys.append(key)
     print('  CTI reports: {}'.format(len(cti_keys)))
     print()
 
@@ -276,25 +332,40 @@ def evaluate():
     print('  Benign: {}  Attack: {}'.format(len(ben_texts), len(atk_texts)))
     print()
 
-    # save sequences
-    os.makedirs(INPUT_TEST, exist_ok=True)
-    prefix = 'abstracted_' if USE_ABSTRACTION else ''
-    with open(os.path.join(INPUT_TEST, f'{prefix}benign_sequences.json'), 'w') as f:
-        json.dump([{'dep_id': ben_subgraphs[i].get('dep_id'), 'sequence': ben_texts[i]}
-                   for i in range(len(ben_texts))], f, indent=2)
-    with open(os.path.join(INPUT_TEST, f'{prefix}attack_sequences.json'), 'w') as f:
-        json.dump([{'label': atk_labels[i], 'sequence': atk_texts[i]}
-                   for i in range(len(atk_texts))], f, indent=2)
-
     os.makedirs(OUTPUT_TEST, exist_ok=True)
     results = _run_checkpoints(device, tokenizer, ben_texts, atk_texts,
                                atk_labels, cti_keys, cti_texts)
 
+    # Save JSON
     print()
     out_path = os.path.join(OUTPUT_TEST, 'evaluation_results.json')
     with open(out_path, 'w') as f:
-        json.dump({'mode': mode, 'results': results}, f, indent=2)
+        json.dump({'mode': mode, 'cti_reports': cti_keys, 'results': results}, f, indent=2)
     print('  Saved: {}'.format(out_path))
+
+    # Save human-readable text report
+    txt_path = os.path.join(OUTPUT_TEST, 'evaluation_report.txt')
+    lines = []
+    lines.append('=' * 100)
+    lines.append('  Evaluation Report')
+    lines.append('  Mode: {}'.format(mode))
+    lines.append('  CTI Reports: {}'.format(', '.join(cti_keys)))
+    lines.append('=' * 100)
+    for r in results:
+        lines.append('')
+        lines.append('  Checkpoint: {}  (Ben Max={:.4f}  Ben Min={:.4f})'.format(
+            r['checkpoint'], r['ben_max'], r['ben_min']))
+        for idx, atk in enumerate(r['attacks']):
+            display = TEST_SCENARIOS[idx]['display'] if idx < len(TEST_SCENARIOS) else atk['label']
+            lines.append('    {}'.format(display))
+            sorted_scores = sorted(atk['scores'].items(), key=lambda x: -x[1])
+            for rank, (k, v) in enumerate(sorted_scores, 1):
+                marker = ' ←' if rank == 1 else ''
+                lines.append('      {:2d}. {:45s}  {:.4f}{}'.format(rank, k, v, marker))
+    lines.append('')
+    with open(txt_path, 'w') as f:
+        f.write('\n'.join(lines))
+    print('  Report: {}'.format(txt_path))
 
 
 if __name__ == '__main__':

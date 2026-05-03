@@ -245,7 +245,7 @@ def run_parser(file=None):
                     skip_count += 1
                     continue
 
-                if edgeType in {'EVENT_MPROTECT', 'EVENT_MMAP', 'EVENT_SHM'}:
+                if edgeType in {'EVENT_MPROTECT', 'EVENT_MMAP', 'EVENT_SHM', 'EVENT_OPEN'}:
                     skip_type_counts[edgeType] = skip_type_counts.get(edgeType, 0) + 1
                     skip_count += 1
                     continue

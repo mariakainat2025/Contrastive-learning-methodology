@@ -101,16 +101,10 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
                         if uuid:
                             attack_specific_uuids.add(uuid)
 
-                if sg['dep_id'] == 19710 and sg['part_idx'] == 1:
-                    filtered_edges = [
-                        e for e in filtered_edges
-                        if e[0] in attack_specific_uuids and e[1] in attack_specific_uuids
-                    ]
-                else:
-                    filtered_edges = [
-                        e for e in filtered_edges
-                        if e[0] in attack_specific_uuids or e[1] in attack_specific_uuids
-                    ]
+                filtered_edges = [
+                    e for e in filtered_edges
+                    if e[0] in attack_specific_uuids or e[1] in attack_specific_uuids
+                ]
 
                 keep_uuids = set()
                 for e in filtered_edges:

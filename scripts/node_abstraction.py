@@ -5,7 +5,11 @@ import re
 _IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 
+_EMAIL_DIRS = {'thunderbird', 'mozilla-thunderbird', 'outlook', 'evolution', 'mutt', '.mail'}
+
 def _get_role(n):
+    if any(e in n for e in _EMAIL_DIRS):
+        return 'email_file'
     if any(ext in n for ext in ['.dll', '.exe', '.lib', '.so', '.a']) or '/lib' in n:
         return 'library_file'
     if '/proc' in n:
@@ -27,7 +31,12 @@ def _abstract_file(name):
             or n.startswith('hklm') or n.startswith('hku') or n.startswith('hkcc')):
         return 'registry run key'
     role = _get_role(n)
-    return role if role is not None else name
+    if role is None:
+        return name
+    stem = os.path.splitext(os.path.basename(n))[0].strip('._- ')
+    if stem:
+        return f'{role} {stem}'
+    return role
 
 
 def _abstract_network(name):
@@ -78,36 +87,93 @@ def _abstract_process(name):
         cmd = cmd[1:]
     stem = os.path.basename(cmd).lower().rstrip(':')
     if any(w in stem for w in _WEB_PROCS):
-        return 'web_process'
+        return f'web_process {stem}'
     if any(k in stem for k in _EMAIL_KEYWORDS):
-        return 'email_process'
+        return f'email_process {stem}'
     if any(s in stem for s in _SERV_PROCS):
-        return 'service_process'
+        return f'service_process {stem}'
     if any(u in stem for u in _USR_PROCS):
-        return 'user_process'
+        return f'user_process {stem}'
     if stem in _SYS_CMDS:
-        return 'system_process'
+        return f'system_process {stem}'
     cl = n.lower()
     if any(p in cl for p in ['/bin/', '/usr/bin/', '/usr/sbin/',
                                '/usr/local/bin/', '/usr/local/sbin/', '/snap/bin/']):
-        return 'util_process'
+        return f'util_process {stem}'
     if any(p in cl for p in ['/bin', '/sbin', '/etc/', '/var', '/sys',
                                '/run', '/lib/systemd']):
-        return 'system_process'
+        return f'system_process {stem}'
     if '/tmp/' in cl or '/temp/' in cl:
-        return 'temp_process'
+        return f'temp_process {stem}'
     if '/home/' in cl or '/usr/' in cl or '/opt/' in cl:
-        return 'user_process'
+        return f'user_process {stem}'
     return name
 
 
-def abstract_node_name(name, node_type):
+def _get_dst_ip(name):
+    """Return destination IP string from a netflow name, or None."""
+    n = name.strip()
+    parts = n.split('_')
+    ip_indices = [i for i, p in enumerate(parts) if _IP_RE.match(p)]
+    if len(ip_indices) < 2:
+        return None
+    dst_ip = parts[ip_indices[-1]]
+    octets = dst_ip.split('.')
+    if len(octets) != 4:
+        return None
+    try:
+        o = [int(x) for x in octets]
+    except ValueError:
+        return None
+    if o[0] == 127:
+        return None
+    if (o[0] == 10 or
+            (o[0] == 172 and 16 <= o[1] <= 31) or
+            (o[0] == 192 and o[1] == 168)):
+        return None
+    return dst_ip
+
+
+def build_netflow_map(sg):
+    """
+    Scan all netflow nodes in a subgraph and return a dict mapping
+    raw node name → abstract label, using public_netflow_1/2/... when
+    multiple distinct public IPs exist, plain public_netflow when only one.
+    """
+    ip_order = []
+    for entry in sg.get('nodes', []):
+        node = entry[1] if isinstance(entry, (list, tuple)) and len(entry) > 1 else entry
+        if not isinstance(node, dict):
+            continue
+        t = node.get('type', '').lower()
+        if 'flow' not in t and 'netflow' not in t:
+            continue
+        raw = node.get('name', '')
+        ip = _get_dst_ip(raw)
+        if ip and ip not in ip_order:
+            ip_order.append(ip)
+
+    ip_to_label = {}
+    if len(ip_order) <= 1:
+        for ip in ip_order:
+            ip_to_label[ip] = 'public_netflow'
+    else:
+        for idx, ip in enumerate(ip_order, start=1):
+            ip_to_label[ip] = f'public_netflow_{idx}'
+    return ip_to_label
+
+
+def abstract_node_name(name, node_type, netflow_map=None):
     if not name or not node_type:
         return name
     t = node_type.lower()
     if 'file' in t:
         return _abstract_file(name)
     if 'flow' in t or 'netflow' in t:
+        if netflow_map:
+            ip = _get_dst_ip(name)
+            if ip and ip in netflow_map:
+                return netflow_map[ip]
         return _abstract_network(name)
     if 'subject' in t:
         return _abstract_process(name)
@@ -122,10 +188,11 @@ def abstract_subgraph_file(in_path, out_path=None):
         data = json.load(f)
     subgraphs = data['subgraphs'] if 'subgraphs' in data else (data if isinstance(data, list) else [data])
     for sg in subgraphs:
+        netflow_map = build_netflow_map(sg)
         for entry in sg.get('nodes', []):
             node = entry[1] if isinstance(entry, (list, tuple)) and len(entry) > 1 else entry
             if isinstance(node, dict) and 'name' in node and 'type' in node:
-                node['name'] = abstract_node_name(node['name'], node['type'])
+                node['name'] = abstract_node_name(node['name'], node['type'], netflow_map)
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(data, f)
     print(f'  saved: {out_path}')

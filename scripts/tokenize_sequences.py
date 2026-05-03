@@ -56,7 +56,11 @@ def tokenize_all():
     tokenizer = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
 
     # ── Benign sequences ──────────────────────────────────────────────────────
-    ben_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_benign.json')
+    ben_dedup_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_dedup_benign.json')
+    ben_path       = os.path.join(OUTPUT_SEQUENCES, 'sequences_benign.json')
+    if os.path.exists(ben_dedup_path):
+        print('  [dedup] using deduplicated sequences for benign')
+        ben_path = ben_dedup_path
     with open(ben_path, 'r') as f:
         benign_seqs = json.load(f)
 
@@ -72,7 +76,11 @@ def tokenize_all():
     # ── Attack sequences ──────────────────────────────────────────────────────
     attack_enc = {}
     for scenario, tag in SCENARIOS.items():
-        seq_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_{}.json'.format(tag))
+        dedup_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_dedup_{}.json'.format(tag))
+        seq_path   = dedup_path if os.path.exists(dedup_path) else \
+                     os.path.join(OUTPUT_SEQUENCES, 'sequences_{}.json'.format(tag))
+        if os.path.exists(dedup_path):
+            print('  [dedup] using deduplicated sequences for {}'.format(tag))
         if not os.path.exists(seq_path):
             print('  WARNING: {} not found'.format(seq_path))
             continue
