@@ -1,0 +1,107 @@
+{
+  "tactic": "Initial_Access",
+  "attack": "Phishing_Executable_Attachment",
+  "description": "Email delivery \u2014 thunderbird receives email and saves attachment to disk",
+  "n_nodes": 7,
+  "n_edges": 4,
+  "nodes": [
+    [
+      47,
+      {
+        "uuid": "0A171A19-0400-0000-0000-000000000020",
+        "name": "/usr/lib/thunderbird/thunderbird",
+        "type": "SUBJECT_PROCESS"
+      }
+    ],
+    [
+      182,
+      {
+        "uuid": "0100D00F-2925-2E00-0000-00001889CA01",
+        "name": "/tmp/mozilla_admin0/jAG_iSHt.bin.part",
+        "type": "FILE_OBJECT_BLOCK"
+      }
+    ],
+    [
+      183,
+      {
+        "uuid": "80370C6E-42A8-8037-0C49-8F0000000040",
+        "name": "128.55.12.110_43074_128.55.12.73_143",
+        "type": "NetFlowObject"
+      }
+    ],
+    [
+      232,
+      {
+        "uuid": "FD16F918-0400-0000-0000-000000000020",
+        "name": "/usr/lib/thunderbird/thunderbird",
+        "type": "SUBJECT_PROCESS"
+      }
+    ],
+    [
+      435,
+      {
+        "uuid": "E516F918-0400-0000-0000-000000000020",
+        "name": "/usr/lib/thunderbird/thunderbird",
+        "type": "SUBJECT_PROCESS"
+      }
+    ],
+    [
+      583,
+      {
+        "uuid": "80370C6E-41A8-8037-0C49-8F0000000040",
+        "name": "128.55.12.110_43073_128.55.12.73_143",
+        "type": "NetFlowObject"
+      }
+    ],
+    [
+      862,
+      {
+        "uuid": "0100D00F-A70F-2600-0000-000060ADA909",
+        "name": "/home/admin/.thunderbird/pu7u3e84.default/downloads.json.tmp",
+        "type": "FILE_OBJECT_BLOCK"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "E516F918-0400-0000-0000-000000000020",
+      "80370C6E-41A8-8037-0C49-8F0000000040",
+      0,
+      {
+        "edge_type": "RECVFROM_SENDTO",
+        "ts": 1523642690769059716,
+        "gap_sec": "0.006368"
+      }
+    ],
+    [
+      "0A171A19-0400-0000-0000-000000000020",
+      "0100D00F-2925-2E00-0000-00001889CA01",
+      0,
+      {
+        "edge_type": "EVENT_WRITE",
+        "ts": 1523642723039663190,
+        "gap_sec": "0.007732"
+      }
+    ],
+    [
+      "E516F918-0400-0000-0000-000000000020",
+      "80370C6E-42A8-8037-0C49-8F0000000040",
+      0,
+      {
+        "edge_type": "RECVFROM_SENDTO",
+        "ts": 1523642728643414796,
+        "gap_sec": "0.065153"
+      }
+    ],
+    [
+      "FD16F918-0400-0000-0000-000000000020",
+      "0100D00F-A70F-2600-0000-000060ADA909",
+      0,
+      {
+        "edge_type": "EVENT_WRITE",
+        "ts": 1523642744166192586,
+        "gap_sec": "0.010483"
+      }
+    ]
+  ]
+}

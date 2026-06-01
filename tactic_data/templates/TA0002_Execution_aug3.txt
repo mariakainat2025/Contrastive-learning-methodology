@@ -1,0 +1,26 @@
+Tactic Name: Execution
+ATT&CK ID: TA0002
+
+Objective
+To advance their operational objectives of reconnaissance, data theft, or further compromise, adversaries work to run malicious code on local or remote target systems.
+
+Tactical Intent
+Adversaries rely on this tactic to activate payloads previously delivered to compromised hosts or to run commands interactively. Execution succeeds Initial Access and serves as the enabler for Persistence, Privilege Escalation, and Command and Control activity.
+
+Behavior Characteristics
+Execution is typified by adversary-controlled code running on a compromised system through three behavioral families:
+
+Exploitation of legitimate system utilities, scripting and command interpreters, and low-level operating system APIs to execute malicious instructions directly on victim hosts.
+Subversion of vulnerable client-side applications or manipulation of runtime execution flow — including library hijacking and inter-process communication abuse — to achieve code execution without explicit user consent.
+Triggering of malicious code through automated or remotely managed execution mechanisms including container deployments, cloud administration commands, and CI/CD pipeline injections.
+These behaviors indicate adversary attempts to run controlled malicious code through both hands-on and fully automated execution pathways.
+
+Observable Indicators
+
+A process execution event appearing in an unexpected context or reflecting an unusual and unexplained parent-child process relationship.
+Evidence of code execution associated with a file artifact stored in a temporary or non-standard location on the file system.
+Execution activity occurring at an unexpected time or outside the bounds of normal operational scheduling.
+A code execution event whose origin traces back to an automated build system, remote administration service, or container deployment mechanism.
+
+Log Sources
+Execution detection relies on process creation logs revealing anomalous interpreter or subprocess invocations, file creation logs identifying malicious payloads dropped into user-writable or temporary directories, application crash or exit logs followed by new process spawning, and task scheduling and system service logs that flag unauthorized job or daemon registration activity.

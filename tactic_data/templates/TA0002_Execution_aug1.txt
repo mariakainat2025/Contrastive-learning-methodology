@@ -1,0 +1,26 @@
+Tactic Name: Execution
+ATT&CK ID: TA0002
+
+Objective
+The adversary seeks to run malicious code on a local or remote system in order to accomplish operational objectives including reconnaissance, data theft, or deeper system compromise.
+
+Tactical Intent
+This tactic enables adversaries to activate delivered payloads or issue commands directly on compromised hosts. Execution follows Initial Access and provides the foundation for Persistence, Privilege Escalation, and Command and Control.
+
+Behavior Characteristics
+Execution is defined by adversary-controlled code being run on a target system through three behavioral families:
+
+Abuse of native system utilities, scripting interpreters, and operating system APIs to directly execute malicious instructions on compromised hosts.
+Exploitation of software vulnerabilities in client applications or manipulation of program execution flow to achieve unauthorized code execution.
+Use of automated and remote execution mechanisms including scheduled tasks and deployment pipelines to trigger malicious code without direct operator interaction.
+These behaviors collectively reflect adversary efforts to run controlled code through both interactive sessions and automated execution channels.
+
+Observable Indicators
+
+An unexpected execution event occurring within an anomalous process context or exhibiting an abnormal parent-child process relationship.
+Code execution activity linked to a file artifact residing in a non-standard or temporary file system location.
+Execution events occurring outside the expected operational schedule or user context.
+Code execution originating from an automated system, remote management platform, or deployment infrastructure.
+
+Log Sources
+Detection opportunities exist in process creation logs that capture unexpected interpreter or child process spawning, file creation logs identifying malicious binaries dropped in user-writable directories, application logs recording abnormal process terminations followed by new process creation, and service and task scheduler logs monitoring for unauthorized job or service registration.

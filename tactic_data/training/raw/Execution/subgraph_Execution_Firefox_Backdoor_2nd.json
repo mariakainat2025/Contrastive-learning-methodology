@@ -1,0 +1,76 @@
+{
+  "tactic": "Execution",
+  "attack": "Firefox_Backdoor_Drakon_In_Memory_2nd",
+  "n_nodes": 4,
+  "n_edges": 3,
+  "nodes": [
+    [
+      419724,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1523386592476892263,
+        "name": "/usr/bin/firefox",
+        "uuid": "F71F9730-0000-0000-0000-000000000020"
+      }
+    ],
+    [
+      419725,
+      {
+        "type": "FILE_OBJECT_BLOCK",
+        "ts": 1523386592477156011,
+        "name": "/home/admin/profile",
+        "uuid": "0100D00F-5EC5-0600-0000-0000697C471C"
+      }
+    ],
+    [
+      419760,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1523386599791450540,
+        "name": "/home/admin/profile",
+        "uuid": "FB1F9E30-0000-0000-0000-000000000020"
+      }
+    ],
+    [
+      419762,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1523386599838316049,
+        "name": "/home/admin/profile",
+        "uuid": "FC1F9E30-0000-0000-0000-000000000020"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "F71F9730-0000-0000-0000-000000000020",
+      "0100D00F-5EC5-0600-0000-0000697C471C",
+      0,
+      {
+        "edge_type": "EVENT_WRITE",
+        "ts": 1523386592477156011,
+        "gap_sec": "0.000264"
+      }
+    ],
+    [
+      "FB1F9E30-0000-0000-0000-000000000020",
+      "0100D00F-5EC5-0600-0000-0000697C471C",
+      0,
+      {
+        "edge_type": "EVENT_EXECUTE",
+        "ts": 1523386599791450540,
+        "gap_sec": "0.000000"
+      }
+    ],
+    [
+      "FB1F9E30-0000-0000-0000-000000000020",
+      "FC1F9E30-0000-0000-0000-000000000020",
+      0,
+      {
+        "edge_type": "EVENT_CLONE",
+        "ts": 1523386599838316049,
+        "gap_sec": "0.043787"
+      }
+    ]
+  ]
+}

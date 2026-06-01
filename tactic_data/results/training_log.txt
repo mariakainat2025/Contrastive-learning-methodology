@@ -1,0 +1,125 @@
+  Device: cpu
+
+  Stage 1 — Loading training subgraphs...
+  [subgraph] Execution/abstract_subgraph_Execution_Browser_Extension.json
+  [subgraph] Execution/abstract_subgraph_Execution_Firefox_Backdoor.json
+  [subgraph] Execution/abstract_subgraph_Execution_Firefox_Backdoor_2nd.json
+  [subgraph] Initial_Access/abstract_subgraph_Browser_Extension.json
+  [subgraph] Initial_Access/abstract_subgraph_Firefox_Backdoor_IA1.json
+  [subgraph] Initial_Access/abstract_subgraph_Firefox_Backdoor_IA2.json
+  [subgraph] Initial_Access/abstract_subgraph_Phishing_Link.json
+  Loaded 7 training subgraphs
+
+  Stage 1b — Loading test subgraphs...
+  [subgraph] Execution/abstract_subgraph_Execution_Phishing_Executable.json
+  [subgraph] Initial_Access/abstract_subgraph_Phishing_Executable.json
+  Loaded 2 test subgraphs
+
+  Stage 2 — Loading templates (aug=True)...
+  [template] Initial_Access/TA0001_Initial_Access.txt
+  [template] Initial_Access/TA0001_Initial_Access_aug1.txt
+  [template] Initial_Access/TA0001_Initial_Access_aug2.txt
+  [template] Initial_Access/TA0001_Initial_Access_aug3.txt
+  [template] Execution/TA0002_Execution.txt
+  [template] Execution/TA0002_Execution_aug1.txt
+  [template] Execution/TA0002_Execution_aug2.txt
+  [template] Execution/TA0002_Execution_aug3.txt
+  [template] Persistence/TA0003_Persistence.txt
+  Initial_Access: 4 versions
+  Execution: 4 versions
+  Persistence: 1 versions
+
+  Stage 3 — Tokenizing...
+  Train seqs: 7  Test seqs: 2  Templates: 9
+
+  Stage 4 — Encoding with RoBERTa...
+  RoBERTa trainable params: 28,942,080 (last 4 layers)
+  Train embs: torch.Size([7, 768])
+  Test  embs: torch.Size([2, 768])
+  Tmpl  embs: torch.Size([9, 768])
+
+  Stage 5 — Building 28 training pairs...
+    (Execution/abstract_subgraph_Execution_Browser_Extension.json)  ↔  (Execution/TA0002_Execution.txt)
+    (Execution/abstract_subgraph_Execution_Browser_Extension.json)  ↔  (Execution/TA0002_Execution_aug1.txt)
+    (Execution/abstract_subgraph_Execution_Browser_Extension.json)  ↔  (Execution/TA0002_Execution_aug2.txt)
+    (Execution/abstract_subgraph_Execution_Browser_Extension.json)  ↔  (Execution/TA0002_Execution_aug3.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor.json)  ↔  (Execution/TA0002_Execution.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor.json)  ↔  (Execution/TA0002_Execution_aug1.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor.json)  ↔  (Execution/TA0002_Execution_aug2.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor.json)  ↔  (Execution/TA0002_Execution_aug3.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor_2nd.json)  ↔  (Execution/TA0002_Execution.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor_2nd.json)  ↔  (Execution/TA0002_Execution_aug1.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor_2nd.json)  ↔  (Execution/TA0002_Execution_aug2.txt)
+    (Execution/abstract_subgraph_Execution_Firefox_Backdoor_2nd.json)  ↔  (Execution/TA0002_Execution_aug3.txt)
+    (Initial_Access/abstract_subgraph_Browser_Extension.json)  ↔  (Initial_Access/TA0001_Initial_Access.txt)
+    (Initial_Access/abstract_subgraph_Browser_Extension.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug1.txt)
+    (Initial_Access/abstract_subgraph_Browser_Extension.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug2.txt)
+    (Initial_Access/abstract_subgraph_Browser_Extension.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug3.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA1.json)  ↔  (Initial_Access/TA0001_Initial_Access.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA1.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug1.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA1.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug2.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA1.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug3.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA2.json)  ↔  (Initial_Access/TA0001_Initial_Access.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA2.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug1.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA2.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug2.txt)
+    (Initial_Access/abstract_subgraph_Firefox_Backdoor_IA2.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug3.txt)
+    (Initial_Access/abstract_subgraph_Phishing_Link.json)  ↔  (Initial_Access/TA0001_Initial_Access.txt)
+    (Initial_Access/abstract_subgraph_Phishing_Link.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug1.txt)
+    (Initial_Access/abstract_subgraph_Phishing_Link.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug2.txt)
+    (Initial_Access/abstract_subgraph_Phishing_Link.json)  ↔  (Initial_Access/TA0001_Initial_Access_aug3.txt)
+
+  Stage 6 — Training...
+
+  Training 7 subgraphs × 1 sampled template/epoch for up to 100 epochs...
+
+  Ep     Loss     Test Subgraph        Match     Execution    Initial_Access     Persistence  Acc
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  1      1.9471   Execution            ✗          -0.0487*           -0.0483         -0.0462
+  1      1.9471   Initial_Access       ✗           -0.0434          -0.0429*         -0.0410  Acc=0.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  10     1.9501   Execution            ✗          -0.0553*           -0.0556         -0.0528
+  10     1.9501   Initial_Access       ✗           -0.0550          -0.0543*         -0.0523  Acc=0.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  20     1.9474   Execution            ✗          -0.0809*           -0.0820         -0.0791
+  20     1.9474   Initial_Access       ✗           -0.0859          -0.0850*         -0.0835  Acc=0.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  30     1.9489   Execution            ✗          -0.0836*           -0.0847         -0.0825
+  30     1.9489   Initial_Access       ✓           -0.0898          -0.0865*         -0.0870  Acc=0.50
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  40     1.9425   Execution            ✗          -0.0896*           -0.0900         -0.0884
+  40     1.9425   Initial_Access       ✓           -0.1012          -0.0933*         -0.0968  Acc=0.50
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  50     1.9483   Execution            ✓          -0.0805*           -0.0853         -0.0812
+  50     1.9483   Initial_Access       ✓           -0.1027          -0.0903*         -0.0967  Acc=1.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  60     1.9317   Execution            ✓          -0.0290*           -0.0571         -0.0401
+  60     1.9317   Initial_Access       ✓           -0.0599          -0.0546*         -0.0574  Acc=1.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  70     1.9528   Execution            ✓          +0.0626*           -0.0600         +0.0156
+  70     1.9528   Initial_Access       ✗           -0.0100          -0.0407*         -0.0217  Acc=0.50
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  80     1.8361   Execution            ✓          +0.2910*           -0.3017         +0.0694
+  80     1.8361   Initial_Access       ✓           -0.0784          -0.0378*         -0.0686  Acc=1.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  90     1.6691   Execution            ✓          +0.7617*           -0.8073         +0.1592
+  90     1.6691   Initial_Access       ✓           -0.3398          +0.4210*         -0.0338  Acc=1.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  100    1.6105   Execution            ✓          +0.9684*           -0.9750         +0.6644
+  100    1.6105   Initial_Access       ✓           -0.7857          +0.7861*         -0.5638  Acc=1.00
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  ───────────────────────────────────────────────────────────────────────────────────────────────
+  Model saved → /csse/research/contructive-learning/output/theia/tactic_data/model/tactic_matcher.pt  (best_acc=1.00  best_gap=0.8269  epoch=100)
+
+  Stage 7 — Evaluating on test subgraphs...
+
+  ── Test Results ──────────────────────────────────────────
+  File                                          True               Rank1              Correct
+  ------------------------------------------------------------------------------------------
+  abstract_subgraph_Execution_Phishing_Executable.json Execution          Execution          ✓
+    Scores: Execution=0.9684  Persistence=0.6644  Initial_Access=-0.9750
+  abstract_subgraph_Phishing_Executable.json    Initial_Access     Initial_Access     ✓
+    Scores: Initial_Access=0.7861  Persistence=-0.5638  Execution=-0.7857
+
+  Accuracy: 2/2
+
+  Results saved → /csse/research/contructive-learning/output/theia/tactic_data/results/tactic_matcher_results.json

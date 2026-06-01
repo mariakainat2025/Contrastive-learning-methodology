@@ -1,0 +1,29 @@
+Tactic Name: Initial Access
+ATT&CK ID: TA0001
+
+Objective
+The adversary attempts to gain their first foothold inside a network by exploiting external entry points such as spearphishing campaigns, drive-by download attacks, and vulnerabilities in public-facing web servers.
+
+Tactical Intent
+Adversaries seek to establish an initial presence through external interfaces as a prerequisite for Execution, Persistence, and Command and Control operations.
+
+Behavior Characteristics
+Initial Access behavior is defined by an adversary breaching the external-to-internal network boundary through three behavioral families:
+
+Exploitation of externally accessible services or user-facing interaction channels to introduce malicious content or gain unauthorized entry.
+Misuse of legitimate credentials or trusted third-party relationships to penetrate the network through authorized access points.
+Deployment of physical or proximity-based attack vectors to introduce malicious content into the target environment.
+These behaviors mark the first unauthorized penetration of the network perimeter.
+
+Observable Indicators
+
+Anomalous process activity originating from a web client, email client, or externally accessible service.
+A file artifact deposited in a temporary storage location following an external network interaction.
+Outbound network communication initiated immediately after an inbound external connection is established.
+An authentication event from an unexpected or atypical source that precedes anomalous internal activity.
+A device or removable media connection event that precedes unexpected file creation or process execution.
+A web browser or email client launching a native application or component after establishing an external network connection.
+Data transmission directed toward a secondary external destination following interaction with an initial external site.
+
+Log Sources
+Detection opportunities for Initial Access are found in process creation logs, network logs capturing inbound and outbound external communications, authentication logs recording unusual remote access events, and file system logs identifying payload drops that follow external network interactions.

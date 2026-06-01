@@ -1,0 +1,26 @@
+Tactic Name: Execution
+ATT&CK ID: TA0002
+
+Objective
+Adversaries aim to execute malicious code on targeted local or remote systems to support operational goals such as network reconnaissance, data exfiltration, or continued system compromise.
+
+Tactical Intent
+Through this tactic, adversaries bring delivered payloads to life or execute commands on hosts they control. Execution is positioned after Initial Access in the attack chain and enables Persistence, Privilege Escalation, and Command and Control.
+
+Behavior Characteristics
+Execution manifests as adversary-controlled code running on a system via three behavioral families:
+
+Misuse of built-in system utilities, command and scripting interpreters, and native operating system APIs to run adversary-controlled instructions on compromised machines.
+Leveraging of vulnerabilities in end-user applications or subversion of program execution flow mechanisms to achieve arbitrary code execution.
+Exploitation of automated or remotely triggered execution pathways such as CI/CD pipelines, task schedulers, and deployment tools to launch malicious code indirectly.
+Together these behaviors represent the adversary's intent to execute controlled code across interactive and automated channels alike.
+
+Observable Indicators
+
+Execution events appearing in process contexts that deviate from expected norms or involve anomalous parent-child process lineages.
+Malicious code execution tied to a file artifact found in a temporary directory or non-standard file system path.
+Execution activity taking place outside of expected user sessions, business hours, or system schedules.
+Execution events attributed to automated orchestration systems, remote management tooling, or build and deployment pipelines.
+
+Log Sources
+Detection of Execution is supported by process creation logs that surface unexpected interpreter invocations or abnormal child process spawning, file creation logs that reveal malicious drops in writable directories, application logs that show unusual process exits preceding new executions, and task and service logs that expose unauthorized scheduled job or daemon creation.

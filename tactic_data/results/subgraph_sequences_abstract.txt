@@ -1,0 +1,6 @@
+=== Execution / abstract_subgraph_Execution_Phishing_Executable.json ===
+util_process gnome-terminal clone system_process bash. system_process bash execute system_file chmod. util_process gnome-terminal clone system_process bash. util_process gnome-terminal clone system_process bash. system_process bash execute temp_file jag_isht.bin. system_process bash read library_file libqt5widgets.so. system_process bash read library_file libqt5gui.so. system_process bash read library_file libqt5core.so.
+
+=== Initial_Access / abstract_subgraph_Phishing_Executable.json ===
+email_process thunderbird recvfrom_sendto public_netflow. email_process thunderbird write temp_file jag_isht.bin. email_process thunderbird recvfrom_sendto public_netflow. email_process thunderbird write email_file downloads.json.
+
