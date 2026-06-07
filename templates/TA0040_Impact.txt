@@ -1,0 +1,97 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0040
+======================================================================
+  ID         : TA0040
+  NAME       : Impact
+
+  OBJECTIVE  : The adversary is trying to manipulate, interrupt, or destroy your systems and data.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Impact consists of techniques that adversaries use to disrupt
+  availability or compromise integrity by manipulating business and
+  operational processes. Techniques used for impact can include
+  destroying or tampering with data.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  In some cases, business processes can look fine, but may have been
+  altered to benefit the adversaries’ goals. These techniques might
+  be used by adversaries to follow through on their end goal or to
+  provide cover for a confidentiality breach.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Password changes or account deletions via 'passwd', 'userdel', or
+  'chage' preceded by interactive shell or remote command execution
+  from non-privileged accounts.
+
+  Massive recursive deletions or overwrites via `rm -rf`, `shred`,
+  `dd`, or wiper binaries. May include unlink syscalls, deletion of
+  known config/data paths, or sequential overwrite patterns.
+
+  Encryption via custom or open-source tools (e.g., openssl, gpg,
+  aescrypt) recursively targeting user or system directories. Also
+  includes overwrite of existing data and ransom note drops.
+
+  Detect unauthorized manipulation of log files, database entries,
+  or system configuration files through auditd and syslog. Correlate
+  shell commands that alter HISTFILE or data-related processes with
+  abnormal file access patterns.
+
+  Adversary gains shell access or uploads a malicious script to
+  deface hosted web content in Nginx, Apache, or other services.
+
+  Processes invoking destructive commands (dd, shred, wipe) with raw
+  device targets (e.g., /dev/sda, /dev/nvme0n1). Detect direct
+  writes to disk partitions and abnormal superblock or bootloader
+  modifications. Correlate shell execution with subsequent block
+  device I/O.
+
+  Monitor mail server logs (e.g., Postfix, Sendmail) for excessive
+  connections or inbound message counts targeting a single
+  recipient. Correlate with repetitive attachment storage in
+  /var/mail or /var/spool/mail directories.
+
+  Malicious script or binary causes repeated kernel panics, OOM
+  kills, or systemd service restarts targeting services like nginx,
+  httpd, sshd.
+
+  Monitor server and endpoint logs for unusual outbound network
+  connections to cryptocurrency nodes, unauthorized scripts
+  accessing financial systems, or automation targeting payment file
+  formats. Detect curl/wget activity aimed at exfiltrating
+  transaction data or credentials from financial apps.
+
+  Direct write access to /dev/mem or /sys/firmware combined with
+  usage of firmware flashing utilities (e.g., flashrom).
+
+  Shell utilities or scripts deleting
+  `/etc/systemd/system/rescue.target`, `/etc/fstab` backups, or
+  `/boot/efi` partitions; chattr used to block snapshot
+  auto-recovery
+
+  Flooding tools like hping3 or nping sending large volumes of
+  packets across multiple ports or IPs
+
+  Abnormal CPU/memory usage by unauthorized processes with outbound
+  connections to known mining pools or using cron jobs/scripts to
+  maintain persistence.
+
+  Adversary executes systemctl or service stop targeting high-value
+  services (e.g., mysql, sshd), possibly followed by rm or shred
+  against data stores. Behavioral chain: sudo/su usage + stop
+  command + /var/log/messages or syslog entries + file
+  access/delete.
+
+  Detect 'shutdown', 'reboot', or 'systemctl poweroff' executions
+  with auditd/syslog and absence of scheduled maintenance windows or
+  approved user context.
+
+======================================================================

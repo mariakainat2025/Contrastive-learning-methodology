@@ -1,0 +1,143 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0007
+======================================================================
+  ID         : TA0007
+  NAME       : Discovery
+
+  OBJECTIVE  : The adversary is trying to figure out your environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Discovery consists of techniques an adversary may use to gain
+  knowledge about the system and internal network. These techniques
+  help adversaries observe the environment and orient themselves
+  before deciding how to act. They also allow adversaries to explore
+  what they can control and what’s around their entry point in order
+  to discover how it could benefit their current objective. Native
+  operating system tools are often used toward this post-compromise
+  information-gathering objective.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Enumeration of users and groups through suspicious shell commands
+  or unauthorized access to /etc/passwd or /etc/shadow.
+
+  Scripted or binary usage of X11 utilities (e.g., xdotool, wmctrl)
+  or direct /proc/*/window mappings to discover open GUI windows and
+  active desktops.
+
+  Unauthorized shell or script-based access to browser config or
+  SQLite history files, typically in ~/.config/google-chrome/,
+  ~/.mozilla/, or ~/.var/app folders, indicating enumeration of
+  bookmarks or saved credentials.
+
+  Monitor access to /proc/self/status where TracerPID field is
+  queried, as this is a common technique for debugger detection.
+  Detect processes that attempt to trigger exceptions intentionally
+  and monitor whether exception handling indicates presence of a
+  debugger.
+
+  Detect attempts to enumerate kernel modules through lsmod,
+  modinfo, or inspection of /proc/modules and /dev entries. Focus on
+  unusual execution contexts such as unprivileged users or processes
+  outside expected administrative workflows.
+
+  Use of file enumeration commands (e.g., 'ls', 'find', 'locate')
+  executed by suspicious users or scripts accessing broad file
+  hierarchies or restricted directories.
+
+  Abnormal use of `lsblk`, `fdisk -l`, `lshw -class disk`, or
+  `parted` by non-admin users or within non-interactive shells
+  suggests suspicious disk enumeration activity.
+
+  Monitor for suspicious use of commands such as cat, less, grep, or
+  journalctl accessing /var/log/ files. Abnormal enumeration of
+  authentication logs (auth.log, secure) or bulk access to multiple
+  logs in short time windows should be flagged.
+
+  Detects use of network scanning utilities or scripts performing
+  rapid connections to multiple services or hosts using auditd and
+  netflow/pcap telemetry.
+
+  CLI tools (smbclient -L, smbmap, rpcclient, nmblookup) or custom
+  scripts enumerate SMB shares on many internal hosts →
+  corresponding SMB connections (445/139) captured by Zeek/Netflow
+  within a short window.
+
+  Correlates interface mode changes to promiscuous with execution of
+  sniffing tools like tcpdump, tshark, or custom pcap libraries.
+  Detects abnormal NIC configurations and unauthorized sniffing from
+  non-root sessions.
+
+  Chain: (1) interactive/non-interactive `chage -l`, `grep`/`cat` of
+  PAM config (e.g., `/etc/pam.d/common-password`,
+  `/etc/security/pwquality.conf`); (2) optional reads of
+  `/etc/login.defs`; (3) same user performs account enumeration or
+  password change attempts shortly after. Use auditd `execve` and
+  file read events plus shell history collection.
+
+  Enumeration of USB and other peripheral hardware via udevadm,
+  lshw, or /sys or /proc interfaces in proximity to collection or
+  mounting behavior.
+
+  Detection of group enumeration using commands like 'id', 'groups',
+  or 'getent group', often followed by privilege escalation or SSH
+  lateral movement.
+
+  Detects execution of common process enumeration utilities (e.g.,
+  ps, top, htop) or access to /proc with suspicious ancestry.
+  Correlates command usage with interactive shell context and user
+  role.
+
+  Use of bash scripts or interactive shells to issue sequential
+  ping, arp, or traceroute commands to map remote hosts.
+
+  Adversary invokes 'dpkg -l', 'rpm -qa', or other package managers
+  via shell or script to enumerate installed software.
+
+  Execution of system enumeration commands such as `uname`, `df`,
+  `uptime`, `hostname`, `lscpu`, and `cat /etc/os-release` through
+  local terminal or scripts.
+
+  Detection of commands accessing locale, timezone, or language
+  settings such as 'locale', 'timedatectl', or parsing
+  /etc/timezone. Anomalous execution by unusual users or automation
+  scripts should be flagged.
+
+  Execution of `ifconfig`, `ip a`, or access to `/proc/net/`
+  indicating collection of local interface and route configuration.
+
+  Detects use of netstat, ss, lsof, or custom shell scripts to list
+  current network connections. Often paired with privilege
+  escalation or staging.
+
+  Adversary runs commands like `whoami`, `id`, `w`, or `cat
+  /etc/passwd` from non-interactive or scripting contexts to
+  enumerate system user details.
+
+  Execution of service management commands like `systemctl
+  list-units`, `service --status-all`, or direct reading of
+  `/etc/init.d`.
+
+  A process (often spawned by a shell, interpreter, or malware
+  implant) executes time discovery via commands (date, timedatectl,
+  hwclock, cat /etc/timezone, /proc/uptime) or direct syscalls
+  (time(), clock_gettime) and is (optionally) followed by scheduled
+  task creation/modification (crontab, at) or conditional sleep
+  logic.
+
+  Detects attempts to enumerate VMs via hypervisor tools like
+  `virsh`, `VBoxManage`, or `qemu-img`. Defender correlates
+  suspicious command invocations with parent process lineage and
+  unexpected users.
+
+  Execution of commands to enumerate virtualization-related files or
+  processes (e.g., '/sys/class/dmi/id/product_name', dmesg, lscpu,
+  lspci), or querying hypervisor interfaces prior to malware
+  execution.
+
+======================================================================

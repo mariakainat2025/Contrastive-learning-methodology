@@ -1,0 +1,138 @@
+======================================================================
+  EDR LOG SOURCES FOR LINUX — MITRE ATT&CK COVERAGE RANKING
+======================================================================
+  Based on enterprise-attack.json — techniques covered per source.
+  Focused on endpoint detection (EDR) from the system itself.
+======================================================================
+
+----------------------------------------------------------------------
+  TIER 1 — EDR CORE (auditd / eBPF / Sysmon)
+----------------------------------------------------------------------
+
+  auditd:SYSCALL                [144 techniques]
+    Syscall-level events — process, file, network, socket (highest
+    EDR coverage)
+
+  auditd:EXECVE                 [ 16 techniques]
+    Process execution with full command-line arguments
+
+  auditd:PATH                   [  7 techniques]
+    File path arguments from syscalls (open, rename, unlink)
+
+  auditd:FILE                   [  3 techniques]
+    File-level audit events
+
+  auditd:PROCTITLE              [  3 techniques]
+    Full process title/command line
+
+  auditd:MMAP                   [  1 techniques]
+    Memory-mapped file events
+
+  auditd:CONFIG_CHANGE          [  2 techniques]
+    Audit configuration change events
+
+  auditd:AUTH                   [  1 techniques]
+    Authentication events via auditd
+
+  auditd:USER_LOGIN             [  1 techniques]
+    User login events via auditd
+
+  linux:Sysmon                  [  6 techniques]
+    Sysmon for Linux — process create, file, network events
+    (EDR-equivalent)
+
+  ebpf:syscalls                 [  0 techniques]
+    eBPF syscall tracepoints — modern EDR kernel hook
+
+  ebpf:tracepoints              [  0 techniques]
+    eBPF kernel tracepoints
+
+----------------------------------------------------------------------
+  TIER 2 — NETWORK MONITORING (NSM)
+----------------------------------------------------------------------
+
+  NSM:Flow                      [ 35 techniques]
+    Network flow records — src/dst IP, port, bytes, protocol
+
+  NSM:Connections               [  8 techniques]
+    Full connection metadata from network sensor
+
+  iptables:LOG                  [  2 techniques]
+    Firewall/netfilter log entries
+
+  NetFlow:Flow                  [  1 techniques]
+    NetFlow/IPFIX flow records
+
+----------------------------------------------------------------------
+  TIER 3 — SYSLOG / JOURNALD
+----------------------------------------------------------------------
+
+  linux:syslog                  [ 41 techniques]
+    General syslog — auth, daemon, kernel messages
+
+  journald:systemd              [  2 techniques]
+    Systemd journal — service start/stop/fail events
+
+  journald:package              [  1 techniques]
+    Package manager events (apt/yum/dnf installs)
+
+  journald:Application          [  0 techniques]
+    Application-level journald entries
+
+  linux:cron                    [  2 techniques]
+    Cron job scheduling and execution logs
+
+  linux:auth                    [  0 techniques]
+    PAM/SSH authentication logs (/var/log/auth.log)
+
+----------------------------------------------------------------------
+  TIER 4 — OPTIONAL ENRICHMENT
+----------------------------------------------------------------------
+
+  linux:osquery                 [ 14 techniques]
+    osquery — SQL queries over OS state (processes, users, files)
+
+  linux:procfs                  [  2 techniques]
+    /proc filesystem — live process/memory/network state
+
+  linux:cli                     [  3 techniques]
+    CLI command history (bash_history, etc.)
+
+  linux:shell                   [  1 techniques]
+    Shell session logs
+
+----------------------------------------------------------------------
+  RECOMMENDATION FOR YOUR PIPELINE
+----------------------------------------------------------------------
+
+  Your THEIA dataset is provenance-graph data captured at the
+  kernel syscall level — equivalent to auditd:SYSCALL.
+
+  Priority log sources to configure in your EDR:
+
+    1. auditd:SYSCALL    — 144 techniques  (MUST HAVE)
+    2. NSM:Flow          —  35 techniques  (network context)
+    3. linux:syslog      —  41 techniques  (auth + daemon events)
+    4. auditd:EXECVE     —  16 techniques  (process execution detail)
+    5. linux:osquery     —  14 techniques  (optional: state queries)
+
+  Sources to SKIP (Windows-only, no Linux relevance):
+    - WinEventLog:Sysmon, WinEventLog:Security, etc.
+
+======================================================================
+  WHAT YOUR THEIA PROVENANCE GRAPH CAPTURES
+======================================================================
+
+  EVENT_EXECUTE  → auditd:EXECVE / auditd:SYSCALL (execve)
+  EVENT_READ     → auditd:SYSCALL (read/openat)
+  EVENT_WRITE    → auditd:SYSCALL (write/openat)
+  EVENT_CLONE    → auditd:SYSCALL (clone/fork)
+  CONNECT        → auditd:SYSCALL (connect/socket) + NSM:Flow
+  RECVFROM       → auditd:SYSCALL (recvfrom) + NSM:Flow
+  EVENT_UNLINK   → auditd:SYSCALL (unlink)
+  EVENT_MMAP     → auditd:MMAP
+
+  All THEIA events map directly to auditd:SYSCALL — the single
+  most important log source for Linux EDR detection.
+
+======================================================================

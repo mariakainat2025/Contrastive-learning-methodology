@@ -1,0 +1,59 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0010
+======================================================================
+  ID         : TA0010
+  NAME       : Exfiltration
+
+  OBJECTIVE  : The adversary is trying to steal data.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Exfiltration consists of techniques that adversaries may use to
+  steal data from your network. Once they’ve collected data,
+  adversaries often package it to avoid detection while removing it.
+  This can include compression and encryption. Techniques for
+  getting data out of a target network typically include
+  transferring it over their command and control channel or an
+  alternate channel and may also include putting size limits on the
+  transmission.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Background scripts (e.g., via cron) or daemons transmitting data
+  repeatedly to remote IPs or URLs.
+
+  Outbound connections from non-network-facing processes repeatedly
+  send similarly sized payloads within uniform time intervals.
+
+  Detects file exfiltration using tools like curl, scp, or custom
+  binaries over protocols such as FTP, HTTP/S, or DNS tunneling,
+  especially outside baseline user behavior.
+
+  Monitors for processes reading sensitive files then immediately
+  initiating unusual outbound connections or bulk transfer sessions
+  over persistent sockets, particularly with encrypted or binary
+  payloads.
+
+  Use of `rfkill`, `nmcli`, or low-level tools (e.g., `iw`,
+  `hcitool`, `pppd`) to enable alternate interfaces followed by data
+  transfer via non-primary NICs.
+
+  Detects mounted external devices (via /media or /mnt) followed by
+  large file read or copy operations by shell scripts, unauthorized
+  users, or staging tools (e.g., tar, rsync).
+
+  Processes (tar, curl, python scripts) accessing large file sets
+  and initiating outbound HTTPS POST requests with payload sizes
+  inconsistent with baseline activity. Defender perspective: detect
+  abnormal sequence of file archival followed by encrypted uploads
+  to external web services.
+
+  Detection of cron-based or script-based recurring transfers where
+  the same script, user, or destination reappears at predictable
+  intervals.
+
+======================================================================
