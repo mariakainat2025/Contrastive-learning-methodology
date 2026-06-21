@@ -1,0 +1,74 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0009
+======================================================================
+  ID         : TA0009
+  NAME       : Collection
+
+  OBJECTIVE  : The adversary is trying to gather data that supports their objectives.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Collection refers to techniques used by adversaries to obtain data
+  from systems that is relevant to their goals. Common sources include
+  disks, browsers, audio/video streams, and email systems. Typical
+  methods include screenshots, keystroke logging, and data harvesting.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Once data is collected, adversaries often either exfiltrate it or
+  analyze it to better understand the target environment.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detect changes to /etc/hosts, /etc/resolv.conf, or abnormal ARP
+  behavior, especially when followed by unusual network activity or
+  service initialization.
+
+  Detection of archiving and compression activity using tar, gzip,
+  bzip2, or openssl in suspicious execution contexts, correlated with
+  creation of staged output files in /tmp or /var/tmp.
+
+  Audio recording activity using ALSA or PulseAudio, or execution of
+  arecord, followed by file generation or unexpected child processes.
+
+  Repeated or scripted access to user data or clipboard content using
+  tools such as xclip or xsel outside normal user interaction patterns.
+
+  Detection of clipboard scraping tools combined with encoding or
+  transfer utilities such as base64, gzip, curl, or scp.
+
+  Staging of collected files in temporary directories followed by
+  compression, archiving, or packaging for transfer.
+
+  Use of automation scripts or command-line tools like curl, wget,
+  rsync, or Python to collect data from internal APIs or shared
+  repositories.
+
+  Recursive traversal of user directories, configuration files, or SSH
+  keys using shell-based enumeration techniques.
+
+  Access to NFS or SMB shares followed by bulk copying or staging of
+  sensitive files.
+
+  External storage devices mounted under /media or /mnt followed by
+  mass file access or archiving operations.
+
+  Access to email storage formats (mbox/maildir) combined with
+  extraction or transfer tools targeting message content.
+
+  Detection of non-GUI processes accessing /dev/input/* or evdev,
+  indicating potential keylogging or input capture behavior.
+
+  Screenshot capture using xwd or import executed from unexpected
+  process hierarchies.
+
+  Video capture device access (/dev/video*) with sustained read loops,
+  ioctl usage, and subsequent file creation or outbound data transfer.
+
+======================================================================
