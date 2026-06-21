@@ -1,0 +1,98 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0007
+======================================================================
+  ID         : TA0007
+  NAME       : Discovery
+
+  OBJECTIVE  : The adversary is trying to learn about the environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Discovery includes techniques used to collect information about the
+  system and internal network. Adversaries use these methods after
+  gaining access to understand their surroundings and determine how to
+  proceed. This includes identifying available resources and potential
+  paths for exploitation. Native OS utilities are commonly used for
+  this reconnaissance phase.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  User and group enumeration through suspicious shell commands or
+  unauthorized access to /etc/passwd and /etc/shadow files.
+
+  Use of GUI enumeration tools such as xdotool or wmctrl or inspection
+  of /proc window-related data to identify active sessions.
+
+  Access to browser storage locations (e.g., Chromium, Firefox, or
+  Flatpak app directories) indicating enumeration of history,
+  bookmarks, or stored credentials.
+
+  Access to /proc/self/status where TracerPID is examined, often used
+  for debugger detection behavior or anti-analysis checks.
+
+  Kernel module enumeration using lsmod, modinfo, or /proc/modules
+  access, especially outside administrative workflows.
+
+  File system discovery using ls, find, or locate across broad or
+  restricted directories from suspicious users or scripts.
+
+  Disk enumeration via lsblk, fdisk, lshw, or parted executed by
+  non-admin users or automated processes.
+
+  Log file inspection using cat, less, grep, or journalctl, especially
+  when accessing authentication or system logs in bulk.
+
+  Network scanning behavior detected via rapid connection attempts to
+  multiple hosts or services.
+
+  SMB enumeration via smbclient, smbmap, rpcclient, or nmblookup,
+  followed by corresponding network traffic spikes.
+
+  Promiscuous mode detection combined with execution of packet capture
+  tools like tcpdump or tshark.
+
+  PAM configuration inspection followed by user or password-related
+  activity within a short time window.
+
+  Hardware discovery using udevadm, lshw, or /sys and /proc interfaces
+  prior to mounting or data access behavior.
+
+  Group enumeration using id, groups, or getent group often preceding
+  lateral movement or privilege escalation.
+
+  Process enumeration via ps, top, htop, or /proc access from unusual
+  execution contexts.
+
+  Network discovery using ping, arp, or traceroute in scripted or
+  sequential execution patterns.
+
+  Package enumeration via dpkg -l, rpm -qa, or similar commands.
+
+  System profiling using uname, df, uptime, hostname, lscpu, or
+  /etc/os-release reads.
+
+  Locale and timezone discovery using locale, timedatectl, or
+  /etc/timezone access.
+
+  Interface discovery via ifconfig, ip a, or /proc/net reads.
+
+  Connection enumeration via netstat, ss, or lsof.
+
+  User discovery using whoami, id, w, or /etc/passwd reads.
+
+  Service enumeration via systemctl, service commands, or /etc/init.d
+  access.
+
+  Time and system state discovery via date, timedatectl, or uptime
+  followed by conditional execution or scheduling behavior.
+
+  Virtual machine detection using virsh, VBoxManage, or qemu tools.
+
+  Virtualization environment discovery via system files such as
+  /sys/class/dmi/id, dmesg, lscpu, or lspci.
+
+======================================================================
