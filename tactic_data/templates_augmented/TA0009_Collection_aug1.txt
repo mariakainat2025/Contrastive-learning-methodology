@@ -1,0 +1,82 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0009
+======================================================================
+  ID         : TA0009
+  NAME       : Collection
+
+  OBJECTIVE  : The adversary is attempting to gather information relevant to their objectives.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Collection consists of techniques used by adversaries to gather
+  data and information from systems that support their objectives.
+  Common sources include storage devices, browsers, audio, video, and
+  email systems. Typical methods include capturing screenshots and
+  recording keystrokes.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  After collecting data, adversaries often move to exfiltration or use
+  the gathered information to further understand and exploit the
+  environment.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detect unauthorized changes to /etc/hosts, /etc/resolv.conf, or
+  abnormal ARP activity, correlated with unexpected network traffic or
+  service creation.
+
+  Detect archive creation using tools like tar, gzip, bzip2, or
+  openssl executed in unusual or non-administrative contexts.
+  Correlate these actions with compressed or encrypted files created
+  in staging directories such as /tmp or /var/tmp.
+
+  Processes accessing audio devices via ALSA or PulseAudio, or using
+  tools like arecord, followed by file creation or suspicious child
+  process activity.
+
+  Repeated or automated access to user directories or clipboard data
+  using utilities such as xclip or pbpaste, detected via audit logs or
+  filesystem monitoring.
+
+  Detect xclip or xsel usage outside normal interactive sessions,
+  especially when combined with compression (gzip, base64) or network
+  transfer tools (curl, scp).
+
+  Detection of file staging behavior where data is copied into
+  temporary directories such as /tmp or /mnt followed by compression
+  or archiving.
+
+  Command-line or script-based scraping using curl, wget, rsync, or
+  Python scripts targeting internal APIs, documentation systems, or
+  shared drives.
+
+  Detection of recursive enumeration of user directories, configuration
+  files, or SSH keys using shell scripts or automated tools.
+
+  Monitoring access to mounted network shares (NFS, SMB/CIFS) followed
+  by bulk file copying or data staging activity.
+
+  Detection of external drive mounting under /media or /mnt followed by
+  bulk file access or archival operations using cp or tar.
+
+  Access to mail storage formats (mbox, maildir) combined with scripts
+  or tools that extract or transmit email data.
+
+  Detection of suspicious access to input devices (/dev/input/*, evdev)
+  by non-GUI processes, indicating potential keylogging activity.
+
+  Use of screenshot utilities such as xwd or import executed from
+  non-interactive or unexpected parent processes.
+
+  Detection of access to video capture devices (/dev/video*) with
+  continuous read loops or ioctl activity followed by file creation or
+  outbound data transmission.
+
+======================================================================
