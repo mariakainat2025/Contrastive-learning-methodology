@@ -1,0 +1,73 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0009
+======================================================================
+  ID         : TA0009
+  NAME       : Collection
+
+  OBJECTIVE  : The adversary is trying to collect data relevant to their goals.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Collection includes techniques used by attackers to gather
+  information from systems that support their objectives. Common data
+  sources include disks, browsers, audio/video devices, and email
+  systems. Methods often involve screenshots or keystroke capture.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  After data is collected, adversaries typically proceed to exfiltrate
+  it or analyze it to gain deeper understanding of the environment.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detect unauthorized modification of /etc/hosts, /etc/resolv.conf, or
+  suspicious ARP traffic patterns, correlated with unusual network
+  activity or new service creation.
+
+  Detection of archiving behavior using tools such as tar, gzip, bzip2,
+  or openssl in abnormal contexts. Correlate with creation of compressed
+  or encrypted artifacts in temporary directories.
+
+  Audio capture activity via ALSA or PulseAudio, or execution of tools
+  like arecord, followed by unexpected file creation or process spawning.
+
+  Repeated access to user files or clipboard data using xclip, xsel, or
+  similar tools outside normal interactive sessions.
+
+  Detection of clipboard extraction tools (xclip/xsel) combined with
+  staging or exfiltration behavior such as gzip, base64, curl, or scp.
+
+  File staging in temporary directories followed by compression or
+  packaging operations using standard Linux utilities.
+
+  Use of curl, wget, rsync, or Python-based scripts to extract data
+  from internal APIs, documentation systems, or shared storage.
+
+  Recursive enumeration of home directories, configuration files, or
+  credential stores via scripts or shell commands.
+
+  Access to network-mounted storage (NFS/SMB) followed by bulk copying
+  or staging of sensitive data.
+
+  External drive mounting to /media or /mnt followed by large-scale file
+  access or archiving using cp or tar.
+
+  Access or extraction of mail data from mbox or maildir formats,
+  potentially combined with network transfer utilities.
+
+  Suspicious access to /dev/input/* or evdev devices by non-GUI
+  processes indicating possible input capture activity.
+
+  Screenshot capture using xwd or import launched from non-standard
+  parent processes or automation contexts.
+
+  Video device access (/dev/video*) showing continuous capture loops or
+  ioctl activity followed by file creation or network transmission.
+
+======================================================================
