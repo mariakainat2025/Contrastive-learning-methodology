@@ -1,0 +1,74 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0112
+======================================================================
+  ID         : TA0112
+  NAME       : Defense Impairment
+
+  OBJECTIVE  : The adversary is trying to break security mechanisms, pipelines, and tooling so defenders can’t see or trust what’s happening.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Defense Impairment consists of techniques that degrade, disable,
+  or undermine the effectiveness and trustworthiness of security
+  controls and monitoring mechanisms. These techniques are
+  characterized by direct interference with defensive systems.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  The goal is to reduce defenders’ ability to detect, interpret, or
+  respond to adversary activity.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detection of iptables, nftables, or firewalld rule modifications.
+  Correlation of sudden drops in active firewall rules with
+  suspicious processes suggests adversarial evasion.
+
+  Detects kill/systemctl/service commands against EDR, auditd,
+  falco, osquery, rsyslog, journald, or agent processes;
+  configuration edits disabling startup; module unload attempts;
+  abrupt cessation of logs after privileged shell execution.
+
+  Monitors execution of older or legacy interpreters (e.g., python2,
+  bash with restricted history logging), downgrade of TLS/SSL
+  configurations, or forced fallback to unencrypted protocols.
+  Detects suspicious reconfiguration of kernel modules or boot
+  loaders to reduce integrity controls.
+
+  Detects exploitation attempts against security daemons or kernel
+  security modules followed by daemon termination, disabled logging,
+  module unload, audit stoppage, or reduced endpoint telemetry.
+  Correlates local execution or network input with control
+  degradation.
+
+  Behavioral sequence of unauthorized privilege escalation via
+  permission modification: (1) chmod/chown/setfacl process execution
+  with suspicious parameters, (2) Targeting of critical system files
+  or unusual permission values, (3) Correlation with non-privileged
+  user context or unusual timing patterns, (4) Follow-on file access
+  indicating successful permission bypass
+
+  Detects modification of PAM configuration files, unauthorized new
+  PAM modules, and suspicious process execution accessing
+  PAM-related binaries. Correlates file modification events in
+  /etc/pam.d/ with process execution of unauthorized binaries.
+
+  Detection of environment variable tampering (HISTFILE,
+  HISTCONTROL, HISTFILESIZE) and absence of expected bash history
+  writes. Correlation of unset or zeroed history variables with
+  active shell sessions is indicative of adversarial evasion.
+
+  Detection monitors extended attribute manipulation (xattr) to
+  strip quarantine or trust metadata, anomalous installation of root
+  certificates in /etc/ssl or /usr/local/share/ca-certificates, and
+  unauthorized modification of system trust stores. Correlates with
+  unexpected process execution involving package managers or custom
+  certificate utilities.
+
+======================================================================
