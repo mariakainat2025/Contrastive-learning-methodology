@@ -1,0 +1,21 @@
+{
+  "attack": "Phishing Email With Executable Attachment",
+  "tactic": "Execution \u2014 user runs malicious attachment (fails: missing QT)",
+  "mitre": "TA0002",
+  "date": "2018-04-13",
+  "filter": "AND",
+  "window_start": "14:05:56 EDT",
+  "window_end": "14:06:30 EDT",
+  "abstraction": "category_process_file",
+  "n_triples": 8,
+  "sequence": [
+    "ui_process /usr/bin/gnome-terminal clone shell_process bash.",
+    "shell_process bash execute temporary_file /tmp/mozilla_admin0/jAG_iSHt.bin.part.",
+    "shell_process bash open library_file /home/admin/libQt5Widgets.so.5.",
+    "shell_process bash read library_file /home/admin/libQt5Widgets.so.5.",
+    "shell_process bash open library_file /home/admin/libQt5Gui.so.5.",
+    "shell_process bash read library_file /home/admin/libQt5Gui.so.5.",
+    "shell_process bash open library_file /home/admin/libQt5Core.so.5.",
+    "shell_process bash read library_file /home/admin/libQt5Core.so.5."
+  ]
+}
