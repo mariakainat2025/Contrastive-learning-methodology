@@ -1,0 +1,92 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0003
+======================================================================
+  ID         : TA0003
+  NAME       : Persistence
+
+  OBJECTIVE  : The adversary aims to retain access to the system.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Persistence includes techniques that attackers use to maintain
+  access across system restarts, credential changes, and other events
+  that could otherwise disrupt their foothold. These techniques
+  involve configuration changes, access modifications, or code
+  replacement that ensures continued presence on the system, such as
+  adding startup mechanisms or hijacking legitimate components.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Use of native utilities or scripting tools (e.g., `usermod`,
+  `passwd`, `groupmod`) to modify privileges or maintain access to
+  existing accounts, correlated with login or process activity.
+
+  Correlates creation or modification of systemd service units or
+  /etc/init.d scripts with unusual process behavior during system boot.
+
+  Detection of changes to shell initialization files such as
+  .bashrc, .profile, or /etc/profile that may be used to maintain
+  persistent execution.
+
+  Detects modifications to system or application binaries by
+  monitoring privileged directories such as /usr/bin and /bin.
+  Correlates file integrity monitoring events with unexpected process
+  execution or service restarts.
+
+  Adversary uses commands such as `useradd` or `adduser` to create
+  local accounts. Detection focuses on command execution and changes
+  to authentication databases like passwd or shadow files.
+
+  Detects creation or modification of systemd service files, cron
+  jobs that execute on boot, or suspicious writes to /etc/init.d/,
+  including changes to executable permissions and systemctl usage
+  from non-standard processes.
+
+  Detects changes in auditd or inotify configurations that monitor
+  system files, combined with execution of scripts or binaries
+  triggered by cron or systemd timers.
+
+  Detects attempts to maintain control of compromised systems by
+  stopping services, unloading modules, or killing competing
+  processes. Monitor system logs for administrative commands such as
+  systemctl, service, and kill executed outside normal operations.
+
+  Repeated SSH, VPN, or RDP authentication attempts from external
+  hosts followed by successful login and remote shell activity such
+  as scp or sftp transfers.
+
+  Detects unauthorized changes to PAM configuration files or the
+  introduction of malicious PAM modules. Correlates modifications in
+  /etc/pam.d/ with execution of suspicious binaries.
+
+  Detects system utilities altering sleep or hibernation behavior,
+  including systemctl or systemd-inhibit usage. Changes to files like
+  /etc/systemd/sleep.conf should be correlated with process activity.
+
+  Detection of unauthorized writes to /boot or EFI directories
+  outside expected package updates. Monitor kernel logs and audit
+  events for attempts to modify bootloader components such as grub or
+  shim, including use of efibootmgr or dd targeting disks.
+
+  Detects creation or modification of cron jobs or systemd timers
+  executed by unusual users or outside normal schedules.
+
+  Abuse of extensible server components such as Apache, Nginx, or
+  Tomcat to load malicious modules that spawn shells, establish C2
+  connections, or create reverse shells.
+
+  Manual or automated installation of browser or IDE extensions into
+  plugin directories followed by suspicious outbound network traffic.
+
+  Detection of port-knocking sequences followed by firewall rule
+  changes or newly opened listening services. May include detection of
+  raw socket sniffers used to capture trigger traffic.
+
+  Detection of valid account misuse via SSH logins, sudo/su abuse,
+  and abnormal service account behavior outside expected baselines.
+
+======================================================================
