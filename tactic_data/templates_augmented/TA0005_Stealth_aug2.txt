@@ -1,0 +1,100 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0005
+======================================================================
+  ID         : TA0005
+  NAME       : Stealth
+
+  OBJECTIVE  : The adversary is attempting to hide actions and mimic legitimate behavior.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Stealth includes techniques designed to lower detection probability
+  by blending into normal system activity or reducing visible
+  indicators. These behaviors focus on concealment, imitation, or
+  obfuscation of actions without disabling monitoring systems or
+  security controls.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  The goal is to stay indistinguishable from legitimate activity while
+  preserving standard defensive visibility.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Monitor /proc/self/status access where TracerPID is checked,
+  indicating debugger detection attempts. Watch for intentional
+  exception triggers and abnormal handling behavior.
+
+  Repeated use of sleep, ping, or nanosleep in short execution chains
+  without interactive input, often associated with staging or
+  delayed execution techniques.
+
+  Use of utilities like base64, gzip, tar, or openssl to decode or
+  decompress staged payloads. Often chained with curl/wget and shell
+  execution (bash/zsh) to unpack hidden code.
+
+  Environmental validation chain: (1) system enumeration via uname,
+  hostname, lsblk, ifconfig, mount; (2) filesystem and network
+  discovery; (3) process/user enumeration; (4) conditional execution
+  logic; (5) outbound connectivity and geolocation checks.
+
+  Detection of attempts to compromise audit systems, AV tools, or
+  monitoring agents. Indicators include crashes, privilege escalation
+  attempts, or tampering followed by logging disruption.
+
+  Hidden file creation via dot-prefix naming or file attribute changes
+  using chattr. Monitor lsattr anomalies and unexpected hidden files
+  in system paths.
+
+  Manipulation of shared libraries, environment variables, or system
+  binaries. Indicators include changes to /etc/ld.so.preload or
+  replacement of legitimate executables.
+
+  Detection of clearing or modifying logs such as bash history,
+  syslog, audit logs, or SSH artifacts following suspicious activity.
+
+  Dropping renamed or obfuscated binaries in directories like /tmp or
+  /dev/shm, often with unusual naming patterns, followed by execution
+  or persistence setup.
+
+  Use of encoding or compression tools (gzip, base64, tar, openssl)
+  for obfuscation or payload extraction after staging or discovery.
+
+  Detection of unauthorized bootloader modification in /boot or EFI
+  partitions, including grub/shim changes and disk-level operations
+  using efibootmgr or dd.
+
+  Detection of ptrace or memfd-based injection using syscall
+  monitoring, especially targeting active processes with memory writes
+  or descriptor manipulation.
+
+  Detection of in-memory execution flows using mmap, mprotect, and
+  execve/execveat without disk-backed binaries.
+
+  Detection of kernel module loading or LD_PRELOAD manipulation used
+  to hide processes, files, or system artifacts.
+
+  Detection of commands originating from external communications such
+  as chat or email, including curl|bash patterns and post-message
+  credential or SSH key modifications.
+
+  Use of trusted binaries (split, tee, bash, env) in unusual chained
+  execution patterns to run malicious payloads.
+
+  Port-knocking followed by firewall modifications or new services
+  becoming accessible. May include detection of packet sniffing via
+  raw sockets.
+
+  Detection of valid account misuse via SSH, sudo/su abuse, and
+  abnormal service account behavior.
+
+  Execution of virtualization or environment checks (lscpu, lspci,
+  dmesg, /sys/class/dmi/id/product_name) prior to malicious activity.
+
+======================================================================
