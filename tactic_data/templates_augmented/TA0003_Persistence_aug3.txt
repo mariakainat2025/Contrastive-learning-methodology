@@ -1,0 +1,88 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0003
+======================================================================
+  ID         : TA0003
+  NAME       : Persistence
+
+  OBJECTIVE  : The adversary is seeking to maintain long-term access.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Persistence consists of techniques used by attackers to maintain
+  access across reboots, credential changes, and other interruptions
+  that might otherwise remove their foothold. These include modifying
+  system configurations, altering access controls, or replacing
+  trusted components to ensure continued execution.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Use of system utilities or scripts (e.g., `usermod`, `passwd`,
+  `groupmod`) to adjust privileges or sustain account access,
+  correlated with authentication and process activity.
+
+  Correlation between systemd service creation/modification and
+  /etc/init.d changes with abnormal boot-time behavior.
+
+  Detection of modifications to shell initialization files such as
+  .bashrc, .profile, and /etc/profile used to trigger recurring
+  execution.
+
+  Monitoring integrity changes in privileged directories like
+  /usr/bin and /bin, correlated with unexpected execution events or
+  service restarts.
+
+  Execution of `useradd` or `adduser` to create local accounts,
+  focusing on audit trails affecting passwd and shadow databases.
+
+  Detection of systemd unit creation, boot-time cron jobs, or writes
+  to /etc/init.d/ with unusual permission changes or systemctl usage
+  from non-administrative sources.
+
+  Detection of changes to auditd or inotify rules tracking system
+  files, combined with execution triggered via cron or systemd
+  timers.
+
+  Detection of adversary attempts to maintain control by stopping
+  services, disabling competing processes, or terminating rivals.
+  Monitor systemctl, service, and kill usage outside normal admin
+  workflows.
+
+  Repeated SSH/VPN/RDP login attempts from external systems followed
+  by successful authentication and remote execution or file transfer
+  activity.
+
+  Detection of unauthorized modifications to PAM configuration files
+  or malicious PAM module injection, correlated with /etc/pam.d/
+  changes and suspicious binary execution.
+
+  Detection of system utilities altering sleep/hibernate behavior,
+  including systemctl and systemd-inhibit usage, correlated with
+  configuration changes in sleep settings.
+
+  Detection of unauthorized writes to /boot or EFI partitions outside
+  expected updates, including modification of bootloader components
+  such as grub or shim and use of disk-level tools like efibootmgr or
+  dd.
+
+  Detection of cron or systemd timer creation/modification executed by
+  unusual users or outside normal operational windows.
+
+  Abuse of extensible server platforms (Apache, Nginx, Tomcat) to load
+  malicious modules that spawn shells, initiate C2 connections, or
+  launch reverse shells.
+
+  Manual or scripted installation of browser or IDE extensions into
+  plugin directories followed by suspicious outbound traffic.
+
+  Detection of port-knocking behavior followed by firewall changes or
+  newly opened services. May include detection of packet sniffers
+  using raw sockets to capture trigger patterns.
+
+  Detection of valid account misuse via SSH access, sudo/su abuse,
+  and abnormal service account activity outside expected baselines.
+
+======================================================================
