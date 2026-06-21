@@ -1,0 +1,52 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0010
+======================================================================
+  ID         : TA0010
+  NAME       : Exfiltration
+
+  OBJECTIVE  : The adversary is trying to remove stolen data from the environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Exfiltration refers to techniques used by attackers to move data out
+  of a compromised network. After gathering data, adversaries often
+  compress or encrypt it to avoid detection. Data is commonly
+  transferred over command-and-control channels or alternative paths,
+  sometimes using segmentation or throttling to reduce visibility.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Persistent background processes or cron tasks sending repeated data
+  to external destinations such as IPs or URLs.
+
+  Repeated outbound traffic from non-standard services producing
+  uniform packet sizes at regular time intervals.
+
+  Detection of file transfer activity using tools like curl, scp, or
+  custom executables over HTTP, HTTPS, FTP, or DNS tunneling outside
+  normal behavioral baselines.
+
+  Monitoring processes that access sensitive files and then immediately
+  establish outbound connections or long-lived transfer sessions using
+  encrypted channels.
+
+  Activation of alternate network interfaces using rfkill, nmcli, iw,
+  hcitool, or pppd followed by data transfer through non-primary
+  interfaces.
+
+  Detection of external storage mounted under /media or /mnt followed
+  by large-scale file access or copying using tools like tar, rsync, or
+  shell scripts.
+
+  Archival tools (tar, curl, python scripts) accessing large datasets
+  followed by HTTPS POST requests with unusual payload sizes, often
+  indicating compression followed by encrypted upload.
+
+  Detection of scheduled or repeated transfer activity where the same
+  script, user, or destination appears at predictable intervals.
+
+======================================================================
