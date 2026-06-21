@@ -1,0 +1,101 @@
+{
+  "attack": "Phishing Email With Executable Attachment",
+  "tactic": "Execution \u2014 user runs malicious attachment (fails: missing QT)",
+  "mitre": "TA0002",
+  "date": "2018-04-13",
+  "filter": "AND",
+  "window_start": "14:05:56 EDT",
+  "window_end": "14:06:30 EDT",
+  "total_edges": 8,
+  "total_nodes": 6,
+  "edges": [
+    {
+      "src": "1D173C19-0400-0000-0000-000000000020",
+      "src_name": "/usr/bin/gnome-terminal",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "62175519-0400-0000-0000-000000000020",
+      "dst_name": "bash",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523642782046242070,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-2925-2E00-0000-00001889CA01",
+      "dst_name": "/tmp/mozilla_admin0/jAG_iSHt.bin.part",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_EXECUTE",
+      "ts": 1523642782046923664,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-65C5-0600-0000-000017B53E0E",
+      "dst_name": "/home/admin/libQt5Widgets.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_OPEN",
+      "ts": 1523642782047265613,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-65C5-0600-0000-000017B53E0E",
+      "dst_name": "/home/admin/libQt5Widgets.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_READ",
+      "ts": 1523642782047286433,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-64C5-0600-0000-00008E519F0B",
+      "dst_name": "/home/admin/libQt5Gui.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_OPEN",
+      "ts": 1523642782047394264,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-64C5-0600-0000-00008E519F0B",
+      "dst_name": "/home/admin/libQt5Gui.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_READ",
+      "ts": 1523642782047410067,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-63C5-0600-0000-0000C8C0CE07",
+      "dst_name": "/home/admin/libQt5Core.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_OPEN",
+      "ts": 1523642782047513353,
+      "time_edt": "14:06:22 EDT"
+    },
+    {
+      "src": "62175519-0400-0000-0000-000000000020",
+      "src_name": "bash",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "0100D00F-63C5-0600-0000-0000C8C0CE07",
+      "dst_name": "/home/admin/libQt5Core.so.5",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_READ",
+      "ts": 1523642782047528590,
+      "time_edt": "14:06:22 EDT"
+    }
+  ]
+}
