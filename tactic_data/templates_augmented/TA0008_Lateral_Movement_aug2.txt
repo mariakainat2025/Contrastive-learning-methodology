@@ -1,0 +1,55 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0008
+======================================================================
+  ID         : TA0008
+  NAME       : Lateral Movement
+
+  OBJECTIVE  : The adversary is trying to traverse systems within the network.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Lateral Movement includes techniques that allow adversaries to access
+  and control remote machines in a network. After gaining initial
+  access, attackers typically map the environment, identify valuable
+  systems, and pivot through multiple hosts and accounts. This may
+  involve deployment of remote access tools or the use of valid
+  credentials with native system utilities to remain stealthy.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Link inbound connections to services such as SSH, SMB, NFS, databases,
+  or custom services with unexpected crashes, restarts, or shell
+  execution originating from service processes.
+
+  Detection of abnormal internal email activity using clients like
+  Thunderbird or Evolution, including compromised account usage,
+  unexpected transfers, and execution of attachments.
+
+  Monitor scp, rsync, sftp, curl, or ftp transfers to internal hosts
+  followed by execution of transferred files from unusual filesystem
+  locations.
+
+  Detect SSH/Telnet session reuse or hijacking by comparing login
+  records with active sessions, including tmux/screen reuse or command
+  execution without authentication logs.
+
+  SSH sessions from unfamiliar IP addresses followed by interactive
+  command execution, privilege escalation (sudo/su), and further
+  lateral connections.
+
+  Detection of orchestration-based remote execution using Puppet,
+  Chef, Ansible, or custom deployment scripts executed outside normal
+  maintenance schedules or on unmanaged systems.
+
+  Monitor execution or modification of files within shared NFS/SMB
+  directories followed by execution from those shared locations.
+
+  Detection of SSH keys or tokens used without corresponding login or
+  PAM authentication events, particularly for remote execution
+  activities.
+
+======================================================================
