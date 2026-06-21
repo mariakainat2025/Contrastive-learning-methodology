@@ -1,0 +1,33 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0042
+======================================================================
+  ID         : TA0042
+  NAME       : Resource Development
+
+  OBJECTIVE  : The adversary is attempting to obtain resources that support future operations.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Resource Development refers to techniques used by adversaries to
+  acquire, create, or compromise resources that support targeting
+  efforts. These may include infrastructure, credentials, or other
+  operational assets.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Such resources may be reused across multiple phases of an attack
+  lifecycle, such as using domains for Command and Control, email
+  accounts for phishing in Initial Access, or stolen certificates to
+  bypass defensive controls.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  No Linux detection strategies exist for this tactic.
+
+======================================================================
