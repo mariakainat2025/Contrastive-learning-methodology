@@ -1,0 +1,81 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0002
+======================================================================
+  ID         : TA0002
+  NAME       : Execution
+
+  OBJECTIVE  : The adversary is attempting to run malicious code.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Execution includes techniques that result in adversary-controlled
+  code being executed on a local or remote system. For example, an
+  attacker may use a remote access tool to run a PowerShell script
+  that performs Remote System Discovery.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Techniques that execute code are often combined with other tactics
+  to accomplish broader objectives such as network discovery or data
+  theft.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detects use of shell interpreters (e.g., bash, sh, python, perl)
+  spawned by users or processes that do not normally launch them,
+  especially when combined with suspicious utilities like netcat,
+  curl, or ssh.
+
+  Cause→effect chain: (1) Browser/Office/reader process logs crash,
+  segfault, or sandbox anomaly, (2) new script or executable appears
+  in $HOME (Downloads, ~/.cache, /tmp), (3) unexpected child process
+  such as curl/wget/bash/python establishes network connections soon
+  after execution.
+
+  Adversary modifies shared library paths, environment variables, or
+  replaces service binaries. Defender observes changes in
+  /etc/ld.so.preload, altered service configs, or overwritten system
+  executables.
+
+  Detects USB HID enumeration under `/sys/bus/usb/devices/` followed
+  by rapid keystroke injection leading to command execution without
+  legitimate user interaction.
+
+  Detects misuse of UNIX sockets, pipes, or message queues for
+  unauthorized execution flows. Correlates unexpected IPC creation
+  with suspicious binaries or abnormal shell pipelines.
+
+  User-space processes invoking syscall-heavy libraries (libc, glibc)
+  followed by fork, mmap, or ptrace activity consistent with memory
+  manipulation or injection.
+
+  Detects creation or modification of cron jobs via crontab,
+  /etc/cron.* or systemd timers executed by unusual users or at
+  abnormal intervals.
+
+  A process loads a shared object (.so) via dlopen/LD_PRELOAD/open
+  from non-standard locations (e.g., /tmp, /dev/shm), especially when
+  the file was recently created, downloaded, or referenced through
+  modified environment variables.
+
+  Detects remote scripts or binaries deployed through orchestration
+  tools like Puppet, Chef, or Ansible executing outside maintenance
+  windows or on unmanaged systems.
+
+  Detect unusual use of systemctl, service, or init scripts that
+  create or modify daemons. Monitor audit logs for execution from
+  unexpected binary paths tied to service lifecycle events.
+
+  Cause→effect chain: (1) User application/browser logs click or
+  abnormal exit, (2) new file extracted into $HOME/Downloads,
+  /tmp, or ~/.cache, (3) parent process spawns shell/interpreter, and
+  (4) outbound network connections originate from resulting child
+  processes.
+
+======================================================================
