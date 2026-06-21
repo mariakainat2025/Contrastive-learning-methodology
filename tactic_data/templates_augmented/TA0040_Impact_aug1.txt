@@ -1,0 +1,85 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0040
+======================================================================
+  ID         : TA0040
+  NAME       : Impact
+
+  OBJECTIVE  : The adversary is attempting to disrupt, damage, or manipulate systems and data.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Impact consists of techniques used by adversaries to disrupt
+  availability or compromise the integrity of systems by manipulating
+  business and operational processes. These techniques may involve
+  destroying, altering, or corrupting data.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  In some situations, systems may appear operational while underlying
+  processes or data have been modified to support adversary goals.
+  These techniques can be used to complete objectives or conceal prior
+  compromise.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detection of account or password changes via passwd, userdel, or
+  chage following suspicious interactive sessions or remote execution
+  from unprivileged accounts.
+
+  Large-scale or recursive file deletion using rm -rf, shred, dd, or
+  wiping utilities, including evidence of unlink syscalls and mass
+  removal of configuration or data files.
+
+  Encryption or ransomware-like activity using tools such as openssl,
+  gpg, or aescrypt targeting directories recursively, often combined
+  with data overwrite and ransom note creation.
+
+  Detection of unauthorized modification to logs, databases, or system
+  configuration files via auditd or syslog correlation, especially when
+  paired with shell activity altering HISTFILE or audit traces.
+
+  Detection of web defacement activity where malicious scripts modify
+  content served by Apache, Nginx, or similar web services.
+
+  Use of destructive commands like dd, shred, or wipe targeting raw
+  disks (e.g., /dev/sda, /dev/nvme0n1), including abnormal block device
+  writes and bootloader modifications.
+
+  Monitoring mail systems for abnormal spikes in message volume or
+  attachment storage activity affecting a single user or mailbox.
+
+  Detection of service disruption events such as repeated crashes,
+  kernel panics, or systemd restarts targeting critical services like
+  nginx, httpd, or sshd.
+
+  Monitoring for unusual outbound connections to cryptocurrency mining
+  pools or financial systems, often associated with unauthorized
+  scripts or data exfiltration from financial applications.
+
+  Detection of direct writes to firmware or memory interfaces such as
+  /dev/mem or /sys/firmware, including use of firmware flashing tools.
+
+  Deletion or tampering with recovery-critical files such as
+  /etc/systemd/system/rescue.target, /etc/fstab backups, or EFI boot
+  partitions, sometimes combined with chattr-based protections.
+
+  High-volume packet flooding using tools like hping3 or nping across
+  multiple ports or hosts.
+
+  Abnormal CPU or memory usage tied to unauthorized processes, often
+  linked to cryptocurrency mining activity or persistence via cron jobs.
+
+  Detection of service shutdown or termination commands (systemctl,
+  service stop) targeting critical infrastructure like mysql or sshd,
+  followed by destructive file operations such as rm or shred.
+
+  Detection of shutdown, reboot, or poweroff commands executed outside
+  approved maintenance windows or expected administrative context.
+
+======================================================================
