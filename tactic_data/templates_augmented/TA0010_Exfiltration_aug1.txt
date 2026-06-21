@@ -1,0 +1,54 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0010
+======================================================================
+  ID         : TA0010
+  NAME       : Exfiltration
+
+  OBJECTIVE  : The adversary is attempting to steal and remove data from the environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Exfiltration consists of techniques used by adversaries to transfer
+  stolen data out of a network. After collecting information,
+  attackers often package it to reduce detection risk, using
+  compression or encryption. Data is typically transferred through
+  command-and-control channels or alternative communication paths, and
+  may be segmented or rate-limited to avoid detection.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Background processes such as cron jobs or daemons repeatedly
+  transmitting data to remote IP addresses or external URLs.
+
+  Outbound connections from non-network services sending uniform or
+  similarly sized payloads at consistent time intervals.
+
+  Detection of data exfiltration using tools like curl, scp, or custom
+  binaries over FTP, HTTP/S, or DNS channels, especially outside normal
+  user behavior patterns.
+
+  Monitoring processes that read sensitive files and immediately
+  initiate outbound connections or sustained data transfer sessions
+  using encrypted or binary formats.
+
+  Use of rfkill, nmcli, iw, hcitool, or pppd to activate alternate
+  network interfaces followed by outbound data transfer over secondary
+  adapters.
+
+  Detection of external drive usage mounted under /media or /mnt,
+  followed by bulk file copying or archiving using tools like tar or
+  rsync.
+
+  Processes such as tar, curl, or Python scripts accessing large file
+  sets and then initiating HTTPS POST requests with abnormal payload
+  sizes. Look for archive creation followed by encrypted uploads to
+  external services.
+
+  Detection of scheduled or scripted recurring transfers where the
+  same process, user, or destination repeats at consistent intervals.
+
+======================================================================
