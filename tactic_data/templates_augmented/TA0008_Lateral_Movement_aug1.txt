@@ -1,0 +1,58 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0008
+======================================================================
+  ID         : TA0008
+  NAME       : Lateral Movement
+
+  OBJECTIVE  : The adversary is attempting to move across systems within your environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Lateral Movement consists of techniques used by adversaries to gain
+  access to and control remote systems within a network. After
+  establishing an initial foothold, attackers often explore the
+  environment to locate their target and pivot through multiple hosts
+  and accounts to reach it. Adversaries may deploy remote access tools
+  or rely on legitimate credentials combined with native OS and network
+  utilities, which can make detection more difficult.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Correlate inbound network connections to services such as SSHD, SMB,
+  NFS, databases, or custom daemons with subsequent service crashes,
+  restarts, core dumps, or shell/reverse shell execution from service
+  contexts, indicating possible remote compromise.
+
+  Detection of suspicious internal email activity (e.g., Thunderbird,
+  Evolution) using compromised accounts, including unexpected login
+  behavior followed by message transfer logs and attachment execution.
+
+  Monitor usage of scp, rsync, curl, sftp, or ftp transferring data to
+  internal hosts, especially when followed by execution of transferred
+  files from unusual directories.
+
+  Detect SSH or Telnet session hijacking by identifying mismatches
+  between authentication logs and active sessions. Indicators include
+  reused sessions, tmux/screen attachment, or command execution
+  without corresponding login events.
+
+  SSH sessions originating from new or unusual IP addresses followed by
+  interactive shell activity or privilege escalation (sudo/su) and
+  subsequent lateral connections.
+
+  Detection of remote execution via orchestration tools such as Puppet,
+  Chef, Ansible, or shell-based deployment scripts running outside
+  expected maintenance windows or on unmanaged nodes.
+
+  Monitor modifications or execution of binaries within shared NFS or
+  SMB directories followed by execution from those same network paths.
+
+  Detection of SSH keys or access tokens being used without associated
+  interactive login sessions or expected PAM authentication events,
+  especially for remote command execution.
+
+======================================================================
