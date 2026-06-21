@@ -1,0 +1,86 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0001
+======================================================================
+  ID         : TA0001
+  NAME       : Initial Access
+
+  OBJECTIVE  : The attacker is trying to gain access to your network.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Initial Access includes techniques that use different entry
+  vectors to achieve an initial foothold within a network.
+  Common methods include targeted spearphishing
+  and exploiting weaknesses in internet-facing web servers.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Initial footholds may allow ongoing access,
+  such as through valid accounts and external remote services,
+  or may be short-lived due to password resets or remediation.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detect curl/wget commands that store executable or script payloads to
+  /tmp or /var/tmp followed by execution. Monitor packet captures or
+  IDS/IPS alerts for injected responses or mismatched content types.
+
+  Correlated evidence of browser or webview downloads from unusual
+  domains or modified JS resources (proxy/NGFW logs + Zeek/HTTP logs)
+  followed by unexpected interpreters or script engines executing
+  (python, ruby, sh) spawned from browser processes or user
+  sessions, rapid staging on disk in /tmp, and outbound connections
+  that differ from baseline. Defender observes: unusual resource fetch
+  → short-lived child process execution from browser context →
+  file writes in temporary directories → suspicious outbound C2-like
+  connections.
+
+  Adversary exploits Apache/Nginx/app servers. Chain: (1) suspicious
+  requests in access logs → (2) spike in 5xx responses or WAF blocks → (3) web
+  server or interpreter (apache2/nginx/php-fpm/node/python) spawns
+  /bin/sh, curl, wget, socat, or writes webshell → (4) outbound
+  callback.
+
+  Repeated SSH, VPN, or RDP authentication attempts from
+  external IPs → followed by successful login → remote shell or
+  lateral movement activity (e.g., scp/sftp).
+
+  Chain: (1) udev / kernel logs show hot-plug events
+  (USB/Thunderbolt/PCIe); (2) block device created by
+  udisks/diskarbitration; (3) optional: new network interface or
+  DHCP lease observed. Correlate /var/log/messages|syslog, auditd
+  SYSCALL open/creat on /dev, and DHCP/Zeek logs.
+
+  Monitor for malicious payload delivery through phishing where
+  attachments or URLs in email clients (e.g., Thunderbird, mutt)
+  result in abnormal file creation or outbound network connections.
+  Focus on correlation between mail logs, file writes, and execution
+  activity.
+
+  1) Package manager or curl/wget installs from
+  unapproved repositories or unsigned packages; 2) new ELF written into
+  PATH directories or replacement of existing binaries/libraries; 3)
+  first execution results in unexpected child processes or outbound
+  connections.
+
+  Behavioral chain: (1) sshd or federated SSO logins from
+  external networks or identities; (2) rapid sudo/su privilege
+  escalation; (3) access to sensitive paths or east-west SSH traffic.
+  Correlate authentication logs, process execution, and network flows.
+
+  Detection of valid account misuse through SSH logins, sudo/su
+  abuse, and service account behavior outside expected patterns.
+
+  Detects unauthorized wireless associations by monitoring
+  wpa_supplicant logs, NetworkManager events, and system calls
+  related to interface state changes. Anomalies include repeated
+  association failures, new SSIDs outside baseline values, and
+  rogue AP connections.
+
+======================================================================
