@@ -1,0 +1,33 @@
+{
+  "attack": "Firefox Backdoor Drakon In-Memory",
+  "tactic": "Initial Access",
+  "mitre": "TA0001",
+  "date": "2018-04-10",
+  "filter": "AND",
+  "window_start": "14:31:22 EDT",
+  "window_end": "14:35:17 EDT",
+  "abstraction": "category_process_file",
+  "n_triples": 20,
+  "sequence": [
+    "window_manager fluxbox open device_file /dev/glx_alsa_675.",
+    "window_manager fluxbox write device_file /dev/glx_alsa_675.",
+    "window_manager fluxbox read device_file /dev/glx_alsa_675.",
+    "window_manager fluxbox connect_receivefrom_sendto external_host 141.43.176.203:80.",
+    "window_manager fluxbox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox connect_receivefrom_sendto external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "window_manager fluxbox write device_file /dev/glx_alsa_675.",
+    "window_manager fluxbox read device_file /dev/glx_alsa_675.",
+    "browser_process /usr/bin/firefox receivefrom external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox sendto external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox sendto external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox sendto external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox sendto external_host 146.153.68.151:80.",
+    "browser_process /usr/bin/firefox clone browser_process /usr/bin/firefox.",
+    "browser_process /usr/bin/firefox sendto external_host 146.153.68.151:80."
+  ]
+}
