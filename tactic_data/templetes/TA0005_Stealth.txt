@@ -1,0 +1,129 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0005
+======================================================================
+  ID         : TA0005
+  NAME       : Stealth
+
+  OBJECTIVE  : The adversary is trying to hide and conceal their actions, appearing as normal behavior.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Stealth consists of techniques that reduce the likelihood of
+  detection by blending in with legitimate activity or minimizing
+  observable signals. These techniques are characterized by
+  concealment behaviors, such as avoiding, obfuscating, or mimicking
+  normal operations, without modifying security controls or
+  compromising collection and monitoring feeds.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  The goal is to remain indistinguishable from benign activity while
+  leaving defensive systems intact.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Monitor access to /proc/self/status where TracerPID field is
+  queried, as this is a common technique for debugger detection.
+  Detect processes that attempt to trigger exceptions intentionally
+  and monitor whether exception handling indicates presence of a
+  debugger.
+
+  Shell scripts or binaries invoking repeated 'sleep', 'ping', or
+  low-level syscalls (e.g., nanosleep) in short-lived execution
+  chains with no user or system interaction. Frequently seen in
+  malicious cron jobs or payload stagers.
+
+  The adversary uses native utilities like base64, gzip, tar, or
+  openssl to decode, decompress, or decrypt files that were
+  previously staged or downloaded. These tools may be chained with
+  curl/wget and executed via bash/zsh, often to extract an embedded
+  payload or reverse shell script.
+
+  Linux environmental validation behavioral chain: (1) Intensive
+  system enumeration through command execution (uname, hostname,
+  ifconfig, lsblk, mount), (2) File system reconnaissance targeting
+  specific paths, network configurations, and installed packages,
+  (3) Process and user enumeration to validate target environment
+  characteristics, (4) Conditional script execution or binary
+  activation based on environmental criteria, (5) Network
+  connectivity validation and external IP address resolution for
+  geolocation verification
+
+  Detects kernel- or user-space exploitation attempts targeting
+  auditd, AV daemons, or security monitoring agents. Defender
+  observation includes unexpected segfaults, privilege escalation
+  attempts from low-privileged processes, or modifications to
+  security binaries. Correlates exploitation attempts with
+  subsequent gaps in logging or terminated processes.
+
+  Hidden file creation using leading '.' or file attribute changes
+  with chattr (immutable/hidden flags). Defender view: detect
+  execution of chattr, lsattr anomalies, and unusual hidden files
+  appearing in system directories.
+
+  Adversary manipulation of shared library paths, environment
+  variables, or replacement of service binaries. Defender observes
+  suspicious modifications in /etc/ld.so.preload, service config
+  changes, or file writes replacing existing executables.
+
+  Detects deletion or overwriting of bash history, syslog, audit
+  logs, and .ssh metadata following privilege elevation or
+  suspicious process spawning.
+
+  Adversary drops renamed binaries in uncommon directories (e.g.,
+  /tmp, /dev/shm) or uses special characters in names (e.g.,
+  trailing space, Unicode RLO). Execution or cronjob registration
+  follows shortly after file drop.
+
+  Detects use of gzip, base64, tar, or openssl in scripts or
+  commands that encode/encrypt files after file staging or system
+  enumeration.
+
+  Detection of writes to /boot or EFI directories outside of
+  expected package manager updates. Monitoring kernel log and auditd
+  events for attempts to overwrite bootloader binaries (e.g., grub,
+  shim). Unexpected execution of efibootmgr or dd writing to
+  /dev/sdX devices followed by boot parameter changes.
+
+  Detects ptrace- or memfd-based process injection through audit
+  logs capturing system calls (e.g., ptrace, mmap) targeting running
+  processes along with suspicious file descriptors or memory writes.
+
+  Monitor for in-process mmap + mprotect + execve/execveat activity
+  where memory permissions are changed from writable to executable
+  inside the same process without a corresponding ELF on disk.
+
+  Abnormal loading of kernel modules, direct tampering with /dev,
+  /proc, or LD_PRELOAD behaviors hiding processes or files.
+
+  Detects users executing commands copied from chats, tickets, or
+  emails, including curl|bash patterns, shell script launches from
+  temp directories, credential changes, or SSH key additions shortly
+  after communication events.
+
+  Execution of trusted system binaries (e.g., `split`, `tee`,
+  `bash`, `env`) used in uncommon sequences or chained behaviors to
+  execute malicious payloads or perform actions inconsistent with
+  normal system or script behavior.
+
+  Closed-port knock sequence from a remote IP followed by on-host
+  firewall change (iptables/nftables) or daemon starts listening
+  (socket open) and a successful TCP/UDP connect. Optional detection
+  of libpcap/raw-socket sniffers spawning to watch for secret
+  values.
+
+  Detection of valid account misuse through SSH logins, sudo/su
+  abuse, and service account anomalies outside expected patterns.
+
+  Execution of commands to enumerate virtualization-related files or
+  processes (e.g., '/sys/class/dmi/id/product_name', dmesg, lscpu,
+  lspci), or querying hypervisor interfaces prior to malware
+  execution.
+
+======================================================================
