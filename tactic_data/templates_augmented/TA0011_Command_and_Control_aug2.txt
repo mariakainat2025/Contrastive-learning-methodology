@@ -1,0 +1,86 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0011
+======================================================================
+  ID         : TA0011
+  NAME       : Command and Control
+
+  OBJECTIVE  : The adversary is trying to establish communication with compromised systems to control them.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Command and Control consists of techniques used by adversaries to
+  communicate with compromised systems within a victim environment.
+  Attackers frequently attempt to mimic legitimate network traffic in
+  order to avoid detection. C2 can be established in many ways, ranging
+  from highly covert to more overt communication patterns depending on
+  network defenses.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detection of abnormal curl, wget, or custom socket traffic using DNS,
+  HTTPS, or IRC-like protocols with periodic beaconing or irregular
+  timing patterns.
+
+  File write activity to removable media paths such as /media or
+  /run/media followed by execution or reuse of the same artifacts on
+  another host.
+
+  Detection of payload staging using curl/wget into /tmp or /var/tmp
+  followed by execution, correlated with IDS alerts or mismatched HTTP
+  content types.
+
+  Outbound traffic encoded using Base64, gzip, or hex prior to
+  transmission via curl, wget, or raw socket connections, typically
+  originating from non-network services.
+
+  Detection of custom or unknown processes generating sustained HTTP
+  traffic with low response volume and unusual behavior patterns.
+
+  DNS logs and audit trails showing repeated failed lookups or access
+  to high-entropy domains, correlated with execution lineage from bash,
+  Python, or other interpreters.
+
+  TLS sessions initiated by curl, wget, python, socat, or unknown
+  binaries connecting to non-standard endpoints, showing syscalls like
+  connect() and persistent encrypted communication streams.
+
+  Detection of covert channels using ICMP, DNS tunneling, or unusual
+  ports originating from processes that normally do not use networking.
+
+  Detection of firewall or proxy manipulation via iptables or nftables
+  used to bypass inspection or suppress detection systems.
+
+  Shell utilities such as curl, wget, or scp downloading external
+  payloads followed by execution of resulting files.
+
+  Multi-stage behavior where downloaded content is written to disk or
+  memory and then triggers secondary outbound connections.
+
+  ICMP or raw packet generation using tools like ping, hping3, Python,
+  or scapy, often from user-space processes without administrative
+  context.
+
+  Detection of services binding to unusual ports or initiating
+  connections using mismatched protocol expectations.
+
+  SSH, socat, or custom binaries used for tunneling, reverse shells, or
+  port forwarding, often encapsulating internal protocols over encrypted
+  channels.
+
+  Detection of user-space tools configured in abnormal ways for reverse
+  shells, tunneling, or inter-host communication.
+
+  RAT-style behavior involving systemd persistence and long-lived
+  external communication sessions, sometimes spawning interactive shells.
+
+  Port knocking sequences followed by firewall modifications or new
+  listening services being enabled dynamically.
+
+  Detection of HTTPS-based C2 traffic to services such as Slack,
+  Discord, Dropbox, or cloud APIs when used in non-standard contexts.
+
+======================================================================
