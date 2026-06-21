@@ -1,0 +1,32 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0043
+======================================================================
+  ID         : TA0043
+  NAME       : Reconnaissance
+
+  OBJECTIVE  : The adversary is attempting to collect information that can be used to plan future operations.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Reconnaissance consists of techniques where adversaries actively or
+  passively gather information that can support targeting efforts.
+  This information may include details about the victim organization,
+  infrastructure, or personnel.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  This information may be used by adversaries to support other stages
+  of the attack lifecycle, such as planning Initial Access, prioritizing
+  post-compromise actions, or enabling further reconnaissance activities.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  No Linux detection strategies found for this tactic.
+
+======================================================================
