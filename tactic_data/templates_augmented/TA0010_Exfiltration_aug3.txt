@@ -1,0 +1,49 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0010
+======================================================================
+  ID         : TA0010
+  NAME       : Exfiltration
+
+  OBJECTIVE  : The adversary is trying to steal and transmit data out of the network.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Exfiltration includes techniques used by adversaries to remove data
+  from a compromised environment. After collecting data, attackers
+  often package it using compression or encryption to reduce detection
+  risk. Data is typically transferred via command-and-control channels
+  or alternative communication paths, sometimes segmented or rate
+  limited to avoid detection.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Background cron jobs or daemon processes repeatedly sending data to
+  external IP addresses or web endpoints.
+
+  Consistent outbound connections from non-network services with
+  similarly sized payloads transmitted at fixed intervals.
+
+  Detection of exfiltration using curl, scp, or custom tools over HTTP,
+  HTTPS, FTP, or DNS channels outside normal user activity patterns.
+
+  Processes that read sensitive files and immediately trigger outbound
+  network communication or sustained encrypted data transfer sessions.
+
+  Use of rfkill, nmcli, iw, hcitool, or pppd to enable secondary or
+  non-primary network interfaces followed by data transmission.
+
+  Detection of external drive mounting under /media or /mnt followed by
+  bulk copying or archiving operations using tools like tar or rsync.
+
+  Archiving utilities (tar, curl, python scripts) processing large
+  datasets followed by HTTPS POST requests with abnormal payload sizes,
+  often indicating compression and encrypted upload behavior.
+
+  Detection of scheduled or recurring data transfers where the same
+  script, user, or destination repeats at regular time intervals.
+
+======================================================================
