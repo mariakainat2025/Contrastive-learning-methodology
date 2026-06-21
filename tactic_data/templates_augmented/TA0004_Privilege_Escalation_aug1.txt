@@ -1,0 +1,75 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0004
+======================================================================
+  ID         : TA0004
+  NAME       : Privilege Escalation
+
+  OBJECTIVE  : The adversary is attempting to obtain higher-level permissions.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Privilege Escalation includes techniques used by adversaries to
+  obtain elevated permissions on a system or within a network.
+  Attackers may initially gain limited access but require higher
+  privileges to achieve their objectives. Common methods include
+  exploiting system vulnerabilities, misconfigurations, and design
+  weaknesses. Examples of elevated access include SYSTEM/root level,
+  local administrator rights, or user accounts with administrative
+  or elevated functional privileges.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  These techniques often overlap with Persistence techniques, since
+  system features that provide persistence may also execute with
+  elevated privileges.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Monitor audit logs for setuid/setgid modifications, cases where UID
+  differs from EUID (indicating sudo or privilege escalation), and
+  execution of high-privilege binaries by unprivileged users.
+
+  Use of native utilities or scripts (e.g., `usermod`, `passwd`,
+  `groupmod`) to elevate permissions or modify user privileges,
+  correlated with login or process activity.
+
+  Correlation of systemd service creation or /etc/init.d script
+  changes with abnormal process execution during system startup.
+
+  Detection of modifications or execution of shell startup scripts
+  such as .bashrc, .profile, or /etc/profile used for persistence or
+  privilege-related behavior.
+
+  Detects creation or modification of systemd service units,
+  scheduling of cron jobs executed at boot, or writes to
+  /etc/init.d/ with chmod +x or systemctl usage from non-root users.
+
+  Detection of Linux container escape attempts via syscalls such as
+  unshare, keyctl, or mount, where processes break out of container
+  isolation into the host namespace.
+
+  Detects changes in auditd or inotify rules monitoring system files
+  combined with execution of scripts or binaries triggered by cron or
+  systemd timers.
+
+  Detects exploitation of vulnerable setuid binaries or kernel
+  modules, often combined with suspicious access to /proc/kallsyms or
+  /dev/kmem.
+
+  Detects ptrace or memfd-based process injection via syscall
+  monitoring (ptrace, mmap), especially when targeting active
+  processes with unusual memory writes or file descriptors.
+
+  Detects creation or modification of cron jobs or systemd timer
+  units executed by unusual users or outside expected schedules.
+
+  Detection of valid account abuse via SSH logins, sudo/su misuse,
+  and service account anomalies outside expected baselines.
+
+======================================================================
