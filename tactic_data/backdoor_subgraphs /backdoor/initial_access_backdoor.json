@@ -1,0 +1,233 @@
+{
+  "attack": "Firefox Backdoor Drakon In-Memory",
+  "tactic": "Initial Access",
+  "mitre": "TA0001",
+  "date": "2018-04-10",
+  "filter": "AND",
+  "window_start": "14:31:22 EDT",
+  "window_end": "14:35:17 EDT",
+  "total_edges": 20,
+  "total_nodes": 11,
+  "edges": [
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "05000000-1F32-0000-0000-000000000000",
+      "dst_name": "/dev/glx_alsa_675",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_OPEN",
+      "ts": 1523385082942886165,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "05000000-1F32-0000-0000-000000000000",
+      "dst_name": "/dev/glx_alsa_675",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_WRITE",
+      "ts": 1523385082942891869,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "05000000-1F32-0000-0000-000000000000",
+      "dst_name": "/dev/glx_alsa_675",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_READ",
+      "ts": 1523385082942894934,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-4C81-8D2B-B0CB-500000000040",
+      "dst_name": "128.55.12.110_33100_141.43.176.203_80",
+      "dst_type": "NetFlowObject",
+      "etype": "CONNECT_RECVFROM_SENDTO",
+      "ts": 1523385082943615045,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "4E18B22A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385082984160921,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "CONNECT_RECVFROM_SENDTO",
+      "ts": 1523385082992535880,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "4F18B22A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385082997226973,
+      "time_edt": "14:31:22 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "05000000-1F32-0000-0000-000000000000",
+      "dst_name": "/dev/glx_alsa_675",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_WRITE",
+      "ts": 1523385099855259778,
+      "time_edt": "14:31:39 EDT"
+    },
+    {
+      "src": "06187E2A-0000-0000-0000-000000000020",
+      "src_name": "fluxbox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "05000000-1F32-0000-0000-000000000000",
+      "dst_name": "/dev/glx_alsa_675",
+      "dst_type": "FILE_OBJECT_BLOCK",
+      "etype": "EVENT_READ",
+      "ts": 1523385099855261992,
+      "time_edt": "14:31:39 EDT"
+    },
+    {
+      "src": "4F18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_RECVFROM",
+      "ts": 1523385146345207802,
+      "time_edt": "14:32:26 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "5318F12A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385146399521772,
+      "time_edt": "14:32:26 EDT"
+    },
+    {
+      "src": "5318F12A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_SENDTO",
+      "ts": 1523385146399716536,
+      "time_edt": "14:32:26 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "5418F32A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385148102728007,
+      "time_edt": "14:32:28 EDT"
+    },
+    {
+      "src": "5418F32A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_SENDTO",
+      "ts": 1523385148102824383,
+      "time_edt": "14:32:28 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "5518F72A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385152709290839,
+      "time_edt": "14:32:32 EDT"
+    },
+    {
+      "src": "5518F72A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_SENDTO",
+      "ts": 1523385152718551478,
+      "time_edt": "14:32:32 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "5618FB2A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385156915333827,
+      "time_edt": "14:32:36 EDT"
+    },
+    {
+      "src": "5618FB2A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_SENDTO",
+      "ts": 1523385156915425653,
+      "time_edt": "14:32:36 EDT"
+    },
+    {
+      "src": "4E18B22A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "5818FF2A-0000-0000-0000-000000000020",
+      "dst_name": "/usr/bin/firefox",
+      "dst_type": "SUBJECT_PROCESS",
+      "etype": "EVENT_CLONE",
+      "ts": 1523385160820979454,
+      "time_edt": "14:32:40 EDT"
+    },
+    {
+      "src": "5818FF2A-0000-0000-0000-000000000020",
+      "src_name": "/usr/bin/firefox",
+      "src_type": "SUBJECT_PROCESS",
+      "dst": "80370C6E-42AD-9299-4497-500000000040",
+      "dst_name": "128.55.12.110_44354_146.153.68.151_80",
+      "dst_type": "NetFlowObject",
+      "etype": "EVENT_SENDTO",
+      "ts": 1523385160829961059,
+      "time_edt": "14:32:40 EDT"
+    }
+  ]
+}
