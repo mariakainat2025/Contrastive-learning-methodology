@@ -1,0 +1,87 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0009
+======================================================================
+  ID         : TA0009
+  NAME       : Collection
+
+  OBJECTIVE  : The adversary is trying to gather data of interest to their goal.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Collection consists of techniques adversaries may use to gather
+  information and the sources information is collected from that are
+  relevant to following through on the adversary's objectives.
+  Common target sources include various drive types, browsers,
+  audio, video, and email. Common collection methods include
+  capturing screenshots and keyboard input.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Frequently, the next goal after collecting data is to either steal
+  (exfiltrate) the data or to use the data to gain more information
+  about the target environment.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+  Detects unauthorized edits to /etc/hosts, /etc/resolv.conf, or
+  suspicious ARP broadcasts. Correlates file modifications with
+  subsequent unexpected network sessions or service creation.
+
+  Detects adversarial archiving activity through invocation of
+  utilities like tar, gzip, bzip2, or openssl used in
+  non-administrative or unusual contexts. Correlates command
+  execution patterns with file creation of compressed/encrypted
+  outputs in staging directories (e.g., /tmp, /var/tmp).
+
+  Processes accessing ALSA/PulseAudio devices or executing audio
+  capture binaries like 'arecord', followed by file creation or
+  suspicious child process spawning.
+
+  Repeated or automated access to user document directories or
+  clipboard using shell scripts or utilities like xclip/pbpaste.
+  Detectable via auditd syscall logs or osquery file events.
+
+  Detection of xclip or xsel access to clipboard buffers outside of
+  user terminal context, especially when chained to staging (gzip,
+  base64) or network exfiltration (curl, scp).
+
+  Detects script or user activity copying files to a central temp or
+  /mnt directory followed by archive/compression utilities.
+
+  Command-line tools (e.g., curl, rsync, wget, or custom Python
+  scripts) used to scrape documentation systems or internal REST
+  APIs. Unusual access patterns to knowledge base folders or shared
+  team drives.
+
+  Adversaries using bash scripts or tools to recursively enumerate
+  user home directories, config files, or SSH keys.
+
+  Unusual access or copying of files from mounted network drives
+  (e.g., NFS, CIFS/SMB) by user shells or scripts followed by large
+  data transfer.
+
+  Adversary mounts external drive to /media or /mnt then accesses or
+  copies targeted data via shell, cp, or tar.
+
+  Detects file access to mbox/maildir files in conjunction with
+  curl/wget/postfix execution, or anomalous shell scripts harvesting
+  user mail directories.
+
+  Detects use of tools/scripts accessing input devices like
+  /dev/input/* or evdev via suspicious processes lacking GUI
+  context.
+
+  Use of tools like xwd or import to generate screenshots,
+  especially under non-GUI parent processes.
+
+  A process opens/reads /dev/video* (V4L2), performs ioctl/read
+  loops, writes large/continuous video artifacts to disk, and/or
+  quickly establishes outbound connections for exfiltration.
+
+======================================================================
