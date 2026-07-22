@@ -1,0 +1,50 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "6_macro_binary-4",
+  "host": "client",
+  "start_ts": 1765277556704000000,
+  "end_ts": 1765277556704000000,
+  "n_nodes": 2,
+  "n_edges": 1,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765277556704000000,
+        "name": "python3",
+        "uuid": "399b7026-638e-53d7-8df0-99b52abbca5f"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1765277556704000000,
+        "name": "/home/judy/downloader.sh",
+        "uuid": "24d26875-4a6d-5c79-8443-84218e23e880"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "399b7026-638e-53d7-8df0-99b52abbca5f",
+      "24d26875-4a6d-5c79-8443-84218e23e880",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277556704000000,
+        "count": 1,
+        "event_ids": "7794"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "python3",
+      "AVC",
+      "/home/judy/downloader.sh"
+    ]
+  ]
+}

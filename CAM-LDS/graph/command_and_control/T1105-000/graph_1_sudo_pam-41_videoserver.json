@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "1_sudo_pam-41",
+  "host": "videoserver",
+  "start_ts": 1758550037096000000,
+  "end_ts": 1758550037104000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758550037096000000,
+        "name": "pid:16840",
+        "uuid": "62244e41-05c9-5d63-87cf-d10937a836d6"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758550037096000000,
+        "name": "/usr/bin/wget",
+        "uuid": "04bb6c96-84b5-5a28-94b5-b5a0746ea60e"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758550037104000000,
+        "name": "192.42.1.174:80",
+        "uuid": "de3006a9-1a74-50ac-9b9a-41d87d9faace"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "62244e41-05c9-5d63-87cf-d10937a836d6",
+      "04bb6c96-84b5-5a28-94b5-b5a0746ea60e",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758550037096000000,
+        "count": 1,
+        "event_ids": "12925"
+      }
+    ],
+    [
+      "04bb6c96-84b5-5a28-94b5-b5a0746ea60e",
+      "de3006a9-1a74-50ac-9b9a-41d87d9faace",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758550037104000000,
+        "count": 1,
+        "event_ids": "12926"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:16840",
+      "EXECVE",
+      "/usr/bin/wget"
+    ],
+    [
+      "/usr/bin/wget",
+      "CONNECT",
+      "192.42.1.174:80"
+    ]
+  ]
+}

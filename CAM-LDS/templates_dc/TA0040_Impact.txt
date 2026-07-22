@@ -1,0 +1,78 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0040
+======================================================================
+  ID         : TA0040
+  NAME       : Impact
+
+  OBJECTIVE  : The adversary is trying to manipulate, interrupt, or destroy your systems and data.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Impact consists of techniques that adversaries use to disrupt
+  availability or compromise integrity by manipulating business and
+  operational processes. Techniques used for impact can include
+  destroying or tampering with data.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  In some cases, business processes can look fine, but may have been
+  altered to benefit the adversaries’ goals. These techniques might
+  be used by adversaries to follow through on their end goal or to
+  provide cover for a confidentiality breach.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    SYSCALL record where exe contains passwd/userdel/chage and auid
+    != root.
+
+    Massive recursive deletions or overwrites via `rm -rf`, `shred`,
+    `dd`, or wiper binaries. May include unlink syscalls, deletion
+    of known config/data paths, or sequential overwrite patterns.
+
+    Encryption via custom or open-source tools (e.g., openssl, gpg,
+    aescrypt) recursively targeting user or system directories. Also
+    includes overwrite of existing data and ransom note drops.
+
+    Open, unlink, rename: Suspicious file access, deletion, or
+    modification of sensitive paths.
+
+    Adversary gains shell access or uploads a malicious script to
+    deface hosted web content in Nginx, Apache, or other services.
+
+    Execution of dd, shred, wipe targeting block devices. Open/write
+    syscalls on /dev/sd* or /dev/nvme*.
+
+    File creation events in /var/mail or /var/spool/mail exceeding
+    baseline thresholds.
+
+    Malicious script or binary causes repeated kernel panics, OOM
+    kills, or systemd service restarts targeting services like
+    nginx, httpd, sshd.
+
+    Execve: Execution of curl, wget, or custom scripts accessing
+    financial endpoints.
+
+    Execution of known flash tools (e.g., flashrom, fwupd). Write
+    access to /dev/mem or /sys/firmware/efi/efivars.
+
+    Chattr, rm, shred, dd run on recovery directories or partitions.
+
+    Execution of network stress tools or anomalies in socket/syscall
+    behavior.
+
+    Abnormal CPU/memory usage by unauthorized processes with
+    outbound connections to known mining pools or using cron
+    jobs/scripts to maintain persistence.
+
+    Execve of systemctl or service stop. Unlink/unlinkat on service
+    binaries or data targets.
+
+    Execve=/sbin/shutdown or /sbin/reboot.
+
+======================================================================

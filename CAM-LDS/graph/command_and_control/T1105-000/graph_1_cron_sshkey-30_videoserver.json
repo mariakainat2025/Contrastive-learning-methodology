@@ -1,0 +1,441 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "1_cron_sshkey-30",
+  "host": "videoserver",
+  "start_ts": 1758696460684000000,
+  "end_ts": 1758696481248000000,
+  "n_nodes": 17,
+  "n_edges": 17,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696460684000000,
+        "name": "pid:17157",
+        "uuid": "d061b1b8-7b39-5bf3-84ae-1cdc20eeb8ae"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696460684000000,
+        "name": "/usr/bin/dash",
+        "uuid": "aa930214-1f27-5077-9437-c02dee46bc4a"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696460684000000,
+        "name": "/usr/bin/curl",
+        "uuid": "05c24e39-e9b7-5a6d-b362-2588201f73d4"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758696460704000000,
+        "name": "192.42.1.174:80",
+        "uuid": "14f1a362-4da7-5f41-babf-4926827c320b"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696481232000000,
+        "name": "/usr/sbin/cron",
+        "uuid": "58d5fab2-3fa4-5161-bb10-2335ed947104"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1758696481232000000,
+        "name": "/etc/shadow",
+        "uuid": "75fa51ec-cd75-5865-af17-e125e547013b"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481236000000,
+        "name": "pam:root:USER_ACCT",
+        "uuid": "4f343f1b-6df7-5ac4-af91-111f70156506"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481236000000,
+        "name": "pam:root:CRED_ACQ",
+        "uuid": "76001294-8f30-5b0d-950a-b184080c2185"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481236000000,
+        "name": "acct:root:LOGIN",
+        "uuid": "cbf44872-c728-5106-84c0-1441eb832f31"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481236000000,
+        "name": "pam:root:USER_START",
+        "uuid": "b6111240-d48e-5da7-a30c-c1cb9509ae95"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696481236000000,
+        "name": "setgid [no target]",
+        "uuid": "af93c2fc-add0-5705-a74a-426eb942b283"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696481240000000,
+        "name": "setuid [no target]",
+        "uuid": "274d13a2-e04f-503a-8c73-e74035508077"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696481240000000,
+        "name": "/usr/sbin/logrotate",
+        "uuid": "644f4fe8-d5b3-59b7-839b-056ae46bc520"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758696481244000000,
+        "name": "unlink [filtered target]",
+        "uuid": "da04f49c-90c0-5be1-8d06-12f6bc5e4ae5"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "FileObject",
+        "ts": 1758696481244000000,
+        "name": "/var/lib/logrotate/status.tmp -> /var/lib/logrotate/status",
+        "uuid": "1007fe48-bc27-5837-8063-845e40fd1e53"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481248000000,
+        "name": "pam:root:CRED_DISP",
+        "uuid": "5bb2104c-c2b0-5c31-a5b4-1a3dcdf5657f"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758696481248000000,
+        "name": "pam:root:USER_END",
+        "uuid": "ede840ad-15b1-5814-9958-eb5b0516341e"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "d061b1b8-7b39-5bf3-84ae-1cdc20eeb8ae",
+      "aa930214-1f27-5077-9437-c02dee46bc4a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758696460684000000,
+        "count": 1,
+        "event_ids": "13534"
+      }
+    ],
+    [
+      "d061b1b8-7b39-5bf3-84ae-1cdc20eeb8ae",
+      "05c24e39-e9b7-5a6d-b362-2588201f73d4",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758696460684000000,
+        "count": 1,
+        "event_ids": "13535"
+      }
+    ],
+    [
+      "05c24e39-e9b7-5a6d-b362-2588201f73d4",
+      "14f1a362-4da7-5f41-babf-4926827c320b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758696460704000000,
+        "count": 1,
+        "event_ids": "13536"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "75fa51ec-cd75-5865-af17-e125e547013b",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758696481232000000,
+        "count": 1,
+        "event_ids": "13541"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "4f343f1b-6df7-5ac4-af91-111f70156506",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1758696481236000000,
+        "count": 1,
+        "event_ids": "13542"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "76001294-8f30-5b0d-950a-b184080c2185",
+      "cred_acq",
+      {
+        "edge_type": "CRED_ACQ",
+        "ts": 1758696481236000000,
+        "count": 1,
+        "event_ids": "13543"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "cbf44872-c728-5106-84c0-1441eb832f31",
+      "login",
+      {
+        "edge_type": "LOGIN",
+        "ts": 1758696481236000000,
+        "count": 1,
+        "event_ids": "13544"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "b6111240-d48e-5da7-a30c-c1cb9509ae95",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1758696481236000000,
+        "count": 1,
+        "event_ids": "13545"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "af93c2fc-add0-5705-a74a-426eb942b283",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1758696481236000000,
+        "count": 1,
+        "event_ids": "13546"
+      }
+    ],
+    [
+      "aa930214-1f27-5077-9437-c02dee46bc4a",
+      "644f4fe8-d5b3-59b7-839b-056ae46bc520",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758696481240000000,
+        "count": 1,
+        "event_ids": "13548"
+      }
+    ],
+    [
+      "aa930214-1f27-5077-9437-c02dee46bc4a",
+      "644f4fe8-d5b3-59b7-839b-056ae46bc520",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758696481240000000,
+        "count": 1,
+        "event_ids": "13549"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "274d13a2-e04f-503a-8c73-e74035508077",
+      "setuid",
+      {
+        "edge_type": "SETUID",
+        "ts": 1758696481240000000,
+        "count": 1,
+        "event_ids": "13547"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "aa930214-1f27-5077-9437-c02dee46bc4a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758696481240000000,
+        "count": 1,
+        "event_ids": "13548"
+      }
+    ],
+    [
+      "644f4fe8-d5b3-59b7-839b-056ae46bc520",
+      "da04f49c-90c0-5be1-8d06-12f6bc5e4ae5",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1758696481244000000,
+        "count": 1,
+        "event_ids": "13550"
+      }
+    ],
+    [
+      "644f4fe8-d5b3-59b7-839b-056ae46bc520",
+      "1007fe48-bc27-5837-8063-845e40fd1e53",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1758696481244000000,
+        "count": 1,
+        "event_ids": "13551"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "5bb2104c-c2b0-5c31-a5b4-1a3dcdf5657f",
+      "cred_disp",
+      {
+        "edge_type": "CRED_DISP",
+        "ts": 1758696481248000000,
+        "count": 1,
+        "event_ids": "13552"
+      }
+    ],
+    [
+      "58d5fab2-3fa4-5161-bb10-2335ed947104",
+      "ede840ad-15b1-5814-9958-eb5b0516341e",
+      "user_end",
+      {
+        "edge_type": "USER_END",
+        "ts": 1758696481248000000,
+        "count": 1,
+        "event_ids": "13553"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:17157",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:17157",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ],
+    [
+      "/usr/sbin/cron",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_ACCT",
+      "pam:root:USER_ACCT"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_ACQ",
+      "pam:root:CRED_ACQ"
+    ],
+    [
+      "/usr/sbin/cron",
+      "LOGIN",
+      "acct:root:LOGIN"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/sbin/logrotate"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/sbin/logrotate"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETUID",
+      "setuid [no target]"
+    ],
+    [
+      "/usr/sbin/cron",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/sbin/logrotate",
+      "UNLINK",
+      "unlink [filtered target]"
+    ],
+    [
+      "/usr/sbin/logrotate",
+      "RENAME",
+      "/var/lib/logrotate/status.tmp -> /var/lib/logrotate/status"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_DISP",
+      "pam:root:CRED_DISP"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_END",
+      "pam:root:USER_END"
+    ]
+  ]
+}

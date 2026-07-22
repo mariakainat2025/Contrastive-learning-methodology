@@ -1,0 +1,17 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_cron-59",
+  "host": "client",
+  "n_triples": 8,
+  "sequence": [
+    "/usr/bin/bash execve_fail .index [not found].",
+    "pid:23503 execve /usr/bin/dash.",
+    "/usr/bin/bash execve /usr/bin/python3.10.",
+    "/usr/bin/python3.10 connect 192.42.1.174:4443.",
+    "pid:23506 execve /usr/bin/dash.",
+    "pid:23506 execve /usr/sbin/ldconfig.real.",
+    "/usr/bin/python3.10 execve_fail uname [not found].",
+    "pid:23506 execve /usr/bin/uname."
+  ]
+}

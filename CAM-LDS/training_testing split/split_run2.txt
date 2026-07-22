@@ -1,0 +1,116 @@
+# Run 2 (seed=7002) — 15 test / 98 train — tactics={'Command_and_Control': 9, 'Initial_Access': 6} variant=9 unique=6
+# TEST
+TEST  Initial_Access       VARIANT  T1078-002/sequence_7-3_docker.json
+TEST  Initial_Access       VARIANT  T1078-003/sequence_3_ssh_healthcheck-5_reposerver.json
+TEST  Initial_Access       UNIQUE   T1078-003/sequence_3_ssh_puppet-37_reposerver.json
+TEST  Initial_Access       VARIANT  T1078-003/sequence_3_ssh_puppet-5_reposerver.json
+TEST  Initial_Access       UNIQUE   T1078-003/sequence_4-4_reposerver.json
+TEST  Initial_Access       UNIQUE   T1078-003/sequence_4-5_reposerver.json
+TEST  Command_and_Control  VARIANT  T1105-000/sequence_1_racecondition_localaccount-21_videoserver.json
+TEST  Command_and_Control  VARIANT  T1105-000/sequence_1_racecondition_pam-29_videoserver.json
+TEST  Command_and_Control  VARIANT  T1105-000/sequence_1_racecondition_sshkey-30_videoserver.json
+TEST  Command_and_Control  VARIANT  T1105-000/sequence_1_sudo_localaccount-38_videoserver.json
+TEST  Command_and_Control  VARIANT  T1105-000/sequence_1_validaccount_localaccount-38_videoserver.json
+TEST  Command_and_Control  UNIQUE   T1105-000/sequence_2_rootkit-23_videoserver.json
+TEST  Command_and_Control  UNIQUE   T1105-000/sequence_6_macro_binary-1_client.json
+TEST  Command_and_Control  UNIQUE   T1219-000/sequence_6_screensharing_binary-57_client.json
+TEST  Command_and_Control  VARIANT  T1219-000/sequence_6_screensharing_cron-46_client.json
+# TRAIN
+TRAIN Command_and_Control  T1071-001/sequence_2_cron-2_videoserver.json
+TRAIN Command_and_Control  T1071-001/sequence_3_ssh_apt-16_reposerver.json
+TRAIN Command_and_Control  T1071-001/sequence_4-16_inetfw.json
+TRAIN Initial_Access       T1078-002/sequence_3_ssh_apt-1_reposerver.json
+TRAIN Initial_Access       T1078-002/sequence_3_ssh_apt-2_reposerver.json
+TRAIN Initial_Access       T1078-002/sequence_3_ssh_healthcheck-1_reposerver.json
+TRAIN Initial_Access       T1078-002/sequence_3_ssh_healthcheck-2_reposerver.json
+TRAIN Initial_Access       T1078-002/sequence_3_ssh_puppet-1_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_localaccount-55_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_localaccount-56_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_pam-55_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_pam-56_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_sshkey-55_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_1_validaccount_sshkey-56_videoserver.json
+TRAIN Initial_Access       T1078-003/sequence_3_ssh_apt-4_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_3_ssh_apt-5_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_3_ssh_healthcheck-4_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_3_ssh_puppet-4_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_4-19_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_4-20_reposerver.json
+TRAIN Initial_Access       T1078-003/sequence_4-21_linuxshare.json
+TRAIN Initial_Access       T1078-003/sequence_4-6_inetfw.json
+TRAIN Command_and_Control  T1105-000/sequence_1_cron_localaccount-21_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_cron_pam-29_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_cron_sshkey-30_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_localaccount-35_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_localaccount-38_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_pam-35_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_pam-41_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_sshkey-35_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_pwnkit_sshkey-43_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_sudo_pam-41_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_sudo_sshkey-43_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_validaccount_pam-41_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_1_validaccount_sshkey-43_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_2_cron-19_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_2_cron-3_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_2_rootkit-19_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_2_rootkit-3_videoserver.json
+TRAIN Command_and_Control  T1105-000/sequence_3_ssh_apt-16_reposerver.json
+TRAIN Command_and_Control  T1105-000/sequence_3_ssh_apt-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_ssh_healthcheck-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_ssh_puppet-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_ssh_puppet-40_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_vnc_apt-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_vnc_healthcheck-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_vnc_puppet-25_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_3_vnc_puppet-60_linuxshare.json
+TRAIN Command_and_Control  T1105-000/sequence_6_macro_binary-11_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_macro_binary-14_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_macro_binary-4_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_macro_cron-14_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_macro_cron-4_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_binary-14_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_binary-49_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_binary-4_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_binary-53_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_cron-14_client.json
+TRAIN Command_and_Control  T1105-000/sequence_6_screensharing_cron-49_client.json
+TRAIN Initial_Access       T1133-000/sequence_3_ssh_apt-1_reposerver.json
+TRAIN Initial_Access       T1133-000/sequence_3_ssh_healthcheck-1_reposerver.json
+TRAIN Initial_Access       T1133-000/sequence_3_ssh_puppet-1_reposerver.json
+TRAIN Initial_Access       T1133-000/sequence_7-3_docker.json
+TRAIN Initial_Access       T1190-000/sequence_1_autostart_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_autostart_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_autostart_sshkey-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_cron_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_cron_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_cron_sshkey-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_pwnkit_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_pwnkit_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_pwnkit_sshkey-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_racecondition_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_racecondition_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_racecondition_sshkey-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_sudo_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_sudo_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_sudo_sshkey-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_validaccount_localaccount-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_validaccount_pam-5_videoserver.json
+TRAIN Initial_Access       T1190-000/sequence_1_validaccount_sshkey-5_videoserver.json
+TRAIN Command_and_Control  T1205-001/sequence_4-16_inetfw.json
+TRAIN Command_and_Control  T1205-001/sequence_4-9_inetfw.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-41_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-45_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-46_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-47_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-49_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-51_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-53_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_binary-59_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-41_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-45_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-47_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-49_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-51_client.json
+TRAIN Command_and_Control  T1219-000/sequence_6_screensharing_cron-59_client.json
+TRAIN Command_and_Control  T1573-001/sequence_2_cron-2_videoserver.json

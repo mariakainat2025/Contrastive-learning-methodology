@@ -1,0 +1,1359 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "6_macro_binary-11",
+  "host": "client",
+  "start_ts": 1765277686220000000,
+  "end_ts": 1765277686260000000,
+  "n_nodes": 55,
+  "n_edges": 53,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765277686220000000,
+        "name": "curl",
+        "uuid": "abcac937-5ce7-5db4-93ef-b5aecacaab8a"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1765277686220000000,
+        "name": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "uuid": "07c11c0d-2f51-5b82-9fd1-c03b7410f807"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765277686224000000,
+        "name": "/etc/ld.so.cache",
+        "uuid": "71f8b05a-1087-57ce-aa93-b198502eb5fc"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765277686224000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libcurl.so.4.7.0",
+        "uuid": "ac4691ff-0659-5c2a-bebb-3bc236f741d6"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1765277686224000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11",
+        "uuid": "11f31e51-9ef1-52d8-b529-19b83e294461"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "uuid": "88275069-579e-5592-9733-9693699c29c0"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.20.1",
+        "uuid": "cdef6440-474c-5961-8eb3-8b4c737efb2f"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libidn2.so.0.3.7",
+        "uuid": "31e1eea2-2e93-5101-9d0c-43ff25a65bb3"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/librtmp.so.1",
+        "uuid": "cc53e1a3-d4d9-5f05-9183-2c82ee2bdd39"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libssh.so.4.8.7",
+        "uuid": "b2060098-b9af-5edc-95c0-d8784067e7fe"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2",
+        "uuid": "ee1ffede-69a3-5d24-b89f-07c991d3fae5"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+        "uuid": "e1756558-30cf-5c88-a226-bb6eb823d392"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+        "uuid": "54ac3225-63bd-5fb5-a6c9-a5d6527a0f24"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2",
+        "uuid": "19ee0cf6-8add-5ac3-a3b3-f3d113f6c136"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libldap-2.5.so.0.1.12",
+        "uuid": "edf20247-fbeb-5e3a-999d-e3816a7ebde9"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/liblber-2.5.so.0.1.12",
+        "uuid": "64847de7-dc51-54fa-933e-abc16d7f11b6"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libzstd.so.1.4.8",
+        "uuid": "be441ce7-c141-5c5a-b117-6a0eda24c832"
+      }
+    ],
+    [
+      17,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.9",
+        "uuid": "4219e566-ed40-50cf-8917-eb4ce958b943"
+      }
+    ],
+    [
+      18,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libunistring.so.2.2.0",
+        "uuid": "53eee139-82b7-5246-98a7-531bcb22ca8a"
+      }
+    ],
+    [
+      19,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0",
+        "uuid": "9d147b20-e033-5586-9cbf-0c93aa1e4c4c"
+      }
+    ],
+    [
+      20,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libhogweed.so.6.4",
+        "uuid": "c149bbe5-b0db-5e1f-ae08-f739cd82ec41"
+      }
+    ],
+    [
+      21,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libnettle.so.8.4",
+        "uuid": "232a8dca-2d08-595a-8a78-3da5cb43e408"
+      }
+    ],
+    [
+      22,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libgmp.so.10.4.1",
+        "uuid": "ec7eb2d7-dcb6-54ca-86b6-8144e90b3dc1"
+      }
+    ],
+    [
+      23,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3",
+        "uuid": "e90f11ac-9bad-5aa8-911d-14fc0a633c1e"
+      }
+    ],
+    [
+      24,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1",
+        "uuid": "d2db81f7-1d2c-56c1-bb3e-c2afa49c77d1"
+      }
+    ],
+    [
+      25,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1",
+        "uuid": "d272f6c7-49ca-56d1-871f-7227999100e4"
+      }
+    ],
+    [
+      26,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1",
+        "uuid": "c4c4051d-d90f-58ad-bed1-2c93111f27cc"
+      }
+    ],
+    [
+      27,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25",
+        "uuid": "5e76fdbd-d59c-5a17-8c75-25fabfb659b6"
+      }
+    ],
+    [
+      28,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.9",
+        "uuid": "51b959a3-0fae-5c0e-87fe-1dc9d280f647"
+      }
+    ],
+    [
+      29,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0",
+        "uuid": "815abb65-d4eb-5a3f-8641-d7924cb78285"
+      }
+    ],
+    [
+      30,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2",
+        "uuid": "0d8dc842-eb2d-5685-96ea-e5e7b8c467dc"
+      }
+    ],
+    [
+      31,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.9",
+        "uuid": "43bce2e5-dbb8-5d25-b6ed-eb0f3deb9739"
+      }
+    ],
+    [
+      32,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libresolv.so.2",
+        "uuid": "bd370a6c-5d8c-5031-918f-820b51c7801d"
+      }
+    ],
+    [
+      33,
+      {
+        "type": "FileObject",
+        "ts": 1765277686228000000,
+        "name": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.0",
+        "uuid": "31b12abb-7d81-5e24-bd1d-89c3a26eec34"
+      }
+    ],
+    [
+      34,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/etc/ssl/openssl.cnf",
+        "uuid": "cb79c590-a157-5994-8adb-651a1b6f4653"
+      }
+    ],
+    [
+      35,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/locale-archive",
+        "uuid": "4d56c7f0-0085-531a-b973-2fdb01582e7d"
+      }
+    ],
+    [
+      36,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/etc/locale.alias",
+        "uuid": "b759beea-53d3-5948-b5e2-1f248cebd02a"
+      }
+    ],
+    [
+      37,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_IDENTIFICATION",
+        "uuid": "7eadaf25-9831-52f5-b782-c66d4523ddf5"
+      }
+    ],
+    [
+      38,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache",
+        "uuid": "b2d7cdc4-fee6-5d9b-bcf9-f8a7e60ce532"
+      }
+    ],
+    [
+      39,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_MEASUREMENT",
+        "uuid": "ae8edcbf-b4f5-5465-b7cd-93ac3c45e8c9"
+      }
+    ],
+    [
+      40,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_TELEPHONE",
+        "uuid": "c6b08629-7646-584f-bc76-297be8a50177"
+      }
+    ],
+    [
+      41,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_ADDRESS",
+        "uuid": "c867d29f-1850-538b-9243-dbcdc5e0c323"
+      }
+    ],
+    [
+      42,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_NAME",
+        "uuid": "55065055-4532-54f3-b0d3-c7adf5f07076"
+      }
+    ],
+    [
+      43,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_PAPER",
+        "uuid": "7ad3fd6a-71c3-57af-a6d4-c3f7d1e48b27"
+      }
+    ],
+    [
+      44,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_MESSAGES/",
+        "uuid": "dec576c2-5f6b-52cc-9727-a4306b785874"
+      }
+    ],
+    [
+      45,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES",
+        "uuid": "580899c6-c391-5257-b42e-1c804eefafa8"
+      }
+    ],
+    [
+      46,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_MONETARY",
+        "uuid": "b9f86527-1727-5104-aa00-f47a5684c053"
+      }
+    ],
+    [
+      47,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_COLLATE",
+        "uuid": "1c6c41ef-da82-5eba-8992-0e8c01a71c21"
+      }
+    ],
+    [
+      48,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_TIME",
+        "uuid": "9ebe5e7f-f767-512a-a7d4-24d284d66cd4"
+      }
+    ],
+    [
+      49,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_NUMERIC",
+        "uuid": "29270ed2-0f8a-5906-942e-9e8e704ea8c2"
+      }
+    ],
+    [
+      50,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/usr/lib/locale/C.utf8/LC_CTYPE",
+        "uuid": "385bea0a-0d24-571e-a122-ebf523e6e744"
+      }
+    ],
+    [
+      51,
+      {
+        "type": "FileObject",
+        "ts": 1765277686240000000,
+        "name": "/home/judy/.curlrc",
+        "uuid": "b8f06f71-fe66-51e9-8398-55254e4fe911"
+      }
+    ],
+    [
+      52,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765277686240000000,
+        "name": "/usr/bin/curl",
+        "uuid": "9081653a-5664-5ac2-82c0-aafc2e87f596"
+      }
+    ],
+    [
+      53,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765277686240000000,
+        "name": "192.168.50.254:3128",
+        "uuid": "8635dccc-a316-5322-b97c-92c39ce05bc9"
+      }
+    ],
+    [
+      54,
+      {
+        "type": "FileObject",
+        "ts": 1765277686260000000,
+        "name": "/home/judy/.local/share/firefox/firefox-startup",
+        "uuid": "3befc82c-c9bb-504c-bf48-840081171bde"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "07c11c0d-2f51-5b82-9fd1-c03b7410f807",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686220000000,
+        "count": 1,
+        "event_ids": "8018"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "71f8b05a-1087-57ce-aa93-b198502eb5fc",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686224000000,
+        "count": 1,
+        "event_ids": "8019"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "ac4691ff-0659-5c2a-bebb-3bc236f741d6",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686224000000,
+        "count": 2,
+        "event_ids": "8020,8021"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "11f31e51-9ef1-52d8-b529-19b83e294461",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686224000000,
+        "count": 2,
+        "event_ids": "8022,8023"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "88275069-579e-5592-9733-9693699c29c0",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8024,8025"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "cdef6440-474c-5961-8eb3-8b4c737efb2f",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8026,8027"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "31e1eea2-2e93-5101-9d0c-43ff25a65bb3",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8028,8029"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "cc53e1a3-d4d9-5f05-9183-2c82ee2bdd39",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8030,8031"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "b2060098-b9af-5edc-95c0-d8784067e7fe",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8032,8033"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "ee1ffede-69a3-5d24-b89f-07c991d3fae5",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8034,8035"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "e1756558-30cf-5c88-a226-bb6eb823d392",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8036,8037"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "54ac3225-63bd-5fb5-a6c9-a5d6527a0f24",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8038,8039"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "19ee0cf6-8add-5ac3-a3b3-f3d113f6c136",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8040,8041"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "edf20247-fbeb-5e3a-999d-e3816a7ebde9",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8042,8043"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "64847de7-dc51-54fa-933e-abc16d7f11b6",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8044,8045"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "be441ce7-c141-5c5a-b117-6a0eda24c832",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8046,8047"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "4219e566-ed40-50cf-8917-eb4ce958b943",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8048,8049"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "53eee139-82b7-5246-98a7-531bcb22ca8a",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8050,8051"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "9d147b20-e033-5586-9cbf-0c93aa1e4c4c",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8052,8053"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "c149bbe5-b0db-5e1f-ae08-f739cd82ec41",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8054,8055"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "232a8dca-2d08-595a-8a78-3da5cb43e408",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8056,8057"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "ec7eb2d7-dcb6-54ca-86b6-8144e90b3dc1",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8058,8059"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "e90f11ac-9bad-5aa8-911d-14fc0a633c1e",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8060,8061"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "d2db81f7-1d2c-56c1-bb3e-c2afa49c77d1",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8062,8063"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "d272f6c7-49ca-56d1-871f-7227999100e4",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8064,8065"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "c4c4051d-d90f-58ad-bed1-2c93111f27cc",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8066,8067"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "5e76fdbd-d59c-5a17-8c75-25fabfb659b6",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8068,8069"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "51b959a3-0fae-5c0e-87fe-1dc9d280f647",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8070,8071"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "815abb65-d4eb-5a3f-8641-d7924cb78285",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8072,8073"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "0d8dc842-eb2d-5685-96ea-e5e7b8c467dc",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8074,8075"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "43bce2e5-dbb8-5d25-b6ed-eb0f3deb9739",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8076,8077"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "bd370a6c-5d8c-5031-918f-820b51c7801d",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8078,8079"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "31b12abb-7d81-5e24-bd1d-89c3a26eec34",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686228000000,
+        "count": 2,
+        "event_ids": "8080,8081"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "cb79c590-a157-5994-8adb-651a1b6f4653",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8082"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "4d56c7f0-0085-531a-b973-2fdb01582e7d",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8083"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "b759beea-53d3-5948-b5e2-1f248cebd02a",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8084"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "7eadaf25-9831-52f5-b782-c66d4523ddf5",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8085"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "b2d7cdc4-fee6-5d9b-bcf9-f8a7e60ce532",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8086"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "ae8edcbf-b4f5-5465-b7cd-93ac3c45e8c9",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8087"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "c6b08629-7646-584f-bc76-297be8a50177",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8088"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "c867d29f-1850-538b-9243-dbcdc5e0c323",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8089"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "55065055-4532-54f3-b0d3-c7adf5f07076",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8090"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "7ad3fd6a-71c3-57af-a6d4-c3f7d1e48b27",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8091"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "dec576c2-5f6b-52cc-9727-a4306b785874",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8092"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "580899c6-c391-5257-b42e-1c804eefafa8",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8093"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "b9f86527-1727-5104-aa00-f47a5684c053",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8094"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "1c6c41ef-da82-5eba-8992-0e8c01a71c21",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8095"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "9ebe5e7f-f767-512a-a7d4-24d284d66cd4",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8096"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "29270ed2-0f8a-5906-942e-9e8e704ea8c2",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8097"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "385bea0a-0d24-571e-a122-ebf523e6e744",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8098"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "b8f06f71-fe66-51e9-8398-55254e4fe911",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686240000000,
+        "count": 2,
+        "event_ids": "8099,8100"
+      }
+    ],
+    [
+      "9081653a-5664-5ac2-82c0-aafc2e87f596",
+      "8635dccc-a316-5322-b97c-92c39ce05bc9",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765277686240000000,
+        "count": 1,
+        "event_ids": "8101"
+      }
+    ],
+    [
+      "abcac937-5ce7-5db4-93ef-b5aecacaab8a",
+      "3befc82c-c9bb-504c-bf48-840081171bde",
+      "avc",
+      {
+        "edge_type": "AVC",
+        "ts": 1765277686260000000,
+        "count": 1,
+        "event_ids": "8102"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/etc/ld.so.cache"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libcurl.so.4.7.0"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libc.so.6"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.20.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libidn2.so.0.3.7"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/librtmp.so.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libssh.so.4.8.7"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libssl.so.3"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libcrypto.so.3"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libldap-2.5.so.0.1.12"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/liblber-2.5.so.0.1.12"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libzstd.so.1.4.8"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.9"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libunistring.so.2.2.0"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libhogweed.so.6.4"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libnettle.so.8.4"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libgmp.so.10.4.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.9"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.9"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libresolv.so.2"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.0"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/etc/ssl/openssl.cnf"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/locale-archive"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/etc/locale.alias"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_IDENTIFICATION"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_MEASUREMENT"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_TELEPHONE"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_ADDRESS"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_NAME"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_PAPER"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_MESSAGES/"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_MONETARY"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_COLLATE"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_TIME"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_NUMERIC"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/usr/lib/locale/C.utf8/LC_CTYPE"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/home/judy/.curlrc"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.168.50.254:3128"
+    ],
+    [
+      "curl",
+      "AVC",
+      "/home/judy/.local/share/firefox/firefox-startup"
+    ]
+  ]
+}

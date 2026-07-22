@@ -1,0 +1,55 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0008
+======================================================================
+  ID         : TA0008
+  NAME       : Lateral Movement
+
+  OBJECTIVE  : The adversary is trying to move through your environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Lateral Movement consists of techniques that adversaries use to
+  enter and control remote systems on a network. Following through
+  on their primary objective often requires exploring the network to
+  find their target, then pivoting through multiple systems and
+  accounts to gain access to it. Adversaries might install their own
+  remote access tools to accomplish Lateral Movement or use
+  legitimate credentials with native network and operating system
+  tools, which may be stealthier.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Execve of /bin/sh,/bin/bash,/usr/bin/curl,/usr/bin/python by
+    service accounts (e.g., apache, mysql, nobody) immediately after
+    inbound network activity.
+
+    Delivery of suspicious internal communication (e.g.,
+    Thunderbird, Evolution) using compromised internal accounts.
+    Sequence of: unexpected user activity + mail transfer logs +
+    download or execution of attachments.
+
+    Execve: Invocation of scp, rsync, curl, or sftp. Create: New
+    file created in system binaries or temp directories.
+
+    Execve: Commands executed within an SSH session where no
+    matching logon/authentication event exists.
+
+    SSH session from new source IP followed by interactive shell or
+    privilege escalation (e.g., sudo, su) and outbound lateral
+    connection.
+
+    Detects remote scripts or binaries deployed via Puppet, Chef,
+    Ansible, or shell scripts from orchestration servers executing
+    outside maintenance windows or in unmanaged nodes.
+
+    Detects script or binary modification within shared NFS/SMB
+    directories followed by process execution from those paths.
+
+    Execution of ssh, scp, or sftp using previously unseen
+    credentials or keys.
+
+======================================================================

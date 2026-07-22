@@ -1,0 +1,811 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "4-5",
+  "host": "reposerver",
+  "start_ts": 1765796671820000000,
+  "end_ts": 1765796672348000000,
+  "n_nodes": 35,
+  "n_edges": 30,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796671820000000,
+        "name": "/usr/sbin/sshd",
+        "uuid": "cf872fe2-42b0-5b71-806d-a861cc36908f"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1765796671820000000,
+        "name": "/dev/pts/1",
+        "uuid": "096bfad2-8b3a-5351-b9cd-87d05cc0960b"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765796671820000000,
+        "name": "/var/run/utmp",
+        "uuid": "fef42e6c-38fb-55a1-b063-c6a9be8dd063"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765796671820000000,
+        "name": "/var/log/wtmp",
+        "uuid": "59154f6b-93cc-512c-b632-74bff5c0784a"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1765796671820000000,
+        "name": "/var/log/lastlog",
+        "uuid": "652a19e2-ac9b-5720-9540-c3f79eee0a43"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796671820000000,
+        "name": "192.42.1.174",
+        "uuid": "9dea07c1-e35d-58a2-ba1b-a76f12822d26"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765796671820000000,
+        "name": "acct:root:USER_LOGIN",
+        "uuid": "37ca4602-e5f2-554b-9e65-4c72bb68e812"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796671832000000,
+        "name": "/usr/bin/bash",
+        "uuid": "6b134504-0982-5aa3-971d-ac589b292214"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "FileObject",
+        "ts": 1765796671832000000,
+        "name": "/etc/profile",
+        "uuid": "055360e4-65f3-56db-8027-e47939e8d433"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "FileObject",
+        "ts": 1765796671836000000,
+        "name": "/etc/profile.d/",
+        "uuid": "91229962-a76c-5cfb-9b62-0b41b9e02a90"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "FileObject",
+        "ts": 1765796671836000000,
+        "name": "/etc/profile.d/01-locale-fix.sh",
+        "uuid": "46b0517d-9de7-510b-9d53-cd33ea24e90e"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "FileObject",
+        "ts": 1765796671840000000,
+        "name": "/etc/profile.d/Z97-byobu.sh",
+        "uuid": "f741a1ed-6675-5f38-aa0c-0a0b1b5cd918"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765796671840000000,
+        "name": "/etc/profile.d/Z99-cloud-locale-test.sh",
+        "uuid": "a75621ad-c1a2-53af-9d9c-4ae283e94a22"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765796671844000000,
+        "name": "/etc/profile.d/Z99-cloudinit-warnings.sh",
+        "uuid": "64cd331e-ca97-54c3-80c6-08f4a92a2113"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "FileObject",
+        "ts": 1765796671844000000,
+        "name": "/etc/profile.d/apps-bin-path.sh",
+        "uuid": "aeb31f52-8bbe-54e0-976b-e570d7537b94"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "FileObject",
+        "ts": 1765796671844000000,
+        "name": "/etc/profile.d/bash_completion.sh",
+        "uuid": "fc96c210-db61-5d42-b424-752de6a9d264"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/cedilla-portuguese.sh",
+        "uuid": "47977cf2-d34b-598c-b67a-ca83119e466e"
+      }
+    ],
+    [
+      17,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/gawk.sh",
+        "uuid": "89f75bcb-be3c-526b-8f4d-deb3176cc9d7"
+      }
+    ],
+    [
+      18,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/gnome-session_gnomerc.sh",
+        "uuid": "eb698e52-f66a-5158-8bc6-a0c50e0fca77"
+      }
+    ],
+    [
+      19,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/im-config_wayland.sh",
+        "uuid": "1bed0d2f-d3f3-5928-a625-b87fa9a4ccdd"
+      }
+    ],
+    [
+      20,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/mate-qt.sh",
+        "uuid": "798273a9-1bd7-5eee-bd5d-c0ce765af80a"
+      }
+    ],
+    [
+      21,
+      {
+        "type": "FileObject",
+        "ts": 1765796671852000000,
+        "name": "/etc/profile.d/puppet-agent.sh",
+        "uuid": "f97ece8e-e019-5f52-8104-205e9a108ae2"
+      }
+    ],
+    [
+      22,
+      {
+        "type": "FileObject",
+        "ts": 1765796671856000000,
+        "name": "/usr/bin/grep",
+        "uuid": "8d653716-a0bf-5b56-9d9f-44d3672b7232"
+      }
+    ],
+    [
+      23,
+      {
+        "type": "FileObject",
+        "ts": 1765796671860000000,
+        "name": "/etc/profile.d/vala-panel-appmenu.sh",
+        "uuid": "5ed64838-f202-5966-85b8-27665773caf0"
+      }
+    ],
+    [
+      24,
+      {
+        "type": "FileObject",
+        "ts": 1765796671860000000,
+        "name": "/etc/profile.d/vte-2.91.sh",
+        "uuid": "9034698b-f442-5c54-924b-46388913532c"
+      }
+    ],
+    [
+      25,
+      {
+        "type": "FileObject",
+        "ts": 1765796671860000000,
+        "name": "/etc/profile.d/xdg_dirs_desktop_session.sh",
+        "uuid": "5e7cd146-42e4-5367-a66f-f90d0ec34696"
+      }
+    ],
+    [
+      26,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796671876000000,
+        "name": "/usr/bin/ssh",
+        "uuid": "03aa0574-be78-5681-a4c2-65fe1f82460c"
+      }
+    ],
+    [
+      27,
+      {
+        "type": "FileObject",
+        "ts": 1765796671888000000,
+        "name": "/etc/resolv.conf",
+        "uuid": "312adc72-5d53-5e4c-b149-7f36192ad763"
+      }
+    ],
+    [
+      28,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765796671888000000,
+        "name": "172.17.100.254:53",
+        "uuid": "0795f21d-2dd1-51b4-a9bc-7b24408085fa"
+      }
+    ],
+    [
+      29,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765796671892000000,
+        "name": "172.17.100.254:22",
+        "uuid": "1ecb5b66-59fa-518e-ab18-bf2ee38d46aa"
+      }
+    ],
+    [
+      30,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796672324000000,
+        "name": "/usr/libexec/accounts-daemon",
+        "uuid": "e0c1df74-9fb3-52e7-be44-210b443db4a0"
+      }
+    ],
+    [
+      31,
+      {
+        "type": "FileObject",
+        "ts": 1765796672324000000,
+        "name": "/etc/shadow",
+        "uuid": "e35e3fb7-551b-5cca-86c7-9534622673a5"
+      }
+    ],
+    [
+      32,
+      {
+        "type": "FileObject",
+        "ts": 1765796672324000000,
+        "name": "/etc/shells",
+        "uuid": "2e1f8e2d-e8e9-5b8f-b1a3-76db915cf5a3"
+      }
+    ],
+    [
+      33,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765796672348000000,
+        "name": "/usr/libexec/polkitd",
+        "uuid": "6eccd6b6-a13e-5e62-ba41-e8d1b3af42d7"
+      }
+    ],
+    [
+      34,
+      {
+        "type": "FileObject",
+        "ts": 1765796672348000000,
+        "name": "/run/systemd/userdb/io.systemd.DynamicUser",
+        "uuid": "2be06323-5487-53d8-802f-a88f53e3362e"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "cf872fe2-42b0-5b71-806d-a861cc36908f",
+      "096bfad2-8b3a-5351-b9cd-87d05cc0960b",
+      "chown",
+      {
+        "edge_type": "CHOWN",
+        "ts": 1765796671820000000,
+        "count": 1,
+        "event_ids": "15793"
+      }
+    ],
+    [
+      "cf872fe2-42b0-5b71-806d-a861cc36908f",
+      "fef42e6c-38fb-55a1-b063-c6a9be8dd063",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671820000000,
+        "count": 1,
+        "event_ids": "15794"
+      }
+    ],
+    [
+      "cf872fe2-42b0-5b71-806d-a861cc36908f",
+      "59154f6b-93cc-512c-b632-74bff5c0784a",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671820000000,
+        "count": 1,
+        "event_ids": "15795"
+      }
+    ],
+    [
+      "cf872fe2-42b0-5b71-806d-a861cc36908f",
+      "652a19e2-ac9b-5720-9540-c3f79eee0a43",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671820000000,
+        "count": 1,
+        "event_ids": "15796"
+      }
+    ],
+    [
+      "9dea07c1-e35d-58a2-ba1b-a76f12822d26",
+      "37ca4602-e5f2-554b-9e65-4c72bb68e812",
+      "user_login",
+      {
+        "edge_type": "USER_LOGIN",
+        "ts": 1765796671820000000,
+        "count": 1,
+        "event_ids": "15797"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "055360e4-65f3-56db-8027-e47939e8d433",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671832000000,
+        "count": 1,
+        "event_ids": "15798"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "91229962-a76c-5cfb-9b62-0b41b9e02a90",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671836000000,
+        "count": 1,
+        "event_ids": "15799"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "46b0517d-9de7-510b-9d53-cd33ea24e90e",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671836000000,
+        "count": 1,
+        "event_ids": "15800"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "f741a1ed-6675-5f38-aa0c-0a0b1b5cd918",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671840000000,
+        "count": 1,
+        "event_ids": "15801"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "a75621ad-c1a2-53af-9d9c-4ae283e94a22",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671840000000,
+        "count": 1,
+        "event_ids": "15802"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "64cd331e-ca97-54c3-80c6-08f4a92a2113",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671844000000,
+        "count": 1,
+        "event_ids": "15803"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "aeb31f52-8bbe-54e0-976b-e570d7537b94",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671844000000,
+        "count": 1,
+        "event_ids": "15804"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "fc96c210-db61-5d42-b424-752de6a9d264",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671844000000,
+        "count": 1,
+        "event_ids": "15805"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "47977cf2-d34b-598c-b67a-ca83119e466e",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15806"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "89f75bcb-be3c-526b-8f4d-deb3176cc9d7",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15807"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "eb698e52-f66a-5158-8bc6-a0c50e0fca77",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15808"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "1bed0d2f-d3f3-5928-a625-b87fa9a4ccdd",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15809"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "798273a9-1bd7-5eee-bd5d-c0ce765af80a",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15810"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "f97ece8e-e019-5f52-8104-205e9a108ae2",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671852000000,
+        "count": 1,
+        "event_ids": "15811"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "8d653716-a0bf-5b56-9d9f-44d3672b7232",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765796671856000000,
+        "count": 2,
+        "event_ids": "15812,15813"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "5ed64838-f202-5966-85b8-27665773caf0",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671860000000,
+        "count": 1,
+        "event_ids": "15814"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "9034698b-f442-5c54-924b-46388913532c",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671860000000,
+        "count": 1,
+        "event_ids": "15815"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "5e7cd146-42e4-5367-a66f-f90d0ec34696",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671860000000,
+        "count": 1,
+        "event_ids": "15816"
+      }
+    ],
+    [
+      "6b134504-0982-5aa3-971d-ac589b292214",
+      "03aa0574-be78-5681-a4c2-65fe1f82460c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765796671876000000,
+        "count": 1,
+        "event_ids": "15817"
+      }
+    ],
+    [
+      "03aa0574-be78-5681-a4c2-65fe1f82460c",
+      "312adc72-5d53-5e4c-b149-7f36192ad763",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796671888000000,
+        "count": 1,
+        "event_ids": "15818"
+      }
+    ],
+    [
+      "03aa0574-be78-5681-a4c2-65fe1f82460c",
+      "0795f21d-2dd1-51b4-a9bc-7b24408085fa",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765796671888000000,
+        "count": 1,
+        "event_ids": "15819"
+      }
+    ],
+    [
+      "03aa0574-be78-5681-a4c2-65fe1f82460c",
+      "1ecb5b66-59fa-518e-ab18-bf2ee38d46aa",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765796671892000000,
+        "count": 1,
+        "event_ids": "15820"
+      }
+    ],
+    [
+      "e0c1df74-9fb3-52e7-be44-210b443db4a0",
+      "e35e3fb7-551b-5cca-86c7-9534622673a5",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796672324000000,
+        "count": 2,
+        "event_ids": "15821,15864"
+      }
+    ],
+    [
+      "e0c1df74-9fb3-52e7-be44-210b443db4a0",
+      "2e1f8e2d-e8e9-5b8f-b1a3-76db915cf5a3",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765796672324000000,
+        "count": 43,
+        "event_ids": "15822,15823,15824,15825,15826,15827+37"
+      }
+    ],
+    [
+      "6eccd6b6-a13e-5e62-ba41-e8d1b3af42d7",
+      "2be06323-5487-53d8-802f-a88f53e3362e",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765796672348000000,
+        "count": 8,
+        "event_ids": "15866,15867,15868,15869,15870,15871+2"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/sshd",
+      "CHOWN",
+      "/dev/pts/1"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/run/utmp"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/log/wtmp"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/log/lastlog"
+    ],
+    [
+      "192.42.1.174",
+      "USER_LOGIN",
+      "acct:root:USER_LOGIN"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/01-locale-fix.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/Z97-byobu.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/Z99-cloud-locale-test.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/Z99-cloudinit-warnings.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/apps-bin-path.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/bash_completion.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/cedilla-portuguese.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/gawk.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/gnome-session_gnomerc.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/im-config_wayland.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/mate-qt.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/puppet-agent.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/grep"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/vala-panel-appmenu.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/vte-2.91.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/xdg_dirs_desktop_session.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/ssh"
+    ],
+    [
+      "/usr/bin/ssh",
+      "OPENAT",
+      "/etc/resolv.conf"
+    ],
+    [
+      "/usr/bin/ssh",
+      "CONNECT",
+      "172.17.100.254:53"
+    ],
+    [
+      "/usr/bin/ssh",
+      "CONNECT",
+      "172.17.100.254:22"
+    ],
+    [
+      "/usr/libexec/accounts-daemon",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/libexec/accounts-daemon",
+      "OPENAT",
+      "/etc/shells"
+    ],
+    [
+      "/usr/libexec/polkitd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.DynamicUser"
+    ]
+  ]
+}

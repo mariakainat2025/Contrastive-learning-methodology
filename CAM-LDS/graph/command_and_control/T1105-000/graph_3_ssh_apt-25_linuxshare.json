@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "3_ssh_apt-25",
+  "host": "linuxshare",
+  "start_ts": 1765536437832000000,
+  "end_ts": 1765536437856000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765536437832000000,
+        "name": "pid:2520",
+        "uuid": "55d94c66-6a56-51f1-af5b-752dbb2e85fe"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765536437832000000,
+        "name": "/usr/bin/curl",
+        "uuid": "97166ccf-bd99-5c29-884c-cdaf11956ad5"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765536437856000000,
+        "name": "192.42.1.174:80",
+        "uuid": "aff18dd9-f8b0-5f6d-a6ec-c5113fd7eb7d"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "55d94c66-6a56-51f1-af5b-752dbb2e85fe",
+      "97166ccf-bd99-5c29-884c-cdaf11956ad5",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765536437832000000,
+        "count": 1,
+        "event_ids": "3853"
+      }
+    ],
+    [
+      "97166ccf-bd99-5c29-884c-cdaf11956ad5",
+      "aff18dd9-f8b0-5f6d-a6ec-c5113fd7eb7d",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765536437856000000,
+        "count": 1,
+        "event_ids": "3854"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:2520",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ]
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "3_ssh_puppet-5",
+  "host": "reposerver",
+  "start_ts": 1765543456048000000,
+  "end_ts": 1765543456112000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765543456048000000,
+        "name": "pid:3854",
+        "uuid": "e0683b5a-fd13-599b-8df3-e17833532b17"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765543456048000000,
+        "name": "/usr/bin/python3.10",
+        "uuid": "5cfe8d26-42e1-5fed-b64b-d0fc9cf4c698"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765543456112000000,
+        "name": "/usr/bin/snap",
+        "uuid": "e6a60f8a-b431-5ff5-ab9d-dbd5c7cef5cc"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "e0683b5a-fd13-599b-8df3-e17833532b17",
+      "5cfe8d26-42e1-5fed-b64b-d0fc9cf4c698",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765543456048000000,
+        "count": 1,
+        "event_ids": "16149"
+      }
+    ],
+    [
+      "5cfe8d26-42e1-5fed-b64b-d0fc9cf4c698",
+      "e6a60f8a-b431-5ff5-ab9d-dbd5c7cef5cc",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765543456112000000,
+        "count": 1,
+        "event_ids": "16150"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:3854",
+      "EXECVE",
+      "/usr/bin/python3.10"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "EXECVE",
+      "/usr/bin/snap"
+    ]
+  ]
+}

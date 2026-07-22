@@ -1,0 +1,416 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "1_racecondition_sshkey-30",
+  "host": "videoserver",
+  "start_ts": 1765304080834000128,
+  "end_ts": 1765304101766000128,
+  "n_nodes": 16,
+  "n_edges": 16,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304080834000128,
+        "name": "pid:17171",
+        "uuid": "a6c86c25-dd64-5692-a47f-75cdddb1c650"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304080834000128,
+        "name": "/usr/bin/dash",
+        "uuid": "76a0ab00-fa1c-5652-ace5-eed7b927231f"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304080834000128,
+        "name": "/usr/bin/curl",
+        "uuid": "cad23924-5fe5-54fe-b3ed-524e0b8a2005"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765304080861999872,
+        "name": "192.42.1.174:80",
+        "uuid": "09383428-755a-5068-907e-81ccf682cdd4"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304101753999872,
+        "name": "/usr/sbin/cron",
+        "uuid": "4400d2f1-7254-580e-9a85-032becdd8c7b"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1765304101753999872,
+        "name": "/etc/shadow",
+        "uuid": "a7743e35-e4e9-50ed-8b76-4d286565dd33"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101753999872,
+        "name": "pam:root:USER_ACCT",
+        "uuid": "6d0deb82-7866-5a60-98b5-efa76ec737ea"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101757999872,
+        "name": "pam:root:CRED_ACQ",
+        "uuid": "e90edb8d-9b9c-5107-a848-c52ae7163104"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101757999872,
+        "name": "acct:root:LOGIN",
+        "uuid": "6438a6a5-50b6-50f7-8526-0dff8dc2ec07"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101757999872,
+        "name": "pam:root:USER_START",
+        "uuid": "35f3ef5f-05f6-5125-aea3-7fe50ad5ece1"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304101762000128,
+        "name": "setgid [no target]",
+        "uuid": "6b21c2d8-a426-5ece-8e62-fc4fcf188876"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765304101762000128,
+        "name": "setuid [no target]",
+        "uuid": "4462750e-b3c1-5b04-9588-d37b447a474e"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765304101762000128,
+        "name": "/usr/share/awffull/awffull",
+        "uuid": "62fd5ba4-5ccc-5916-a14b-32b1af91f251"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765304101766000128,
+        "name": "/usr/bin/gawk",
+        "uuid": "3aad8486-c6a8-59d0-85f2-3a66a64df7c8"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101766000128,
+        "name": "pam:root:CRED_DISP",
+        "uuid": "c29a92e8-4f4a-584a-96ea-1cd395f678c1"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765304101766000128,
+        "name": "pam:root:USER_END",
+        "uuid": "d871e53b-1023-5b02-80aa-9bd93d4b6f09"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "a6c86c25-dd64-5692-a47f-75cdddb1c650",
+      "76a0ab00-fa1c-5652-ace5-eed7b927231f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765304080834000128,
+        "count": 1,
+        "event_ids": "13978"
+      }
+    ],
+    [
+      "a6c86c25-dd64-5692-a47f-75cdddb1c650",
+      "cad23924-5fe5-54fe-b3ed-524e0b8a2005",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765304080834000128,
+        "count": 1,
+        "event_ids": "13979"
+      }
+    ],
+    [
+      "cad23924-5fe5-54fe-b3ed-524e0b8a2005",
+      "09383428-755a-5068-907e-81ccf682cdd4",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765304080861999872,
+        "count": 1,
+        "event_ids": "13980"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "a7743e35-e4e9-50ed-8b76-4d286565dd33",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765304101753999872,
+        "count": 1,
+        "event_ids": "13989"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "6d0deb82-7866-5a60-98b5-efa76ec737ea",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1765304101753999872,
+        "count": 1,
+        "event_ids": "13990"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "e90edb8d-9b9c-5107-a848-c52ae7163104",
+      "cred_acq",
+      {
+        "edge_type": "CRED_ACQ",
+        "ts": 1765304101757999872,
+        "count": 1,
+        "event_ids": "13991"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "6438a6a5-50b6-50f7-8526-0dff8dc2ec07",
+      "login",
+      {
+        "edge_type": "LOGIN",
+        "ts": 1765304101757999872,
+        "count": 1,
+        "event_ids": "13992"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "35f3ef5f-05f6-5125-aea3-7fe50ad5ece1",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1765304101757999872,
+        "count": 1,
+        "event_ids": "13993"
+      }
+    ],
+    [
+      "76a0ab00-fa1c-5652-ace5-eed7b927231f",
+      "62fd5ba4-5ccc-5916-a14b-32b1af91f251",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1765304101762000128,
+        "count": 1,
+        "event_ids": "13996"
+      }
+    ],
+    [
+      "76a0ab00-fa1c-5652-ace5-eed7b927231f",
+      "62fd5ba4-5ccc-5916-a14b-32b1af91f251",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765304101762000128,
+        "count": 1,
+        "event_ids": "13997"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "6b21c2d8-a426-5ece-8e62-fc4fcf188876",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1765304101762000128,
+        "count": 1,
+        "event_ids": "13994"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "4462750e-b3c1-5b04-9588-d37b447a474e",
+      "setuid",
+      {
+        "edge_type": "SETUID",
+        "ts": 1765304101762000128,
+        "count": 1,
+        "event_ids": "13995"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "76a0ab00-fa1c-5652-ace5-eed7b927231f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765304101762000128,
+        "count": 1,
+        "event_ids": "13996"
+      }
+    ],
+    [
+      "76a0ab00-fa1c-5652-ace5-eed7b927231f",
+      "3aad8486-c6a8-59d0-85f2-3a66a64df7c8",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765304101766000128,
+        "count": 1,
+        "event_ids": "13998"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "c29a92e8-4f4a-584a-96ea-1cd395f678c1",
+      "cred_disp",
+      {
+        "edge_type": "CRED_DISP",
+        "ts": 1765304101766000128,
+        "count": 1,
+        "event_ids": "13999"
+      }
+    ],
+    [
+      "4400d2f1-7254-580e-9a85-032becdd8c7b",
+      "d871e53b-1023-5b02-80aa-9bd93d4b6f09",
+      "user_end",
+      {
+        "edge_type": "USER_END",
+        "ts": 1765304101766000128,
+        "count": 1,
+        "event_ids": "14000"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:17171",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:17171",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ],
+    [
+      "/usr/sbin/cron",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_ACCT",
+      "pam:root:USER_ACCT"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_ACQ",
+      "pam:root:CRED_ACQ"
+    ],
+    [
+      "/usr/sbin/cron",
+      "LOGIN",
+      "acct:root:LOGIN"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/share/awffull/awffull"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/share/awffull/awffull"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETUID",
+      "setuid [no target]"
+    ],
+    [
+      "/usr/sbin/cron",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/gawk"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_DISP",
+      "pam:root:CRED_DISP"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_END",
+      "pam:root:USER_END"
+    ]
+  ]
+}

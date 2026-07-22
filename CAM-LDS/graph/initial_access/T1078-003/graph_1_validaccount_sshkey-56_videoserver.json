@@ -1,0 +1,1969 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "1_validaccount_sshkey-56",
+  "host": "videoserver",
+  "start_ts": 1758711086748000000,
+  "end_ts": 1758711087288000000,
+  "n_nodes": 73,
+  "n_edges": 81,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086748000000,
+        "name": "pid:2974",
+        "uuid": "82a51bc5-7e1b-5c34-aaba-1686219d7f0d"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086748000000,
+        "name": "/usr/bin/ssh",
+        "uuid": "2b5d52dc-58f1-550c-97da-2a6763e0169f"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758711086752000000,
+        "name": "127.0.0.1:22",
+        "uuid": "dd6fd4e7-7942-5e66-829e-e36fe3b5302c"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086772000000,
+        "name": "pid:575",
+        "uuid": "0f43be81-0777-5cc3-84b5-9cfb3a58a46d"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086772000000,
+        "name": "/usr/sbin/sshd",
+        "uuid": "c8633cbe-a795-5dfe-843e-e4d64672addf"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086820000000,
+        "name": "connect [no target]",
+        "uuid": "18ab4c2b-7bcc-5291-8280-20a36c4ec719"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758711086820000000,
+        "name": "0.0.0.0:22",
+        "uuid": "ad91fe0c-25f3-56ab-947e-55536dc63d85"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "FileObject",
+        "ts": 1758711086824000000,
+        "name": "/etc/hosts.allow",
+        "uuid": "f5ba5c8e-29e5-5f86-ae40-dca55c874c33"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "FileObject",
+        "ts": 1758711086832000000,
+        "name": "/etc/hosts.deny",
+        "uuid": "8874a31d-3f33-539e-ab8f-da72a906014e"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086832000000,
+        "name": "setgid [no target]",
+        "uuid": "e69953f7-494a-5d05-b79b-0123cceb6846"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086832000000,
+        "name": "setuid [no target]",
+        "uuid": "a3eb572d-e899-5993-b0a3-023a7edfd3e4"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "FileObject",
+        "ts": 1758711086872000000,
+        "name": "/etc/shadow",
+        "uuid": "029fa5c5-926c-51b8-9e0d-9447a5410bfd"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711086872000000,
+        "name": "pam:root:USER_ACCT",
+        "uuid": "e43a90f3-a813-5a49-b34c-358e2c0c503f"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711086876000000,
+        "name": "pam:root:CRED_ACQ",
+        "uuid": "1ae405bf-57c0-57c6-a0dd-51c351889f37"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711086876000000,
+        "name": "acct:root:LOGIN",
+        "uuid": "dd503632-140f-58e5-a648-2d20d8b291ea"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "FileObject",
+        "ts": 1758711086880000000,
+        "name": "/run/systemd/userdb/io.systemd.Multiplexer",
+        "uuid": "1e882ec0-117f-5781-a8b2-9589ed795c4b"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "FileObject",
+        "ts": 1758711086880000000,
+        "name": "/run/systemd/userdb/io.systemd.DynamicUser",
+        "uuid": "bcc9adf4-cc80-5df5-bea2-1da1dc40bcfc"
+      }
+    ],
+    [
+      17,
+      {
+        "type": "FileObject",
+        "ts": 1758711086880000000,
+        "name": "/run/dbus/system_bus_socket",
+        "uuid": "8fe1dbd8-20f7-5da7-b819-c282aaeaf7bd"
+      }
+    ],
+    [
+      18,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086880000000,
+        "name": "/usr/lib/systemd/systemd-logind",
+        "uuid": "8814c796-3f11-5ed2-80a0-3647002aaa3f"
+      }
+    ],
+    [
+      19,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086908000000,
+        "name": "/usr/lib/systemd/systemd",
+        "uuid": "010a5b79-e913-59d3-88ba-cd3dc156085e"
+      }
+    ],
+    [
+      20,
+      {
+        "type": "FileObject",
+        "ts": 1758711086908000000,
+        "name": "/run/systemd/journal/stdout",
+        "uuid": "5c8402ae-806b-50ae-9a90-63a73c5d815f"
+      }
+    ],
+    [
+      21,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086908000000,
+        "name": "/usr/lib/systemd/systemd-user-runtime-dir",
+        "uuid": "160f0391-45c9-5d42-9b9f-1edcf7890b39"
+      }
+    ],
+    [
+      22,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086924000000,
+        "name": "unit:user-runtime-dir@0",
+        "uuid": "e282d905-e58a-58c6-b22c-f789a9f8b000"
+      }
+    ],
+    [
+      23,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711086944000000,
+        "name": "pam:root:USER_START",
+        "uuid": "c35fedc4-5914-51a9-9952-2ffe34dd591c"
+      }
+    ],
+    [
+      24,
+      {
+        "type": "FileObject",
+        "ts": 1758711086948000000,
+        "name": "/lib/systemd/systemd",
+        "uuid": "e1b4ef11-8204-5e74-95b9-3c48ef30f27f"
+      }
+    ],
+    [
+      25,
+      {
+        "type": "FileObject",
+        "ts": 1758711086956000000,
+        "name": "/run/systemd/journal/socket",
+        "uuid": "18641185-4c6c-5cea-8694-5f2ec57dd621"
+      }
+    ],
+    [
+      26,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086956000000,
+        "name": "bpf:13",
+        "uuid": "661b1218-ae79-5b0c-8073-282db365a999"
+      }
+    ],
+    [
+      27,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086956000000,
+        "name": "LOAD",
+        "uuid": "6d8a3414-74aa-54b3-b9c2-4b56ca71fc40"
+      }
+    ],
+    [
+      28,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086960000000,
+        "name": "bpf:14",
+        "uuid": "2324d856-95c0-551f-80c7-9654fb85fc26"
+      }
+    ],
+    [
+      29,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086968000000,
+        "name": "pid:17271",
+        "uuid": "d7880ab6-180d-5f71-ac5c-fcbc70db750c"
+      }
+    ],
+    [
+      30,
+      {
+        "type": "FileObject",
+        "ts": 1758711086968000000,
+        "name": "/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator",
+        "uuid": "6366fdde-0544-5e90-a5ad-93c9e7f79528"
+      }
+    ],
+    [
+      31,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086984000000,
+        "name": "/usr/bin/bash",
+        "uuid": "066ff8a8-7178-5d8d-a8fa-1d458a492c87"
+      }
+    ],
+    [
+      32,
+      {
+        "type": "FileObject",
+        "ts": 1758711086992000000,
+        "name": "/usr/bin/gawk",
+        "uuid": "b5a83fc7-f988-5e4f-aa87-36d9d3cbdd67"
+      }
+    ],
+    [
+      33,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711086992000000,
+        "name": "/usr/bin/gpgconf",
+        "uuid": "bf73a85b-698c-5a2c-9631-2923ffcddb38"
+      }
+    ],
+    [
+      34,
+      {
+        "type": "FileObject",
+        "ts": 1758711087000000000,
+        "name": "/usr/bin/gpg",
+        "uuid": "11bd6504-603e-591c-bbc5-660adee22277"
+      }
+    ],
+    [
+      35,
+      {
+        "type": "FileObject",
+        "ts": 1758711087008000000,
+        "name": "/usr/bin/gpg-agent",
+        "uuid": "2d101181-0835-57e1-94cd-befd4305896a"
+      }
+    ],
+    [
+      36,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087016000000,
+        "name": "scdaemon [not found]",
+        "uuid": "50a17259-105c-5caa-8064-bdd30e52f02b"
+      }
+    ],
+    [
+      37,
+      {
+        "type": "FileObject",
+        "ts": 1758711087020000000,
+        "name": "/usr/bin/gpgsm",
+        "uuid": "3de5d682-d864-5f86-9d51-6e9be1a497ac"
+      }
+    ],
+    [
+      38,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087028000000,
+        "name": "/usr/bin/dirmngr",
+        "uuid": "d258b298-ebbb-511d-a3c9-ec09057d09b2"
+      }
+    ],
+    [
+      39,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758711087036000000,
+        "name": "127.0.0.1:9050",
+        "uuid": "d8f9260e-f70c-5ed7-b049-f18915268af6"
+      }
+    ],
+    [
+      40,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758711087036000000,
+        "name": "127.0.0.1:9150",
+        "uuid": "0e848f42-c4f4-5299-825d-6240ab61cc99"
+      }
+    ],
+    [
+      41,
+      {
+        "type": "FileObject",
+        "ts": 1758711087044000000,
+        "name": "/usr/bin/pinentry-curses",
+        "uuid": "37a72e4f-a52a-5ad2-8b12-131e2f487606"
+      }
+    ],
+    [
+      42,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087052000000,
+        "name": "pid:17282",
+        "uuid": "8dda2914-a369-5288-9885-c99912aca0a0"
+      }
+    ],
+    [
+      43,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087072000000,
+        "name": "pid:17286",
+        "uuid": "c7a50b14-1806-5372-89b5-22ab7a1cd219"
+      }
+    ],
+    [
+      44,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087072000000,
+        "name": "/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator",
+        "uuid": "523064e5-d5d2-54aa-8935-c3ea8f089824"
+      }
+    ],
+    [
+      45,
+      {
+        "type": "FileObject",
+        "ts": 1758711087080000000,
+        "name": "/run/user/0/systemd/generator",
+        "uuid": "30444cbb-46f4-5ca4-a23b-39c0abcc1bf6"
+      }
+    ],
+    [
+      46,
+      {
+        "type": "FileObject",
+        "ts": 1758711087080000000,
+        "name": "/run/user/0/systemd/generator.early",
+        "uuid": "bb2194c8-bc14-586f-816c-612c82466dd5"
+      }
+    ],
+    [
+      47,
+      {
+        "type": "FileObject",
+        "ts": 1758711087080000000,
+        "name": "/run/user/0/systemd/generator.late",
+        "uuid": "6f79e710-46c3-5b65-88a0-467677c22d87"
+      }
+    ],
+    [
+      48,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087108000000,
+        "name": "unlink [filtered target]",
+        "uuid": "fd633d25-464f-5fa5-bb52-9e95eb3a5d67"
+      }
+    ],
+    [
+      49,
+      {
+        "type": "FileObject",
+        "ts": 1758711087120000000,
+        "name": "/run/user/0/systemd/units/.#invocation:dbus.socket47c28425fb064fac -> /run/user/0/systemd/units/invocation:dbus.socket",
+        "uuid": "681bbe71-0c6f-54b6-9b9d-192c934bc679"
+      }
+    ],
+    [
+      50,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087132000000,
+        "name": "/usr/bin/systemctl",
+        "uuid": "3d894ad6-5590-586c-b546-69987e342a22"
+      }
+    ],
+    [
+      51,
+      {
+        "type": "FileObject",
+        "ts": 1758711087132000000,
+        "name": "/run/user/0/systemd/private",
+        "uuid": "15e9160b-d563-58f6-858c-2b2df167a66e"
+      }
+    ],
+    [
+      52,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087140000000,
+        "name": "unit:user@0",
+        "uuid": "5cc9108d-67ba-5f78-bf42-83beeacb74cc"
+      }
+    ],
+    [
+      53,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087148000000,
+        "name": "/usr/bin/dash",
+        "uuid": "82adaf50-317e-550c-8941-b90421d18a98"
+      }
+    ],
+    [
+      54,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087148000000,
+        "name": "/usr/bin/env",
+        "uuid": "f2385306-38fd-5c98-abdf-c98341856f22"
+      }
+    ],
+    [
+      55,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087152000000,
+        "name": "run-parts [not found]",
+        "uuid": "a6e3e2dd-e904-5ca4-9300-46239b52f027"
+      }
+    ],
+    [
+      56,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087152000000,
+        "name": "/usr/bin/run-parts",
+        "uuid": "060c4849-c532-554a-b3d2-9b7bff572e01"
+      }
+    ],
+    [
+      57,
+      {
+        "type": "FileObject",
+        "ts": 1758711087164000000,
+        "name": "/usr/bin/uname",
+        "uuid": "7553efb3-9eab-5c37-8b87-9f95b67b1cce"
+      }
+    ],
+    [
+      58,
+      {
+        "type": "FileObject",
+        "ts": 1758711087172000000,
+        "name": "/run/motd.dynamic.new -> /run/motd.dynamic",
+        "uuid": "2bc5be1c-01a2-59fb-92e8-7a2939a0b526"
+      }
+    ],
+    [
+      59,
+      {
+        "type": "FileObject",
+        "ts": 1758711087224000000,
+        "name": "/var/run/utmp",
+        "uuid": "48a16bc9-aa1e-5b62-bd38-fa98276331c7"
+      }
+    ],
+    [
+      60,
+      {
+        "type": "FileObject",
+        "ts": 1758711087224000000,
+        "name": "/var/log/wtmp",
+        "uuid": "6d09780b-afcd-5088-9510-947f236060d1"
+      }
+    ],
+    [
+      61,
+      {
+        "type": "FileObject",
+        "ts": 1758711087224000000,
+        "name": "/var/log/lastlog",
+        "uuid": "f434527b-4d7f-5bde-b665-8d0ecc628b87"
+      }
+    ],
+    [
+      62,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711087224000000,
+        "name": "127.0.0.1",
+        "uuid": "f4b6ebdc-03f0-5eb7-ad36-1c911c455b32"
+      }
+    ],
+    [
+      63,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711087224000000,
+        "name": "acct:root:USER_LOGIN",
+        "uuid": "c4d2ba29-8d71-532b-b2e4-b181689a634b"
+      }
+    ],
+    [
+      64,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1758711087224000000,
+        "name": "pam:root:CRED_REFR",
+        "uuid": "859b0996-1295-589e-8b6b-5da74d584ce3"
+      }
+    ],
+    [
+      65,
+      {
+        "type": "FileObject",
+        "ts": 1758711087228000000,
+        "name": "/etc/profile",
+        "uuid": "25a35f08-4245-5b95-b26d-711abac34ba3"
+      }
+    ],
+    [
+      66,
+      {
+        "type": "FileObject",
+        "ts": 1758711087228000000,
+        "name": "/usr/bin/id",
+        "uuid": "2193170d-6a13-58cd-81bc-680c03409c03"
+      }
+    ],
+    [
+      67,
+      {
+        "type": "FileObject",
+        "ts": 1758711087236000000,
+        "name": "/etc/profile.d/",
+        "uuid": "6c57986b-15bd-5cb5-bacd-09bb25cce909"
+      }
+    ],
+    [
+      68,
+      {
+        "type": "FileObject",
+        "ts": 1758711087236000000,
+        "name": "/etc/profile.d/Z99-cloud-locale-test.sh",
+        "uuid": "145df4d5-dc4f-5ff6-aea2-e5a9b7be5dae"
+      }
+    ],
+    [
+      69,
+      {
+        "type": "FileObject",
+        "ts": 1758711087240000000,
+        "name": "/usr/bin/locale",
+        "uuid": "20443ff1-f6e0-5078-b82f-49b2d6f84930"
+      }
+    ],
+    [
+      70,
+      {
+        "type": "FileObject",
+        "ts": 1758711087248000000,
+        "name": "/etc/profile.d/bash_completion.sh",
+        "uuid": "7921bb4e-c123-5d17-a38a-3d79554e8d82"
+      }
+    ],
+    [
+      71,
+      {
+        "type": "FileObject",
+        "ts": 1758711087272000000,
+        "name": "/etc/profile.d/gawk.sh",
+        "uuid": "05976fdd-c79a-50c5-b135-ea4abdbec39c"
+      }
+    ],
+    [
+      72,
+      {
+        "type": "FileObject",
+        "ts": 1758711087288000000,
+        "name": "/usr/bin/mesg",
+        "uuid": "dc642d9f-ca62-56af-8581-21f550fab6f3"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "82a51bc5-7e1b-5c34-aaba-1686219d7f0d",
+      "2b5d52dc-58f1-550c-97da-2a6763e0169f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086748000000,
+        "count": 1,
+        "event_ids": "13298"
+      }
+    ],
+    [
+      "2b5d52dc-58f1-550c-97da-2a6763e0169f",
+      "dd6fd4e7-7942-5e66-829e-e36fe3b5302c",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086752000000,
+        "count": 1,
+        "event_ids": "13299"
+      }
+    ],
+    [
+      "0f43be81-0777-5cc3-84b5-9cfb3a58a46d",
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086772000000,
+        "count": 1,
+        "event_ids": "13300"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "18ab4c2b-7bcc-5291-8280-20a36c4ec719",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086820000000,
+        "count": 2,
+        "event_ids": "13301,13302"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "ad91fe0c-25f3-56ab-947e-55536dc63d85",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086820000000,
+        "count": 1,
+        "event_ids": "13303"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "f5ba5c8e-29e5-5f86-ae40-dca55c874c33",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711086824000000,
+        "count": 1,
+        "event_ids": "13304"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "8874a31d-3f33-539e-ab8f-da72a906014e",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711086832000000,
+        "count": 1,
+        "event_ids": "13305"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "e69953f7-494a-5d05-b79b-0123cceb6846",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1758711086832000000,
+        "count": 2,
+        "event_ids": "13306,13382"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "a3eb572d-e899-5993-b0a3-023a7edfd3e4",
+      "setuid",
+      {
+        "edge_type": "SETUID",
+        "ts": 1758711086832000000,
+        "count": 1,
+        "event_ids": "13307"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "029fa5c5-926c-51b8-9e0d-9447a5410bfd",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711086872000000,
+        "count": 2,
+        "event_ids": "13308,13314"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "e43a90f3-a813-5a49-b34c-358e2c0c503f",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1758711086872000000,
+        "count": 1,
+        "event_ids": "13309"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "1ae405bf-57c0-57c6-a0dd-51c351889f37",
+      "cred_acq",
+      {
+        "edge_type": "CRED_ACQ",
+        "ts": 1758711086876000000,
+        "count": 1,
+        "event_ids": "13310"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "dd503632-140f-58e5-a648-2d20d8b291ea",
+      "login",
+      {
+        "edge_type": "LOGIN",
+        "ts": 1758711086876000000,
+        "count": 1,
+        "event_ids": "13311"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "1e882ec0-117f-5781-a8b2-9589ed795c4b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086880000000,
+        "count": 1,
+        "event_ids": "13312"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "bcc9adf4-cc80-5df5-bea2-1da1dc40bcfc",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086880000000,
+        "count": 1,
+        "event_ids": "13313"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "8fe1dbd8-20f7-5da7-b819-c282aaeaf7bd",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086880000000,
+        "count": 1,
+        "event_ids": "13315"
+      }
+    ],
+    [
+      "8814c796-3f11-5ed2-80a0-3647002aaa3f",
+      "1e882ec0-117f-5781-a8b2-9589ed795c4b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086880000000,
+        "count": 1,
+        "event_ids": "13316"
+      }
+    ],
+    [
+      "8814c796-3f11-5ed2-80a0-3647002aaa3f",
+      "bcc9adf4-cc80-5df5-bea2-1da1dc40bcfc",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086880000000,
+        "count": 1,
+        "event_ids": "13317"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "5c8402ae-806b-50ae-9a90-63a73c5d815f",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086908000000,
+        "count": 3,
+        "event_ids": "13318,13322,13362"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "160f0391-45c9-5d42-9b9f-1edcf7890b39",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086908000000,
+        "count": 1,
+        "event_ids": "13319"
+      }
+    ],
+    [
+      "160f0391-45c9-5d42-9b9f-1edcf7890b39",
+      "8fe1dbd8-20f7-5da7-b819-c282aaeaf7bd",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086916000000,
+        "count": 1,
+        "event_ids": "13320"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "e282d905-e58a-58c6-b22c-f789a9f8b000",
+      "service_start",
+      {
+        "edge_type": "SERVICE_START",
+        "ts": 1758711086924000000,
+        "count": 1,
+        "event_ids": "13321"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "029fa5c5-926c-51b8-9e0d-9447a5410bfd",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711086940000000,
+        "count": 2,
+        "event_ids": "13323,13329"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "e43a90f3-a813-5a49-b34c-358e2c0c503f",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1758711086940000000,
+        "count": 1,
+        "event_ids": "13324"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "1ae405bf-57c0-57c6-a0dd-51c351889f37",
+      "cred_acq",
+      {
+        "edge_type": "CRED_ACQ",
+        "ts": 1758711086940000000,
+        "count": 1,
+        "event_ids": "13325"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "dd503632-140f-58e5-a648-2d20d8b291ea",
+      "login",
+      {
+        "edge_type": "LOGIN",
+        "ts": 1758711086944000000,
+        "count": 1,
+        "event_ids": "13326"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "1e882ec0-117f-5781-a8b2-9589ed795c4b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086944000000,
+        "count": 1,
+        "event_ids": "13327"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "bcc9adf4-cc80-5df5-bea2-1da1dc40bcfc",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086944000000,
+        "count": 1,
+        "event_ids": "13328"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "c35fedc4-5914-51a9-9952-2ffe34dd591c",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1758711086944000000,
+        "count": 1,
+        "event_ids": "13330"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "e1b4ef11-8204-5e74-95b9-3c48ef30f27f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086948000000,
+        "count": 1,
+        "event_ids": "13331"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "18641185-4c6c-5cea-8694-5f2ec57dd621",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711086956000000,
+        "count": 2,
+        "event_ids": "13332,13333"
+      }
+    ],
+    [
+      "661b1218-ae79-5b0c-8073-282db365a999",
+      "6d8a3414-74aa-54b3-b9c2-4b56ca71fc40",
+      "bpf",
+      {
+        "edge_type": "BPF",
+        "ts": 1758711086956000000,
+        "count": 1,
+        "event_ids": "13334"
+      }
+    ],
+    [
+      "2324d856-95c0-551f-80c7-9654fb85fc26",
+      "6d8a3414-74aa-54b3-b9c2-4b56ca71fc40",
+      "bpf",
+      {
+        "edge_type": "BPF",
+        "ts": 1758711086960000000,
+        "count": 1,
+        "event_ids": "13336"
+      }
+    ],
+    [
+      "d7880ab6-180d-5f71-ac5c-fcbc70db750c",
+      "6366fdde-0544-5e90-a5ad-93c9e7f79528",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086968000000,
+        "count": 1,
+        "event_ids": "13338"
+      }
+    ],
+    [
+      "d7880ab6-180d-5f71-ac5c-fcbc70db750c",
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086984000000,
+        "count": 1,
+        "event_ids": "13339"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "b5a83fc7-f988-5e4f-aa87-36d9d3cbdd67",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086992000000,
+        "count": 1,
+        "event_ids": "13340"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711086992000000,
+        "count": 1,
+        "event_ids": "13341"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "11bd6504-603e-591c-bbc5-660adee22277",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087000000000,
+        "count": 1,
+        "event_ids": "13342"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "2d101181-0835-57e1-94cd-befd4305896a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087008000000,
+        "count": 2,
+        "event_ids": "13343,13352"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "50a17259-105c-5caa-8064-bdd30e52f02b",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1758711087016000000,
+        "count": 1,
+        "event_ids": "13344"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "3de5d682-d864-5f86-9d51-6e9be1a497ac",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087020000000,
+        "count": 1,
+        "event_ids": "13345"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "d258b298-ebbb-511d-a3c9-ec09057d09b2",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087028000000,
+        "count": 1,
+        "event_ids": "13346"
+      }
+    ],
+    [
+      "d258b298-ebbb-511d-a3c9-ec09057d09b2",
+      "d8f9260e-f70c-5ed7-b049-f18915268af6",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711087036000000,
+        "count": 1,
+        "event_ids": "13347"
+      }
+    ],
+    [
+      "d258b298-ebbb-511d-a3c9-ec09057d09b2",
+      "0e848f42-c4f4-5299-825d-6240ab61cc99",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711087036000000,
+        "count": 1,
+        "event_ids": "13348"
+      }
+    ],
+    [
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "37a72e4f-a52a-5ad2-8b12-131e2f487606",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087044000000,
+        "count": 1,
+        "event_ids": "13349"
+      }
+    ],
+    [
+      "8dda2914-a369-5288-9885-c99912aca0a0",
+      "b5a83fc7-f988-5e4f-aa87-36d9d3cbdd67",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087052000000,
+        "count": 1,
+        "event_ids": "13350"
+      }
+    ],
+    [
+      "8dda2914-a369-5288-9885-c99912aca0a0",
+      "bf73a85b-698c-5a2c-9631-2923ffcddb38",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087052000000,
+        "count": 1,
+        "event_ids": "13351"
+      }
+    ],
+    [
+      "c7a50b14-1806-5372-89b5-22ab7a1cd219",
+      "523064e5-d5d2-54aa-8935-c3ea8f089824",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087072000000,
+        "count": 1,
+        "event_ids": "13353"
+      }
+    ],
+    [
+      "523064e5-d5d2-54aa-8935-c3ea8f089824",
+      "18641185-4c6c-5cea-8694-5f2ec57dd621",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711087076000000,
+        "count": 1,
+        "event_ids": "13354"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "30444cbb-46f4-5ca4-a23b-39c0abcc1bf6",
+      "rmdir",
+      {
+        "edge_type": "RMDIR",
+        "ts": 1758711087080000000,
+        "count": 1,
+        "event_ids": "13355"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "bb2194c8-bc14-586f-816c-612c82466dd5",
+      "rmdir",
+      {
+        "edge_type": "RMDIR",
+        "ts": 1758711087080000000,
+        "count": 1,
+        "event_ids": "13356"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "6f79e710-46c3-5b65-88a0-467677c22d87",
+      "rmdir",
+      {
+        "edge_type": "RMDIR",
+        "ts": 1758711087080000000,
+        "count": 1,
+        "event_ids": "13357"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "fd633d25-464f-5fa5-bb52-9e95eb3a5d67",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1758711087108000000,
+        "count": 2,
+        "event_ids": "13358,13359"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "8fe1dbd8-20f7-5da7-b819-c282aaeaf7bd",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711087112000000,
+        "count": 1,
+        "event_ids": "13360"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "681bbe71-0c6f-54b6-9b9d-192c934bc679",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1758711087120000000,
+        "count": 1,
+        "event_ids": "13361"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "3d894ad6-5590-586c-b546-69987e342a22",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087132000000,
+        "count": 1,
+        "event_ids": "13363"
+      }
+    ],
+    [
+      "3d894ad6-5590-586c-b546-69987e342a22",
+      "15e9160b-d563-58f6-858c-2b2df167a66e",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758711087132000000,
+        "count": 1,
+        "event_ids": "13364"
+      }
+    ],
+    [
+      "010a5b79-e913-59d3-88ba-cd3dc156085e",
+      "5cc9108d-67ba-5f78-bf42-83beeacb74cc",
+      "service_start",
+      {
+        "edge_type": "SERVICE_START",
+        "ts": 1758711087140000000,
+        "count": 1,
+        "event_ids": "13365"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087148000000,
+        "count": 1,
+        "event_ids": "13366"
+      }
+    ],
+    [
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "f2385306-38fd-5c98-abdf-c98341856f22",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758711087148000000,
+        "count": 1,
+        "event_ids": "13366"
+      }
+    ],
+    [
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "f2385306-38fd-5c98-abdf-c98341856f22",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087152000000,
+        "count": 1,
+        "event_ids": "13367"
+      }
+    ],
+    [
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "060c4849-c532-554a-b3d2-9b7bff572e01",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087152000000,
+        "count": 1,
+        "event_ids": "13371"
+      }
+    ],
+    [
+      "f2385306-38fd-5c98-abdf-c98341856f22",
+      "a6e3e2dd-e904-5ca4-9300-46239b52f027",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1758711087152000000,
+        "count": 3,
+        "event_ids": "13368,13369,13370"
+      }
+    ],
+    [
+      "060c4849-c532-554a-b3d2-9b7bff572e01",
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087160000000,
+        "count": 3,
+        "event_ids": "13372,13374,13375"
+      }
+    ],
+    [
+      "82adaf50-317e-550c-8941-b90421d18a98",
+      "7553efb3-9eab-5c37-8b87-9f95b67b1cce",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087164000000,
+        "count": 1,
+        "event_ids": "13373"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "2bc5be1c-01a2-59fb-92e8-7a2939a0b526",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1758711087172000000,
+        "count": 1,
+        "event_ids": "13376"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "c35fedc4-5914-51a9-9952-2ffe34dd591c",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1758711087172000000,
+        "count": 1,
+        "event_ids": "13377"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "48a16bc9-aa1e-5b62-bd38-fa98276331c7",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13378"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "6d09780b-afcd-5088-9510-947f236060d1",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13379"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "f434527b-4d7f-5bde-b665-8d0ecc628b87",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13380"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "859b0996-1295-589e-8b6b-5da74d584ce3",
+      "cred_refr",
+      {
+        "edge_type": "CRED_REFR",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13383"
+      }
+    ],
+    [
+      "c8633cbe-a795-5dfe-843e-e4d64672addf",
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13384"
+      }
+    ],
+    [
+      "f4b6ebdc-03f0-5eb7-ad36-1c911c455b32",
+      "c4d2ba29-8d71-532b-b2e4-b181689a634b",
+      "user_login",
+      {
+        "edge_type": "USER_LOGIN",
+        "ts": 1758711087224000000,
+        "count": 1,
+        "event_ids": "13381"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "25a35f08-4245-5b95-b26d-711abac34ba3",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087228000000,
+        "count": 1,
+        "event_ids": "13385"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "2193170d-6a13-58cd-81bc-680c03409c03",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087228000000,
+        "count": 1,
+        "event_ids": "13386"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "6c57986b-15bd-5cb5-bacd-09bb25cce909",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087236000000,
+        "count": 1,
+        "event_ids": "13387"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "145df4d5-dc4f-5ff6-aea2-e5a9b7be5dae",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087236000000,
+        "count": 1,
+        "event_ids": "13388"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "20443ff1-f6e0-5078-b82f-49b2d6f84930",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087240000000,
+        "count": 1,
+        "event_ids": "13389"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "7921bb4e-c123-5d17-a38a-3d79554e8d82",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087248000000,
+        "count": 1,
+        "event_ids": "13390"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "05976fdd-c79a-50c5-b135-ea4abdbec39c",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1758711087272000000,
+        "count": 1,
+        "event_ids": "13391"
+      }
+    ],
+    [
+      "066ff8a8-7178-5d8d-a8fa-1d458a492c87",
+      "dc642d9f-ca62-56af-8581-21f550fab6f3",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711087288000000,
+        "count": 1,
+        "event_ids": "13392"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:2974",
+      "EXECVE",
+      "/usr/bin/ssh"
+    ],
+    [
+      "/usr/bin/ssh",
+      "CONNECT",
+      "127.0.0.1:22"
+    ],
+    [
+      "pid:575",
+      "EXECVE",
+      "/usr/sbin/sshd"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CONNECT",
+      "connect [no target]"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CONNECT",
+      "0.0.0.0:22"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/etc/hosts.allow"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/etc/hosts.deny"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "SETUID",
+      "setuid [no target]"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "USER_ACCT",
+      "pam:root:USER_ACCT"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CRED_ACQ",
+      "pam:root:CRED_ACQ"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "LOGIN",
+      "acct:root:LOGIN"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.Multiplexer"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.DynamicUser"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CONNECT",
+      "/run/dbus/system_bus_socket"
+    ],
+    [
+      "/usr/lib/systemd/systemd-logind",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.Multiplexer"
+    ],
+    [
+      "/usr/lib/systemd/systemd-logind",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.DynamicUser"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CONNECT",
+      "/run/systemd/journal/stdout"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "EXECVE",
+      "/usr/lib/systemd/systemd-user-runtime-dir"
+    ],
+    [
+      "/usr/lib/systemd/systemd-user-runtime-dir",
+      "CONNECT",
+      "/run/dbus/system_bus_socket"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "SERVICE_START",
+      "unit:user-runtime-dir@0"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "USER_ACCT",
+      "pam:root:USER_ACCT"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CRED_ACQ",
+      "pam:root:CRED_ACQ"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "LOGIN",
+      "acct:root:LOGIN"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.Multiplexer"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.DynamicUser"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "EXECVE",
+      "/lib/systemd/systemd"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CONNECT",
+      "/run/systemd/journal/socket"
+    ],
+    [
+      "bpf:13",
+      "BPF",
+      "LOAD"
+    ],
+    [
+      "bpf:14",
+      "BPF",
+      "LOAD"
+    ],
+    [
+      "pid:17271",
+      "EXECVE",
+      "/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator"
+    ],
+    [
+      "pid:17271",
+      "EXECVE",
+      "/usr/bin/bash"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/gawk"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/gpgconf"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE",
+      "/usr/bin/gpg"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE",
+      "/usr/bin/gpg-agent"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE_FAIL",
+      "scdaemon [not found]"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE",
+      "/usr/bin/gpgsm"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE",
+      "/usr/bin/dirmngr"
+    ],
+    [
+      "/usr/bin/dirmngr",
+      "CONNECT",
+      "127.0.0.1:9050"
+    ],
+    [
+      "/usr/bin/dirmngr",
+      "CONNECT",
+      "127.0.0.1:9150"
+    ],
+    [
+      "/usr/bin/gpgconf",
+      "EXECVE",
+      "/usr/bin/pinentry-curses"
+    ],
+    [
+      "pid:17282",
+      "EXECVE",
+      "/usr/bin/gawk"
+    ],
+    [
+      "pid:17282",
+      "EXECVE",
+      "/usr/bin/gpgconf"
+    ],
+    [
+      "pid:17286",
+      "EXECVE",
+      "/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator"
+    ],
+    [
+      "/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator",
+      "CONNECT",
+      "/run/systemd/journal/socket"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "RMDIR",
+      "/run/user/0/systemd/generator"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "RMDIR",
+      "/run/user/0/systemd/generator.early"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "RMDIR",
+      "/run/user/0/systemd/generator.late"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "UNLINK",
+      "unlink [filtered target]"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "CONNECT",
+      "/run/dbus/system_bus_socket"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "RENAME",
+      "/run/user/0/systemd/units/.#invocation:dbus.socket47c28425fb064fac -> /run/user/0/systemd/units/invocation:dbus.socket"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "EXECVE",
+      "/usr/bin/systemctl"
+    ],
+    [
+      "/usr/bin/systemctl",
+      "CONNECT",
+      "/run/user/0/systemd/private"
+    ],
+    [
+      "/usr/lib/systemd/systemd",
+      "SERVICE_START",
+      "unit:user@0"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/env"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/env"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/run-parts"
+    ],
+    [
+      "/usr/bin/env",
+      "EXECVE_FAIL",
+      "run-parts [not found]"
+    ],
+    [
+      "/usr/bin/run-parts",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/uname"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "RENAME",
+      "/run/motd.dynamic.new -> /run/motd.dynamic"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/run/utmp"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/log/wtmp"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "OPENAT",
+      "/var/log/lastlog"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CRED_REFR",
+      "pam:root:CRED_REFR"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "EXECVE",
+      "/usr/bin/bash"
+    ],
+    [
+      "127.0.0.1",
+      "USER_LOGIN",
+      "acct:root:USER_LOGIN"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/id"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/Z99-cloud-locale-test.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/locale"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/bash_completion.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "OPENAT",
+      "/etc/profile.d/gawk.sh"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/mesg"
+    ]
+  ]
+}

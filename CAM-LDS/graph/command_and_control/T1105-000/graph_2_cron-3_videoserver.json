@@ -1,0 +1,191 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "2_cron-3",
+  "host": "videoserver",
+  "start_ts": 1759313731052999936,
+  "end_ts": 1759313731072999936,
+  "n_nodes": 7,
+  "n_edges": 7,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759313731052999936,
+        "name": "/usr/sbin/sshd",
+        "uuid": "44778809-a189-5415-9d07-a236dd4ac6aa"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759313731052999936,
+        "name": "setgid [no target]",
+        "uuid": "a566f792-2ce6-57f3-93e7-87a6dd5f80a2"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1759313731056999936,
+        "name": "pam:root:CRED_REFR",
+        "uuid": "abffef2d-9f8b-5a7e-867b-b7246f40e6a9"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759313731056999936,
+        "name": "pid:2802",
+        "uuid": "d6535414-703b-5e7c-b322-148b95786994"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759313731056999936,
+        "name": "/usr/bin/bash",
+        "uuid": "c4f944e2-cc52-55f2-87ec-01507d02a28a"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759313731056999936,
+        "name": "/usr/lib/openssh/sftp-server",
+        "uuid": "d8dba67c-0498-55e2-bc56-c15318b95a66"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1759313731072999936,
+        "name": "/usr/bin/zmcontroller",
+        "uuid": "759f9bb2-fd77-5999-8165-458019f1bf6e"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "44778809-a189-5415-9d07-a236dd4ac6aa",
+      "a566f792-2ce6-57f3-93e7-87a6dd5f80a2",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1759313731052999936,
+        "count": 2,
+        "event_ids": "4646,4651"
+      }
+    ],
+    [
+      "44778809-a189-5415-9d07-a236dd4ac6aa",
+      "abffef2d-9f8b-5a7e-867b-b7246f40e6a9",
+      "cred_refr",
+      {
+        "edge_type": "CRED_REFR",
+        "ts": 1759313731056999936,
+        "count": 2,
+        "event_ids": "4647,4652"
+      }
+    ],
+    [
+      "d6535414-703b-5e7c-b322-148b95786994",
+      "c4f944e2-cc52-55f2-87ec-01507d02a28a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1759313731056999936,
+        "count": 2,
+        "event_ids": "4648,4653"
+      }
+    ],
+    [
+      "c4f944e2-cc52-55f2-87ec-01507d02a28a",
+      "d8dba67c-0498-55e2-bc56-c15318b95a66",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1759313731056999936,
+        "count": 2,
+        "event_ids": "4648,4653"
+      }
+    ],
+    [
+      "d6535414-703b-5e7c-b322-148b95786994",
+      "d8dba67c-0498-55e2-bc56-c15318b95a66",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1759313731061000192,
+        "count": 2,
+        "event_ids": "4649,4654"
+      }
+    ],
+    [
+      "d8dba67c-0498-55e2-bc56-c15318b95a66",
+      "759f9bb2-fd77-5999-8165-458019f1bf6e",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1759313731072999936,
+        "count": 1,
+        "event_ids": "4650"
+      }
+    ],
+    [
+      "d8dba67c-0498-55e2-bc56-c15318b95a66",
+      "759f9bb2-fd77-5999-8165-458019f1bf6e",
+      "chmod",
+      {
+        "edge_type": "CHMOD",
+        "ts": 1759313731184999936,
+        "count": 1,
+        "event_ids": "4655"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/sshd",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CRED_REFR",
+      "pam:root:CRED_REFR"
+    ],
+    [
+      "pid:2802",
+      "EXECVE",
+      "/usr/bin/bash"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE_INFERRED",
+      "/usr/lib/openssh/sftp-server"
+    ],
+    [
+      "pid:2802",
+      "EXECVE",
+      "/usr/lib/openssh/sftp-server"
+    ],
+    [
+      "/usr/lib/openssh/sftp-server",
+      "OPENAT",
+      "/usr/bin/zmcontroller"
+    ],
+    [
+      "/usr/lib/openssh/sftp-server",
+      "CHMOD",
+      "/usr/bin/zmcontroller"
+    ]
+  ]
+}

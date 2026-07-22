@@ -1,0 +1,55 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0112
+======================================================================
+  ID         : TA0112
+  NAME       : Defense Impairment
+
+  OBJECTIVE  : The adversary is trying to break security mechanisms, pipelines, and tooling so defenders can’t see or trust what’s happening.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Defense Impairment consists of techniques that degrade, disable,
+  or undermine the effectiveness and trustworthiness of security
+  controls and monitoring mechanisms. These techniques are
+  characterized by direct interference with defensive systems.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  The goal is to reduce defenders’ ability to detect, interpret, or
+  respond to adversary activity.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Execve: iptables, nft, firewall-cmd modifications.
+
+    Execve: systemctl stop, service stop, or kill -9 on security
+    daemons (e.g., falcon-sensor, auditd). Delete: Modification of
+    systemd unit files or config for security agents.
+
+    Execve: Execution of downgraded interpreters such as python2 or
+    forced fallback commands.
+
+    Execve, kill, ptrace, insmod, rmmod targeting security
+    processes.
+
+    Proctitle contains chmod, chown, setfacl, or attr commands with
+    suspicious parameters. Syscall in (chmod, fchmod, fchmodat,
+    chown, fchown, fchownat, setxattr, lsetxattr, fsetxattr).
+
+    Detects modification of PAM configuration files, unauthorized
+    new PAM modules, and suspicious process execution accessing
+    PAM-related binaries.
+
+    Execve calls modifying HISTFILE or HISTCONTROL via unset/export.
+
+    Process execution of update-ca-certificates or openssl with
+    suspicious arguments. Chmod, chown, setxattr, or file writes to
+    /etc/ssl/* or /usr/local/share/ca-certificates/*.
+
+======================================================================

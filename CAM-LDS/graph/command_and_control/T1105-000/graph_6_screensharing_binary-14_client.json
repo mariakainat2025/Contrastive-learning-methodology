@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "6_screensharing_binary-14",
+  "host": "client",
+  "start_ts": 1765381137304000000,
+  "end_ts": 1765381137316000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765381137304000000,
+        "name": "pid:28278",
+        "uuid": "abec6a40-e63f-585f-8ce6-2499e161c235"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765381137304000000,
+        "name": "/usr/bin/curl",
+        "uuid": "ebf9895f-1e98-59f5-aea1-b38984176bc5"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765381137316000000,
+        "name": "192.168.50.254:3128",
+        "uuid": "b412009f-fa87-51af-ab49-0adc7b0b3007"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "abec6a40-e63f-585f-8ce6-2499e161c235",
+      "ebf9895f-1e98-59f5-aea1-b38984176bc5",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765381137304000000,
+        "count": 1,
+        "event_ids": "134650"
+      }
+    ],
+    [
+      "ebf9895f-1e98-59f5-aea1-b38984176bc5",
+      "b412009f-fa87-51af-ab49-0adc7b0b3007",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765381137316000000,
+        "count": 1,
+        "event_ids": "134651"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:28278",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.168.50.254:3128"
+    ]
+  ]
+}

@@ -1,0 +1,1677 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_binary-59",
+  "host": "client",
+  "start_ts": 1765380968384000000,
+  "end_ts": 1765380973956000000,
+  "n_nodes": 69,
+  "n_edges": 65,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968384000000,
+        "name": "pid:10238",
+        "uuid": "8e2a169e-ad57-54ea-9b3a-e8d521da98cd"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968384000000,
+        "name": "/home/judy/.local/share/firefox/firefox-startup",
+        "uuid": "86d62913-ca5c-523f-9a7f-0ac139713d9c"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968388000000,
+        "name": "pid:25908",
+        "uuid": "6f0f9367-9523-5db1-9538-171b6edf92e6"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968388000000,
+        "name": "/usr/bin/dash",
+        "uuid": "3985cb72-e45c-5fff-91a0-f418d8dbf6a1"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1765380968388000000,
+        "name": "/home/judy/.index",
+        "uuid": "96183104-2976-53b8-9a8c-dd52e074cb23"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1765380968384000000,
+        "name": "/home/judy/.local/share/firefox/firefox",
+        "uuid": "4ca42db5-dba9-5f48-82a0-32ff8d33d982"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968388000000,
+        "name": "/home/judy/.local/share/firefox/firefox-bin",
+        "uuid": "bbef521a-ff64-563e-8c42-cb16f9827b67"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968392000000,
+        "name": ".index [not found]",
+        "uuid": "2dde3129-fe3a-596c-92a7-97d75b2fb094"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968392000000,
+        "name": "pid:1004",
+        "uuid": "d76bd264-2936-54a2-ae44-b6b7c7ccff98"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968396000000,
+        "name": "pid:25913",
+        "uuid": "19b1b42d-3b2e-5b2b-8110-3916922c7066"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968404000000,
+        "name": "/usr/bin/python3.10",
+        "uuid": "552eb959-3917-50d3-86f5-a14bff48ab86"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765380968432000000,
+        "name": "192.42.1.174:4443",
+        "uuid": "4f9f0ea4-170e-569b-90c0-8447077f07b2"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765380968584000000,
+        "name": "/home/judy/.local/share/firefox/crashhelper",
+        "uuid": "80611f7b-a788-5965-bf09-f7e9acd422dd"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765380968620000000,
+        "name": "/run/user/1002/:0",
+        "uuid": "7efbcaf6-85dd-5d6b-97f3-089e1dac611e"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "FileObject",
+        "ts": 1765380968620000000,
+        "name": "/tmp/.X11-unix/X0",
+        "uuid": "7b0dec60-af3b-5c22-95e9-a86b4efed58b"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765380968704000000,
+        "name": "127.0.0.53:53",
+        "uuid": "6d427dc7-0bf5-5d92-a364-9c27883d5020"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968704000000,
+        "name": "/usr/lib/systemd/systemd-resolved",
+        "uuid": "40537d36-a5dd-5e63-86e6-38db56a42f1c"
+      }
+    ],
+    [
+      17,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765380968704000000,
+        "name": "192.168.50.254:53",
+        "uuid": "58aacfbe-b1ba-5c1e-97b8-3f2d4aabcacd"
+      }
+    ],
+    [
+      18,
+      {
+        "type": "FileObject",
+        "ts": 1765380968712000000,
+        "name": "/tmp/.ICE-unix/1029",
+        "uuid": "3049582e-4c3a-5d80-b829-cc7e12a1322a"
+      }
+    ],
+    [
+      19,
+      {
+        "type": "FileObject",
+        "ts": 1765380968752000000,
+        "name": "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/startupCache/webext.sc.lz4",
+        "uuid": "dd4eac45-f8c2-5426-87e1-4f13d3357911"
+      }
+    ],
+    [
+      20,
+      {
+        "type": "FileObject",
+        "ts": 1765380968756000000,
+        "name": "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/startupCache",
+        "uuid": "0aeecf0b-49dc-5d4a-9317-d02263d35175"
+      }
+    ],
+    [
+      21,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380968764000000,
+        "name": "/home/judy/.local/share/firefox/glxtest",
+        "uuid": "c7af9e0a-0fcc-5bfb-b32b-cb6387511baa"
+      }
+    ],
+    [
+      22,
+      {
+        "type": "FileObject",
+        "ts": 1765380968936000000,
+        "name": "/home/judy/.cache/ibus/dbus-qxlu0DLG",
+        "uuid": "b92f528b-6e6d-5de2-9496-2ac2b9127023"
+      }
+    ],
+    [
+      23,
+      {
+        "type": "FileObject",
+        "ts": 1765380969328000000,
+        "name": "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/cache2/doomed -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/cache2/trash21309466",
+        "uuid": "97d4f2fa-a7f1-505e-b462-c51c09fffe7e"
+      }
+    ],
+    [
+      24,
+      {
+        "type": "FileObject",
+        "ts": 1765380969512000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/storage.sqlite-journal",
+        "uuid": "65bfe8c0-c729-5b31-8c61-b6e91db73c48"
+      }
+    ],
+    [
+      25,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969708000000,
+        "name": "pid:25919",
+        "uuid": "21901cb6-c838-5efa-a39d-03fbac9eaa6c"
+      }
+    ],
+    [
+      26,
+      {
+        "type": "FileObject",
+        "ts": 1765380969716000000,
+        "name": "/usr/sbin/ldconfig.real",
+        "uuid": "4533f3ee-f2ec-5de0-b651-ded4f95bc52a"
+      }
+    ],
+    [
+      27,
+      {
+        "type": "FileObject",
+        "ts": 1765380969732000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/sessionCheckpoints.json.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/sessionCheckpoints.json",
+        "uuid": "0004f88a-e051-50e6-b9c8-8b664bd004ce"
+      }
+    ],
+    [
+      28,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969776000000,
+        "name": "uname [not found]",
+        "uuid": "5675eb6b-a8f1-5958-bf59-824f1e9203ca"
+      }
+    ],
+    [
+      29,
+      {
+        "type": "FileObject",
+        "ts": 1765380969780000000,
+        "name": "/usr/bin/uname",
+        "uuid": "18957873-ecb3-59b2-abba-c0cb1a1facfe"
+      }
+    ],
+    [
+      30,
+      {
+        "type": "FileObject",
+        "ts": 1765380969808000000,
+        "name": "/home/judy/.local/share/firefox/firefox-bin [pid:26005]",
+        "uuid": "fc5fc440-c3aa-5eda-b141-6a1b57468d1f"
+      }
+    ],
+    [
+      31,
+      {
+        "type": "FileObject",
+        "ts": 1765380969952000000,
+        "name": "/tmp/firefox-dev/lock",
+        "uuid": "4afcd6a2-68f3-5ec1-8e5a-b9a2ee3a3e31"
+      }
+    ],
+    [
+      32,
+      {
+        "type": "FileObject",
+        "ts": 1765380969952000000,
+        "name": "/tmp/firefox-dev/.parentlock",
+        "uuid": "11b1cb74-9b64-5ea5-82b0-9c721beb265d"
+      }
+    ],
+    [
+      33,
+      {
+        "type": "FileObject",
+        "ts": 1765380969952000000,
+        "name": "/tmp/firefox-dev",
+        "uuid": "e4225f9e-39f0-5579-b68e-9bc42ea844fd"
+      }
+    ],
+    [
+      34,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969968000000,
+        "name": "bpf:218",
+        "uuid": "c911ba02-3e9e-5922-9281-1146da90d9f7"
+      }
+    ],
+    [
+      35,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969968000000,
+        "name": "LOAD",
+        "uuid": "22445fe8-7531-585c-9895-08e74b2654a9"
+      }
+    ],
+    [
+      36,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969968000000,
+        "name": "bpf:219",
+        "uuid": "fb5da3c6-ebcb-583e-87ae-4993151eef31"
+      }
+    ],
+    [
+      37,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380969968000000,
+        "name": "bpf:220",
+        "uuid": "18bd5a1f-0119-52d6-8fae-9f224f108dd6"
+      }
+    ],
+    [
+      38,
+      {
+        "type": "FileObject",
+        "ts": 1765380969980000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/prefs-1.js -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/prefs.js",
+        "uuid": "ebfdc899-e766-53ea-8c86-e9ea39d3d194"
+      }
+    ],
+    [
+      39,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765380970396000000,
+        "name": "192.168.50.254:3128",
+        "uuid": "7208f4ea-5e33-5c13-99d3-63feaaf5652e"
+      }
+    ],
+    [
+      40,
+      {
+        "type": "FileObject",
+        "ts": 1765380970576000000,
+        "name": "/run/dbus/system_bus_socket",
+        "uuid": "8d2e5f81-1c27-5244-b2e7-d4f4595ef48c"
+      }
+    ],
+    [
+      41,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380970792000000,
+        "name": "/usr/libexec/polkitd",
+        "uuid": "48942f11-0bbd-5cb1-b906-5ef3bf18aecf"
+      }
+    ],
+    [
+      42,
+      {
+        "type": "FileObject",
+        "ts": 1765380970792000000,
+        "name": "/run/systemd/userdb/io.systemd.DynamicUser",
+        "uuid": "8971b5ef-4b16-5f11-8bbb-d41dbfab184d"
+      }
+    ],
+    [
+      43,
+      {
+        "type": "FileObject",
+        "ts": 1765380971288000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/bounce-tracking-protection.sqlite-journal",
+        "uuid": "36f19cc3-0855-50a1-bcc6-9d6502ab2b37"
+      }
+    ],
+    [
+      44,
+      {
+        "type": "FileObject",
+        "ts": 1765380971292000000,
+        "name": "/home/judy/.local/share/firefox/update.test",
+        "uuid": "2c84255e-53bc-566a-a544-5f005a321d29"
+      }
+    ],
+    [
+      45,
+      {
+        "type": "FileObject",
+        "ts": 1765380971364000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/webappsstore.sqlite-journal",
+        "uuid": "d442582f-8f6a-5817-9521-b62393f54d2c"
+      }
+    ],
+    [
+      46,
+      {
+        "type": "FileObject",
+        "ts": 1765380971508000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/content-prefs.sqlite-journal",
+        "uuid": "5ec2493e-5c5e-58d4-bf2b-ad3734f16507"
+      }
+    ],
+    [
+      47,
+      {
+        "type": "FileObject",
+        "ts": 1765380971512000000,
+        "name": "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.discovery_stream.json.tmp -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.discovery_stream.json",
+        "uuid": "3860416a-8b24-5b61-8b4a-b690967209f8"
+      }
+    ],
+    [
+      48,
+      {
+        "type": "FileObject",
+        "ts": 1765380971892000000,
+        "name": "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.contile.json.tmp -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.contile.json",
+        "uuid": "ab55ed3f-9708-5eba-bb3b-6bf187d4aa40"
+      }
+    ],
+    [
+      49,
+      {
+        "type": "FileObject",
+        "ts": 1765380972812000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/search.json.mozlz4.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/search.json.mozlz4",
+        "uuid": "be5e9f01-b753-5d75-ab8e-def01e5203df"
+      }
+    ],
+    [
+      50,
+      {
+        "type": "FileObject",
+        "ts": 1765380972816000000,
+        "name": "/home/judy/.local/share/firefox/active-update.xml.tmp -> /home/judy/.local/share/firefox/active-update.xml",
+        "uuid": "32285059-2f16-5695-a36c-364afdd06ce8"
+      }
+    ],
+    [
+      51,
+      {
+        "type": "FileObject",
+        "ts": 1765380972816000000,
+        "name": "/home/judy/.local/share/firefox/active-update.xml",
+        "uuid": "c25d8315-df92-575e-aa9f-0cc8291b9507"
+      }
+    ],
+    [
+      52,
+      {
+        "type": "FileObject",
+        "ts": 1765380972816000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/db/data.safe.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/db/data.safe.bin",
+        "uuid": "6ac9f701-36d0-5aab-a2e7-df897ad98293"
+      }
+    ],
+    [
+      53,
+      {
+        "type": "FileObject",
+        "ts": 1765380972824000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/events/events",
+        "uuid": "b26a8c25-f31b-5556-962e-582cf277a923"
+      }
+    ],
+    [
+      54,
+      {
+        "type": "FileObject",
+        "ts": 1765380972836000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/c0f634b3-6f07-4dd1-b7c1-a59a629df233 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/c0f634b3-6f07-4dd1-b7c1-a59a629df233",
+        "uuid": "f2012b21-1bec-5935-a226-17551acc0384"
+      }
+    ],
+    [
+      55,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380972840000000,
+        "name": "unlink [filtered target]",
+        "uuid": "ac273ca2-4a13-5118-9e58-7646c64ca369"
+      }
+    ],
+    [
+      56,
+      {
+        "type": "FileObject",
+        "ts": 1765380972848000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/f08b3064-e717-422a-992d-7092308206a9 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/f08b3064-e717-422a-992d-7092308206a9",
+        "uuid": "80fedef8-3d35-52b5-a587-45f696d785d4"
+      }
+    ],
+    [
+      57,
+      {
+        "type": "FileObject",
+        "ts": 1765380972856000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/e4c2c581-5875-45bf-b43d-89957bf1d6bc -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e4c2c581-5875-45bf-b43d-89957bf1d6bc",
+        "uuid": "7599f4da-803c-576c-9d3a-9301a9a47e6c"
+      }
+    ],
+    [
+      58,
+      {
+        "type": "FileObject",
+        "ts": 1765380972872000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/e1c30779-8817-4025-ad88-000c1ac2a5bd -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e1c30779-8817-4025-ad88-000c1ac2a5bd",
+        "uuid": "001d34b7-5559-5b52-985c-1523379537cf"
+      }
+    ],
+    [
+      59,
+      {
+        "type": "FileObject",
+        "ts": 1765380973184000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/10611333-269c-451d-b806-e34b7915e434 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/10611333-269c-451d-b806-e34b7915e434",
+        "uuid": "ae5802c3-18ce-51b0-b8e1-e0b22a812a03"
+      }
+    ],
+    [
+      60,
+      {
+        "type": "FileObject",
+        "ts": 1765380973192000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/416b018c-275b-47c6-9c74-a19ab834fe5b -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/416b018c-275b-47c6-9c74-a19ab834fe5b",
+        "uuid": "5304fbc6-a513-5841-99dc-aee2f00aa97b"
+      }
+    ],
+    [
+      61,
+      {
+        "type": "FileObject",
+        "ts": 1765380973212000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/1ace9292-0c5c-4179-abbc-8db536fa2d17 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/1ace9292-0c5c-4179-abbc-8db536fa2d17",
+        "uuid": "629e15fd-0add-5a31-81de-90d88a761d0e"
+      }
+    ],
+    [
+      62,
+      {
+        "type": "FileObject",
+        "ts": 1765380973216000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/37f8340c-2f7c-4ad4-ab9a-96f7c4533b2f -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/37f8340c-2f7c-4ad4-ab9a-96f7c4533b2f",
+        "uuid": "88de1236-e94c-5fc6-a590-8c847cf107a7"
+      }
+    ],
+    [
+      63,
+      {
+        "type": "FileObject",
+        "ts": 1765380973232000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/c0f634b3-6f07-4dd1-b7c1-a59a629df233",
+        "uuid": "16eca8b1-1550-5268-960b-a38437a7ffb1"
+      }
+    ],
+    [
+      64,
+      {
+        "type": "FileObject",
+        "ts": 1765380973236000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/20f224d8-9d66-4b96-8541-630764635e39 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/20f224d8-9d66-4b96-8541-630764635e39",
+        "uuid": "bfccbcba-296d-54d2-8d1f-aca34a8464df"
+      }
+    ],
+    [
+      65,
+      {
+        "type": "FileObject",
+        "ts": 1765380973236000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/61d366ef-4c7c-4076-a89e-d5603e58edaa -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/61d366ef-4c7c-4076-a89e-d5603e58edaa",
+        "uuid": "3928c824-f05c-5992-a4e3-72ccba68ff76"
+      }
+    ],
+    [
+      66,
+      {
+        "type": "FileObject",
+        "ts": 1765380973500000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/f08b3064-e717-422a-992d-7092308206a9",
+        "uuid": "88ecfaae-6a66-5fd2-8bbe-114e263edccc"
+      }
+    ],
+    [
+      67,
+      {
+        "type": "FileObject",
+        "ts": 1765380973740000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e4c2c581-5875-45bf-b43d-89957bf1d6bc",
+        "uuid": "16509262-7dc7-5d47-8d86-f5f2462792d2"
+      }
+    ],
+    [
+      68,
+      {
+        "type": "FileObject",
+        "ts": 1765380973956000000,
+        "name": "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e1c30779-8817-4025-ad88-000c1ac2a5bd",
+        "uuid": "9fb0d3c1-50f6-52aa-a901-521e0d159bea"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "8e2a169e-ad57-54ea-9b3a-e8d521da98cd",
+      "86d62913-ca5c-523f-9a7f-0ac139713d9c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968384000000,
+        "count": 1,
+        "event_ids": "108525"
+      }
+    ],
+    [
+      "86d62913-ca5c-523f-9a7f-0ac139713d9c",
+      "4ca42db5-dba9-5f48-82a0-32ff8d33d982",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968384000000,
+        "count": 1,
+        "event_ids": "108527"
+      }
+    ],
+    [
+      "86d62913-ca5c-523f-9a7f-0ac139713d9c",
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968388000000,
+        "count": 1,
+        "event_ids": "108528"
+      }
+    ],
+    [
+      "6f0f9367-9523-5db1-9538-171b6edf92e6",
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968388000000,
+        "count": 1,
+        "event_ids": "108526"
+      }
+    ],
+    [
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "96183104-2976-53b8-9a8c-dd52e074cb23",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1765380968388000000,
+        "count": 1,
+        "event_ids": "108526"
+      }
+    ],
+    [
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "2dde3129-fe3a-596c-92a7-97d75b2fb094",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765380968392000000,
+        "count": 1,
+        "event_ids": "108529"
+      }
+    ],
+    [
+      "d76bd264-2936-54a2-ae44-b6b7c7ccff98",
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968392000000,
+        "count": 1,
+        "event_ids": "108530"
+      }
+    ],
+    [
+      "19b1b42d-3b2e-5b2b-8110-3916922c7066",
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968396000000,
+        "count": 2,
+        "event_ids": "108532,108534"
+      }
+    ],
+    [
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "552eb959-3917-50d3-86f5-a14bff48ab86",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968404000000,
+        "count": 1,
+        "event_ids": "108537"
+      }
+    ],
+    [
+      "552eb959-3917-50d3-86f5-a14bff48ab86",
+      "4f9f0ea4-170e-569b-90c0-8447077f07b2",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968432000000,
+        "count": 1,
+        "event_ids": "108540"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "80611f7b-a788-5965-bf09-f7e9acd422dd",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968584000000,
+        "count": 1,
+        "event_ids": "108541"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "7efbcaf6-85dd-5d6b-97f3-089e1dac611e",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968620000000,
+        "count": 1,
+        "event_ids": "108556"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "7b0dec60-af3b-5c22-95e9-a86b4efed58b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968620000000,
+        "count": 1,
+        "event_ids": "108557"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "6d427dc7-0bf5-5d92-a364-9c27883d5020",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968704000000,
+        "count": 6,
+        "event_ids": "108565,108567,108569,108571,108930,108933"
+      }
+    ],
+    [
+      "40537d36-a5dd-5e63-86e6-38db56a42f1c",
+      "58aacfbe-b1ba-5c1e-97b8-3f2d4aabcacd",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968704000000,
+        "count": 3,
+        "event_ids": "108566,108570,108931"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "3049582e-4c3a-5d80-b829-cc7e12a1322a",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968712000000,
+        "count": 1,
+        "event_ids": "108568"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "dd4eac45-f8c2-5426-87e1-4f13d3357911",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380968752000000,
+        "count": 1,
+        "event_ids": "108572"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "0aeecf0b-49dc-5d4a-9317-d02263d35175",
+      "rmdir",
+      {
+        "edge_type": "RMDIR",
+        "ts": 1765380968756000000,
+        "count": 1,
+        "event_ids": "108573"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "c7af9e0a-0fcc-5bfb-b32b-cb6387511baa",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380968764000000,
+        "count": 1,
+        "event_ids": "108574"
+      }
+    ],
+    [
+      "c7af9e0a-0fcc-5bfb-b32b-cb6387511baa",
+      "7b0dec60-af3b-5c22-95e9-a86b4efed58b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968780000000,
+        "count": 1,
+        "event_ids": "108575"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "b92f528b-6e6d-5de2-9496-2ac2b9127023",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380968936000000,
+        "count": 1,
+        "event_ids": "108590"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "97d4f2fa-a7f1-505e-b462-c51c09fffe7e",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380969328000000,
+        "count": 1,
+        "event_ids": "108661"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "65bfe8c0-c729-5b31-8c61-b6e91db73c48",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380969512000000,
+        "count": 1,
+        "event_ids": "108676"
+      }
+    ],
+    [
+      "21901cb6-c838-5efa-a39d-03fbac9eaa6c",
+      "3985cb72-e45c-5fff-91a0-f418d8dbf6a1",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380969708000000,
+        "count": 1,
+        "event_ids": "108698"
+      }
+    ],
+    [
+      "21901cb6-c838-5efa-a39d-03fbac9eaa6c",
+      "4533f3ee-f2ec-5de0-b651-ded4f95bc52a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380969716000000,
+        "count": 1,
+        "event_ids": "108699"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "0004f88a-e051-50e6-b9c8-8b664bd004ce",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380969732000000,
+        "count": 2,
+        "event_ids": "108700,108942"
+      }
+    ],
+    [
+      "552eb959-3917-50d3-86f5-a14bff48ab86",
+      "5675eb6b-a8f1-5958-bf59-824f1e9203ca",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765380969776000000,
+        "count": 4,
+        "event_ids": "108701,108702,108703,108704"
+      }
+    ],
+    [
+      "21901cb6-c838-5efa-a39d-03fbac9eaa6c",
+      "18957873-ecb3-59b2-abba-c0cb1a1facfe",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380969780000000,
+        "count": 1,
+        "event_ids": "108705"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "fc5fc440-c3aa-5eda-b141-6a1b57468d1f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380969808000000,
+        "count": 1,
+        "event_ids": "108706"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "4afcd6a2-68f3-5ec1-8e5a-b9a2ee3a3e31",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380969952000000,
+        "count": 1,
+        "event_ids": "108711"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "11b1cb74-9b64-5ea5-82b0-9c721beb265d",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380969952000000,
+        "count": 1,
+        "event_ids": "108713"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "e4225f9e-39f0-5579-b68e-9bc42ea844fd",
+      "rmdir",
+      {
+        "edge_type": "RMDIR",
+        "ts": 1765380969952000000,
+        "count": 1,
+        "event_ids": "108714"
+      }
+    ],
+    [
+      "c911ba02-3e9e-5922-9281-1146da90d9f7",
+      "22445fe8-7531-585c-9895-08e74b2654a9",
+      "bpf",
+      {
+        "edge_type": "BPF",
+        "ts": 1765380969968000000,
+        "count": 1,
+        "event_ids": "108720"
+      }
+    ],
+    [
+      "fb5da3c6-ebcb-583e-87ae-4993151eef31",
+      "22445fe8-7531-585c-9895-08e74b2654a9",
+      "bpf",
+      {
+        "edge_type": "BPF",
+        "ts": 1765380969968000000,
+        "count": 1,
+        "event_ids": "108721"
+      }
+    ],
+    [
+      "18bd5a1f-0119-52d6-8fae-9f224f108dd6",
+      "22445fe8-7531-585c-9895-08e74b2654a9",
+      "bpf",
+      {
+        "edge_type": "BPF",
+        "ts": 1765380969968000000,
+        "count": 1,
+        "event_ids": "108722"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "ebfdc899-e766-53ea-8c86-e9ea39d3d194",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380969980000000,
+        "count": 5,
+        "event_ids": "108724,108941,109006,109097,109475"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "7208f4ea-5e33-5c13-99d3-63feaaf5652e",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380970396000000,
+        "count": 18,
+        "event_ids": "108826,108827,108940,108967,108968,109005+12"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "8d2e5f81-1c27-5244-b2e7-d4f4595ef48c",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380970576000000,
+        "count": 7,
+        "event_ids": "108828,108864,108865,108993,109100,109131+1"
+      }
+    ],
+    [
+      "48942f11-0bbd-5cb1-b906-5ef3bf18aecf",
+      "8971b5ef-4b16-5f11-8bbb-d41dbfab184d",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765380970792000000,
+        "count": 1,
+        "event_ids": "108866"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "36f19cc3-0855-50a1-bcc6-9d6502ab2b37",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380971288000000,
+        "count": 1,
+        "event_ids": "108932"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "2c84255e-53bc-566a-a544-5f005a321d29",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380971292000000,
+        "count": 8,
+        "event_ids": "108934,108935,108936,108937,108938,108939+2"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "d442582f-8f6a-5817-9521-b62393f54d2c",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380971364000000,
+        "count": 1,
+        "event_ids": "108947"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "5ec2493e-5c5e-58d4-bf2b-ad3734f16507",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380971508000000,
+        "count": 1,
+        "event_ids": "108965"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "3860416a-8b24-5b61-8b4a-b690967209f8",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380971512000000,
+        "count": 1,
+        "event_ids": "108966"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "ab55ed3f-9708-5eba-bb3b-6bf187d4aa40",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380971892000000,
+        "count": 1,
+        "event_ids": "109008"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "be5e9f01-b753-5d75-ab8e-def01e5203df",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972812000000,
+        "count": 1,
+        "event_ids": "109122"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "32285059-2f16-5695-a36c-364afdd06ce8",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972816000000,
+        "count": 1,
+        "event_ids": "109123"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "c25d8315-df92-575e-aa9f-0cc8291b9507",
+      "chmod",
+      {
+        "edge_type": "CHMOD",
+        "ts": 1765380972816000000,
+        "count": 1,
+        "event_ids": "109124"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "6ac9f701-36d0-5aab-a2e7-df897ad98293",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972816000000,
+        "count": 331,
+        "event_ids": "109125,109126,109127,109128,109130,109132+325"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "b26a8c25-f31b-5556-962e-582cf277a923",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380972824000000,
+        "count": 1,
+        "event_ids": "109129"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "f2012b21-1bec-5935-a226-17551acc0384",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972836000000,
+        "count": 1,
+        "event_ids": "109134"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "ac273ca2-4a13-5118-9e58-7646c64ca369",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380972840000000,
+        "count": 13,
+        "event_ids": "109136,109148,109159,109161,109174,109456+7"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "80fedef8-3d35-52b5-a587-45f696d785d4",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972848000000,
+        "count": 1,
+        "event_ids": "109140"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "7599f4da-803c-576c-9d3a-9301a9a47e6c",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972856000000,
+        "count": 1,
+        "event_ids": "109153"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "001d34b7-5559-5b52-985c-1523379537cf",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380972872000000,
+        "count": 1,
+        "event_ids": "109162"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "ae5802c3-18ce-51b0-b8e1-e0b22a812a03",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973184000000,
+        "count": 1,
+        "event_ids": "109460"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "5304fbc6-a513-5841-99dc-aee2f00aa97b",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973192000000,
+        "count": 1,
+        "event_ids": "109469"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "629e15fd-0add-5a31-81de-90d88a761d0e",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973212000000,
+        "count": 1,
+        "event_ids": "109497"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "88de1236-e94c-5fc6-a590-8c847cf107a7",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973216000000,
+        "count": 1,
+        "event_ids": "109502"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "16eca8b1-1550-5268-960b-a38437a7ffb1",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380973232000000,
+        "count": 1,
+        "event_ids": "109515"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "bfccbcba-296d-54d2-8d1f-aca34a8464df",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973236000000,
+        "count": 1,
+        "event_ids": "109521"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "3928c824-f05c-5992-a4e3-72ccba68ff76",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765380973236000000,
+        "count": 1,
+        "event_ids": "109527"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "88ecfaae-6a66-5fd2-8bbe-114e263edccc",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380973500000000,
+        "count": 1,
+        "event_ids": "109591"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "16509262-7dc7-5d47-8d86-f5f2462792d2",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380973740000000,
+        "count": 1,
+        "event_ids": "109592"
+      }
+    ],
+    [
+      "bbef521a-ff64-563e-8c42-cb16f9827b67",
+      "9fb0d3c1-50f6-52aa-a901-521e0d159bea",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765380973956000000,
+        "count": 1,
+        "event_ids": "109624"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:10238",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/firefox-startup"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-startup",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/firefox"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-startup",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/firefox-bin"
+    ],
+    [
+      "pid:25908",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/home/judy/.index"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_FAIL",
+      ".index [not found]"
+    ],
+    [
+      "pid:1004",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:25913",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/python3.10"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "CONNECT",
+      "192.42.1.174:4443"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/crashhelper"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "/run/user/1002/:0"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "/tmp/.X11-unix/X0"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "127.0.0.53:53"
+    ],
+    [
+      "/usr/lib/systemd/systemd-resolved",
+      "CONNECT",
+      "192.168.50.254:53"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "/tmp/.ICE-unix/1029"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/startupCache/webext.sc.lz4"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RMDIR",
+      "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/startupCache"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/glxtest"
+    ],
+    [
+      "/home/judy/.local/share/firefox/glxtest",
+      "CONNECT",
+      "/tmp/.X11-unix/X0"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "/home/judy/.cache/ibus/dbus-qxlu0DLG"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/cache2/doomed -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/cache2/trash21309466"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/storage.sqlite-journal"
+    ],
+    [
+      "pid:25919",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:25919",
+      "EXECVE",
+      "/usr/sbin/ldconfig.real"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/sessionCheckpoints.json.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/sessionCheckpoints.json"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "EXECVE_FAIL",
+      "uname [not found]"
+    ],
+    [
+      "pid:25919",
+      "EXECVE",
+      "/usr/bin/uname"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "EXECVE",
+      "/home/judy/.local/share/firefox/firefox-bin [pid:26005]"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/tmp/firefox-dev/lock"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/tmp/firefox-dev/.parentlock"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RMDIR",
+      "/tmp/firefox-dev"
+    ],
+    [
+      "bpf:218",
+      "BPF",
+      "LOAD"
+    ],
+    [
+      "bpf:219",
+      "BPF",
+      "LOAD"
+    ],
+    [
+      "bpf:220",
+      "BPF",
+      "LOAD"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/prefs-1.js -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/prefs.js"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "192.168.50.254:3128"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CONNECT",
+      "/run/dbus/system_bus_socket"
+    ],
+    [
+      "/usr/libexec/polkitd",
+      "CONNECT",
+      "/run/systemd/userdb/io.systemd.DynamicUser"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/bounce-tracking-protection.sqlite-journal"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.local/share/firefox/update.test"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/webappsstore.sqlite-journal"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/content-prefs.sqlite-journal"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.discovery_stream.json.tmp -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.discovery_stream.json"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.contile.json.tmp -> /home/judy/.cache/mozilla/firefox/6l8yc87o.dev-edition-default/activity-stream.contile.json"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/search.json.mozlz4.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/search.json.mozlz4"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.local/share/firefox/active-update.xml.tmp -> /home/judy/.local/share/firefox/active-update.xml"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "CHMOD",
+      "/home/judy/.local/share/firefox/active-update.xml"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/db/data.safe.tmp -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/db/data.safe.bin"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/events/events"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/c0f634b3-6f07-4dd1-b7c1-a59a629df233 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/c0f634b3-6f07-4dd1-b7c1-a59a629df233"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "unlink [filtered target]"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/f08b3064-e717-422a-992d-7092308206a9 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/f08b3064-e717-422a-992d-7092308206a9"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/e4c2c581-5875-45bf-b43d-89957bf1d6bc -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e4c2c581-5875-45bf-b43d-89957bf1d6bc"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/e1c30779-8817-4025-ad88-000c1ac2a5bd -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e1c30779-8817-4025-ad88-000c1ac2a5bd"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/10611333-269c-451d-b806-e34b7915e434 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/10611333-269c-451d-b806-e34b7915e434"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/416b018c-275b-47c6-9c74-a19ab834fe5b -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/416b018c-275b-47c6-9c74-a19ab834fe5b"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/1ace9292-0c5c-4179-abbc-8db536fa2d17 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/1ace9292-0c5c-4179-abbc-8db536fa2d17"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/37f8340c-2f7c-4ad4-ab9a-96f7c4533b2f -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/37f8340c-2f7c-4ad4-ab9a-96f7c4533b2f"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/c0f634b3-6f07-4dd1-b7c1-a59a629df233"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/20f224d8-9d66-4b96-8541-630764635e39 -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/20f224d8-9d66-4b96-8541-630764635e39"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "RENAME",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/tmp/61d366ef-4c7c-4076-a89e-d5603e58edaa -> /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/61d366ef-4c7c-4076-a89e-d5603e58edaa"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/f08b3064-e717-422a-992d-7092308206a9"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e4c2c581-5875-45bf-b43d-89957bf1d6bc"
+    ],
+    [
+      "/home/judy/.local/share/firefox/firefox-bin",
+      "UNLINK",
+      "/home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/glean/pending_pings/e1c30779-8817-4025-ad88-000c1ac2a5bd"
+    ]
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1105-000",
+  "step": "1_sudo_pam-41",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:16840 execve /usr/bin/wget.",
+    "/usr/bin/wget connect 192.42.1.174:80."
+  ]
+}

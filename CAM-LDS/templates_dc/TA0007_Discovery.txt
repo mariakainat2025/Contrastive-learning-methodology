@@ -1,0 +1,121 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0007
+======================================================================
+  ID         : TA0007
+  NAME       : Discovery
+
+  OBJECTIVE  : The adversary is trying to figure out your environment.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Discovery consists of techniques an adversary may use to gain
+  knowledge about the system and internal network. These techniques
+  help adversaries observe the environment and orient themselves
+  before deciding how to act. They also allow adversaries to explore
+  what they can control and what’s around their entry point in order
+  to discover how it could benefit their current objective. Native
+  operating system tools are often used toward this post-compromise
+  information-gathering objective.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Enumeration of users and groups through suspicious shell
+    commands or unauthorized access to /etc/passwd or /etc/shadow.
+
+    Scripted or binary usage of X11 utilities (e.g., xdotool,
+    wmctrl) or direct /proc/*/window mappings to discover open GUI
+    windows and active desktops.
+
+    Open, read, or stat of browser config files.
+
+    Open/read: Access to /proc/self/status with focus on TracerPID
+    field.
+
+    Execve: Execution of lsmod, modinfo, or cat /proc/modules. Read:
+    File access to /proc/modules or /sys/module/.
+
+    Use of file enumeration commands (e.g., 'ls', 'find', 'locate')
+    executed by suspicious users or scripts accessing broad file
+    hierarchies or restricted directories.
+
+    Execve call with argv matching known disk enumeration commands
+    (lsblk, parted, fdisk). Command line arguments containing lsblk,
+    fdisk, parted.
+
+    Execve: Execution of cat, less, grep, journalctl targeting log
+    directories (/var/log/). Open: Access to sensitive log files
+    (/var/log/auth.log, /var/log/secure, /var/log/syslog).
+
+    Detects use of network scanning utilities or scripts performing
+    rapid connections to multiple services or hosts using auditd and
+    netflow/pcap telemetry.
+
+    Execve of smbclient, smbmap, rpcclient, nmblookup, crackmapexec
+    smb.
+
+    Detects abnormal NIC configurations and unauthorized sniffing
+    from non-root sessions.
+
+    interactive/non-interactive `chage -l`, `grep`/`cat` of PAM
+    config (e.g., `/etc/pam.d/common-password`,
+    `/etc/security/pwquality.conf`) followed by optional reads of
+    `/etc/login.defs` then same user performs account enumeration or
+    password change attempts shortly after.
+
+    Enumeration of USB and other peripheral hardware via udevadm,
+    lshw, or /sys or /proc interfaces in proximity to collection or
+    mounting behavior.
+
+    Detection of group enumeration using commands like 'id',
+    'groups', or 'getent group', often followed by privilege
+    escalation or SSH lateral movement.
+
+    Detects execution of common process enumeration utilities (e.g.,
+    ps, top, htop) or access to /proc with suspicious ancestry.
+
+    Use of bash scripts or interactive shells to issue sequential
+    ping, arp, or traceroute commands to map remote hosts.
+
+    Execution of dpkg, rpm, or other package manager with list flag.
+
+    Execution of system enumeration commands such as `uname`, `df`,
+    `uptime`, `hostname`, `lscpu`, and `cat /etc/os-release` through
+    local terminal or scripts.
+
+    Execve calls to locale, timedatectl, or cat /etc/timezone.
+
+    Execution of `ifconfig`, `ip a`, or access to `/proc/net/`
+    indicating collection of local interface and route
+    configuration.
+
+    Detects use of netstat, ss, lsof, or custom shell scripts to
+    list current network connections. Often paired with privilege
+    escalation or staging.
+
+    Adversary runs commands like `whoami`, `id`, `w`, or `cat
+    /etc/passwd` from non-interactive or scripting contexts to
+    enumerate system user details.
+
+    Execution of service management commands like `systemctl
+    list-units`, `service --status-all`, or direct reading of
+    `/etc/init.d`.
+
+    A process (often spawned by a shell, interpreter, or malware
+    implant) executes time discovery via commands (date,
+    timedatectl, hwclock, cat /etc/timezone, /proc/uptime) or direct
+    syscalls (time(), clock_gettime) and is (optionally) followed by
+    scheduled task creation/modification (crontab, at) or
+    conditional sleep logic.
+
+    Detects attempts to enumerate VMs via hypervisor tools like
+    `virsh`, `VBoxManage`, or `qemu-img`.
+
+    Execve or syscall invoking vm artifact check commands (e.g.,
+    dmidecode, lspci, dmesg). Sleep function usage or loops
+    (nanosleep, usleep) in scripts.
+
+======================================================================

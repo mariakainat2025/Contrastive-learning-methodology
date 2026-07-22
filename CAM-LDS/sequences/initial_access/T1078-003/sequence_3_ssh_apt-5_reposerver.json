@@ -1,0 +1,12 @@
+{
+  "tactic": "Initial_Access",
+  "technique": "T1078-003",
+  "step": "3_ssh_apt-5",
+  "host": "reposerver",
+  "n_triples": 3,
+  "sequence": [
+    "pid:4290 execve /usr/bin/python3.10.",
+    "/usr/bin/python3.10 execve /usr/bin/snap.",
+    "/usr/bin/python3.10 execve /snap/snapd/25577/usr/bin/snap."
+  ]
+}

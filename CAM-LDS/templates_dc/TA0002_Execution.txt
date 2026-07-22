@@ -1,0 +1,77 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0002
+======================================================================
+  ID         : TA0002
+  NAME       : Execution
+
+  OBJECTIVE  : The adversary is trying to run malicious code.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Execution consists of techniques that result in
+  adversary-controlled code running on a local or remote system. For
+  example, an adversary might use a remote access tool to run a
+  PowerShell script that does Remote System Discovery.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Techniques that run malicious code are often paired with
+  techniques from all other tactics to achieve broader goals, like
+  exploring a network or stealing data.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Detects use of shell interpreters (e.g., bash, sh, python, perl)
+    initiated by users or processes not normally executing them,
+    especially when chaining suspicious utilities like netcat, curl,
+    or ssh.
+
+    Browser/Office/reader process logs crash/segfault or abnormal
+    sandbox message followed by new executable/script/write occurs
+    in $HOME (Downloads, ~/.cache, /tmp) then unexpected child like
+    curl/wget/bash/python opens network connections soon after.
+
+    Open/write syscalls targeting /etc/ld.so.preload or binaries in
+    /usr/bin.
+
+    Execve: parent process is usb/hid device handler, child process
+    bash/python invoked.
+
+    Socket: Suspicious creation of AF_UNIX sockets outside expected
+    daemons. Open: Access to named pipes or FIFO in /tmp or /dev/shm
+    by unexpected processes.
+
+    Userland processes invoking syscall-heavy libraries (libc,
+    glibc) followed by fork, mmap, or ptrace behavior commonly
+    associated with code injection or memory manipulation.
+
+    Detects creation or modification of cron jobs via crontab,
+    /etc/cron.* directories, or systemd timer units with execution
+    by unusual users or non-standard intervals.
+
+    Execve: Processes launched with LD_PRELOAD/LD_LIBRARY_PATH
+    pointing to non-system dirs. Openat/read/mmap: Open/mmap .so
+    files from non-standard paths.
+
+    Detects remote scripts or binaries deployed via Puppet, Chef,
+    Ansible, or shell scripts from orchestration servers executing
+    outside maintenance windows or in unmanaged nodes.
+
+    Detect unusual invocations of systemctl, service, or init
+    scripts creating or modifying daemons. Execution of binaries
+    from unexpected paths linked to service start/stop activity.
+
+    User app/browser/archiver logs an open/click or abnormal exit
+    followed by new executable/script/archive extracted into
+    $HOME/Downloads, /tmp, or ~/.cache then parent app spawns
+    shell/interpreter (bash/sh/python/node/curl/wget) or desktop
+    file, and resulting in new outbound connection(s) from the child
+    lineage.
+
+======================================================================

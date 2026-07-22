@@ -1,0 +1,86 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0003
+======================================================================
+  ID         : TA0003
+  NAME       : Persistence
+
+  OBJECTIVE  : The adversary is trying to maintain their foothold.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Persistence consists of techniques that adversaries use to keep
+  access to systems across restarts, changed credentials, and other
+  interruptions that could cut off their access. Techniques used for
+  persistence include any access, action, or configuration changes
+  that let them maintain their foothold on systems, such as
+  replacing or hijacking legitimate code or adding startup code.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Use of native tools or scripting (e.g., `usermod`, `passwd`,
+    `groupmod`) to escalate permissions or persist access on
+    existing users, correlated with login or process events.
+
+    Execution of binaries located in /etc/init.d/ or systemd service
+    paths.
+
+    Detection of changes or execution of shell initialization
+    scripts like .bashrc, .profile, or /etc/profile for persistence.
+
+    Detects modification of system or application binaries by
+    monitoring /usr/bin, /bin, and other privileged directories.
+
+    Adversary invokes 'useradd', 'adduser', or equivalent system
+    commands or scripts to create local users. Detection focuses on
+    command execution and audit trail of passwd/shadow file
+    modifications.
+
+    Execution of systemctl or service with enable/start/modify.
+    Write or rename to /etc/systemd/system or /etc/init.d.
+
+    Execution of script interpreters by systemd timer (ExecStart).
+    Inotify watch creation or auditctl changes on /etc/cron* or
+    /lib/systemd/system/.
+
+    Execve: Commands like systemctl stop <service>, service
+    <service> stop, or kill -9 <pid>.
+
+    Ssh logins or execve of remote commands.
+
+    Detects modification of PAM configuration files, unauthorized
+    new PAM modules, and suspicious process execution accessing
+    PAM-related binaries.
+
+    Execve: Execution of systemctl, loginctl, or systemd-inhibit
+    commands related to sleep/hibernate. Write: File modifications
+    to /etc/systemd/sleep.conf or related power configuration files.
+
+    Exec: Execution of dd, efibootmgr, or flashrom modifying
+    firmware/boot partitions. Open, write: Modification of
+    /boot/grub/* or /boot/efi/*.
+
+    Detects creation or modification of cron jobs via crontab,
+    /etc/cron.* directories, or systemd timer units with execution
+    by unusual users or non-standard intervals.
+
+    Abuse of extensible server modules (e.g., Apache, Nginx, Tomcat)
+    to load rogue plugins that initiate bash, connect to C2, or
+    spawn reverse shells.
+
+    Manual or script-based installation of extension-like modules
+    into browser config directories or IDE plugin paths, followed by
+    suspicious network activity.
+
+    Execve: Commands altering firewall or enabling listeners
+    (iptables, nft, ufw, firewall-cmd, systemctl start
+    *ssh*/*telnet*, ip route add, tcpdump, tshark). Socket/bind:
+    Process binds to a new local port shortly after knock.
+
+    Detection of valid account misuse through SSH logins, sudo/su
+    abuse, and service account anomalies outside expected patterns.
+
+======================================================================

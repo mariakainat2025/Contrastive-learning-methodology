@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_binary-57",
+  "host": "client",
+  "start_ts": 1765380934228000000,
+  "end_ts": 1765380934228000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380934228000000,
+        "name": "pid:10238",
+        "uuid": "e8a4620a-7f9b-5d19-b44a-d4ee314077de"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765380934228000000,
+        "name": "/usr/bin/ln",
+        "uuid": "a10b6a1a-1cfc-57c1-a68c-4eb78eb07b35"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765380934228000000,
+        "name": "/home/judy/.local/bin/Cu1HScbk -> /home/judy/.local/bin/firefox",
+        "uuid": "37417c8a-dde2-5768-9334-64f45f01bcee"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "e8a4620a-7f9b-5d19-b44a-d4ee314077de",
+      "a10b6a1a-1cfc-57c1-a68c-4eb78eb07b35",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765380934228000000,
+        "count": 1,
+        "event_ids": "104442"
+      }
+    ],
+    [
+      "a10b6a1a-1cfc-57c1-a68c-4eb78eb07b35",
+      "37417c8a-dde2-5768-9334-64f45f01bcee",
+      "renameat",
+      {
+        "edge_type": "RENAMEAT",
+        "ts": 1765380934228000000,
+        "count": 1,
+        "event_ids": "104443"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:10238",
+      "EXECVE",
+      "/usr/bin/ln"
+    ],
+    [
+      "/usr/bin/ln",
+      "RENAMEAT",
+      "/home/judy/.local/bin/Cu1HScbk -> /home/judy/.local/bin/firefox"
+    ]
+  ]
+}

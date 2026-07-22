@@ -1,0 +1,400 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1190-000",
+  "step": "1_autostart_localaccount-5",
+  "host": "videoserver",
+  "start_ts": 1758566010249999872,
+  "end_ts": 1758566025921999872,
+  "n_nodes": 16,
+  "n_edges": 15,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566010249999872,
+        "name": "/usr/sbin/apache2",
+        "uuid": "dd379f74-ed5a-5401-96fe-dec1d9220635"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1758566010249999872,
+        "name": "/var/run/mysqld/mysqld.sock",
+        "uuid": "4723eefe-1d5a-5ead-bc9d-4d82e59433de"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566010286000128,
+        "name": "/usr/bin/dash",
+        "uuid": "aa9eb35b-a803-541b-bbfd-fa0510722c0a"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1758566010286000128,
+        "name": "/usr/bin/zmdc.pl",
+        "uuid": "5b15a9e3-423d-5c58-bbbf-5d61fdffa613"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1758566010286000128,
+        "name": "/usr/bin/perl",
+        "uuid": "72be83c4-0824-57d5-9c24-e4a767ee902a"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1758566010502000128,
+        "name": "/usr/bin/zmu",
+        "uuid": "a85b579b-43e0-50db-b7a3-cca3c21353d3"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1758566010549999872,
+        "name": "/usr/bin/sleep",
+        "uuid": "ce3cb218-6cb5-57dc-8493-519ff4005ef1"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566010881999872,
+        "name": "setgid [no target]",
+        "uuid": "6eb87103-37e6-5323-8f27-549477c8e400"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566010881999872,
+        "name": "setuid [no target]",
+        "uuid": "dee8931c-2e83-5e21-acab-6517ab698ddf"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566024977999872,
+        "name": "pid:2997",
+        "uuid": "424800c6-37da-59cd-aa5a-7df2ef001f9a"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566024977999872,
+        "name": "/usr/bin/python3.9",
+        "uuid": "e9c59c13-6088-512c-a530-d55aab6422e6"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758566025002000128,
+        "name": "192.42.1.174:4444",
+        "uuid": "6206b52e-826b-566f-b689-a0eedd93b3cc"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566025869999872,
+        "name": "pid:3000",
+        "uuid": "5eb0a117-4f41-5384-8da4-f8a0e73051a1"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1758566025869999872,
+        "name": "/usr/sbin/ldconfig",
+        "uuid": "8d4eaf8b-2efd-5575-a3fa-6582efd29635"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758566025921999872,
+        "name": "uname [not found]",
+        "uuid": "bc28370c-962a-5cf6-a120-3257bc39a7e9"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "FileObject",
+        "ts": 1758566025921999872,
+        "name": "/usr/bin/uname",
+        "uuid": "3cbb8aa3-d247-50bb-a314-56d583332dbe"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "dd379f74-ed5a-5401-96fe-dec1d9220635",
+      "4723eefe-1d5a-5ead-bc9d-4d82e59433de",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758566010249999872,
+        "count": 4,
+        "event_ids": "4764,4771,4796,4803"
+      }
+    ],
+    [
+      "dd379f74-ed5a-5401-96fe-dec1d9220635",
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566010286000128,
+        "count": 7,
+        "event_ids": "4765,4768,4772,4791,4797,4800+1"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "5b15a9e3-423d-5c58-bbbf-5d61fdffa613",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758566010286000128,
+        "count": 4,
+        "event_ids": "4765,4768,4797,4800"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "72be83c4-0824-57d5-9c24-e4a767ee902a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566010286000128,
+        "count": 4,
+        "event_ids": "4766,4769,4798,4801"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "a85b579b-43e0-50db-b7a3-cca3c21353d3",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758566010502000128,
+        "count": 3,
+        "event_ids": "4772,4791,4804"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "a85b579b-43e0-50db-b7a3-cca3c21353d3",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566010502000128,
+        "count": 3,
+        "event_ids": "4773,4792,4805"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "ce3cb218-6cb5-57dc-8493-519ff4005ef1",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566010549999872,
+        "count": 2,
+        "event_ids": "4774,4793"
+      }
+    ],
+    [
+      "dd379f74-ed5a-5401-96fe-dec1d9220635",
+      "6eb87103-37e6-5323-8f27-549477c8e400",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1758566010881999872,
+        "count": 1,
+        "event_ids": "4776"
+      }
+    ],
+    [
+      "dd379f74-ed5a-5401-96fe-dec1d9220635",
+      "dee8931c-2e83-5e21-acab-6517ab698ddf",
+      "setuid",
+      {
+        "edge_type": "SETUID",
+        "ts": 1758566010881999872,
+        "count": 1,
+        "event_ids": "4777"
+      }
+    ],
+    [
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "e9c59c13-6088-512c-a530-d55aab6422e6",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566024977999872,
+        "count": 1,
+        "event_ids": "4808"
+      }
+    ],
+    [
+      "424800c6-37da-59cd-aa5a-7df2ef001f9a",
+      "aa9eb35b-a803-541b-bbfd-fa0510722c0a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566024977999872,
+        "count": 2,
+        "event_ids": "4806,4807"
+      }
+    ],
+    [
+      "e9c59c13-6088-512c-a530-d55aab6422e6",
+      "6206b52e-826b-566f-b689-a0eedd93b3cc",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758566025002000128,
+        "count": 1,
+        "event_ids": "4809"
+      }
+    ],
+    [
+      "5eb0a117-4f41-5384-8da4-f8a0e73051a1",
+      "8d4eaf8b-2efd-5575-a3fa-6582efd29635",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566025869999872,
+        "count": 1,
+        "event_ids": "4810"
+      }
+    ],
+    [
+      "e9c59c13-6088-512c-a530-d55aab6422e6",
+      "bc28370c-962a-5cf6-a120-3257bc39a7e9",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1758566025921999872,
+        "count": 3,
+        "event_ids": "4811,4812,4813"
+      }
+    ],
+    [
+      "5eb0a117-4f41-5384-8da4-f8a0e73051a1",
+      "3cbb8aa3-d247-50bb-a314-56d583332dbe",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758566025921999872,
+        "count": 1,
+        "event_ids": "4814"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/apache2",
+      "CONNECT",
+      "/var/run/mysqld/mysqld.sock"
+    ],
+    [
+      "/usr/sbin/apache2",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/zmdc.pl"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/perl"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/zmu"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/zmu"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/sleep"
+    ],
+    [
+      "/usr/sbin/apache2",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/apache2",
+      "SETUID",
+      "setuid [no target]"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/python3.9"
+    ],
+    [
+      "pid:2997",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/python3.9",
+      "CONNECT",
+      "192.42.1.174:4444"
+    ],
+    [
+      "pid:3000",
+      "EXECVE",
+      "/usr/sbin/ldconfig"
+    ],
+    [
+      "/usr/bin/python3.9",
+      "EXECVE_FAIL",
+      "uname [not found]"
+    ],
+    [
+      "pid:3000",
+      "EXECVE",
+      "/usr/bin/uname"
+    ]
+  ]
+}

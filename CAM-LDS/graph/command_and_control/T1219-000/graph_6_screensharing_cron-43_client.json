@@ -1,0 +1,752 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_cron-43",
+  "host": "client",
+  "start_ts": 1765386426444000000,
+  "end_ts": 1765386485172000000,
+  "n_nodes": 32,
+  "n_edges": 28,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426444000000,
+        "name": "pid:3735",
+        "uuid": "30000643-1067-561b-9ab2-58d79d4ba0fe"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426444000000,
+        "name": "/usr/bin/sudo",
+        "uuid": "90bb9f7f-e4df-5863-b58e-e1f732955e40"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765386426448000000,
+        "name": "/etc/sudoers",
+        "uuid": "5795e254-117d-5a3c-9aab-9ccc76cf8102"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765386426452000000,
+        "name": "127.0.0.53:53",
+        "uuid": "36c144b8-5fc6-5335-b4f9-71fb3930e306"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426452000000,
+        "name": "/usr/lib/systemd/systemd-resolved",
+        "uuid": "01749034-39fc-572b-bf3b-86dc0f6c2d85"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765386426452000000,
+        "name": "192.168.50.254:53",
+        "uuid": "669fb324-597b-58ee-beb6-ef4b5c5e2f04"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765386426460000000,
+        "name": "192.168.50.100:0",
+        "uuid": "b7deac88-6941-5498-88e2-4e50e273b9ed"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426460000000,
+        "name": "connect [no target]",
+        "uuid": "ff38f7fa-95f6-5ab9-9152-a75624021311"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "FileObject",
+        "ts": 1765386426468000000,
+        "name": "/etc/shadow",
+        "uuid": "78f67fa1-02c5-52e1-81b4-94dc74831707"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426468000000,
+        "name": "pam:judy:USER_ACCT",
+        "uuid": "56835a7f-f58d-5a16-817d-a88ba1201137"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426468000000,
+        "name": "acct:judy",
+        "uuid": "049d3bbc-5f43-50b6-9a64-786781a39d45"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426468000000,
+        "name": "rustdesk --password password",
+        "uuid": "7777651c-06d2-5904-9c74-359adc439919"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765386426468000000,
+        "name": "/dev/pts/1",
+        "uuid": "5a415b9c-655e-5e06-af5e-42577a64f2b0"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765386426468000000,
+        "name": "/var/run/utmp",
+        "uuid": "46921ad1-b045-52d2-b8c5-c6412eab9bde"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426468000000,
+        "name": "setgid [no target]",
+        "uuid": "c160e127-9455-5897-854b-ddc08728f84e"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426468000000,
+        "name": "pam:root:CRED_REFR",
+        "uuid": "45fab92d-14fd-5f70-a0b7-5c9115a928b8"
+      }
+    ],
+    [
+      16,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426472000000,
+        "name": "pam:root:USER_START",
+        "uuid": "48ffee90-edbf-5c3b-a8e5-4a3b24a4b1d6"
+      }
+    ],
+    [
+      17,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426472000000,
+        "name": "pid:7108",
+        "uuid": "ed621cb9-2ee8-5c82-ba1f-17eee1989763"
+      }
+    ],
+    [
+      18,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426472000000,
+        "name": "/usr/share/rustdesk/rustdesk",
+        "uuid": "d2096031-a7cb-57f2-a4e7-a892f519c69f"
+      }
+    ],
+    [
+      19,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426512000000,
+        "name": "sh [not found]",
+        "uuid": "303d4f34-bd34-5307-ae7a-50b57bea3585"
+      }
+    ],
+    [
+      20,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426512000000,
+        "name": "/usr/bin/dash",
+        "uuid": "106f11f9-9616-572b-ab13-fb7fc834684a"
+      }
+    ],
+    [
+      21,
+      {
+        "type": "FileObject",
+        "ts": 1765386426512000000,
+        "name": "/usr/bin/whoami",
+        "uuid": "4a5f6fcf-4fcc-5e27-8efe-5fa68121d987"
+      }
+    ],
+    [
+      22,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426516000000,
+        "name": "rename [filtered target]",
+        "uuid": "5d32b533-f738-5840-97c3-e969242a82ff"
+      }
+    ],
+    [
+      23,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386426520000000,
+        "name": "fd:4 [unresolved]",
+        "uuid": "1f67dc55-bbb6-5deb-a79a-524160756d48"
+      }
+    ],
+    [
+      24,
+      {
+        "type": "FileObject",
+        "ts": 1765386426520000000,
+        "name": "/root/.config/rustdesk/RustDesk.7109_ThreadId(2)_1765386426523700359 -> /root/.config/rustdesk/RustDesk.toml",
+        "uuid": "e54f10dd-ed3b-5ca4-b5a2-af5861991c29"
+      }
+    ],
+    [
+      25,
+      {
+        "type": "FileObject",
+        "ts": 1765386426520000000,
+        "name": "/root/.config/rustdesk/RustDesk2.7109_ThreadId(2)_1765386426525188751 -> /root/.config/rustdesk/RustDesk2.toml",
+        "uuid": "a86cde47-3799-5964-9c26-82392b850aab"
+      }
+    ],
+    [
+      26,
+      {
+        "type": "FileObject",
+        "ts": 1765386426520000000,
+        "name": "/tmp/RustDesk",
+        "uuid": "e5a2cb31-af12-5f81-af83-4e50a8172f88"
+      }
+    ],
+    [
+      27,
+      {
+        "type": "FileObject",
+        "ts": 1765386426520000000,
+        "name": "/tmp/RustDesk/ipc",
+        "uuid": "7a3f4f96-63f5-57a9-ad48-d1c2b4e12312"
+      }
+    ],
+    [
+      28,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426528000000,
+        "name": "pam:root:USER_END",
+        "uuid": "0d62432e-7fb5-5edc-ad34-7717019bf01e"
+      }
+    ],
+    [
+      29,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386426528000000,
+        "name": "pam:root:CRED_DISP",
+        "uuid": "c73f7c87-995d-5af8-858f-4a55761d2f72"
+      }
+    ],
+    [
+      30,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386485172000000,
+        "name": "/usr/bin/x11vnc",
+        "uuid": "52a408ac-f887-57bc-ae09-ae309ef23744"
+      }
+    ],
+    [
+      31,
+      {
+        "type": "FileObject",
+        "ts": 1765386485172000000,
+        "name": "/tmp/.X11-unix/X0",
+        "uuid": "3c9fd4e0-8e80-52dd-be58-498f85439a73"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "30000643-1067-561b-9ab2-58d79d4ba0fe",
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386426444000000,
+        "count": 1,
+        "event_ids": "17523"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "5795e254-117d-5a3c-9aab-9ccc76cf8102",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765386426448000000,
+        "count": 1,
+        "event_ids": "17524"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "36c144b8-5fc6-5335-b4f9-71fb3930e306",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386426452000000,
+        "count": 2,
+        "event_ids": "17525,17528"
+      }
+    ],
+    [
+      "01749034-39fc-572b-bf3b-86dc0f6c2d85",
+      "669fb324-597b-58ee-beb6-ef4b5c5e2f04",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386426452000000,
+        "count": 5,
+        "event_ids": "17526,17527,17850,17851,19757"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "b7deac88-6941-5498-88e2-4e50e273b9ed",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386426460000000,
+        "count": 1,
+        "event_ids": "17529"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "ff38f7fa-95f6-5ab9-9152-a75624021311",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386426460000000,
+        "count": 1,
+        "event_ids": "17530"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "78f67fa1-02c5-52e1-81b4-94dc74831707",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17531"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "56835a7f-f58d-5a16-817d-a88ba1201137",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17532"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "5a415b9c-655e-5e06-af5e-42577a64f2b0",
+      "chown",
+      {
+        "edge_type": "CHOWN",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17534"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "46921ad1-b045-52d2-b8c5-c6412eab9bde",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765386426468000000,
+        "count": 2,
+        "event_ids": "17535,17552"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "c160e127-9455-5897-854b-ddc08728f84e",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17536"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "45fab92d-14fd-5f70-a0b7-5c9115a928b8",
+      "cred_refr",
+      {
+        "edge_type": "CRED_REFR",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17537"
+      }
+    ],
+    [
+      "049d3bbc-5f43-50b6-9a64-786781a39d45",
+      "7777651c-06d2-5904-9c74-359adc439919",
+      "user_cmd",
+      {
+        "edge_type": "USER_CMD",
+        "ts": 1765386426468000000,
+        "count": 1,
+        "event_ids": "17533"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "48ffee90-edbf-5c3b-a8e5-4a3b24a4b1d6",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1765386426472000000,
+        "count": 1,
+        "event_ids": "17538"
+      }
+    ],
+    [
+      "ed621cb9-2ee8-5c82-ba1f-17eee1989763",
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386426472000000,
+        "count": 1,
+        "event_ids": "17539"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "303d4f34-bd34-5307-ae7a-50b57bea3585",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765386426512000000,
+        "count": 3,
+        "event_ids": "17540,17541,17542"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "106f11f9-9616-572b-ab13-fb7fc834684a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386426512000000,
+        "count": 1,
+        "event_ids": "17543"
+      }
+    ],
+    [
+      "106f11f9-9616-572b-ab13-fb7fc834684a",
+      "4a5f6fcf-4fcc-5e27-8efe-5fa68121d987",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1765386426512000000,
+        "count": 1,
+        "event_ids": "17543"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "5d32b533-f738-5840-97c3-e969242a82ff",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765386426516000000,
+        "count": 1,
+        "event_ids": "17545"
+      }
+    ],
+    [
+      "106f11f9-9616-572b-ab13-fb7fc834684a",
+      "4a5f6fcf-4fcc-5e27-8efe-5fa68121d987",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386426516000000,
+        "count": 1,
+        "event_ids": "17544"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "1f67dc55-bbb6-5deb-a79a-524160756d48",
+      "fchmod",
+      {
+        "edge_type": "FCHMOD",
+        "ts": 1765386426520000000,
+        "count": 2,
+        "event_ids": "17546,17548"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "e54f10dd-ed3b-5ca4-b5a2-af5861991c29",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765386426520000000,
+        "count": 1,
+        "event_ids": "17547"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "a86cde47-3799-5964-9c26-82392b850aab",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765386426520000000,
+        "count": 1,
+        "event_ids": "17549"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "e5a2cb31-af12-5f81-af83-4e50a8172f88",
+      "chmod",
+      {
+        "edge_type": "CHMOD",
+        "ts": 1765386426520000000,
+        "count": 1,
+        "event_ids": "17550"
+      }
+    ],
+    [
+      "d2096031-a7cb-57f2-a4e7-a892f519c69f",
+      "7a3f4f96-63f5-57a9-ad48-d1c2b4e12312",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386426520000000,
+        "count": 1,
+        "event_ids": "17551"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "0d62432e-7fb5-5edc-ad34-7717019bf01e",
+      "user_end",
+      {
+        "edge_type": "USER_END",
+        "ts": 1765386426528000000,
+        "count": 1,
+        "event_ids": "17553"
+      }
+    ],
+    [
+      "90bb9f7f-e4df-5863-b58e-e1f732955e40",
+      "c73f7c87-995d-5af8-858f-4a55761d2f72",
+      "cred_disp",
+      {
+        "edge_type": "CRED_DISP",
+        "ts": 1765386426528000000,
+        "count": 1,
+        "event_ids": "17554"
+      }
+    ],
+    [
+      "52a408ac-f887-57bc-ae09-ae309ef23744",
+      "3c9fd4e0-8e80-52dd-be58-498f85439a73",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765386485172000000,
+        "count": 2,
+        "event_ids": "19695,19697"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:3735",
+      "EXECVE",
+      "/usr/bin/sudo"
+    ],
+    [
+      "/usr/bin/sudo",
+      "OPENAT",
+      "/etc/sudoers"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CONNECT",
+      "127.0.0.53:53"
+    ],
+    [
+      "/usr/lib/systemd/systemd-resolved",
+      "CONNECT",
+      "192.168.50.254:53"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CONNECT",
+      "192.168.50.100:0"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CONNECT",
+      "connect [no target]"
+    ],
+    [
+      "/usr/bin/sudo",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/bin/sudo",
+      "USER_ACCT",
+      "pam:judy:USER_ACCT"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CHOWN",
+      "/dev/pts/1"
+    ],
+    [
+      "/usr/bin/sudo",
+      "OPENAT",
+      "/var/run/utmp"
+    ],
+    [
+      "/usr/bin/sudo",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CRED_REFR",
+      "pam:root:CRED_REFR"
+    ],
+    [
+      "acct:judy",
+      "USER_CMD",
+      "rustdesk --password password"
+    ],
+    [
+      "/usr/bin/sudo",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "pid:7108",
+      "EXECVE",
+      "/usr/share/rustdesk/rustdesk"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "EXECVE_FAIL",
+      "sh [not found]"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/whoami"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "RENAME",
+      "rename [filtered target]"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/whoami"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "FCHMOD",
+      "fd:4 [unresolved]"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "RENAME",
+      "/root/.config/rustdesk/RustDesk.7109_ThreadId(2)_1765386426523700359 -> /root/.config/rustdesk/RustDesk.toml"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "RENAME",
+      "/root/.config/rustdesk/RustDesk2.7109_ThreadId(2)_1765386426525188751 -> /root/.config/rustdesk/RustDesk2.toml"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CHMOD",
+      "/tmp/RustDesk"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/tmp/RustDesk/ipc"
+    ],
+    [
+      "/usr/bin/sudo",
+      "USER_END",
+      "pam:root:USER_END"
+    ],
+    [
+      "/usr/bin/sudo",
+      "CRED_DISP",
+      "pam:root:CRED_DISP"
+    ],
+    [
+      "/usr/bin/x11vnc",
+      "CONNECT",
+      "/tmp/.X11-unix/X0"
+    ]
+  ]
+}

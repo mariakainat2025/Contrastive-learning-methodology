@@ -1,0 +1,26 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1105-000",
+  "step": "1_cron_sshkey-30",
+  "host": "videoserver",
+  "n_triples": 17,
+  "sequence": [
+    "pid:17157 execve /usr/bin/dash.",
+    "pid:17157 execve /usr/bin/curl.",
+    "/usr/bin/curl connect 192.42.1.174:80.",
+    "/usr/sbin/cron openat /etc/shadow.",
+    "/usr/sbin/cron user_acct pam:root:USER_ACCT.",
+    "/usr/sbin/cron cred_acq pam:root:CRED_ACQ.",
+    "/usr/sbin/cron login acct:root:LOGIN.",
+    "/usr/sbin/cron user_start pam:root:USER_START.",
+    "/usr/sbin/cron setgid setgid [no target].",
+    "/usr/bin/dash execve_inferred /usr/sbin/logrotate.",
+    "/usr/bin/dash execve /usr/sbin/logrotate.",
+    "/usr/sbin/cron setuid setuid [no target].",
+    "/usr/sbin/cron execve /usr/bin/dash.",
+    "/usr/sbin/logrotate unlink unlink [filtered target].",
+    "/usr/sbin/logrotate rename /var/lib/logrotate/status.tmp -> /var/lib/logrotate/status.",
+    "/usr/sbin/cron cred_disp pam:root:CRED_DISP.",
+    "/usr/sbin/cron user_end pam:root:USER_END."
+  ]
+}

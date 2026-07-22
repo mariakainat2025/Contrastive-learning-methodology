@@ -1,0 +1,44 @@
+[
+  {
+    "event_id": "6717",
+    "timestamp": "1765360846.944",
+    "type": "AVC",
+    "syscall": "openat",
+    "success": "yes",
+    "exit": "10",
+    "a0": "ffffff9c",
+    "ppid": "1006",
+    "pid": "4235",
+    "comm": "python3",
+    "exe": "/usr/bin/python3.10",
+    "subj": "libreoffice-soffice//null-/usr/bin/python3.10",
+    "key": null,
+    "command": null,
+    "src": "python3",
+    "dest": "/home/judy/downloader.sh",
+    "paths": [
+      "/home/judy",
+      "downloader.sh"
+    ],
+    "path_types": [
+      "PARENT",
+      "CREATE"
+    ],
+    "pam_op": null,
+    "pam_acct": null,
+    "pam_res": null,
+    "acct": null,
+    "op": null,
+    "res": null,
+    "hostname": null,
+    "addr": null,
+    "unit": null,
+    "cmd": null,
+    "avc_result": "ALLOWED",
+    "avc_op": "open",
+    "avc_name": "/home/judy/downloader.sh",
+    "avc_profile": "libreoffice-soffice//null-/usr/bin/python3.10",
+    "bpf_op": null,
+    "bpf_progid": null
+  }
+]

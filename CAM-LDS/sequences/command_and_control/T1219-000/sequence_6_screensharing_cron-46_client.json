@@ -1,0 +1,30 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_cron-46",
+  "host": "client",
+  "n_triples": 21,
+  "sequence": [
+    "/usr/lib/systemd/systemd-resolved connect 192.168.50.254:53.",
+    "/usr/bin/x11vnc connect /tmp/.X11-unix/X0.",
+    "/usr/lib/systemd/systemd execve /usr/bin/dash.",
+    "/usr/lib/systemd/systemd execve /usr/bin/mate-terminal.",
+    "/usr/bin/dash execve_fail mate-terminal [not found].",
+    "/usr/bin/mate-terminal connect /run/user/1002/wayland-0.",
+    "/usr/bin/mate-terminal connect /tmp/.X11-unix/X0.",
+    "/usr/bin/mate-terminal connect /run/user/1002/at-spi/bus_0.",
+    "/usr/bin/mate-terminal connect /tmp/.ICE-unix/1037.",
+    "pid:3703 execve /usr/bin/bash.",
+    "/usr/bin/bash execve /usr/bin/groups.",
+    "/usr/lib/systemd/systemd rename /run/user/1002/systemd/units/.#invocation:vte-spawn-e743ad6a-6572-4142-bd34-0a0bddd0c655.scope4050eac5d1370806 -> /run/user/1002/systemd/units/invocation:vte-spawn-e743ad6a-6572-4142-bd34-0a0bddd0c655.scope.",
+    "/usr/bin/dash execve /usr/bin/basename.",
+    "/usr/bin/bash execve /usr/bin/dash.",
+    "/usr/bin/bash execve /usr/bin/dircolors.",
+    "pid:10758 execve /usr/bin/dirname.",
+    "pid:17794 execve /usr/bin/xrandr.",
+    "pid:17794 execve /usr/bin/tr.",
+    "/usr/bin/xrandr connect /tmp/.X11-unix/X0.",
+    "/usr/bin/umount setgid setgid [no target].",
+    "/usr/bin/umount setuid setuid [no target]."
+  ]
+}

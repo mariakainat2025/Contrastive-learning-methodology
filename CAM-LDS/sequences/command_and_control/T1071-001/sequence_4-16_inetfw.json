@@ -1,0 +1,31 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1071-001",
+  "step": "4-16",
+  "host": "inetfw",
+  "n_triples": 22,
+  "sequence": [
+    "pid:4249 execve /usr/bin/dash.",
+    "/usr/bin/dash execve /usr/bin/curl.",
+    "/usr/bin/curl connect 192.42.1.174:8000.",
+    "/usr/bin/curl openat /usr/bin/systemp.",
+    "/usr/bin/dash execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat /etc/sudoers.",
+    "/usr/bin/sudo openat /etc/resolv.conf.",
+    "/usr/bin/sudo openat /etc/shadow.",
+    "/usr/bin/sudo user_acct pam:root:USER_ACCT.",
+    "acct:root user_cmd chmod +x /usr/bin/systemp.",
+    "/usr/bin/sudo setgid setgid [no target].",
+    "/usr/bin/sudo cred_refr pam:root:CRED_REFR.",
+    "/usr/bin/sudo user_start pam:root:USER_START.",
+    "/usr/bin/sudo execve /usr/bin/chmod.",
+    "/usr/bin/chmod fchmodat /usr/bin/systemp.",
+    "/usr/bin/sudo user_end pam:root:USER_END.",
+    "/usr/bin/sudo cred_disp pam:root:CRED_DISP.",
+    "acct:root user_cmd /usr/bin/systemp.",
+    "/usr/bin/sudo execve /usr/bin/systemp.",
+    "/usr/bin/systemp openat /etc/resolv.conf.",
+    "/usr/bin/systemp connect 192.42.2.2:53.",
+    "/usr/bin/systemp connect 192.42.1.174:443."
+  ]
+}

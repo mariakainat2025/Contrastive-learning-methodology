@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "3_vnc_apt-25",
+  "host": "linuxshare",
+  "start_ts": 1765564338080000000,
+  "end_ts": 1765564338100000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765564338080000000,
+        "name": "pid:3267",
+        "uuid": "2caf5015-a109-5cf7-adef-ab0644980e02"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765564338080000000,
+        "name": "/usr/bin/curl",
+        "uuid": "04db2136-ee45-5ad1-a717-58ff2a64761b"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765564338100000000,
+        "name": "192.42.1.174:80",
+        "uuid": "44d665f6-42f7-5940-8b48-e0b024448950"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "2caf5015-a109-5cf7-adef-ab0644980e02",
+      "04db2136-ee45-5ad1-a717-58ff2a64761b",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765564338080000000,
+        "count": 1,
+        "event_ids": "5163"
+      }
+    ],
+    [
+      "04db2136-ee45-5ad1-a717-58ff2a64761b",
+      "44d665f6-42f7-5940-8b48-e0b024448950",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765564338100000000,
+        "count": 1,
+        "event_ids": "5164"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:3267",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ]
+  ]
+}

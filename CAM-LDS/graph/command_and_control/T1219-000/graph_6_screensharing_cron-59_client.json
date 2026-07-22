@@ -1,0 +1,234 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_cron-59",
+  "host": "client",
+  "start_ts": 1765387598000000000,
+  "end_ts": 1765387599020000000,
+  "n_nodes": 10,
+  "n_edges": 8,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387598000000000,
+        "name": "/usr/bin/bash",
+        "uuid": "e67656c0-6a42-5d8e-8a42-16b15c60bcfa"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387598000000000,
+        "name": ".index [not found]",
+        "uuid": "f8496f0c-9389-510f-983d-e7eb13c7ee5d"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387598004000000,
+        "name": "pid:23503",
+        "uuid": "2ccb0d11-5239-54ea-b004-4c241e6a93b1"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765387598004000000,
+        "name": "/usr/bin/dash",
+        "uuid": "b3e6a2f9-7995-5d27-a262-208542529dc2"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387598008000000,
+        "name": "/usr/bin/python3.10",
+        "uuid": "dfefa056-b8c9-5a98-82f4-273c66e81916"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765387598032000000,
+        "name": "192.42.1.174:4443",
+        "uuid": "d55ff5a8-405f-5ec1-a2e5-1660a760b159"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387598972000000,
+        "name": "pid:23506",
+        "uuid": "3fa60086-7a56-540a-966a-e4565d7d649e"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "FileObject",
+        "ts": 1765387598976000000,
+        "name": "/usr/sbin/ldconfig.real",
+        "uuid": "a1d814b5-68b5-5572-96ee-481e51024e24"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387599020000000,
+        "name": "uname [not found]",
+        "uuid": "cdb61b5c-5123-5cd5-8a03-c0b65da3b4f5"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "FileObject",
+        "ts": 1765387599020000000,
+        "name": "/usr/bin/uname",
+        "uuid": "88c24a71-d9a9-5571-8676-f35ea98ca3de"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "e67656c0-6a42-5d8e-8a42-16b15c60bcfa",
+      "f8496f0c-9389-510f-983d-e7eb13c7ee5d",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765387598000000000,
+        "count": 1,
+        "event_ids": "95996"
+      }
+    ],
+    [
+      "2ccb0d11-5239-54ea-b004-4c241e6a93b1",
+      "b3e6a2f9-7995-5d27-a262-208542529dc2",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387598004000000,
+        "count": 2,
+        "event_ids": "95998,95999"
+      }
+    ],
+    [
+      "e67656c0-6a42-5d8e-8a42-16b15c60bcfa",
+      "dfefa056-b8c9-5a98-82f4-273c66e81916",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387598008000000,
+        "count": 1,
+        "event_ids": "96000"
+      }
+    ],
+    [
+      "dfefa056-b8c9-5a98-82f4-273c66e81916",
+      "d55ff5a8-405f-5ec1-a2e5-1660a760b159",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387598032000000,
+        "count": 1,
+        "event_ids": "96001"
+      }
+    ],
+    [
+      "3fa60086-7a56-540a-966a-e4565d7d649e",
+      "b3e6a2f9-7995-5d27-a262-208542529dc2",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387598972000000,
+        "count": 1,
+        "event_ids": "96121"
+      }
+    ],
+    [
+      "3fa60086-7a56-540a-966a-e4565d7d649e",
+      "a1d814b5-68b5-5572-96ee-481e51024e24",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387598976000000,
+        "count": 1,
+        "event_ids": "96122"
+      }
+    ],
+    [
+      "dfefa056-b8c9-5a98-82f4-273c66e81916",
+      "cdb61b5c-5123-5cd5-8a03-c0b65da3b4f5",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765387599020000000,
+        "count": 4,
+        "event_ids": "96123,96124,96125,96126"
+      }
+    ],
+    [
+      "3fa60086-7a56-540a-966a-e4565d7d649e",
+      "88c24a71-d9a9-5571-8676-f35ea98ca3de",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387599020000000,
+        "count": 1,
+        "event_ids": "96127"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/bin/bash",
+      "EXECVE_FAIL",
+      ".index [not found]"
+    ],
+    [
+      "pid:23503",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE",
+      "/usr/bin/python3.10"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "CONNECT",
+      "192.42.1.174:4443"
+    ],
+    [
+      "pid:23506",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:23506",
+      "EXECVE",
+      "/usr/sbin/ldconfig.real"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "EXECVE_FAIL",
+      "uname [not found]"
+    ],
+    [
+      "pid:23506",
+      "EXECVE",
+      "/usr/bin/uname"
+    ]
+  ]
+}

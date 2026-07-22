@@ -1,0 +1,68 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0001
+======================================================================
+  ID         : TA0001
+  NAME       : Initial Access
+
+  OBJECTIVE  : The adversary is trying to get into your network.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Initial Access consists of techniques that use various entry
+  vectors to gain their initial foothold within a network.
+  Techniques used to gain a foothold include targeted spearphishing
+  and exploiting weaknesses on public-facing web servers.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  Footholds gained through initial access may allow for continued
+  access, like valid accounts and use of external remote services,
+  or may be limited-use due to changing passwords.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Execve: Execution of curl or wget writing files to /tmp/*
+    followed by chmod or execution.
+
+    Execve: execve calls where a browser/webview process is parent
+    and child is interpreter (python, sh, ruby) or downloader (curl,
+    wget).
+
+    Adversary exploits Apache/Nginx/app servers. suspicious requests
+    in access logs → followed by spike of 5xx or WAF blocks → then
+    web server or interpreter (apache2/nginx/php-fpm/node/python)
+    spawns /bin/sh, curl, wget, socat, or writes webshell →
+    resulting in outbound callback.
+
+    Ssh logins or execve of remote commands.
+
+    udev / kernel logs show hot-plug (USB/Thunderbolt/PCIe) followed
+    by block device created by udisks/diskarbitration then optional:
+    new network interface or DHCP lease observed.
+
+    Execve: Execution of scripts or binaries sourced from mail
+    directories (/var/mail, ~/Maildir).
+
+    Package manager or curl/wget installs/upgrades from non-approved
+    repos or unsigned packages followed by new ELF written into PATH
+    directories or replacement of existing binaries/libraries then
+    first run leads to unexpected child processes or outbound
+    connections.
+
+    sshd or federated SSO logins from third-party networks or
+    identities followed by rapid sudo/su privilege elevation then
+    access to sensitive paths or east-west SSH.
+
+    Detection of valid account misuse through SSH logins, sudo/su
+    abuse, and service account anomalies outside expected patterns.
+
+    Ioctl: Changes to wireless network interfaces (up, down,
+    reassociate).
+
+======================================================================

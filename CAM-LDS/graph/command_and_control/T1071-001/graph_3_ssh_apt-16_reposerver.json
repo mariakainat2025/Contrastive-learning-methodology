@@ -1,0 +1,150 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1071-001",
+  "step": "3_ssh_apt-16",
+  "host": "reposerver",
+  "start_ts": 1765535870136000000,
+  "end_ts": 1765535870136000000,
+  "n_nodes": 6,
+  "n_edges": 5,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765535870136000000,
+        "name": "/usr/bin/vim.basic",
+        "uuid": "31ce7d58-39ee-51a6-beef-1b0012261f87"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765535870136000000,
+        "name": "fd:3 [unresolved]",
+        "uuid": "52e6ad33-d213-57ad-9c38-d0921e9e4a4c"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765535870136000000,
+        "name": "DEBIAN/postinst",
+        "uuid": "4b65fe21-017d-5ae8-b8b0-26b05a1dcd16"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765535870136000000,
+        "name": "/root/.viminfo",
+        "uuid": "0349f35d-33f5-54b9-aece-3ff2606042c7"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1765535870136000000,
+        "name": "/root/.viminfo.tmp -> /root/.viminfo",
+        "uuid": "96b4969d-3355-5743-92a2-d7db4a0b57cb"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1765535870136000000,
+        "name": "/tmp/.tmux_data/healthcheckd/DEBIAN/.postinst.swp",
+        "uuid": "aa631aa7-36b7-590c-8a4f-105d3424a3ba"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "31ce7d58-39ee-51a6-beef-1b0012261f87",
+      "52e6ad33-d213-57ad-9c38-d0921e9e4a4c",
+      "fchmod",
+      {
+        "edge_type": "FCHMOD",
+        "ts": 1765535870136000000,
+        "count": 1,
+        "event_ids": "17060"
+      }
+    ],
+    [
+      "31ce7d58-39ee-51a6-beef-1b0012261f87",
+      "4b65fe21-017d-5ae8-b8b0-26b05a1dcd16",
+      "setxattr",
+      {
+        "edge_type": "SETXATTR",
+        "ts": 1765535870136000000,
+        "count": 1,
+        "event_ids": "17061"
+      }
+    ],
+    [
+      "31ce7d58-39ee-51a6-beef-1b0012261f87",
+      "0349f35d-33f5-54b9-aece-3ff2606042c7",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765535870136000000,
+        "count": 1,
+        "event_ids": "17062"
+      }
+    ],
+    [
+      "31ce7d58-39ee-51a6-beef-1b0012261f87",
+      "96b4969d-3355-5743-92a2-d7db4a0b57cb",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765535870136000000,
+        "count": 1,
+        "event_ids": "17063"
+      }
+    ],
+    [
+      "31ce7d58-39ee-51a6-beef-1b0012261f87",
+      "aa631aa7-36b7-590c-8a4f-105d3424a3ba",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765535870136000000,
+        "count": 1,
+        "event_ids": "17064"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/bin/vim.basic",
+      "FCHMOD",
+      "fd:3 [unresolved]"
+    ],
+    [
+      "/usr/bin/vim.basic",
+      "SETXATTR",
+      "DEBIAN/postinst"
+    ],
+    [
+      "/usr/bin/vim.basic",
+      "UNLINK",
+      "/root/.viminfo"
+    ],
+    [
+      "/usr/bin/vim.basic",
+      "RENAME",
+      "/root/.viminfo.tmp -> /root/.viminfo"
+    ],
+    [
+      "/usr/bin/vim.basic",
+      "UNLINK",
+      "/tmp/.tmux_data/healthcheckd/DEBIAN/.postinst.swp"
+    ]
+  ]
+}

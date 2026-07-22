@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "2_rootkit-19",
+  "host": "videoserver",
+  "start_ts": 1759319071428000000,
+  "end_ts": 1759319071444000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759319071428000000,
+        "name": "/usr/bin/zmcontroller",
+        "uuid": "a4de6195-4d48-5154-822d-8aa932cd04af"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "NetFlowObject",
+        "ts": 1759319071428000000,
+        "name": "172.17.100.254:53",
+        "uuid": "b30ff0e8-458a-594d-9561-dd6e9d3566e6"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1759319071444000000,
+        "name": "192.42.1.174:443",
+        "uuid": "3962bc8a-1ba3-5c20-bdad-745351a8f8e9"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "a4de6195-4d48-5154-822d-8aa932cd04af",
+      "b30ff0e8-458a-594d-9561-dd6e9d3566e6",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1759319071428000000,
+        "count": 2,
+        "event_ids": "5289,5290"
+      }
+    ],
+    [
+      "a4de6195-4d48-5154-822d-8aa932cd04af",
+      "3962bc8a-1ba3-5c20-bdad-745351a8f8e9",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1759319071444000000,
+        "count": 2,
+        "event_ids": "5291,5292"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/bin/zmcontroller",
+      "CONNECT",
+      "172.17.100.254:53"
+    ],
+    [
+      "/usr/bin/zmcontroller",
+      "CONNECT",
+      "192.42.1.174:443"
+    ]
+  ]
+}

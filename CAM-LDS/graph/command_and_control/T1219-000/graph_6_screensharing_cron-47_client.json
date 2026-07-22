@@ -1,0 +1,225 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_cron-47",
+  "host": "client",
+  "start_ts": 1765387303276000000,
+  "end_ts": 1765387303576000000,
+  "n_nodes": 9,
+  "n_edges": 8,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387303276000000,
+        "name": "pid:4710",
+        "uuid": "dfe00a99-a73d-58c2-b92c-588271a6275e"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387303276000000,
+        "name": "/usr/share/rustdesk/rustdesk",
+        "uuid": "1326fcb9-463c-5f31-a851-6cda11764164"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765387303308000000,
+        "name": "/tmp/RustDesk/ipc",
+        "uuid": "687dc3ae-0368-5509-bc17-2db8721fae45"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765387303312000000,
+        "name": "/run/user/1002/wayland-0",
+        "uuid": "d61c69d1-ebde-5c05-8533-24a69b50264b"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1765387303312000000,
+        "name": "/tmp/.X11-unix/X0",
+        "uuid": "64884508-9a8b-5331-b022-81b18385ca6f"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1765387303324000000,
+        "name": "/run/user/1002/at-spi/bus_0",
+        "uuid": "ba6dcb0e-94ae-58f3-885d-665f2271cba3"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1765387303508000000,
+        "name": "/home/judy/.cache/ibus/dbus-U6OjHOsR",
+        "uuid": "0567252b-9647-5199-b9b5-7c03b0c8cab4"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765387303576000000,
+        "name": "xdg-user-dir [not found]",
+        "uuid": "9ad251ec-eb07-51f7-beb9-360b2923be28"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "FileObject",
+        "ts": 1765387303576000000,
+        "name": "/usr/bin/dash",
+        "uuid": "5aea6f2d-3233-5a62-9ae7-c99903b3de61"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "dfe00a99-a73d-58c2-b92c-588271a6275e",
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387303276000000,
+        "count": 1,
+        "event_ids": "64254"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "687dc3ae-0368-5509-bc17-2db8721fae45",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387303308000000,
+        "count": 2,
+        "event_ids": "64255,64280"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "d61c69d1-ebde-5c05-8533-24a69b50264b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387303312000000,
+        "count": 1,
+        "event_ids": "64256"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "64884508-9a8b-5331-b022-81b18385ca6f",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387303312000000,
+        "count": 2,
+        "event_ids": "64257,64258"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "ba6dcb0e-94ae-58f3-885d-665f2271cba3",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387303324000000,
+        "count": 1,
+        "event_ids": "64259"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "0567252b-9647-5199-b9b5-7c03b0c8cab4",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765387303508000000,
+        "count": 1,
+        "event_ids": "64274"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "9ad251ec-eb07-51f7-beb9-360b2923be28",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1765387303576000000,
+        "count": 3,
+        "event_ids": "64275,64276,64277"
+      }
+    ],
+    [
+      "1326fcb9-463c-5f31-a851-6cda11764164",
+      "5aea6f2d-3233-5a62-9ae7-c99903b3de61",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765387303576000000,
+        "count": 1,
+        "event_ids": "64278"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:4710",
+      "EXECVE",
+      "/usr/share/rustdesk/rustdesk"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/tmp/RustDesk/ipc"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/run/user/1002/wayland-0"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/tmp/.X11-unix/X0"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/run/user/1002/at-spi/bus_0"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "CONNECT",
+      "/home/judy/.cache/ibus/dbus-U6OjHOsR"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "EXECVE_FAIL",
+      "xdg-user-dir [not found]"
+    ],
+    [
+      "/usr/share/rustdesk/rustdesk",
+      "EXECVE",
+      "/usr/bin/dash"
+    ]
+  ]
+}

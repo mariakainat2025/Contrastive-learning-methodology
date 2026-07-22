@@ -1,0 +1,75 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "3_ssh_puppet-25",
+  "host": "linuxshare",
+  "start_ts": 1765544030888000000,
+  "end_ts": 1765544030912000000,
+  "n_nodes": 3,
+  "n_edges": 2,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765544030888000000,
+        "name": "pid:2115",
+        "uuid": "5f8e85f1-733b-5526-a819-9f0289a791e6"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765544030888000000,
+        "name": "/usr/bin/curl",
+        "uuid": "d24ed688-2f31-5963-8650-c35f9037af52"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765544030912000000,
+        "name": "192.42.1.174:80",
+        "uuid": "76265078-c189-58eb-9e73-0cc79478fefe"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "5f8e85f1-733b-5526-a819-9f0289a791e6",
+      "d24ed688-2f31-5963-8650-c35f9037af52",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765544030888000000,
+        "count": 1,
+        "event_ids": "3021"
+      }
+    ],
+    [
+      "d24ed688-2f31-5963-8650-c35f9037af52",
+      "76265078-c189-58eb-9e73-0cc79478fefe",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765544030912000000,
+        "count": 1,
+        "event_ids": "3022"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:2115",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ]
+  ]
+}

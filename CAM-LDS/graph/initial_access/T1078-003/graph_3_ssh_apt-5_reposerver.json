@@ -1,0 +1,100 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "3_ssh_apt-5",
+  "host": "reposerver",
+  "start_ts": 1765535404440000000,
+  "end_ts": 1765535404528000000,
+  "n_nodes": 4,
+  "n_edges": 3,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765535404440000000,
+        "name": "pid:4290",
+        "uuid": "88c46708-3037-523e-9eea-f83c5d201415"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765535404440000000,
+        "name": "/usr/bin/python3.10",
+        "uuid": "c567623f-eaa9-53e4-8d89-91a2529a3f10"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "FileObject",
+        "ts": 1765535404508000000,
+        "name": "/usr/bin/snap",
+        "uuid": "a39b185f-0e3a-54ee-9607-694fec9308ae"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1765535404528000000,
+        "name": "/snap/snapd/25577/usr/bin/snap",
+        "uuid": "7ddb38de-12fd-55f8-b45c-72e189d2447c"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "88c46708-3037-523e-9eea-f83c5d201415",
+      "c567623f-eaa9-53e4-8d89-91a2529a3f10",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765535404440000000,
+        "count": 1,
+        "event_ids": "16240"
+      }
+    ],
+    [
+      "c567623f-eaa9-53e4-8d89-91a2529a3f10",
+      "a39b185f-0e3a-54ee-9607-694fec9308ae",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765535404508000000,
+        "count": 1,
+        "event_ids": "16241"
+      }
+    ],
+    [
+      "c567623f-eaa9-53e4-8d89-91a2529a3f10",
+      "7ddb38de-12fd-55f8-b45c-72e189d2447c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765535404528000000,
+        "count": 1,
+        "event_ids": "16242"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:4290",
+      "EXECVE",
+      "/usr/bin/python3.10"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "EXECVE",
+      "/usr/bin/snap"
+    ],
+    [
+      "/usr/bin/python3.10",
+      "EXECVE",
+      "/snap/snapd/25577/usr/bin/snap"
+    ]
+  ]
+}

@@ -1,0 +1,99 @@
+======================================================================
+  MITRE ATT&CK — TACTIC: TA0005
+======================================================================
+  ID         : TA0005
+  NAME       : Stealth
+
+  OBJECTIVE  : The adversary is trying to hide and conceal their actions, appearing as normal behavior.
+
+----------------------------------------------------------------------
+  TECHNIQUES USE
+----------------------------------------------------------------------
+
+  Stealth consists of techniques that reduce the likelihood of
+  detection by blending in with legitimate activity or minimizing
+  observable signals. These techniques are characterized by
+  concealment behaviors, such as avoiding, obfuscating, or mimicking
+  normal operations, without modifying security controls or
+  compromising collection and monitoring feeds.
+
+----------------------------------------------------------------------
+  OUTCOME / TACTIC LINKS
+----------------------------------------------------------------------
+
+  The goal is to remain indistinguishable from benign activity while
+  leaving defensive systems intact.
+
+----------------------------------------------------------------------
+  LINUX DETECTION STRATEGIES
+----------------------------------------------------------------------
+
+    Open/read: Access to /proc/self/status with focus on TracerPID
+    field.
+
+    Execve or nanosleep with no stdout/stderr I/O.
+
+    Bash/zsh of base64, tar, gzip, or openssl immediately after file
+    write.
+
+    Command-line execution patterns for system discovery utilities
+    (uname, hostname, ifconfig, netstat, lsof, ps, mount).
+
+    Execve: Execution of suspicious exploit binaries targeting
+    security daemons.
+
+    Execution of chattr to set +i or +a attributes.
+
+    Open/write syscalls targeting /etc/ld.so.preload or binaries in
+    /usr/bin.
+
+    Detects deletion or overwriting of bash history, syslog, audit
+    logs, and .ssh metadata following privilege elevation or
+    suspicious process spawning.
+
+    Adversary drops renamed binaries in uncommon directories (e.g.,
+    /tmp, /dev/shm) or uses special characters in names (e.g.,
+    trailing space, Unicode RLO). Execution or cronjob registration
+    follows shortly after file drop.
+
+    Detects use of gzip, base64, tar, or openssl in scripts or
+    commands that encode/encrypt files after file staging or system
+    enumeration.
+
+    Exec: Execution of dd, efibootmgr, or flashrom modifying
+    firmware/boot partitions. Open, write: Modification of
+    /boot/grub/* or /boot/efi/*.
+
+    Detects ptrace- or memfd-based process injection through audit
+    logs capturing system calls (e.g., ptrace, mmap) targeting
+    running processes along with suspicious file descriptors or
+    memory writes.
+
+    In-process mmap + mprotect + execve/execveat activity where
+    memory permissions are changed from writable to executable
+    inside the same process without a corresponding ELF on disk.
+
+    Abnormal loading of kernel modules, direct tampering with /dev,
+    /proc, or LD_PRELOAD behaviors hiding processes or files.
+
+    Execve of curl,wget,bash,sh,python with piped or remote content.
+    Modification of ~/.ssh/authorized_keys or credential files.
+
+    Execution of trusted system binaries (e.g., `split`, `tee`,
+    `bash`, `env`) used in uncommon sequences or chained behaviors
+    to execute malicious payloads or perform actions inconsistent
+    with normal system or script behavior.
+
+    Execve: Commands altering firewall or enabling listeners
+    (iptables, nft, ufw, firewall-cmd, systemctl start
+    *ssh*/*telnet*, ip route add, tcpdump, tshark). Socket/bind:
+    Process binds to a new local port shortly after knock.
+
+    Detection of valid account misuse through SSH logins, sudo/su
+    abuse, and service account anomalies outside expected patterns.
+
+    Execve or syscall invoking vm artifact check commands (e.g.,
+    dmidecode, lspci, dmesg). Sleep function usage or loops
+    (nanosleep, usleep) in scripts.
+
+======================================================================

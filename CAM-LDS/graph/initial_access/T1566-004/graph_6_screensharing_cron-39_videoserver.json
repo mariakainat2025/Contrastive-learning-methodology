@@ -1,0 +1,432 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1566-004",
+  "step": "6_screensharing_cron-39",
+  "host": "videoserver",
+  "start_ts": 1765386001371000064,
+  "end_ts": 1765386001395000064,
+  "n_nodes": 16,
+  "n_edges": 17,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001371000064,
+        "name": "/usr/sbin/cron",
+        "uuid": "c180d9af-76d9-5cde-8a0c-8af69575e51f"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1765386001371000064,
+        "name": "/etc/shadow",
+        "uuid": "77f84835-9d4f-56a7-a0e6-d3598317d9d3"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001375000064,
+        "name": "pam:root:USER_ACCT",
+        "uuid": "1ccb0ea2-c167-5db4-945f-f44f6ea210d4"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001375000064,
+        "name": "pam:root:CRED_ACQ",
+        "uuid": "6e5957f6-afe5-5fd7-8167-b40426458916"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001375000064,
+        "name": "acct:root:LOGIN",
+        "uuid": "370d72df-c681-5213-a952-026bf2639b07"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001379000064,
+        "name": "pam:root:USER_START",
+        "uuid": "73e111f6-ba54-5a00-a8ff-dac2eae1e4e1"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001379000064,
+        "name": "setgid [no target]",
+        "uuid": "36b7f96e-2a74-5065-834d-160f9659ed4a"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001382999808,
+        "name": "setuid [no target]",
+        "uuid": "2d8fed3b-8159-50ea-aeac-7f0321f5ea61"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001382999808,
+        "name": "/usr/bin/dash",
+        "uuid": "b3adb97d-bea0-541b-92dd-a03d39280aee"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "FileObject",
+        "ts": 1765386001382999808,
+        "name": "/usr/share/awffull/awffull",
+        "uuid": "c023f8cc-d00d-5528-bc45-7a84e6a76468"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001382999808,
+        "name": "/usr/sbin/logrotate",
+        "uuid": "4767eb5a-cbc7-5173-812c-3d28c495768a"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765386001387000064,
+        "name": "unlink [filtered target]",
+        "uuid": "808f91b2-5c4b-54a3-b280-233c10772360"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "FileObject",
+        "ts": 1765386001391000064,
+        "name": "/usr/bin/gawk",
+        "uuid": "61fc0121-e7f3-58d4-87bd-d75ad8bdd778"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1765386001391000064,
+        "name": "/var/lib/logrotate/status.tmp -> /var/lib/logrotate/status",
+        "uuid": "cf7c9e32-8c20-580d-89b0-266597b79a39"
+      }
+    ],
+    [
+      14,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001395000064,
+        "name": "pam:root:CRED_DISP",
+        "uuid": "1afe7481-111d-546b-90fd-74be4962ed8f"
+      }
+    ],
+    [
+      15,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1765386001395000064,
+        "name": "pam:root:USER_END",
+        "uuid": "c1f1e9fe-7143-5053-a0e3-fca8a0b76e32"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "77f84835-9d4f-56a7-a0e6-d3598317d9d3",
+      "openat",
+      {
+        "edge_type": "OPENAT",
+        "ts": 1765386001371000064,
+        "count": 2,
+        "event_ids": "4399,4400"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "1ccb0ea2-c167-5db4-945f-f44f6ea210d4",
+      "user_acct",
+      {
+        "edge_type": "USER_ACCT",
+        "ts": 1765386001375000064,
+        "count": 1,
+        "event_ids": "4401"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "6e5957f6-afe5-5fd7-8167-b40426458916",
+      "cred_acq",
+      {
+        "edge_type": "CRED_ACQ",
+        "ts": 1765386001375000064,
+        "count": 1,
+        "event_ids": "4402"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "370d72df-c681-5213-a952-026bf2639b07",
+      "login",
+      {
+        "edge_type": "LOGIN",
+        "ts": 1765386001375000064,
+        "count": 2,
+        "event_ids": "4403,4407"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "73e111f6-ba54-5a00-a8ff-dac2eae1e4e1",
+      "user_start",
+      {
+        "edge_type": "USER_START",
+        "ts": 1765386001379000064,
+        "count": 2,
+        "event_ids": "4404,4408"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "36b7f96e-2a74-5065-834d-160f9659ed4a",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1765386001379000064,
+        "count": 2,
+        "event_ids": "4409,4411"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "2d8fed3b-8159-50ea-aeac-7f0321f5ea61",
+      "setuid",
+      {
+        "edge_type": "SETUID",
+        "ts": 1765386001382999808,
+        "count": 2,
+        "event_ids": "4410,4413"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386001382999808,
+        "count": 2,
+        "event_ids": "4412,4414"
+      }
+    ],
+    [
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "c023f8cc-d00d-5528-bc45-7a84e6a76468",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1765386001382999808,
+        "count": 1,
+        "event_ids": "4412"
+      }
+    ],
+    [
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "4767eb5a-cbc7-5173-812c-3d28c495768a",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1765386001382999808,
+        "count": 1,
+        "event_ids": "4414"
+      }
+    ],
+    [
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "c023f8cc-d00d-5528-bc45-7a84e6a76468",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386001387000064,
+        "count": 1,
+        "event_ids": "4415"
+      }
+    ],
+    [
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "4767eb5a-cbc7-5173-812c-3d28c495768a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386001387000064,
+        "count": 1,
+        "event_ids": "4416"
+      }
+    ],
+    [
+      "4767eb5a-cbc7-5173-812c-3d28c495768a",
+      "808f91b2-5c4b-54a3-b280-233c10772360",
+      "unlink",
+      {
+        "edge_type": "UNLINK",
+        "ts": 1765386001387000064,
+        "count": 1,
+        "event_ids": "4417"
+      }
+    ],
+    [
+      "b3adb97d-bea0-541b-92dd-a03d39280aee",
+      "61fc0121-e7f3-58d4-87bd-d75ad8bdd778",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765386001391000064,
+        "count": 1,
+        "event_ids": "4418"
+      }
+    ],
+    [
+      "4767eb5a-cbc7-5173-812c-3d28c495768a",
+      "cf7c9e32-8c20-580d-89b0-266597b79a39",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765386001391000064,
+        "count": 1,
+        "event_ids": "4419"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "1afe7481-111d-546b-90fd-74be4962ed8f",
+      "cred_disp",
+      {
+        "edge_type": "CRED_DISP",
+        "ts": 1765386001395000064,
+        "count": 2,
+        "event_ids": "4420,4422"
+      }
+    ],
+    [
+      "c180d9af-76d9-5cde-8a0c-8af69575e51f",
+      "c1f1e9fe-7143-5053-a0e3-fca8a0b76e32",
+      "user_end",
+      {
+        "edge_type": "USER_END",
+        "ts": 1765386001395000064,
+        "count": 2,
+        "event_ids": "4421,4423"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/cron",
+      "OPENAT",
+      "/etc/shadow"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_ACCT",
+      "pam:root:USER_ACCT"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_ACQ",
+      "pam:root:CRED_ACQ"
+    ],
+    [
+      "/usr/sbin/cron",
+      "LOGIN",
+      "acct:root:LOGIN"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_START",
+      "pam:root:USER_START"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/cron",
+      "SETUID",
+      "setuid [no target]"
+    ],
+    [
+      "/usr/sbin/cron",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/share/awffull/awffull"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/sbin/logrotate"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/share/awffull/awffull"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/sbin/logrotate"
+    ],
+    [
+      "/usr/sbin/logrotate",
+      "UNLINK",
+      "unlink [filtered target]"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/gawk"
+    ],
+    [
+      "/usr/sbin/logrotate",
+      "RENAME",
+      "/var/lib/logrotate/status.tmp -> /var/lib/logrotate/status"
+    ],
+    [
+      "/usr/sbin/cron",
+      "CRED_DISP",
+      "pam:root:CRED_DISP"
+    ],
+    [
+      "/usr/sbin/cron",
+      "USER_END",
+      "pam:root:USER_END"
+    ]
+  ]
+}

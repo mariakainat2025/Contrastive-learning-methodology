@@ -1,0 +1,14 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1105-000",
+  "step": "2_rootkit-23",
+  "host": "videoserver",
+  "n_triples": 5,
+  "sequence": [
+    "/usr/sbin/sshd setgid setgid [no target].",
+    "/usr/sbin/sshd cred_refr pam:root:CRED_REFR.",
+    "pid:2880 execve /usr/bin/bash.",
+    "/usr/bin/bash execve_inferred /usr/lib/openssh/sftp-server.",
+    "pid:2880 execve /usr/lib/openssh/sftp-server."
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "1_racecondition_pam-29",
+  "host": "videoserver",
+  "start_ts": 1765034723588000000,
+  "end_ts": 1765034723632000000,
+  "n_nodes": 7,
+  "n_edges": 7,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765034723588000000,
+        "name": "pid:17582",
+        "uuid": "25c8906d-cc7a-5a64-ba29-d477a7e05123"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765034723588000000,
+        "name": "/usr/bin/dash",
+        "uuid": "3653f55f-a217-5d90-9d34-eecfd5ce2b88"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765034723588000000,
+        "name": "/usr/bin/curl",
+        "uuid": "8a72470d-8a9d-531d-8a7e-993bb55653ed"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "NetFlowObject",
+        "ts": 1765034723608000000,
+        "name": "192.42.1.174:80",
+        "uuid": "ac945829-29ba-5eca-a59c-5ed9ff7ed36f"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765034723620000000,
+        "name": "/usr/bin/wget",
+        "uuid": "fb0d24c9-895b-5d9d-9d10-c3c062d0e94c"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1765034723632000000,
+        "name": "/usr/bin/mv",
+        "uuid": "af8691a6-976f-5a69-892e-2ce5a70ccbbd"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1765034723632000000,
+        "name": "pam_unix.so -> /lib/x86_64-linux-gnu/security/pam_unix.so",
+        "uuid": "8dcd1f18-d834-554f-83c1-22dfcba2ded3"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "25c8906d-cc7a-5a64-ba29-d477a7e05123",
+      "3653f55f-a217-5d90-9d34-eecfd5ce2b88",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765034723588000000,
+        "count": 1,
+        "event_ids": "14306"
+      }
+    ],
+    [
+      "25c8906d-cc7a-5a64-ba29-d477a7e05123",
+      "8a72470d-8a9d-531d-8a7e-993bb55653ed",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765034723588000000,
+        "count": 1,
+        "event_ids": "14307"
+      }
+    ],
+    [
+      "8a72470d-8a9d-531d-8a7e-993bb55653ed",
+      "ac945829-29ba-5eca-a59c-5ed9ff7ed36f",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765034723608000000,
+        "count": 1,
+        "event_ids": "14308"
+      }
+    ],
+    [
+      "3653f55f-a217-5d90-9d34-eecfd5ce2b88",
+      "fb0d24c9-895b-5d9d-9d10-c3c062d0e94c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765034723620000000,
+        "count": 1,
+        "event_ids": "14309"
+      }
+    ],
+    [
+      "fb0d24c9-895b-5d9d-9d10-c3c062d0e94c",
+      "ac945829-29ba-5eca-a59c-5ed9ff7ed36f",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1765034723620000000,
+        "count": 1,
+        "event_ids": "14310"
+      }
+    ],
+    [
+      "3653f55f-a217-5d90-9d34-eecfd5ce2b88",
+      "af8691a6-976f-5a69-892e-2ce5a70ccbbd",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1765034723632000000,
+        "count": 1,
+        "event_ids": "14311"
+      }
+    ],
+    [
+      "af8691a6-976f-5a69-892e-2ce5a70ccbbd",
+      "8dcd1f18-d834-554f-83c1-22dfcba2ded3",
+      "rename",
+      {
+        "edge_type": "RENAME",
+        "ts": 1765034723632000000,
+        "count": 1,
+        "event_ids": "14312"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:17582",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "pid:17582",
+      "EXECVE",
+      "/usr/bin/curl"
+    ],
+    [
+      "/usr/bin/curl",
+      "CONNECT",
+      "192.42.1.174:80"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/wget"
+    ],
+    [
+      "/usr/bin/wget",
+      "CONNECT",
+      "192.42.1.174:80"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/mv"
+    ],
+    [
+      "/usr/bin/mv",
+      "RENAME",
+      "pam_unix.so -> /lib/x86_64-linux-gnu/security/pam_unix.so"
+    ]
+  ]
+}

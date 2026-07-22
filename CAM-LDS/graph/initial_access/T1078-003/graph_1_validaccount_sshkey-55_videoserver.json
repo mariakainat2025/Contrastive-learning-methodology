@@ -1,0 +1,50 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "1_validaccount_sshkey-55",
+  "host": "videoserver",
+  "start_ts": 1758711070392000000,
+  "end_ts": 1758711070392000000,
+  "n_nodes": 2,
+  "n_edges": 1,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758711070392000000,
+        "name": "pid:2974",
+        "uuid": "75c9b138-c5b0-57a4-9851-db10bd3c9746"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1758711070392000000,
+        "name": "/usr/bin/find",
+        "uuid": "4fe639ee-671c-52b9-9b71-24d0811c127b"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "75c9b138-c5b0-57a4-9851-db10bd3c9746",
+      "4fe639ee-671c-52b9-9b71-24d0811c127b",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758711070392000000,
+        "count": 1,
+        "event_ids": "13293"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:2974",
+      "EXECVE",
+      "/usr/bin/find"
+    ]
+  ]
+}

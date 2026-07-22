@@ -1,0 +1,350 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1190-000",
+  "step": "1_sudo_pam-5",
+  "host": "videoserver",
+  "start_ts": 1758549148084000000,
+  "end_ts": 1758549165732000000,
+  "n_nodes": 14,
+  "n_edges": 13,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549148084000000,
+        "name": "/usr/sbin/apache2",
+        "uuid": "6dca1edc-815a-5ed6-b332-630b45969530"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1758549148084000000,
+        "name": "/var/run/mysqld/mysqld.sock",
+        "uuid": "0f87794c-f3bc-59da-b5fb-2d4948f7995b"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549148088000000,
+        "name": "/usr/bin/dash",
+        "uuid": "e8234cef-bd5e-5723-beec-427d1a9223bb"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "FileObject",
+        "ts": 1758549148088000000,
+        "name": "/usr/bin/zmdc.pl",
+        "uuid": "dec15ad4-03c9-5c80-8c0f-1da15e76682e"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "FileObject",
+        "ts": 1758549148092000000,
+        "name": "/usr/bin/perl",
+        "uuid": "cd74b1d9-03e6-5ace-b60a-5f7bf6847506"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1758549148316000000,
+        "name": "/usr/bin/zmu",
+        "uuid": "bdb87a97-8a8f-5e14-af06-c26fffd41a2c"
+      }
+    ],
+    [
+      6,
+      {
+        "type": "FileObject",
+        "ts": 1758549148364000000,
+        "name": "/usr/bin/sleep",
+        "uuid": "b3b1a6bc-f88b-5c43-93bc-06b642edecaa"
+      }
+    ],
+    [
+      7,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549164772000000,
+        "name": "pid:2605",
+        "uuid": "9e0996f7-7fe3-5c6e-8eee-cf4e0050107f"
+      }
+    ],
+    [
+      8,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549164776000000,
+        "name": "/usr/bin/python3.9",
+        "uuid": "3521e8e0-5007-5266-9dd1-e5a6919a28f8"
+      }
+    ],
+    [
+      9,
+      {
+        "type": "NetFlowObject",
+        "ts": 1758549164796000000,
+        "name": "192.42.1.174:4444",
+        "uuid": "1fd3f9fb-06df-53ab-9f09-aea804668907"
+      }
+    ],
+    [
+      10,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549165676000000,
+        "name": "pid:2608",
+        "uuid": "9a87a972-f0fe-5bd2-9a3d-4ec817fa805f"
+      }
+    ],
+    [
+      11,
+      {
+        "type": "FileObject",
+        "ts": 1758549165676000000,
+        "name": "/usr/sbin/ldconfig",
+        "uuid": "e25495b7-22ed-5de7-9eb1-cec9b122552c"
+      }
+    ],
+    [
+      12,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758549165732000000,
+        "name": "uname [not found]",
+        "uuid": "58c3472a-ce2e-5fa3-9723-dd3b8cec1461"
+      }
+    ],
+    [
+      13,
+      {
+        "type": "FileObject",
+        "ts": 1758549165732000000,
+        "name": "/usr/bin/uname",
+        "uuid": "f32f7b83-e2de-568f-a605-e52a3b733f53"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "6dca1edc-815a-5ed6-b332-630b45969530",
+      "0f87794c-f3bc-59da-b5fb-2d4948f7995b",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758549148084000000,
+        "count": 4,
+        "event_ids": "4342,4349,4358,4365"
+      }
+    ],
+    [
+      "6dca1edc-815a-5ed6-b332-630b45969530",
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549148088000000,
+        "count": 7,
+        "event_ids": "4343,4346,4350,4354,4359,4362+1"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "dec15ad4-03c9-5c80-8c0f-1da15e76682e",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758549148088000000,
+        "count": 4,
+        "event_ids": "4343,4346,4359,4362"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "cd74b1d9-03e6-5ace-b60a-5f7bf6847506",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549148092000000,
+        "count": 4,
+        "event_ids": "4344,4347,4360,4363"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "bdb87a97-8a8f-5e14-af06-c26fffd41a2c",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1758549148316000000,
+        "count": 3,
+        "event_ids": "4350,4354,4366"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "bdb87a97-8a8f-5e14-af06-c26fffd41a2c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549148316000000,
+        "count": 3,
+        "event_ids": "4351,4355,4367"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "b3b1a6bc-f88b-5c43-93bc-06b642edecaa",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549148364000000,
+        "count": 2,
+        "event_ids": "4352,4356"
+      }
+    ],
+    [
+      "9e0996f7-7fe3-5c6e-8eee-cf4e0050107f",
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549164772000000,
+        "count": 2,
+        "event_ids": "4368,4369"
+      }
+    ],
+    [
+      "e8234cef-bd5e-5723-beec-427d1a9223bb",
+      "3521e8e0-5007-5266-9dd1-e5a6919a28f8",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549164776000000,
+        "count": 1,
+        "event_ids": "4370"
+      }
+    ],
+    [
+      "3521e8e0-5007-5266-9dd1-e5a6919a28f8",
+      "1fd3f9fb-06df-53ab-9f09-aea804668907",
+      "connect",
+      {
+        "edge_type": "CONNECT",
+        "ts": 1758549164796000000,
+        "count": 1,
+        "event_ids": "4371"
+      }
+    ],
+    [
+      "9a87a972-f0fe-5bd2-9a3d-4ec817fa805f",
+      "e25495b7-22ed-5de7-9eb1-cec9b122552c",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549165676000000,
+        "count": 1,
+        "event_ids": "4372"
+      }
+    ],
+    [
+      "3521e8e0-5007-5266-9dd1-e5a6919a28f8",
+      "58c3472a-ce2e-5fa3-9723-dd3b8cec1461",
+      "execve_fail",
+      {
+        "edge_type": "EXECVE_FAIL",
+        "ts": 1758549165732000000,
+        "count": 3,
+        "event_ids": "4373,4374,4375"
+      }
+    ],
+    [
+      "9a87a972-f0fe-5bd2-9a3d-4ec817fa805f",
+      "f32f7b83-e2de-568f-a605-e52a3b733f53",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758549165732000000,
+        "count": 1,
+        "event_ids": "4376"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/apache2",
+      "CONNECT",
+      "/var/run/mysqld/mysqld.sock"
+    ],
+    [
+      "/usr/sbin/apache2",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/zmdc.pl"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/perl"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE_INFERRED",
+      "/usr/bin/zmu"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/zmu"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/sleep"
+    ],
+    [
+      "pid:2605",
+      "EXECVE",
+      "/usr/bin/dash"
+    ],
+    [
+      "/usr/bin/dash",
+      "EXECVE",
+      "/usr/bin/python3.9"
+    ],
+    [
+      "/usr/bin/python3.9",
+      "CONNECT",
+      "192.42.1.174:4444"
+    ],
+    [
+      "pid:2608",
+      "EXECVE",
+      "/usr/sbin/ldconfig"
+    ],
+    [
+      "/usr/bin/python3.9",
+      "EXECVE_FAIL",
+      "uname [not found]"
+    ],
+    [
+      "pid:2608",
+      "EXECVE",
+      "/usr/bin/uname"
+    ]
+  ]
+}

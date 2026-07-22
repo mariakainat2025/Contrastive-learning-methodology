@@ -1,0 +1,50 @@
+{
+  "tactic": "initial_access",
+  "technique": "T1078-003",
+  "step": "1_validaccount_pam-55",
+  "host": "videoserver",
+  "start_ts": 1758718349963000064,
+  "end_ts": 1758718349963000064,
+  "n_nodes": 2,
+  "n_edges": 1,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1758718349963000064,
+        "name": "pid:2910",
+        "uuid": "e92534b8-2f1e-58b3-a408-0ae5c2dd6243"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "FileObject",
+        "ts": 1758718349963000064,
+        "name": "/usr/bin/find",
+        "uuid": "5380c23e-d7e6-5406-a388-7fd09d59d87a"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "e92534b8-2f1e-58b3-a408-0ae5c2dd6243",
+      "5380c23e-d7e6-5406-a388-7fd09d59d87a",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1758718349963000064,
+        "count": 1,
+        "event_ids": "13112"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "pid:2910",
+      "EXECVE",
+      "/usr/bin/find"
+    ]
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "tactic": "command_and_control",
+  "technique": "T1105-000",
+  "step": "2_rootkit-23",
+  "host": "videoserver",
+  "start_ts": 1759318450944000000,
+  "end_ts": 1759318450944000000,
+  "n_nodes": 6,
+  "n_edges": 5,
+  "nodes": [
+    [
+      0,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759318450944000000,
+        "name": "/usr/sbin/sshd",
+        "uuid": "a659cdcc-b3e3-59ce-adb4-da359951d232"
+      }
+    ],
+    [
+      1,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759318450944000000,
+        "name": "setgid [no target]",
+        "uuid": "595448b2-16c5-51d6-87ab-516d82d4176b"
+      }
+    ],
+    [
+      2,
+      {
+        "type": "PRINCIPAL_LOCAL",
+        "ts": 1759318450944000000,
+        "name": "pam:root:CRED_REFR",
+        "uuid": "d989ecdd-155c-555b-be50-ee5f31bb8073"
+      }
+    ],
+    [
+      3,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759318450944000000,
+        "name": "pid:2880",
+        "uuid": "da2d902f-4226-54be-a976-45618dfd1608"
+      }
+    ],
+    [
+      4,
+      {
+        "type": "SUBJECT_PROCESS",
+        "ts": 1759318450944000000,
+        "name": "/usr/bin/bash",
+        "uuid": "f99aa1a6-2eed-5377-ae96-79d7c5732b00"
+      }
+    ],
+    [
+      5,
+      {
+        "type": "FileObject",
+        "ts": 1759318450944000000,
+        "name": "/usr/lib/openssh/sftp-server",
+        "uuid": "39260c59-843c-576c-9703-eab1c0aa4fa3"
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "a659cdcc-b3e3-59ce-adb4-da359951d232",
+      "595448b2-16c5-51d6-87ab-516d82d4176b",
+      "setgid",
+      {
+        "edge_type": "SETGID",
+        "ts": 1759318450944000000,
+        "count": 2,
+        "event_ids": "4614,4618"
+      }
+    ],
+    [
+      "a659cdcc-b3e3-59ce-adb4-da359951d232",
+      "d989ecdd-155c-555b-be50-ee5f31bb8073",
+      "cred_refr",
+      {
+        "edge_type": "CRED_REFR",
+        "ts": 1759318450944000000,
+        "count": 2,
+        "event_ids": "4615,4619"
+      }
+    ],
+    [
+      "da2d902f-4226-54be-a976-45618dfd1608",
+      "f99aa1a6-2eed-5377-ae96-79d7c5732b00",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1759318450944000000,
+        "count": 2,
+        "event_ids": "4616,4620"
+      }
+    ],
+    [
+      "f99aa1a6-2eed-5377-ae96-79d7c5732b00",
+      "39260c59-843c-576c-9703-eab1c0aa4fa3",
+      "execve_inferred",
+      {
+        "edge_type": "EXECVE_INFERRED",
+        "ts": 1759318450944000000,
+        "count": 2,
+        "event_ids": "4616,4620"
+      }
+    ],
+    [
+      "da2d902f-4226-54be-a976-45618dfd1608",
+      "39260c59-843c-576c-9703-eab1c0aa4fa3",
+      "execve",
+      {
+        "edge_type": "EXECVE",
+        "ts": 1759318450948000000,
+        "count": 2,
+        "event_ids": "4617,4621"
+      }
+    ]
+  ],
+  "triplets": [
+    [
+      "/usr/sbin/sshd",
+      "SETGID",
+      "setgid [no target]"
+    ],
+    [
+      "/usr/sbin/sshd",
+      "CRED_REFR",
+      "pam:root:CRED_REFR"
+    ],
+    [
+      "pid:2880",
+      "EXECVE",
+      "/usr/bin/bash"
+    ],
+    [
+      "/usr/bin/bash",
+      "EXECVE_INFERRED",
+      "/usr/lib/openssh/sftp-server"
+    ],
+    [
+      "pid:2880",
+      "EXECVE",
+      "/usr/lib/openssh/sftp-server"
+    ]
+  ]
+}
