@@ -13,7 +13,7 @@ from scripts.encoder_utils import embed_text
 from transformers import RobertaTokenizer, RobertaModel
 
 CAM_LDS_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOKENIZED_PATH = os.path.join(CAM_LDS_DIR, "tokenized.pt")
+TOKENIZED_PATH = os.path.join(CAM_LDS_DIR, "tokenized", "tokenized.pt")
 EMBEDDINGS_OUT = os.path.join(CAM_LDS_DIR, "embeddings.pt")
 
 

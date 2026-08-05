@@ -30,29 +30,36 @@ AVC_TYPES = {"AVC"}
 ERR_TYPES = {"USER_ERR"}
 
 
+ANOM_ABEND_TYPES = {"ANOM_ABEND"}
+
+
+ANOM_PROMISC_TYPES = {"ANOM_PROMISCUOUS"}
+
+
+NETFILTER_TYPES = {"NETFILTER_CFG"}
+
+
+SHUTDOWN_TYPES = {"SYSTEM_SHUTDOWN"}
+
+
 NON_SYSCALL_TYPES = (PAM_TYPES | AUTH_TYPES | ACCOUNT_TYPES | SERVICE_TYPES
-                      | CMD_TYPES | BPF_TYPES | AVC_TYPES | ERR_TYPES)
+                      | CMD_TYPES | BPF_TYPES | AVC_TYPES | ERR_TYPES
+                      | ANOM_ABEND_TYPES | ANOM_PROMISC_TYPES | NETFILTER_TYPES | SHUTDOWN_TYPES)
 
 
-PRIMARY_HOST = {
-    ("command_and_control", "T1095-000", "7-6"): "docker-log",
-    ("command_and_control", "T1105-000", "3_ssh_puppet-40"): "linuxshare",
-    ("command_and_control", "T1105-000", "3_vnc_puppet-60"): "linuxshare",
-    ("command_and_control", "T1105-000", "4-3"): "inetfw",
-    ("command_and_control", "T1105-000", "6_screensharing_binary-14"): "client",
-    ("command_and_control", "T1205-001", "4-3"): "inetfw",
-    ("command_and_control", "T1219-000", "6_screensharing_binary-45"): "client",
-    ("command_and_control", "T1219-000", "6_screensharing_binary-46"): "client",
-    ("command_and_control", "T1219-000", "6_screensharing_cron-45"): "client",
-    ("initial_access", "T1078-002", "7-3"): "docker",
-    ("initial_access", "T1078-003", "4-3"): "inetfw",
-    ("initial_access", "T1078-003", "4-5"): "reposerver",
-    ("initial_access", "T1078-003", "4-6"): "inetfw",
-    ("initial_access", "T1078-003", "4-20"): "reposerver",
-    ("initial_access", "T1133-000", "7-3"): "docker",
-    ("initial_access", "T1190-000", "1_autostart_pam-5"): "videoserver",
-    ("initial_access", "T1190-000", "7-6"): "docker-log",
-}
+HOST_PRIORITY = ["client", "linuxshare", "docker", "reposerver", "inetfw"]
+
+
+def pick_primary_host(host_tags):
+    """For a step with logs on multiple hosts, pick exactly one via a fixed
+    priority order -- client > linuxshare > docker > reposerver > inetfw.
+    host_tags may include suffixed variants (e.g. docker-log, docker-nclog);
+    a tag matches a priority name if it equals it or starts with '<name>-'."""
+    for p in HOST_PRIORITY:
+        matches = sorted(h for h in host_tags if h == p or h.startswith(p + "-"))
+        if matches:
+            return matches[0]
+    return None
 
 
 def decode_arg(val):
@@ -126,6 +133,14 @@ def parse_audit(path):
             "avc_profile": None,
             "bpf_op"    : None,
             "bpf_progid": None,
+
+            "sig"       : None,
+            "dev"       : None,
+            "prom"      : None,
+            "nf_table"  : None,
+            "nf_op"     : None,
+            "mmap_flags": None,
+            "fcaps"     : None,
         }
 
         has_syscall = False
@@ -297,6 +312,51 @@ def parse_audit(path):
                 if acct: event["acct"] = acct
 
 
+            elif rec_type in ANOM_ABEND_TYPES:
+                event["type"] = rec_type
+                event["timestamp"] = _get(r'msg=audit\(([\d.]+):\d+\)', line) or event["timestamp"]
+                event["pid"]  = _get(r'\bpid=(\d+)', line) or event["pid"]
+                event["comm"] = _get(r'comm="([^"]+)"', line) or event["comm"]
+                event["exe"]  = _get(r'exe="([^"]+)"', line) or event["exe"]
+                event["sig"]  = _get(r'\bsig=(\d+)', line) or event["sig"]
+                event["res"]  = _get(r'res=(\w+)', line) or event["res"]
+
+
+            elif rec_type in ANOM_PROMISC_TYPES:
+                event["type"] = rec_type
+                event["timestamp"] = _get(r'msg=audit\(([\d.]+):\d+\)', line) or event["timestamp"]
+                event["dev"]  = _get(r'\bdev=(\S+)', line) or event["dev"]
+                event["prom"] = _get(r'\bprom=(\d+)', line) or event["prom"]
+                uidnum = _get(r'\buid=(\d+)', line)
+                if uidnum: event["acct"] = f"uid:{uidnum}"
+
+
+            elif rec_type in NETFILTER_TYPES:
+                event["type"] = rec_type
+                event["timestamp"] = _get(r'msg=audit\(([\d.]+):\d+\)', line) or event["timestamp"]
+                event["nf_table"] = _get(r'\btable=(\S+)', line) or event["nf_table"]
+                event["nf_op"]    = _get(r'\bop=(\S+)', line) or event["nf_op"]
+                event["pid"]      = _get(r'\bpid=(\d+)', line) or event["pid"]
+                event["comm"]     = _get(r'comm="([^"]+)"', line) or event["comm"]
+
+
+            elif rec_type in SHUTDOWN_TYPES:
+                event["type"] = rec_type
+                event["timestamp"] = _get(r'msg=audit\(([\d.]+):\d+\)', line) or event["timestamp"]
+                event["pid"]  = _get(r'\bpid=(\d+)', line) or event["pid"]
+                event["comm"] = _get(r'comm="([^"]+)"', line) or event["comm"]
+                event["exe"]  = _get(r'exe="([^"]+)"', line) or event["exe"]
+                event["res"]  = _get(r'res=(\w+)', line) or event["res"]
+
+
+            elif rec_type == "BPRM_FCAPS":
+                event["fcaps"] = "yes"
+
+
+            elif rec_type == "MMAP":
+                event["mmap_flags"] = _get(r'\bflags=(\S+)', line) or event["mmap_flags"]
+
+
         if has_syscall:
             if not event["syscall"]:
                 continue
@@ -315,6 +375,26 @@ def parse_audit(path):
 
         elif event["type"] in PAM_TYPES:
             if event["exe"] and event["pam_acct"]:
+                results.append(event)
+
+
+        elif event["type"] in ANOM_ABEND_TYPES:
+            if event["pid"]:
+                results.append(event)
+
+
+        elif event["type"] in ANOM_PROMISC_TYPES:
+            if event["dev"]:
+                results.append(event)
+
+
+        elif event["type"] in NETFILTER_TYPES:
+            if event["nf_op"]:
+                results.append(event)
+
+
+        elif event["type"] in SHUTDOWN_TYPES:
+            if event["pid"]:
                 results.append(event)
 
 
@@ -357,6 +437,22 @@ def parse_audit(path):
         if e["type"] in ERR_TYPES:
             e["src"] = e["exe"] or f"pid:{e['pid']}"
             e["dest"] = f"acct:{e['acct']}:{e['type']}"
+            continue
+        if e["type"] in ANOM_ABEND_TYPES:
+            e["src"] = e["exe"] or e["comm"] or f"pid:{e['pid']}"
+            e["dest"] = f"crash:sig={e['sig']}"
+            continue
+        if e["type"] in ANOM_PROMISC_TYPES:
+            e["src"] = e["acct"] or "unknown"
+            e["dest"] = f"iface:{e['dev']}"
+            continue
+        if e["type"] in NETFILTER_TYPES:
+            e["src"] = e["comm"] or f"pid:{e['pid']}"
+            e["dest"] = f"netfilter:{e['nf_table']}"
+            continue
+        if e["type"] in SHUTDOWN_TYPES:
+            e["src"] = e["exe"] or e["comm"] or f"pid:{e['pid']}"
+            e["dest"] = "system:shutdown"
             continue
 
         sc = e["syscall"]
@@ -466,13 +562,18 @@ def to_subgraph(events, tactic, attack, description=""):
     edges     = []
     counter   = [0]
 
-    def get_node(name, ntype, ts):
-        if name not in node_map:
+    def get_node(key, name, ntype, ts):
+        if key not in node_map:
             nid  = counter[0]; counter[0] += 1
-            nuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, name))
-            node_map[name] = {"id": nid, "uuid": nuid}
+            nuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, key))
+            node_map[key] = {"id": nid, "uuid": nuid}
             node_list.append([nid, {"type": ntype, "ts": ts, "name": name, "uuid": nuid}])
-        return node_map[name]["uuid"]
+        return node_map[key]["uuid"]
+
+    def proc_node(pid, exe_or_comm, ts):
+        name = exe_or_comm or (f"pid:{pid}" if pid else "unknown")
+        key  = f"pid:{pid}:{name}" if pid else name
+        return get_node(key, name, "SUBJECT_PROCESS", ts)
 
     pid_to_exe = {e["pid"]: e["exe"] for e in events if e["pid"] and e["exe"]}
 
@@ -480,78 +581,154 @@ def to_subgraph(events, tactic, attack, description=""):
         ts = int(float(e["timestamp"]) * 1e9) if e["timestamp"] else 0
 
         if e["type"] in PAM_TYPES:
+            src = proc_node(e["pid"], e["exe"], ts)
+            dst = get_node(f"acct:{e['pam_acct']}", f"acct:{e['pam_acct']}", "PRINCIPAL_LOCAL", ts)
+            edges.append([src, dst, 0, {"edge_type": f"EVENT_{e['type']}", "pam_op": e["pam_op"],
+                                        "result": e["pam_res"], "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in AUTH_TYPES:
-            src = get_node(e["addr"] or e["hostname"] or f"pid:{e['pid']}", "NetFlowObject", ts)
-            dst = get_node(f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
+            if e["addr"] or e["hostname"]:
+                name = e["addr"] or e["hostname"]
+                src = get_node(name, name, "NetFlowObject", ts)
+            else:
+                src = proc_node(e["pid"], e["exe"], ts)
+            dst = get_node(f"acct:{e['acct']}", f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_{e['type']}",
                                         "result": e["res"], "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in ACCOUNT_TYPES:
-            src = get_node(e["exe"] or f"pid:{e['pid']}", "SUBJECT_PROCESS", ts)
-            dst = get_node(f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
+            src = proc_node(e["pid"], e["exe"], ts)
+            dst = get_node(f"acct:{e['acct']}", f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_{e['type']}",
                                         "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in SERVICE_TYPES:
-            src = get_node(e["exe"] or e["comm"] or f"pid:{e['pid']}", "SUBJECT_PROCESS", ts)
-            dst = get_node(f"unit:{e['unit']}", "SUBJECT_PROCESS", ts)
+            src = proc_node(e["pid"], e["exe"] or e["comm"], ts)
+            dst = get_node(f"unit:{e['unit']}", f"unit:{e['unit']}", "SUBJECT_PROCESS", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_{e['type']}",
                                         "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in CMD_TYPES:
-            src = get_node(f"acct:{e['acct']}" if e["acct"] else f"pid:{e['pid']}", "PRINCIPAL_LOCAL", ts)
-            dst = get_node(e["cmd"] or e["exe"] or "unknown", "SUBJECT_PROCESS", ts)
+            if e["acct"]:
+                src = get_node(f"acct:{e['acct']}", f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
+            else:
+                src = proc_node(e["pid"], None, ts)
+            dst = proc_node(e["pid"], e["cmd"] or e["exe"] or "unknown", ts)
             edges.append([src, dst, 0, {"edge_type": "EVENT_SUDO_CMD",
                                         "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in BPF_TYPES:
-            src = get_node("kernel", "SUBJECT_PROCESS", ts)
-            dst = get_node(f"bpf-prog:{e['bpf_progid']}", "SUBJECT_PROCESS", ts)
+            src = get_node("kernel", "kernel", "SUBJECT_PROCESS", ts)
+            dst = get_node(f"bpf-prog:{e['bpf_progid']}", f"bpf-prog:{e['bpf_progid']}", "SUBJECT_PROCESS", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_BPF_{e['bpf_op']}",
                                         "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in AVC_TYPES:
-            src = get_node(e["comm"] or f"pid:{e['pid']}", "SUBJECT_PROCESS", ts)
-            dst = get_node(e["avc_name"] or e["avc_profile"] or "unknown", "FileObject", ts)
+            src = proc_node(e["pid"], e["comm"], ts)
+            target = e["avc_name"] or e["avc_profile"] or "unknown"
+            dst = get_node(target, target, "FileObject", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_AVC_{e['avc_result']}",
                                         "event_id": e["event_id"], "ts": ts}])
             continue
 
         if e["type"] in ERR_TYPES:
+            src = proc_node(e["pid"], e["exe"], ts)
+            if e["acct"]:
+                dst = get_node(f"acct:{e['acct']}", f"acct:{e['acct']}", "PRINCIPAL_LOCAL", ts)
+            else:
+                label = f"error:{e['op']}" if e["op"] else "error:unknown"
+                dst = get_node(label, label, "FileObject", ts)
+            edges.append([src, dst, 0, {"edge_type": f"EVENT_{e['type']}", "op": e["op"],
+                                        "result": e["res"], "event_id": e["event_id"], "ts": ts}])
+            continue
+
+        if e["type"] in ANOM_ABEND_TYPES:
+            src = proc_node(e["pid"], e["exe"] or e["comm"], ts)
+            label = f"crash:sig={e['sig']}"
+            dst = get_node(label, label, "FileObject", ts)
+            edges.append([src, dst, 0, {"edge_type": "EVENT_ANOM_ABEND", "signal": e["sig"],
+                                        "result": e["res"], "event_id": e["event_id"], "ts": ts}])
+            continue
+
+        if e["type"] in ANOM_PROMISC_TYPES:
+            src = get_node(e["acct"] or "unknown", e["acct"] or "unknown", "PRINCIPAL_LOCAL", ts)
+            label = f"iface:{e['dev']}"
+            dst = get_node(label, label, "NetFlowObject", ts)
+            edges.append([src, dst, 0, {"edge_type": "EVENT_ANOM_PROMISCUOUS", "prom": e["prom"],
+                                        "event_id": e["event_id"], "ts": ts}])
+            continue
+
+        if e["type"] in NETFILTER_TYPES:
+            src = proc_node(e["pid"], e["comm"], ts)
+            label = f"netfilter:{e['nf_table']}"
+            dst = get_node(label, label, "FileObject", ts)
+            edges.append([src, dst, 0, {"edge_type": f"EVENT_NETFILTER_{e['nf_op']}",
+                                        "event_id": e["event_id"], "ts": ts}])
+            continue
+
+        if e["type"] in SHUTDOWN_TYPES:
+            src = proc_node(e["pid"], e["exe"] or e["comm"], ts)
+            dst = get_node("system:shutdown", "system:shutdown", "FileObject", ts)
+            edges.append([src, dst, 0, {"edge_type": "EVENT_SYSTEM_SHUTDOWN",
+                                        "result": e["res"], "event_id": e["event_id"], "ts": ts}])
             continue
 
         sc = e["syscall"]
         if not sc:
             continue
 
+        extra_attrs = {}
+        if e["fcaps"]:
+            extra_attrs["fcaps"] = e["fcaps"]
+        if e["mmap_flags"]:
+            extra_attrs["mmap_flags"] = e["mmap_flags"]
+
         if sc == "execve":
             if e["success"] == "yes":
-                parent_exe = pid_to_exe.get(e["ppid"], f"pid:{e['ppid']}")
-                child_exe  = e["exe"] or e["comm"]
-                src = get_node(parent_exe, "SUBJECT_PROCESS", ts)
-                dst = get_node(child_exe,  "SUBJECT_PROCESS", ts)
+                parent_exe = pid_to_exe.get(e["ppid"])
+                src = proc_node(e["ppid"], parent_exe, ts)
+                dst = proc_node(e["pid"], e["exe"] or e["comm"], ts)
                 edges.append([src, dst, 0, {"edge_type": "EVENT_EXECVE",
-                                            "event_id": e["event_id"], "ts": ts}])
+                                            "event_id": e["event_id"], "ts": ts, **extra_attrs}])
             else:
-                src = get_node(e["exe"] or f"pid:{e['pid']}", "SUBJECT_PROCESS", ts)
+                src = proc_node(e["pid"], e["exe"], ts)
                 target = (e["paths"][0] + " [not found]") if e["paths"] else "unknown"
-                dst = get_node(target, "FileObject", ts)
+                dst = get_node(target, target, "FileObject", ts)
                 edges.append([src, dst, 0, {"edge_type": "EVENT_EXECVE_FAIL",
-                                            "event_id": e["event_id"], "ts": ts}])
+                                            "event_id": e["event_id"], "ts": ts, **extra_attrs}])
 
         elif sc == "connect" and e["dest"]:
-            src = get_node(e["exe"] or f"pid:{e['pid']}", "SUBJECT_PROCESS", ts)
+            src = proc_node(e["pid"], e["exe"], ts)
             ntype = "NetFlowObject" if ":" in e["dest"] else "FileObject"
-            dst = get_node(e["dest"], ntype, ts)
+            dst = get_node(e["dest"], e["dest"], ntype, ts)
             edges.append([src, dst, 0, {"edge_type": "EVENT_CONNECT",
-                                        "event_id": e["event_id"], "ts": ts}])
+                                        "event_id": e["event_id"], "ts": ts, **extra_attrs}])
+
+        elif e["dest"]:
+            # file-operation syscalls (openat, unlink, rename, fchmod, setxattr, rmdir, ...)
+            # -- previously silently dropped; now captured as process -> file edges.
+            src = proc_node(e["pid"], e["exe"], ts)
+            dst = get_node(e["dest"], e["dest"], "FileObject", ts)
+            edges.append([src, dst, 0, {"edge_type": f"EVENT_{sc.upper()}",
+                                        "event_id": e["event_id"], "ts": ts, **extra_attrs}])
+
+        else:
+            # every remaining syscall (setuid, setgid, connect-with-no-SOCKADDR, or any
+            # other syscall that captured no path/dest) -- previously dropped entirely.
+            # Represented as an edge to a shared symbolic node for that syscall name,
+            # so no event is lost even when it touches no file/network resource.
+            src = proc_node(e["pid"], e["exe"], ts)
+            label = f"syscall:{sc}"
+            dst = get_node(label, label, "SUBJECT_PROCESS", ts)
+            status = "EVENT_" + sc.upper() + ("" if e["success"] == "yes" else "_FAIL")
+            edges.append([src, dst, 0, {"edge_type": status,
+                                        "event_id": e["event_id"], "ts": ts, **extra_attrs}])
 
     return {
         "tactic"     : tactic,
@@ -600,14 +777,13 @@ def iter_audit_logs(base_dir, tactics):
     for info in infos:
         skey = (info["tactic"], info["technique"], info["step"])
         step_hosts.setdefault(skey, set()).add(info["host_tag"])
+    chosen_host = {skey: pick_primary_host(hosts) for skey, hosts in step_hosts.items()}
     for info in infos:
         skey = (info["tactic"], info["technique"], info["step"])
         if len(step_hosts[skey]) == 1:
             info["is_primary"] = True
-        elif skey in PRIMARY_HOST:
-            info["is_primary"] = (info["host_tag"] == PRIMARY_HOST[skey])
         else:
-            info["is_primary"] = None
+            info["is_primary"] = (info["host_tag"] == chosen_host[skey])
 
     yield from infos
 
@@ -668,11 +844,13 @@ if __name__ == "__main__":
                      help="parse every audit.log under --base/<tactic> for all --tactics")
     ap.add_argument("--base", default="/csse/research/contructive-learning/CAM-LDS/grouped_by_tactic",
                      help="grouped_by_tactic directory")
-    ap.add_argument("--tactics", nargs="+", default=["initial_access", "command_and_control"],
+    ap.add_argument("--tactics", nargs="+",
+                     default=["command_and_control", "credential_access", "execution", "initial_access",
+                              "lateral_movement", "persistence"],
                      help="tactic subdirectories to walk in batch mode")
-    ap.add_argument("--out", default="/csse/research/contructive-learning/output/theia",
+    ap.add_argument("--out", default="/csse/research/contructive-learning/CAM-LDS/parser/subgraphs",
                      help="output directory for subgraph JSON in batch mode")
-    ap.add_argument("--events-out", default=str(Path(__file__).parent / "parsed_events"),
+    ap.add_argument("--events-out", default="/csse/research/contructive-learning/CAM-LDS/parser/parsed_events",
                      help="output directory for parsed-event JSON in batch mode")
     ap.add_argument("--json", action="store_true", help="print raw JSON (single-file mode)")
     args = ap.parse_args()
