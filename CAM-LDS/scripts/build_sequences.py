@@ -2,9 +2,10 @@ import os
 import re
 import json
 import glob
+from networkx.readwrite import json_graph
 
 CAM_LDS_DIR   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GRAPH_DIR     = os.path.join(CAM_LDS_DIR, "parser", "subgraphs")
+GRAPH_DIR     = os.path.join(CAM_LDS_DIR, "generalize_graph")
 SEQUENCES_DIR = os.path.join(CAM_LDS_DIR, "sequences")
 
 TACTIC_FOLDER_TO_LABEL = {
@@ -33,20 +34,21 @@ def triplet_to_sentence(src, edge_type, dst):
 
 def build_one(graph_path):
     with open(graph_path) as f:
-        g = json.load(f)
+        data = json.load(f)
+    G = json_graph.node_link_graph(data)
 
-    node_name = {n[1]["uuid"]: n[1]["name"] for n in g["nodes"]}
+    node_name = {n: d["name"] for n, d in G.nodes(data=True)}
     sentences = [
         triplet_to_sentence(node_name[src], attrs["edge_type"], node_name[dst])
-        for src, dst, _, attrs in g["edges"]
+        for src, dst, attrs in G.edges(data=True)
     ]
 
-    m = DESC_RE.search(g.get("description", ""))
+    m = DESC_RE.search(G.graph.get("description", ""))
     step, host = (m.group(1), m.group(2)) if m else ("?", "?")
 
     return {
-        "tactic"   : TACTIC_FOLDER_TO_LABEL[g["tactic"]],
-        "technique": g["attack"],
+        "tactic"   : TACTIC_FOLDER_TO_LABEL[G.graph["tactic"]],
+        "technique": G.graph["attack"],
         "step"     : step,
         "host"     : host,
         "n_triples": len(sentences),
@@ -54,19 +56,19 @@ def build_one(graph_path):
     }
 
 
-def main():
-    files = sorted(glob.glob(os.path.join(GRAPH_DIR, "*", "*", "subgraph_*.json")))
-    print(f"Found {len(files)} graph JSON files under {GRAPH_DIR}")
+def main(graph_dir=GRAPH_DIR, prefix="generalize_", sequences_dir=SEQUENCES_DIR):
+    files = sorted(glob.glob(os.path.join(graph_dir, "*", "*", f"{prefix}*.json")))
+    print(f"Found {len(files)} graph JSON files under {graph_dir}")
 
     n_ok, n_empty = 0, 0
     for fpath in files:
         technique = os.path.basename(os.path.dirname(fpath))
         tactic    = os.path.basename(os.path.dirname(os.path.dirname(fpath)))
-        fname     = os.path.basename(fpath).replace("subgraph_", "sequence_", 1)
+        fname     = os.path.basename(fpath).replace(prefix, "sequence_", 1)
 
         seq = build_one(fpath)
 
-        out_dir = os.path.join(SEQUENCES_DIR, tactic, technique)
+        out_dir = os.path.join(sequences_dir, tactic, technique)
         os.makedirs(out_dir, exist_ok=True)
         out_path = os.path.join(out_dir, fname)
         with open(out_path, "w") as f:
@@ -76,12 +78,20 @@ def main():
             n_empty += 1
         else:
             n_ok += 1
-        print(f"[{tactic:20s}] {technique:12s} {seq['step']:35s} {seq['host']:12s} "
-              f"n_triples={seq['n_triples']:4d} -> {out_path}")
-
     print()
-    print(f"Built {n_ok} sequences ({n_empty} empty) -> {SEQUENCES_DIR}")
+    print(f"Built {n_ok} sequences ({n_empty} empty) -> {sequences_dir}")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--graph-dir", default=GRAPH_DIR)
+    ap.add_argument("--prefix", default="generalize_",
+                     help='File prefix to glob for, e.g. "generalize_" (default) or "graph_" for raw graphs/.')
+    ap.add_argument("--sequences-dir", default=SEQUENCES_DIR,
+                     help='Output directory for built sequences (default: sequences/). Use a different '
+                          'directory (e.g. sequences_raw/) to avoid overwriting an existing sequences/ '
+                          'folder built from different graphs (e.g. generalized vs raw).')
+    args = ap.parse_args()
+    main(graph_dir=args.graph_dir, prefix=args.prefix, sequences_dir=args.sequences_dir)
+

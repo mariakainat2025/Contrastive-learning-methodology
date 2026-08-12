@@ -11,8 +11,7 @@ TACTICS = ["collection", "command_and_control", "credential_access", "defense_im
            "discovery", "execution", "exfiltration", "impact", "initial_access",
            "lateral_movement", "persistence", "privilege_escalation", "reconnaissance", "stealth"]
 
-OUR_TACTICS = ["command_and_control", "credential_access", "execution", "initial_access",
-               "lateral_movement", "persistence"]
+OUR_TACTICS = ["privilege_escalation", "command_and_control", "credential_access", "execution", "initial_access", "lateral_movement", "persistence", "stealth", "defense_impairment", "reconnaissance", "impact", "discovery", "collection", "exfiltration"]
 
 
 def build_technique_to_tactics():
@@ -100,12 +99,6 @@ def main():
             })
         report.append(row)
 
-    print(f"All step names (showing first 20 of {len(report)}):")
-    for row in report[:20]:
-        print(f"\n  step={row['step']}")
-        for occ in row["occurrences"]:
-            print(f"    {occ['technique']:12s} tactics={occ['tactics']}")
-
     with open(OUT_PATH, "w") as f:
         json.dump(report, f, indent=2)
     print(f"\nSaved -> {OUT_PATH}")
@@ -120,3 +113,4 @@ if __name__ == "__main__":
         lookup_step(args.step)
     else:
         main()
+

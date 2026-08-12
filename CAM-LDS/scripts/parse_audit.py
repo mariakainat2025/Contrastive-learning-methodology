@@ -47,19 +47,25 @@ NON_SYSCALL_TYPES = (PAM_TYPES | AUTH_TYPES | ACCOUNT_TYPES | SERVICE_TYPES
                       | ANOM_ABEND_TYPES | ANOM_PROMISC_TYPES | NETFILTER_TYPES | SHUTDOWN_TYPES)
 
 
-HOST_PRIORITY = ["client", "linuxshare", "docker", "reposerver", "inetfw"]
+HOST_PRIORITY = ["videoserver", "client", "linuxshare", "docker", "reposerver", "inetfw"]
+FALLBACK_MIN_EVENTS = 5
 
 
-def pick_primary_host(host_tags):
-    """For a step with logs on multiple hosts, pick exactly one via a fixed
-    priority order -- client > linuxshare > docker > reposerver > inetfw.
-    host_tags may include suffixed variants (e.g. docker-log, docker-nclog);
-    a tag matches a priority name if it equals it or starts with '<name>-'."""
+def pick_primary_host(host_counts):
+    host_tags = set(host_counts)
+    priority_pick = None
     for p in HOST_PRIORITY:
         matches = sorted(h for h in host_tags if h == p or h.startswith(p + "-"))
         if matches:
-            return matches[0]
-    return None
+            priority_pick = matches[0]
+            break
+    if priority_pick is None:
+        return None
+    if host_counts[priority_pick] < FALLBACK_MIN_EVENTS:
+        richest = max(host_counts, key=host_counts.get)
+        if host_counts[richest] > host_counts[priority_pick]:
+            return richest
+    return priority_pick
 
 
 def decode_arg(val):
@@ -74,6 +80,22 @@ def decode_arg(val):
 def _get(pattern, line, flags=0):
     m = re.search(pattern, line, flags)
     return m.group(1) if m else None
+
+
+def _get_addr_field(pattern, line):
+    v = _get(pattern, line)
+    return None if v == "?" else v
+
+
+def _drop_nulls(events):
+    return [{k: v for k, v in e.items() if v is not None and v != []} for e in events]
+
+
+def _select_path(paths, path_types):
+    non_parent = [p for p, t in zip(paths, path_types) if t != "PARENT"]
+    if non_parent:
+        return non_parent[-1]
+    return paths[-1] if paths else None
 
 
 def parse_audit(path):
@@ -231,8 +253,8 @@ def parse_audit(path):
                 event["subj"]      = _get(r'\bsubj=(\S+)', line) or event["subj"]
                 event["op"]        = _get(r"op=([^\s']+)", line) or event["op"]
                 event["exe"]       = _get(r'exe="([^"]+)"', line) or event["exe"]
-                event["hostname"]  = _get(r'hostname=(\S+)', line) or event["hostname"]
-                event["addr"]      = _get(r'\baddr=(\S+)', line) or event["addr"]
+                event["hostname"]  = _get_addr_field(r'hostname=(\S+)', line) or event["hostname"]
+                event["addr"]      = _get_addr_field(r'\baddr=(\S+)', line) or event["addr"]
                 event["res"]       = _get(r'res=(\w+)', line) or event["res"]
                 acct = _get(r'acct="([^"]+)"', line)
                 if not acct:
@@ -249,7 +271,7 @@ def parse_audit(path):
                 event["pid"]       = _get(r'\bpid=(\d+)', line) or event["pid"]
                 event["op"]        = _get(r"op=([^\s']+ ?[^\s']*)", line) or event["op"]
                 event["exe"]       = _get(r'exe="([^"]+)"', line) or event["exe"]
-                event["hostname"]  = _get(r'hostname=(\S+)', line) or event["hostname"]
+                event["hostname"]  = _get_addr_field(r'hostname=(\S+)', line) or event["hostname"]
                 event["res"]       = _get(r'res=(\w+)', line) or event["res"]
                 acct = _get(r'acct="([^"]+)"', line)
                 if not acct:
@@ -365,9 +387,9 @@ def parse_audit(path):
                 event["dest"] = event["exe"]
             elif sc == "execve" and event["success"] == "no":
                 if event["paths"]:
-                    event["dest"] = event["paths"][0] + " [not found]"
+                    event["dest"] = _select_path(event["paths"], event["path_types"]) + " [not found]"
             elif sc not in ("connect",) and event["paths"]:
-                p = event["paths"][0]
+                p = _select_path(event["paths"], event["path_types"])
                 if p and p != "/lib64/ld-linux-x86-64.so.2":
                     event["dest"] = p
             results.append(event)
@@ -711,18 +733,12 @@ def to_subgraph(events, tactic, attack, description=""):
                                         "event_id": e["event_id"], "ts": ts, **extra_attrs}])
 
         elif e["dest"]:
-            # file-operation syscalls (openat, unlink, rename, fchmod, setxattr, rmdir, ...)
-            # -- previously silently dropped; now captured as process -> file edges.
             src = proc_node(e["pid"], e["exe"], ts)
             dst = get_node(e["dest"], e["dest"], "FileObject", ts)
             edges.append([src, dst, 0, {"edge_type": f"EVENT_{sc.upper()}",
                                         "event_id": e["event_id"], "ts": ts, **extra_attrs}])
 
         else:
-            # every remaining syscall (setuid, setgid, connect-with-no-SOCKADDR, or any
-            # other syscall that captured no path/dest) -- previously dropped entirely.
-            # Represented as an edge to a shared symbolic node for that syscall name,
-            # so no event is lost even when it touches no file/network resource.
             src = proc_node(e["pid"], e["exe"], ts)
             label = f"syscall:{sc}"
             dst = get_node(label, label, "SUBJECT_PROCESS", ts)
@@ -777,7 +793,22 @@ def iter_audit_logs(base_dir, tactics):
     for info in infos:
         skey = (info["tactic"], info["technique"], info["step"])
         step_hosts.setdefault(skey, set()).add(info["host_tag"])
-    chosen_host = {skey: pick_primary_host(hosts) for skey, hosts in step_hosts.items()}
+
+    multi_host_steps = {skey for skey, hosts in step_hosts.items() if len(hosts) > 1}
+    step_host_counts = {}
+    for info in infos:
+        skey = (info["tactic"], info["technique"], info["step"])
+        if skey not in multi_host_steps:
+            continue
+        counts = step_host_counts.setdefault(skey, {})
+        if info["host_tag"] not in counts:
+            counts[info["host_tag"]] = len(parse_audit(info["path"]))
+
+    chosen_host = {
+        skey: pick_primary_host(step_host_counts[skey]) if skey in multi_host_steps
+              else next(iter(hosts))
+        for skey, hosts in step_hosts.items()
+    }
     for info in infos:
         skey = (info["tactic"], info["technique"], info["step"])
         if len(step_hosts[skey]) == 1:
@@ -810,7 +841,7 @@ def batch_main(base_dir, tactics, out_dir, events_out_dir, write_json=True, writ
             events_dir.mkdir(parents=True, exist_ok=True)
             json_name = f"audit_{info['step']}_{info['host_tag']}.json"
             with open(events_dir / json_name, "w") as f:
-                json.dump(events, f, indent=2)
+                json.dump(_drop_nulls(events), f, indent=2)
 
         if write_subgraphs:
             sg = to_subgraph(
@@ -824,9 +855,6 @@ def batch_main(base_dir, tactics, out_dir, events_out_dir, write_json=True, writ
             sg_name = f"subgraph_{info['step']}_{info['host_tag']}.json"
             with open(sg_dir / sg_name, "w") as f:
                 json.dump(sg, f, indent=2)
-
-        print(f"[{info['tactic']:20s}] {info['technique']:12s} {info['step']:28s} "
-              f"{info['host']:12s} → {len(events):4d} events")
 
     print()
     print(f"Parsed {n_files} audit.log files, {n_events} total events "
@@ -864,7 +892,7 @@ if __name__ == "__main__":
 
     out_path = Path(log).with_suffix(".json")
     with open(out_path, "w") as f:
-        json.dump(events, f, indent=2)
+        json.dump(_drop_nulls(events), f, indent=2)
     print(f"Saved {len(events)} events → {out_path}")
 
     subgraph = to_subgraph(events,
@@ -882,3 +910,4 @@ if __name__ == "__main__":
         print(json.dumps(events, indent=2))
     else:
         print_events(events)
+

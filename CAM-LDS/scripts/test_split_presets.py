@@ -56,3 +56,4 @@ def resolve_test_file_arg(value):
     if value in TEST_SPLIT_PRESETS:
         return TEST_SPLIT_PRESETS[value]
     return [s.strip() for s in value.split(',')]
+

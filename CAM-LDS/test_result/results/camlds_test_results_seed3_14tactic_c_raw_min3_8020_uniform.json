@@ -1,0 +1,2548 @@
+{
+  "lrap": 0.47247405372405366,
+  "aupr": 0.3462926792718274,
+  "n_total": 30,
+  "n_wrong_top3": 14,
+  "results": [
+    {
+      "file": "6_macro_binary-15",
+      "true_tactics": [
+        "collection"
+      ],
+      "true_ranks": {
+        "collection": 3
+      },
+      "scores": {
+        "collection": 0.086256,
+        "command_and_control": 0.026269,
+        "credential_access": 0.07403,
+        "defense_impairment": 0.116195,
+        "discovery": 0.029854,
+        "execution": 0.031267,
+        "exfiltration": 0.025091,
+        "impact": 0.411174,
+        "initial_access": 0.020558,
+        "lateral_movement": 0.02631,
+        "persistence": 0.061329,
+        "privilege_escalation": 0.040052,
+        "reconnaissance": 0.017308,
+        "stealth": 0.034308
+      },
+      "ranked": [
+        {
+          "tactic": "impact",
+          "score": 0.411174
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.116195
+        },
+        {
+          "tactic": "collection",
+          "score": 0.086256
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.07403
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.061329
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.040052
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.034308
+        },
+        {
+          "tactic": "execution",
+          "score": 0.031267
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.029854
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.02631
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.026269
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.025091
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.020558
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.017308
+        }
+      ]
+    },
+    {
+      "file": "6_macro_binary-19",
+      "true_tactics": [
+        "discovery"
+      ],
+      "true_ranks": {
+        "discovery": 9
+      },
+      "scores": {
+        "collection": 0.103304,
+        "command_and_control": 0.030959,
+        "credential_access": 0.093203,
+        "defense_impairment": 0.062793,
+        "discovery": 0.035831,
+        "execution": 0.03931,
+        "exfiltration": 0.026608,
+        "impact": 0.162937,
+        "initial_access": 0.024076,
+        "lateral_movement": 0.029959,
+        "persistence": 0.185568,
+        "privilege_escalation": 0.10496,
+        "reconnaissance": 0.023223,
+        "stealth": 0.077269
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.185568
+        },
+        {
+          "tactic": "impact",
+          "score": 0.162937
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.10496
+        },
+        {
+          "tactic": "collection",
+          "score": 0.103304
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.093203
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.077269
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.062793
+        },
+        {
+          "tactic": "execution",
+          "score": 0.03931
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.035831
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.030959
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.029959
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.026608
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.024076
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.023223
+        }
+      ]
+    },
+    {
+      "file": "2_cron-21",
+      "true_tactics": [
+        "discovery"
+      ],
+      "true_ranks": {
+        "discovery": 2
+      },
+      "scores": {
+        "collection": 0.017802,
+        "command_and_control": 0.007936,
+        "credential_access": 0.032655,
+        "defense_impairment": 0.024033,
+        "discovery": 0.328271,
+        "execution": 0.003125,
+        "exfiltration": 0.547352,
+        "impact": 0.01089,
+        "initial_access": 0.004386,
+        "lateral_movement": 0.00386,
+        "persistence": 0.006621,
+        "privilege_escalation": 0.005421,
+        "reconnaissance": 0.002804,
+        "stealth": 0.004844
+      },
+      "ranked": [
+        {
+          "tactic": "exfiltration",
+          "score": 0.547352
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.328271
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.032655
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.024033
+        },
+        {
+          "tactic": "collection",
+          "score": 0.017802
+        },
+        {
+          "tactic": "impact",
+          "score": 0.01089
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.007936
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.006621
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.005421
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.004844
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.004386
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.00386
+        },
+        {
+          "tactic": "execution",
+          "score": 0.003125
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.002804
+        }
+      ]
+    },
+    {
+      "file": "6_macro_cron-24",
+      "true_tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "execution": 4,
+        "persistence": 1,
+        "privilege_escalation": 2
+      },
+      "scores": {
+        "collection": 0.001674,
+        "command_and_control": 0.002976,
+        "credential_access": 0.001218,
+        "defense_impairment": 0.000481,
+        "discovery": 0.000875,
+        "execution": 0.00315,
+        "exfiltration": 0.000444,
+        "impact": 0.000993,
+        "initial_access": 0.002035,
+        "lateral_movement": 0.002579,
+        "persistence": 0.589793,
+        "privilege_escalation": 0.265415,
+        "reconnaissance": 0.001409,
+        "stealth": 0.126959
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.589793
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.265415
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.126959
+        },
+        {
+          "tactic": "execution",
+          "score": 0.00315
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.002976
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.002579
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.002035
+        },
+        {
+          "tactic": "collection",
+          "score": 0.001674
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.001409
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.001218
+        },
+        {
+          "tactic": "impact",
+          "score": 0.000993
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.000875
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000481
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.000444
+        }
+      ]
+    },
+    {
+      "file": "6_screensharing_cron-21",
+      "true_tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "execution": 6,
+        "persistence": 1,
+        "privilege_escalation": 2
+      },
+      "scores": {
+        "collection": 0.023048,
+        "command_and_control": 0.112565,
+        "credential_access": 0.028277,
+        "defense_impairment": 0.021592,
+        "discovery": 0.075795,
+        "execution": 0.054038,
+        "exfiltration": 0.034772,
+        "impact": 0.023947,
+        "initial_access": 0.052142,
+        "lateral_movement": 0.046753,
+        "persistence": 0.201128,
+        "privilege_escalation": 0.166083,
+        "reconnaissance": 0.052049,
+        "stealth": 0.107811
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.201128
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.166083
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.112565
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.107811
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.075795
+        },
+        {
+          "tactic": "execution",
+          "score": 0.054038
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.052142
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.052049
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.046753
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.034772
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.028277
+        },
+        {
+          "tactic": "impact",
+          "score": 0.023947
+        },
+        {
+          "tactic": "collection",
+          "score": 0.023048
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.021592
+        }
+      ]
+    },
+    {
+      "file": "3_vnc_puppet-58",
+      "true_tactics": [
+        "credential_access",
+        "lateral_movement"
+      ],
+      "true_ranks": {
+        "credential_access": 12,
+        "lateral_movement": 4
+      },
+      "scores": {
+        "collection": 0.040319,
+        "command_and_control": 0.104187,
+        "credential_access": 0.040114,
+        "defense_impairment": 0.041508,
+        "discovery": 0.06876,
+        "execution": 0.089084,
+        "exfiltration": 0.022533,
+        "impact": 0.037244,
+        "initial_access": 0.065958,
+        "lateral_movement": 0.101596,
+        "persistence": 0.104064,
+        "privilege_escalation": 0.082824,
+        "reconnaissance": 0.123952,
+        "stealth": 0.077857
+      },
+      "ranked": [
+        {
+          "tactic": "reconnaissance",
+          "score": 0.123952
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.104187
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.104064
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.101596
+        },
+        {
+          "tactic": "execution",
+          "score": 0.089084
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.082824
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.077857
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.06876
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.065958
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.041508
+        },
+        {
+          "tactic": "collection",
+          "score": 0.040319
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.040114
+        },
+        {
+          "tactic": "impact",
+          "score": 0.037244
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.022533
+        }
+      ]
+    },
+    {
+      "file": "1_cron_pam-29",
+      "true_tactics": [
+        "credential_access",
+        "defense_impairment",
+        "persistence"
+      ],
+      "true_ranks": {
+        "credential_access": 12,
+        "defense_impairment": 10,
+        "persistence": 2
+      },
+      "scores": {
+        "collection": 0.032541,
+        "command_and_control": 0.090973,
+        "credential_access": 0.026716,
+        "defense_impairment": 0.036561,
+        "discovery": 0.195621,
+        "execution": 0.048606,
+        "exfiltration": 0.062872,
+        "impact": 0.02104,
+        "initial_access": 0.041483,
+        "lateral_movement": 0.044321,
+        "persistence": 0.146657,
+        "privilege_escalation": 0.122795,
+        "reconnaissance": 0.025355,
+        "stealth": 0.10446
+      },
+      "ranked": [
+        {
+          "tactic": "discovery",
+          "score": 0.195621
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.146657
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.122795
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.10446
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.090973
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.062872
+        },
+        {
+          "tactic": "execution",
+          "score": 0.048606
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.044321
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.041483
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.036561
+        },
+        {
+          "tactic": "collection",
+          "score": 0.032541
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.026716
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.025355
+        },
+        {
+          "tactic": "impact",
+          "score": 0.02104
+        }
+      ]
+    },
+    {
+      "file": "1_racecondition_localaccount-50",
+      "true_tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "persistence": 1,
+        "privilege_escalation": 3
+      },
+      "scores": {
+        "collection": 0.026202,
+        "command_and_control": 0.109882,
+        "credential_access": 0.024878,
+        "defense_impairment": 0.031275,
+        "discovery": 0.078147,
+        "execution": 0.079457,
+        "exfiltration": 0.022883,
+        "impact": 0.030158,
+        "initial_access": 0.081808,
+        "lateral_movement": 0.115739,
+        "persistence": 0.12542,
+        "privilege_escalation": 0.113703,
+        "reconnaissance": 0.069142,
+        "stealth": 0.091305
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.12542
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.115739
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.113703
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.109882
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.091305
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.081808
+        },
+        {
+          "tactic": "execution",
+          "score": 0.079457
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.078147
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.069142
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.031275
+        },
+        {
+          "tactic": "impact",
+          "score": 0.030158
+        },
+        {
+          "tactic": "collection",
+          "score": 0.026202
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.024878
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.022883
+        }
+      ]
+    },
+    {
+      "file": "7-6",
+      "true_tactics": [
+        "command_and_control",
+        "execution",
+        "initial_access"
+      ],
+      "true_ranks": {
+        "command_and_control": 6,
+        "execution": 13,
+        "initial_access": 8
+      },
+      "scores": {
+        "collection": 0.0321,
+        "command_and_control": 0.011831,
+        "credential_access": 0.17117,
+        "defense_impairment": 0.032205,
+        "discovery": 0.114731,
+        "execution": 0.004524,
+        "exfiltration": 0.595752,
+        "impact": 0.00566,
+        "initial_access": 0.005863,
+        "lateral_movement": 0.005886,
+        "persistence": 0.005857,
+        "privilege_escalation": 0.005491,
+        "reconnaissance": 0.003453,
+        "stealth": 0.005476
+      },
+      "ranked": [
+        {
+          "tactic": "exfiltration",
+          "score": 0.595752
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.17117
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.114731
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.032205
+        },
+        {
+          "tactic": "collection",
+          "score": 0.0321
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.011831
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.005886
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.005863
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.005857
+        },
+        {
+          "tactic": "impact",
+          "score": 0.00566
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.005491
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.005476
+        },
+        {
+          "tactic": "execution",
+          "score": 0.004524
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.003453
+        }
+      ]
+    },
+    {
+      "file": "4-18",
+      "true_tactics": [
+        "defense_impairment"
+      ],
+      "true_ranks": {
+        "defense_impairment": 10
+      },
+      "scores": {
+        "collection": 0.028393,
+        "command_and_control": 0.094435,
+        "credential_access": 0.02418,
+        "defense_impairment": 0.04075,
+        "discovery": 0.051858,
+        "execution": 0.124916,
+        "exfiltration": 0.014861,
+        "impact": 0.03026,
+        "initial_access": 0.063759,
+        "lateral_movement": 0.097591,
+        "persistence": 0.139279,
+        "privilege_escalation": 0.108945,
+        "reconnaissance": 0.077304,
+        "stealth": 0.103469
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.139279
+        },
+        {
+          "tactic": "execution",
+          "score": 0.124916
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.108945
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.103469
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.097591
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.094435
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.077304
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.063759
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.051858
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.04075
+        },
+        {
+          "tactic": "impact",
+          "score": 0.03026
+        },
+        {
+          "tactic": "collection",
+          "score": 0.028393
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.02418
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.014861
+        }
+      ]
+    },
+    {
+      "file": "6_macro_binary-13",
+      "true_tactics": [
+        "defense_impairment"
+      ],
+      "true_ranks": {
+        "defense_impairment": 1
+      },
+      "scores": {
+        "collection": 0.007354,
+        "command_and_control": 0.001866,
+        "credential_access": 0.006047,
+        "defense_impairment": 0.920548,
+        "discovery": 0.007333,
+        "execution": 0.002389,
+        "exfiltration": 0.016794,
+        "impact": 0.028933,
+        "initial_access": 0.001511,
+        "lateral_movement": 0.001654,
+        "persistence": 0.001545,
+        "privilege_escalation": 0.001324,
+        "reconnaissance": 0.001183,
+        "stealth": 0.00152
+      },
+      "ranked": [
+        {
+          "tactic": "defense_impairment",
+          "score": 0.920548
+        },
+        {
+          "tactic": "impact",
+          "score": 0.028933
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.016794
+        },
+        {
+          "tactic": "collection",
+          "score": 0.007354
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.007333
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.006047
+        },
+        {
+          "tactic": "execution",
+          "score": 0.002389
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.001866
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.001654
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.001545
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.00152
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.001511
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.001324
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.001183
+        }
+      ]
+    },
+    {
+      "file": "3_ssh_apt-18",
+      "true_tactics": [
+        "execution",
+        "lateral_movement"
+      ],
+      "true_ranks": {
+        "execution": 5,
+        "lateral_movement": 4
+      },
+      "scores": {
+        "collection": 0.008187,
+        "command_and_control": 0.083962,
+        "credential_access": 0.007418,
+        "defense_impairment": 0.010749,
+        "discovery": 0.029929,
+        "execution": 0.102575,
+        "exfiltration": 0.005193,
+        "impact": 0.008144,
+        "initial_access": 0.070418,
+        "lateral_movement": 0.104888,
+        "persistence": 0.191613,
+        "privilege_escalation": 0.156029,
+        "reconnaissance": 0.091816,
+        "stealth": 0.129081
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.191613
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.156029
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.129081
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.104888
+        },
+        {
+          "tactic": "execution",
+          "score": 0.102575
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.091816
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.083962
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.070418
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.029929
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.010749
+        },
+        {
+          "tactic": "collection",
+          "score": 0.008187
+        },
+        {
+          "tactic": "impact",
+          "score": 0.008144
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.007418
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.005193
+        }
+      ]
+    },
+    {
+      "file": "2_rootkit-28",
+      "true_tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "persistence": 1,
+        "privilege_escalation": 2
+      },
+      "scores": {
+        "collection": 0.01752,
+        "command_and_control": 0.074916,
+        "credential_access": 0.015216,
+        "defense_impairment": 0.023483,
+        "discovery": 0.03488,
+        "execution": 0.069767,
+        "exfiltration": 0.011982,
+        "impact": 0.021649,
+        "initial_access": 0.047439,
+        "lateral_movement": 0.059151,
+        "persistence": 0.240162,
+        "privilege_escalation": 0.193759,
+        "reconnaissance": 0.070637,
+        "stealth": 0.119438
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.240162
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.193759
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.119438
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.074916
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.070637
+        },
+        {
+          "tactic": "execution",
+          "score": 0.069767
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.059151
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.047439
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.03488
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.023483
+        },
+        {
+          "tactic": "impact",
+          "score": 0.021649
+        },
+        {
+          "tactic": "collection",
+          "score": 0.01752
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.015216
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.011982
+        }
+      ]
+    },
+    {
+      "file": "2_cron-15",
+      "true_tactics": [
+        "collection"
+      ],
+      "true_ranks": {
+        "collection": 6
+      },
+      "scores": {
+        "collection": 0.005611,
+        "command_and_control": 0.00112,
+        "credential_access": 0.018244,
+        "defense_impairment": 0.014386,
+        "discovery": 0.143177,
+        "execution": 0.000472,
+        "exfiltration": 0.806953,
+        "impact": 0.006376,
+        "initial_access": 0.000583,
+        "lateral_movement": 0.00051,
+        "persistence": 0.000834,
+        "privilege_escalation": 0.000714,
+        "reconnaissance": 0.000346,
+        "stealth": 0.000674
+      },
+      "ranked": [
+        {
+          "tactic": "exfiltration",
+          "score": 0.806953
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.143177
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.018244
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.014386
+        },
+        {
+          "tactic": "impact",
+          "score": 0.006376
+        },
+        {
+          "tactic": "collection",
+          "score": 0.005611
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.00112
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.000834
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.000714
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.000674
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.000583
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.00051
+        },
+        {
+          "tactic": "execution",
+          "score": 0.000472
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.000346
+        }
+      ]
+    },
+    {
+      "file": "6_macro_binary-16",
+      "true_tactics": [
+        "stealth"
+      ],
+      "true_ranks": {
+        "stealth": 3
+      },
+      "scores": {
+        "collection": 0.012596,
+        "command_and_control": 0.02176,
+        "credential_access": 0.012303,
+        "defense_impairment": 0.01819,
+        "discovery": 0.014384,
+        "execution": 0.031068,
+        "exfiltration": 0.006162,
+        "impact": 0.020576,
+        "initial_access": 0.014608,
+        "lateral_movement": 0.017106,
+        "persistence": 0.437349,
+        "privilege_escalation": 0.231553,
+        "reconnaissance": 0.014074,
+        "stealth": 0.148272
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.437349
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.231553
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.148272
+        },
+        {
+          "tactic": "execution",
+          "score": 0.031068
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.02176
+        },
+        {
+          "tactic": "impact",
+          "score": 0.020576
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.01819
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.017106
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.014608
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.014384
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.014074
+        },
+        {
+          "tactic": "collection",
+          "score": 0.012596
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.012303
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.006162
+        }
+      ]
+    },
+    {
+      "file": "6_screensharing_binary-59",
+      "true_tactics": [
+        "command_and_control",
+        "execution"
+      ],
+      "true_ranks": {
+        "command_and_control": 8,
+        "execution": 14
+      },
+      "scores": {
+        "collection": 0.845816,
+        "command_and_control": 0.000318,
+        "credential_access": 0.148344,
+        "defense_impairment": 0.000369,
+        "discovery": 0.000216,
+        "execution": 0.000162,
+        "exfiltration": 0.0005,
+        "impact": 0.002382,
+        "initial_access": 0.000177,
+        "lateral_movement": 0.00023,
+        "persistence": 0.000638,
+        "privilege_escalation": 0.000364,
+        "reconnaissance": 0.000189,
+        "stealth": 0.000295
+      },
+      "ranked": [
+        {
+          "tactic": "collection",
+          "score": 0.845816
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.148344
+        },
+        {
+          "tactic": "impact",
+          "score": 0.002382
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.000638
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.0005
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000369
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.000364
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.000318
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.000295
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.00023
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.000216
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.000189
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.000177
+        },
+        {
+          "tactic": "execution",
+          "score": 0.000162
+        }
+      ]
+    },
+    {
+      "file": "3_vnc_healthcheck-55",
+      "true_tactics": [
+        "credential_access",
+        "lateral_movement"
+      ],
+      "true_ranks": {
+        "credential_access": 12,
+        "lateral_movement": 4
+      },
+      "scores": {
+        "collection": 0.035103,
+        "command_and_control": 0.103564,
+        "credential_access": 0.036172,
+        "defense_impairment": 0.042026,
+        "discovery": 0.069398,
+        "execution": 0.094232,
+        "exfiltration": 0.022918,
+        "impact": 0.038967,
+        "initial_access": 0.065723,
+        "lateral_movement": 0.097022,
+        "persistence": 0.110983,
+        "privilege_escalation": 0.088771,
+        "reconnaissance": 0.112807,
+        "stealth": 0.082313
+      },
+      "ranked": [
+        {
+          "tactic": "reconnaissance",
+          "score": 0.112807
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.110983
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.103564
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.097022
+        },
+        {
+          "tactic": "execution",
+          "score": 0.094232
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.088771
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.082313
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.069398
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.065723
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.042026
+        },
+        {
+          "tactic": "impact",
+          "score": 0.038967
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.036172
+        },
+        {
+          "tactic": "collection",
+          "score": 0.035103
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.022918
+        }
+      ]
+    },
+    {
+      "file": "6_screensharing_cron-20",
+      "true_tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "execution": 4,
+        "persistence": 1,
+        "privilege_escalation": 2
+      },
+      "scores": {
+        "collection": 0.001023,
+        "command_and_control": 0.007362,
+        "credential_access": 0.00078,
+        "defense_impairment": 0.000696,
+        "discovery": 0.001895,
+        "execution": 0.007507,
+        "exfiltration": 0.000474,
+        "impact": 0.000644,
+        "initial_access": 0.003838,
+        "lateral_movement": 0.004486,
+        "persistence": 0.499696,
+        "privilege_escalation": 0.282604,
+        "reconnaissance": 0.001885,
+        "stealth": 0.187109
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.499696
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.282604
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.187109
+        },
+        {
+          "tactic": "execution",
+          "score": 0.007507
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.007362
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.004486
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.003838
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.001895
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.001885
+        },
+        {
+          "tactic": "collection",
+          "score": 0.001023
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.00078
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000696
+        },
+        {
+          "tactic": "impact",
+          "score": 0.000644
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.000474
+        }
+      ]
+    },
+    {
+      "file": "7-7",
+      "true_tactics": [
+        "discovery"
+      ],
+      "true_ranks": {
+        "discovery": 1
+      },
+      "scores": {
+        "collection": 0.024215,
+        "command_and_control": 0.077889,
+        "credential_access": 0.059438,
+        "defense_impairment": 0.040411,
+        "discovery": 0.198168,
+        "execution": 0.038541,
+        "exfiltration": 0.128191,
+        "impact": 0.015767,
+        "initial_access": 0.034153,
+        "lateral_movement": 0.030876,
+        "persistence": 0.134021,
+        "privilege_escalation": 0.11051,
+        "reconnaissance": 0.029215,
+        "stealth": 0.078606
+      },
+      "ranked": [
+        {
+          "tactic": "discovery",
+          "score": 0.198168
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.134021
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.128191
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.11051
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.078606
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.077889
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.059438
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.040411
+        },
+        {
+          "tactic": "execution",
+          "score": 0.038541
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.034153
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.030876
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.029215
+        },
+        {
+          "tactic": "collection",
+          "score": 0.024215
+        },
+        {
+          "tactic": "impact",
+          "score": 0.015767
+        }
+      ]
+    },
+    {
+      "file": "1_racecondition_localaccount-49",
+      "true_tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "persistence": 3,
+        "privilege_escalation": 4
+      },
+      "scores": {
+        "collection": 0.028543,
+        "command_and_control": 0.081635,
+        "credential_access": 0.081388,
+        "defense_impairment": 0.019534,
+        "discovery": 0.155203,
+        "execution": 0.034725,
+        "exfiltration": 0.142975,
+        "impact": 0.017101,
+        "initial_access": 0.036171,
+        "lateral_movement": 0.03146,
+        "persistence": 0.140427,
+        "privilege_escalation": 0.11878,
+        "reconnaissance": 0.031058,
+        "stealth": 0.080999
+      },
+      "ranked": [
+        {
+          "tactic": "discovery",
+          "score": 0.155203
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.142975
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.140427
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.11878
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.081635
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.081388
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.080999
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.036171
+        },
+        {
+          "tactic": "execution",
+          "score": 0.034725
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.03146
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.031058
+        },
+        {
+          "tactic": "collection",
+          "score": 0.028543
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.019534
+        },
+        {
+          "tactic": "impact",
+          "score": 0.017101
+        }
+      ]
+    },
+    {
+      "file": "1_cron_localaccount-25",
+      "true_tactics": [
+        "discovery"
+      ],
+      "true_ranks": {
+        "discovery": 5
+      },
+      "scores": {
+        "collection": 0.019692,
+        "command_and_control": 0.08804,
+        "credential_access": 0.024293,
+        "defense_impairment": 0.017196,
+        "discovery": 0.074013,
+        "execution": 0.050162,
+        "exfiltration": 0.035255,
+        "impact": 0.017736,
+        "initial_access": 0.040646,
+        "lateral_movement": 0.035728,
+        "persistence": 0.232776,
+        "privilege_escalation": 0.197142,
+        "reconnaissance": 0.046071,
+        "stealth": 0.121251
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.232776
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.197142
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.121251
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.08804
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.074013
+        },
+        {
+          "tactic": "execution",
+          "score": 0.050162
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.046071
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.040646
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.035728
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.035255
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.024293
+        },
+        {
+          "tactic": "collection",
+          "score": 0.019692
+        },
+        {
+          "tactic": "impact",
+          "score": 0.017736
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.017196
+        }
+      ]
+    },
+    {
+      "file": "3_ssh_puppet-37",
+      "true_tactics": [
+        "initial_access",
+        "persistence",
+        "privilege_escalation",
+        "stealth"
+      ],
+      "true_ranks": {
+        "initial_access": 7,
+        "persistence": 1,
+        "privilege_escalation": 2,
+        "stealth": 3
+      },
+      "scores": {
+        "collection": 0.00029,
+        "command_and_control": 0.001482,
+        "credential_access": 0.00026,
+        "defense_impairment": 0.000152,
+        "discovery": 0.000534,
+        "execution": 0.002315,
+        "exfiltration": 0.000144,
+        "impact": 0.000171,
+        "initial_access": 0.000968,
+        "lateral_movement": 0.001094,
+        "persistence": 0.574405,
+        "privilege_escalation": 0.256279,
+        "reconnaissance": 0.000356,
+        "stealth": 0.16155
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.574405
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.256279
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.16155
+        },
+        {
+          "tactic": "execution",
+          "score": 0.002315
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.001482
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.001094
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.000968
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.000534
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.000356
+        },
+        {
+          "tactic": "collection",
+          "score": 0.00029
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.00026
+        },
+        {
+          "tactic": "impact",
+          "score": 0.000171
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000152
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.000144
+        }
+      ]
+    },
+    {
+      "file": "1_pwnkit_sshkey-44",
+      "true_tactics": [
+        "persistence",
+        "privilege_escalation",
+        "stealth"
+      ],
+      "true_ranks": {
+        "persistence": 1,
+        "privilege_escalation": 2,
+        "stealth": 3
+      },
+      "scores": {
+        "collection": 0.000758,
+        "command_and_control": 0.006906,
+        "credential_access": 0.000582,
+        "defense_impairment": 0.000649,
+        "discovery": 0.002055,
+        "execution": 0.009345,
+        "exfiltration": 0.000425,
+        "impact": 0.000498,
+        "initial_access": 0.004128,
+        "lateral_movement": 0.004682,
+        "persistence": 0.482676,
+        "privilege_escalation": 0.281632,
+        "reconnaissance": 0.001577,
+        "stealth": 0.204087
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.482676
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.281632
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.204087
+        },
+        {
+          "tactic": "execution",
+          "score": 0.009345
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.006906
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.004682
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.004128
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.002055
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.001577
+        },
+        {
+          "tactic": "collection",
+          "score": 0.000758
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000649
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.000582
+        },
+        {
+          "tactic": "impact",
+          "score": 0.000498
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.000425
+        }
+      ]
+    },
+    {
+      "file": "3_ssh_healthcheck-34",
+      "true_tactics": [
+        "lateral_movement"
+      ],
+      "true_ranks": {
+        "lateral_movement": 6
+      },
+      "scores": {
+        "collection": 0.000554,
+        "command_and_control": 0.005022,
+        "credential_access": 0.000416,
+        "defense_impairment": 0.000417,
+        "discovery": 0.001271,
+        "execution": 0.006359,
+        "exfiltration": 0.000259,
+        "impact": 0.000336,
+        "initial_access": 0.002655,
+        "lateral_movement": 0.002974,
+        "persistence": 0.517539,
+        "privilege_escalation": 0.278402,
+        "reconnaissance": 0.001303,
+        "stealth": 0.182492
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.517539
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.278402
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.182492
+        },
+        {
+          "tactic": "execution",
+          "score": 0.006359
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.005022
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.002974
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.002655
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.001303
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.001271
+        },
+        {
+          "tactic": "collection",
+          "score": 0.000554
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.000417
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.000416
+        },
+        {
+          "tactic": "impact",
+          "score": 0.000336
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.000259
+        }
+      ]
+    },
+    {
+      "file": "1_autostart_localaccount-5",
+      "true_tactics": [
+        "execution",
+        "initial_access"
+      ],
+      "true_ranks": {
+        "execution": 6,
+        "initial_access": 8
+      },
+      "scores": {
+        "collection": 0.020482,
+        "command_and_control": 0.065099,
+        "credential_access": 0.015035,
+        "defense_impairment": 0.012871,
+        "discovery": 0.023264,
+        "execution": 0.060567,
+        "exfiltration": 0.009523,
+        "impact": 0.01345,
+        "initial_access": 0.053739,
+        "lateral_movement": 0.091372,
+        "persistence": 0.23484,
+        "privilege_escalation": 0.201757,
+        "reconnaissance": 0.058114,
+        "stealth": 0.139886
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.23484
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.201757
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.139886
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.091372
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.065099
+        },
+        {
+          "tactic": "execution",
+          "score": 0.060567
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.058114
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.053739
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.023264
+        },
+        {
+          "tactic": "collection",
+          "score": 0.020482
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.015035
+        },
+        {
+          "tactic": "impact",
+          "score": 0.01345
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.012871
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.009523
+        }
+      ]
+    },
+    {
+      "file": "2_cron-11",
+      "true_tactics": [
+        "credential_access",
+        "exfiltration"
+      ],
+      "true_ranks": {
+        "credential_access": 10,
+        "exfiltration": 6
+      },
+      "scores": {
+        "collection": 0.030878,
+        "command_and_control": 0.105814,
+        "credential_access": 0.0446,
+        "defense_impairment": 0.027656,
+        "discovery": 0.156859,
+        "execution": 0.054172,
+        "exfiltration": 0.077933,
+        "impact": 0.026724,
+        "initial_access": 0.056615,
+        "lateral_movement": 0.052834,
+        "persistence": 0.12973,
+        "privilege_escalation": 0.107419,
+        "reconnaissance": 0.044409,
+        "stealth": 0.084357
+      },
+      "ranked": [
+        {
+          "tactic": "discovery",
+          "score": 0.156859
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.12973
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.107419
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.105814
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.084357
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.077933
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.056615
+        },
+        {
+          "tactic": "execution",
+          "score": 0.054172
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.052834
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.0446
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.044409
+        },
+        {
+          "tactic": "collection",
+          "score": 0.030878
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.027656
+        },
+        {
+          "tactic": "impact",
+          "score": 0.026724
+        }
+      ]
+    },
+    {
+      "file": "4-14",
+      "true_tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "true_ranks": {
+        "persistence": 1,
+        "privilege_escalation": 2
+      },
+      "scores": {
+        "collection": 0.008172,
+        "command_and_control": 0.049298,
+        "credential_access": 0.007194,
+        "defense_impairment": 0.008335,
+        "discovery": 0.017132,
+        "execution": 0.045192,
+        "exfiltration": 0.005411,
+        "impact": 0.008012,
+        "initial_access": 0.029419,
+        "lateral_movement": 0.036674,
+        "persistence": 0.349711,
+        "privilege_escalation": 0.245911,
+        "reconnaissance": 0.041193,
+        "stealth": 0.148346
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.349711
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.245911
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.148346
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.049298
+        },
+        {
+          "tactic": "execution",
+          "score": 0.045192
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.041193
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.036674
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.029419
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.017132
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.008335
+        },
+        {
+          "tactic": "collection",
+          "score": 0.008172
+        },
+        {
+          "tactic": "impact",
+          "score": 0.008012
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.007194
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.005411
+        }
+      ]
+    },
+    {
+      "file": "2_cron-20",
+      "true_tactics": [
+        "discovery"
+      ],
+      "true_ranks": {
+        "discovery": 2
+      },
+      "scores": {
+        "collection": 0.006597,
+        "command_and_control": 0.002219,
+        "credential_access": 0.01602,
+        "defense_impairment": 0.025292,
+        "discovery": 0.226308,
+        "execution": 0.000982,
+        "exfiltration": 0.708145,
+        "impact": 0.006676,
+        "initial_access": 0.001195,
+        "lateral_movement": 0.001036,
+        "persistence": 0.001813,
+        "privilege_escalation": 0.001526,
+        "reconnaissance": 0.000665,
+        "stealth": 0.001528
+      },
+      "ranked": [
+        {
+          "tactic": "exfiltration",
+          "score": 0.708145
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.226308
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.025292
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.01602
+        },
+        {
+          "tactic": "impact",
+          "score": 0.006676
+        },
+        {
+          "tactic": "collection",
+          "score": 0.006597
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.002219
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.001813
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.001528
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.001526
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.001195
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.001036
+        },
+        {
+          "tactic": "execution",
+          "score": 0.000982
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.000665
+        }
+      ]
+    },
+    {
+      "file": "3_ssh_apt-32",
+      "true_tactics": [
+        "impact"
+      ],
+      "true_ranks": {
+        "impact": 13
+      },
+      "scores": {
+        "collection": 0.003064,
+        "command_and_control": 0.029056,
+        "credential_access": 0.002297,
+        "defense_impairment": 0.002988,
+        "discovery": 0.008512,
+        "execution": 0.020974,
+        "exfiltration": 0.001943,
+        "impact": 0.002138,
+        "initial_access": 0.015093,
+        "lateral_movement": 0.016373,
+        "persistence": 0.391593,
+        "privilege_escalation": 0.305174,
+        "reconnaissance": 0.009859,
+        "stealth": 0.190935
+      },
+      "ranked": [
+        {
+          "tactic": "persistence",
+          "score": 0.391593
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.305174
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.190935
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.029056
+        },
+        {
+          "tactic": "execution",
+          "score": 0.020974
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.016373
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.015093
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.009859
+        },
+        {
+          "tactic": "discovery",
+          "score": 0.008512
+        },
+        {
+          "tactic": "collection",
+          "score": 0.003064
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.002988
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.002297
+        },
+        {
+          "tactic": "impact",
+          "score": 0.002138
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.001943
+        }
+      ]
+    },
+    {
+      "file": "7-2",
+      "true_tactics": [
+        "reconnaissance"
+      ],
+      "true_ranks": {
+        "reconnaissance": 13
+      },
+      "scores": {
+        "collection": 0.055975,
+        "command_and_control": 0.088848,
+        "credential_access": 0.062757,
+        "defense_impairment": 0.08877,
+        "discovery": 0.116068,
+        "execution": 0.07349,
+        "exfiltration": 0.047045,
+        "impact": 0.063731,
+        "initial_access": 0.058877,
+        "lateral_movement": 0.068822,
+        "persistence": 0.084932,
+        "privilege_escalation": 0.066312,
+        "reconnaissance": 0.050097,
+        "stealth": 0.074277
+      },
+      "ranked": [
+        {
+          "tactic": "discovery",
+          "score": 0.116068
+        },
+        {
+          "tactic": "command_and_control",
+          "score": 0.088848
+        },
+        {
+          "tactic": "defense_impairment",
+          "score": 0.08877
+        },
+        {
+          "tactic": "persistence",
+          "score": 0.084932
+        },
+        {
+          "tactic": "stealth",
+          "score": 0.074277
+        },
+        {
+          "tactic": "execution",
+          "score": 0.07349
+        },
+        {
+          "tactic": "lateral_movement",
+          "score": 0.068822
+        },
+        {
+          "tactic": "privilege_escalation",
+          "score": 0.066312
+        },
+        {
+          "tactic": "impact",
+          "score": 0.063731
+        },
+        {
+          "tactic": "credential_access",
+          "score": 0.062757
+        },
+        {
+          "tactic": "initial_access",
+          "score": 0.058877
+        },
+        {
+          "tactic": "collection",
+          "score": 0.055975
+        },
+        {
+          "tactic": "reconnaissance",
+          "score": 0.050097
+        },
+        {
+          "tactic": "exfiltration",
+          "score": 0.047045
+        }
+      ]
+    }
+  ]
+}

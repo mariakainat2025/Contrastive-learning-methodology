@@ -1,0 +1,131 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.3in,landscape]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\pagestyle{empty}
+
+\begin{document}
+\begin{table}[!ht]
+\centering
+\begin{minipage}[t]{0.45\textwidth}
+\centering
+\caption{Generalized (KnowHow) Pipeline Results --- Seeds 1/2/3}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{c l r r r r r r}
+\toprule
+Seed & Tactic & Train & Test & Pred \#1 & LRAP & AUPR & No correct in top-3 \\
+\midrule
+1 & privesc      & 44  & 4  & 0  & 47.5\% & 49.4\% & 12/30 \\
+  & persistence  & 43  & 5  & 21 & & & \\
+  & execution    & 30  & 4  & 0  & & & \\
+  & stealth      & 22  & 7  & 0  & & & \\
+  & discovery    & 21  & 6  & 0  & & & \\
+  & c2c          & 18  & 5  & 0  & & & \\
+  & cred\_access & 15  & 6  & 3  & & & \\
+  & init\_access & 14  & 5  & 0  & & & \\
+  & lat\_mov     & 11  & 1  & 2  & & & \\
+  & collection   & 8   & 5  & 0  & & & \\
+  & def\_imp     & 7   & 1  & 1  & & & \\
+  & exfil        & 2   & 1  & 2  & & & \\
+  & impact       & 2   & 1  & 1  & & & \\
+  & recon        & 1   & 2  & 0  & & & \\
+  & \textbf{Total} & \textbf{122} & \textbf{30} & \textbf{30} & & & \\
+\midrule
+2 & privesc      & 40  & 8  & 0  & 44.8\% & 35.9\% & 13/30 \\
+  & persistence  & 39  & 9  & 14 & & & \\
+  & execution    & 27  & 7  & 0  & & & \\
+  & c2c          & 20  & 3  & 0  & & & \\
+  & stealth      & 22  & 7  & 0  & & & \\
+  & discovery    & 18  & 9  & 0  & & & \\
+  & cred\_access & 16  & 5  & 9  & & & \\
+  & init\_access & 15  & 4  & 0  & & & \\
+  & collection   & 12  & 1  & 1  & & & \\
+  & lat\_mov     & 10  & 2  & 4  & & & \\
+  & def\_imp     & 7   & 1  & 1  & & & \\
+  & exfil        & 2   & 1  & 1  & & & \\
+  & impact       & 2   & 1  & 0  & & & \\
+  & recon        & 2   & 1  & 0  & & & \\
+  & \textbf{Total} & \textbf{122} & \textbf{30} & \textbf{30} & & & \\
+\midrule
+3 & privesc      & 39  & 9  & 17 & 49.3\% & 34.5\% & 10/30 \\
+  & persistence  & 37  & 11 & 2  & & & \\
+  & execution    & 29  & 5  & 0  & & & \\
+  & stealth      & 24  & 5  & 0  & & & \\
+  & c2c          & 22  & 1  & 1  & & & \\
+  & discovery    & 21  & 6  & 0  & & & \\
+  & init\_access & 18  & 1  & 0  & & & \\
+  & cred\_access & 16  & 5  & 1  & & & \\
+  & collection   & 11  & 2  & 0  & & & \\
+  & lat\_mov     & 9   & 3  & 0  & & & \\
+  & def\_imp     & 5   & 3  & 0  & & & \\
+  & exfil        & 2   & 1  & 7  & & & \\
+  & impact       & 2   & 1  & 0  & & & \\
+  & recon        & 2   & 1  & 2  & & & \\
+  & \textbf{Total} & \textbf{122} & \textbf{30} & \textbf{30} & & & \\
+\bottomrule
+\end{tabular}%
+}
+\end{minipage}
+\hspace{1.5cm}
+\begin{minipage}[t]{0.45\textwidth}
+\centering
+\caption{Raw (No Generalization) Pipeline Results --- Seeds 1/2/3}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{c l r r r r r r}
+\toprule
+Seed & Tactic & Train & Test & Pred \#1 & LRAP & AUPR & No correct in top-3 \\
+\midrule
+1 & privesc      & 46  & 3  & 6  & 43.5\% & 37.5\% & 13/30 \\
+  & persistence  & 44  & 5  & 8  & & & \\
+  & execution    & 31  & 3  & 0  & & & \\
+  & stealth      & 21  & 8  & 0  & & & \\
+  & discovery    & 19  & 8  & 5  & & & \\
+  & c2c          & 18  & 5  & 0  & & & \\
+  & cred\_access & 16  & 5  & 8  & & & \\
+  & init\_access & 14  & 5  & 0  & & & \\
+  & lat\_mov     & 10  & 2  & 0  & & & \\
+  & collection   & 8   & 5  & 0  & & & \\
+  & def\_imp     & 7   & 1  & 2  & & & \\
+  & exfil        & 2   & 1  & 0  & & & \\
+  & impact       & 2   & 1  & 1  & & & \\
+  & recon        & 2   & 1  & 0  & & & \\
+  & \textbf{Total} & \textbf{123} & \textbf{30} & \textbf{30} & & & \\
+\midrule
+2 & privesc      & 40  & 9  & 0  & 44.3\% & 42.4\% & 13/30 \\
+  & persistence  & 38  & 11 & 12 & & & \\
+  & execution    & 31  & 3  & 1  & & & \\
+  & stealth      & 25  & 4  & 0  & & & \\
+  & c2c          & 20  & 3  & 0  & & & \\
+  & discovery    & 19  & 8  & 0  & & & \\
+  & cred\_access & 15  & 6  & 11 & & & \\
+  & init\_access & 14  & 5  & 0  & & & \\
+  & lat\_mov     & 10  & 2  & 0  & & & \\
+  & collection   & 7   & 6  & 2  & & & \\
+  & def\_imp     & 7   & 1  & 0  & & & \\
+  & exfil        & 2   & 1  & 0  & & & \\
+  & impact       & 2   & 1  & 0  & & & \\
+  & recon        & 2   & 1  & 4  & & & \\
+  & \textbf{Total} & \textbf{123} & \textbf{30} & \textbf{30} & & & \\
+\midrule
+3 & privesc      & 40  & 9  & 0  & 47.2\% & 34.6\% & 14/30 \\
+  & persistence  & 39  & 10 & 16 & & & \\
+  & execution    & 27  & 7  & 0  & & & \\
+  & stealth      & 26  & 3  & 0  & & & \\
+  & discovery    & 22  & 5  & 5  & & & \\
+  & c2c          & 21  & 2  & 0  & & & \\
+  & cred\_access & 17  & 4  & 0  & & & \\
+  & init\_access & 16  & 3  & 0  & & & \\
+  & collection   & 11  & 2  & 1  & & & \\
+  & lat\_mov     & 8   & 4  & 0  & & & \\
+  & def\_imp     & 5   & 3  & 1  & & & \\
+  & exfil        & 2   & 1  & 4  & & & \\
+  & impact       & 2   & 1  & 1  & & & \\
+  & recon        & 2   & 1  & 2  & & & \\
+  & \textbf{Total} & \textbf{123} & \textbf{30} & \textbf{30} & & & \\
+\bottomrule
+\end{tabular}%
+}
+\end{minipage}
+\end{table}
+\end{document}

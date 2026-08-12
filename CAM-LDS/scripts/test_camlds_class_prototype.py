@@ -13,13 +13,15 @@ from sklearn.metrics import label_ranking_average_precision_score, average_preci
 PROJECT_ROOT = '/csse/research/contructive-learning'
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
+SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'scripts')
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
 
 from scripts.config import ROBERTA_MODEL
-from scripts.encoder_utils import embed_text
 from test_split_presets import resolve_test_file_arg
 from train_camlds_matcher import (
-    load_sequences, leave_out_split, random_split, stratified_split, load_templates,
-    extract_techniques_use, ProjectionNetwork, SEED, TACTIC_IDS,
+    load_sequences, leave_out_split, random_split, load_templates,
+    ProjectionNetwork, encode_one, SEED, TACTIC_IDS,
 )
 
 CAM_LDS_DIR = '/csse/research/contructive-learning/CAM-LDS'
@@ -28,17 +30,12 @@ RESULTS_DIR = os.path.join(CAM_LDS_DIR, 'results')
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
-def encode_one(tokenizer, encoder, text, device):
-    enc  = tokenizer(text, padding=False, truncation=False, return_tensors='pt')
-    rlen = int(enc['attention_mask'][0].sum())
-    ids  = enc['input_ids'][0][:rlen].unsqueeze(0).to(device)
-    mask = enc['attention_mask'][0][:rlen].unsqueeze(0).to(device)
-    with torch.no_grad():
-        return embed_text(encoder, tokenizer, ids, mask, device, truncate=False).squeeze(0).cpu()
+def tid(tactic):
+    return TACTIC_IDS.get(tactic, tactic)
 
 
-def score_table(test_entries, seq_embs, all_tactics, tmpl_embs_by_tactic, display_scale):
-    zt_all = F.normalize(torch.stack([tmpl_embs_by_tactic[t] for t in all_tactics]), dim=-1)
+def score_table(test_entries, seq_embs, all_tactics, proto_embs, display_scale):
+    zt_all = F.normalize(proto_embs, dim=-1)  
 
     results = []
     with torch.no_grad():
@@ -58,10 +55,6 @@ def score_table(test_entries, seq_embs, all_tactics, tmpl_embs_by_tactic, displa
                 'ranked': [{'tactic': t, 'score': s} for t, s in ranked],
             })
     return results
-
-
-def tid(tactic):
-    return TACTIC_IDS.get(tactic, tactic)
 
 
 def build_label_matrices(results, all_tactics):
@@ -93,12 +86,12 @@ def print_table(results, all_tactics, top_n=3):
     print_legend(all_tactics)
     col_file = 26
     col_true = 36
-    print('\n  ── Test Results (scored against {} tactic prototypes) ──'.format(len(all_tactics)))
+    print('\n  ── Test Results (scored against {} LEARNED class prototypes) ──'.format(len(all_tactics)))
     header_fmt = '  {:<4} {:<' + str(col_file) + '} {:<' + str(col_true) + '} {:<14} {:<14} {:<14} {:<8}'
-    print(header_fmt.format('#', 'File', 'True tactics', '#1 (score)', '#2 (score)', '#3 (score)', 'Top3'))
+    print(header_fmt.format('#', 'File', 'True tactics', '#1 (score)', '#2 (score)', '#3 (score)', 'Top1'))
     print('  ' + '-' * (4 + col_file + col_true + 14 + 14 + 14 + 8 + 14))
     row_fmt = '  {:<4} {:<' + str(col_file) + '} {:<' + str(col_true) + '} {:<14} {:<14} {:<14} {:<8}'
-    n_wrong_top3 = 0
+    n_wrong_top1 = 0
     for i, r in enumerate(results, 1):
         ranked = r['ranked']
         cols = []
@@ -109,11 +102,10 @@ def print_table(results, all_tactics, top_n=3):
                 cols.append('')
         true_str = ','.join(tid(t) for t in r['true_tactics'])
         fname = r['file'] if len(r['file']) <= col_file else r['file'][:col_file - 3] + '...'
-        top3_tactics = {ranked[j]['tactic'] for j in range(min(3, len(ranked)))}
-        top3_wrong = bool(ranked) and not any(t in top3_tactics for t in r['true_tactics'])
-        if top3_wrong:
-            n_wrong_top3 += 1
-        flag = 'WRONG' if top3_wrong else ''
+        top1_wrong = bool(ranked) and ranked[0]['tactic'] not in r['true_tactics']
+        if top1_wrong:
+            n_wrong_top1 += 1
+        flag = 'WRONG' if top1_wrong else ''
         print(row_fmt.format(i, fname, true_str, cols[0], cols[1], cols[2], flag))
 
     n = len(results)
@@ -124,34 +116,30 @@ def print_table(results, all_tactics, top_n=3):
     print('  ─────────────────────────────────────')
     print('  LRAP (Label Ranking Average Precision)          : {:.1f}%'.format(lrap * 100))
     print('  AUPR (Area Under Precision-Recall Curve, macro) : {:.1f}%'.format(aupr * 100))
-    print('  Wrong (true label not in top-3)                 : {}/{} samples'.format(n_wrong_top3, n))
+    print('  Totally wrong top-1 prediction                  : {}/{} samples'.format(n_wrong_top1, n))
 
-    return {
-        'lrap'          : lrap,
-        'aupr'          : aupr,
-        'n_total'       : n,
-        'n_wrong_top3'  : n_wrong_top3,
-        'results'       : results,
-    }
+    return {'lrap': lrap, 'aupr': aupr, 'n_total': n, 'n_wrong_top1': n_wrong_top1, 'results': results}
 
 
-def run(test_file_match=None, temp=0.07, test_size=0.2, split_seed=SEED, run_tag=None, min_events=3,
-        template_dir=None, sequences_dir=None):
+def run(proto_mode='class', test_file_match=None, temp=0.07, test_size=0.2, split_seed=SEED,
+        run_tag=None, min_events=None):
     device = torch.device('cuda')
     print('  Device: {}'.format(device))
 
     if run_tag is None:
         run_tag = test_file_match if test_file_match else 'seed{}'.format(split_seed)
+    full_run_tag = '{}_{}'.format(run_tag, proto_mode)
 
-    ckpt_path = os.path.join(MODEL_DIR, 'camlds_matcher_{}.pt'.format(run_tag))
+    ckpt_path = os.path.join(MODEL_DIR, 'camlds_classproto_matcher_{}.pt'.format(full_run_tag))
     if not os.path.exists(ckpt_path):
         print('  ERROR: model not found at {}'.format(ckpt_path))
-        print('  Run train_camlds_matcher.py --run-tag {} first (or matching --test-file/--split-seed).'.format(run_tag))
+        print('  Run train_camlds_class_prototype.py --proto-mode {} --run-tag {} first.'.format(proto_mode, run_tag))
         return
 
     print('\n  Loading model from {}'.format(ckpt_path))
     ckpt = torch.load(ckpt_path, map_location=device)
     all_tactics = ckpt['tactics']
+    print('  Proto mode: {}'.format(ckpt.get('proto_mode', proto_mode)))
     print('  Best train loss: {:.4f}  Best epoch: {}'.format(ckpt.get('best_loss', 0), ckpt.get('best_epoch', '?')))
     print('  Tactics (prototypes) this model was trained on: {}'.format(', '.join(all_tactics)))
 
@@ -162,40 +150,26 @@ def run(test_file_match=None, temp=0.07, test_size=0.2, split_seed=SEED, run_tag
         trained_scale, 1 / trained_scale, display_scale,
         ' (temp={} override)'.format(temp) if temp else ' (using trained value)'))
 
-    log_proj  = ProjectionNetwork().to(device)
-    text_proj = ProjectionNetwork().to(device)
+    log_proj = ProjectionNetwork().to(device)
     log_proj.load_state_dict(ckpt['log_proj'])
-    text_proj.load_state_dict(ckpt['text_proj'])
     log_proj.eval()
-    text_proj.eval()
 
-    print('\n  Loading RoBERTa encoders (fine-tuned weights from checkpoint)...')
-    tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
-    seq_encoder  = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
-    tmpl_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
+    print('\n  Loading RoBERTa sequence encoder (fine-tuned weights from checkpoint)...')
+    tokenizer   = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
+    seq_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
     seq_encoder.load_state_dict(ckpt['seq_encoder'])
-    tmpl_encoder.load_state_dict(ckpt['tmpl_encoder'])
     seq_encoder.eval()
-    tmpl_encoder.eval()
     for p in seq_encoder.parameters():
         p.requires_grad = False
-    for p in tmpl_encoder.parameters():
-        p.requires_grad = False
 
-    ckpt_test_size      = ckpt.get('test_size', test_size)
-    ckpt_split_seed     = ckpt.get('split_seed', split_seed)
+    ckpt_test_size       = ckpt.get('test_size', test_size)
+    ckpt_split_seed      = ckpt.get('split_seed', split_seed)
     ckpt_test_file_match = test_file_match if test_file_match else ckpt.get('test_file_match')
 
-    ckpt_sequences_dir = sequences_dir or ckpt.get('sequences_dir')
-    entries = load_sequences(min_events=min_events, sequences_dir=ckpt_sequences_dir)
-    ckpt_stratified = ckpt.get('stratified', False)
+    entries = load_sequences(min_events=min_events)
     if ckpt_test_file_match:
         print('\n  Loading test sequences (leave-out mode — test = files matching "{}")...'.format(ckpt_test_file_match))
         _, test_entries = leave_out_split(entries, ckpt_test_file_match)
-    elif ckpt_stratified:
-        print('\n  Loading test sequences (same stratified split as training, test_size={} split_seed={})...'.format(
-            ckpt_test_size, ckpt_split_seed))
-        _, test_entries = stratified_split(entries, test_size=ckpt_test_size, seed=ckpt_split_seed)
     else:
         print('\n  Loading test sequences (same random split as training, test_size={} split_seed={})...'.format(
             ckpt_test_size, ckpt_split_seed))
@@ -207,19 +181,28 @@ def run(test_file_match=None, temp=0.07, test_size=0.2, split_seed=SEED, run_tag
         seq_embs = [F.normalize(log_proj(encode_one(tokenizer, seq_encoder, e['sequence'], device).to(device)), dim=-1).cpu()
                     for e in test_entries]
 
-    ckpt_template_dir = template_dir or ckpt.get('template_dir')
-    print('\n  Encoding {} tactic templates... (dir={})'.format(len(all_tactics), ckpt_template_dir or 'templates_dc (default)'))
-    templates = load_templates(template_dir=ckpt_template_dir)
-    with torch.no_grad():
-        tmpl_embs_by_tactic = {
-            t: F.normalize(text_proj(encode_one(tokenizer, tmpl_encoder, templates[t], device).to(device)), dim=-1).cpu()
-            for t in all_tactics
-        }
+    if proto_mode == 'class':
+        print('\n  Loading {} LEARNED class prototypes from checkpoint (no template encoding)...'.format(len(all_tactics)))
+        proto_embs = ckpt['class_prototypes'].cpu()   
+    else:
+        print('\n  Encoding {} tactic templates...'.format(len(all_tactics)))
+        text_proj = ProjectionNetwork().to(device)
+        text_proj.load_state_dict(ckpt['text_proj'])
+        text_proj.eval()
+        tmpl_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
+        tmpl_encoder.load_state_dict(ckpt['tmpl_encoder'])
+        tmpl_encoder.eval()
+        templates = load_templates()
+        with torch.no_grad():
+            proto_embs = torch.stack([
+                F.normalize(text_proj(encode_one(tokenizer, tmpl_encoder, templates[t], device).to(device)), dim=-1).cpu()
+                for t in all_tactics
+            ])
 
-    results = score_table(test_entries, seq_embs, all_tactics, tmpl_embs_by_tactic, display_scale)
+    results = score_table(test_entries, seq_embs, all_tactics, proto_embs, display_scale)
     out = print_table(results, all_tactics)
 
-    results_path = os.path.join(RESULTS_DIR, 'camlds_test_results_{}.json'.format(run_tag))
+    results_path = os.path.join(RESULTS_DIR, 'camlds_classproto_test_results_{}.json'.format(full_run_tag))
     with open(results_path, 'w') as f:
         json.dump(out, f, indent=2)
     print('\n  Results saved → {}'.format(results_path))
@@ -228,15 +211,13 @@ def run(test_file_match=None, temp=0.07, test_size=0.2, split_seed=SEED, run_tag
 if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
+    ap.add_argument('--proto-mode', type=str, choices=['class', 'template'], default='class')
     ap.add_argument('--test-file', type=str, default=None)
     ap.add_argument('--temp', type=float, default=0.07)
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
-    ap.add_argument('--template-dir', type=str, default=None,
-                     help='Override the template dir (default: reads it from the checkpoint, same one used to train).')
-    ap.add_argument('--sequences-dir', type=str, default=None,
-                     help='Override the sequences dir (default: reads it from the checkpoint, same one used to train).')
+    ap.add_argument('--min-events', type=int, default=None)
     args = ap.parse_args()
     test_files = resolve_test_file_arg(args.test_file)
 
@@ -244,7 +225,6 @@ if __name__ == '__main__':
     if run_tag is None and args.test_file:
         run_tag = args.test_file
 
-    run(test_file_match=test_files, temp=args.temp, test_size=args.test_size,
-        split_seed=args.split_seed, run_tag=run_tag,
-        template_dir=args.template_dir, sequences_dir=args.sequences_dir)
+    run(proto_mode=args.proto_mode, test_file_match=test_files, temp=args.temp, test_size=args.test_size,
+        split_seed=args.split_seed, run_tag=run_tag, min_events=args.min_events)
 

@@ -19,7 +19,7 @@ if PROJECT_ROOT not in sys.path:
 from scripts.config import ROBERTA_MODEL
 from scripts.encoder_utils import embed_text
 from test_split_presets import resolve_test_file_arg
-from prototype_multilabel_loss import multilabel_prototype_loss
+from prototype_multilabel_loss import multilabel_prototype_loss, uniformity_loss
 
 CAM_LDS_DIR       = '/csse/research/contructive-learning/CAM-LDS'
 SEQUENCES_DIR     = os.path.join(CAM_LDS_DIR, 'sequences')
@@ -30,8 +30,7 @@ RESULTS_DIR     = os.path.join(CAM_LDS_DIR, 'results')
 os.makedirs(OUTPUT_TRAINING, exist_ok=True)
 os.makedirs(RESULTS_DIR,     exist_ok=True)
 
-TACTIC_FOLDERS = ['command_and_control', 'credential_access', 'execution', 'initial_access',
-                   'lateral_movement', 'persistence']
+TACTIC_FOLDERS = ['privilege_escalation', 'command_and_control', 'credential_access', 'execution', 'initial_access', 'lateral_movement', 'persistence', 'stealth', 'defense_impairment', 'reconnaissance', 'impact', 'discovery', 'collection', 'exfiltration']
 
 TACTIC_IDS = {
     'collection':            'TA0009',
@@ -60,6 +59,7 @@ PROJ_DIM   = 128
 PATIENCE   = 20
 N_FREEZE   = 9
 K_PER_TACTIC = 1
+LAMBDA_UNIFORM = 0.1
 
 
 random.seed(SEED)
@@ -104,12 +104,13 @@ def load_step_tactics():
     return step_tactics
 
 
-def load_sequences(min_events=None):
+def load_sequences(min_events=3, return_total=False, sequences_dir=None):
+    sequences_dir = sequences_dir or SEQUENCES_DIR
     step_tactics = load_step_tactics()
 
     by_step = {}
     for folder in TACTIC_FOLDERS:
-        for fpath in sorted(glob.glob(os.path.join(SEQUENCES_DIR, folder, '*', 'sequence_*.json'))):
+        for fpath in sorted(glob.glob(os.path.join(sequences_dir, folder, '*', 'sequence_*.json'))):
             with open(fpath) as f:
                 seq = json.load(f)
             step = seq['step']
@@ -124,20 +125,20 @@ def load_sequences(min_events=None):
             }
 
     entries = list(by_step.values())
+    n_total = len(entries)
 
     if min_events is not None:
-        n_before = len(entries)
         dropped = [e['file'] for e in entries if e['n_events'] < min_events]
         entries = [e for e in entries if e['n_events'] >= min_events]
         print('  min_events={}: dropped {}/{} sequences with too few events: {}'.format(
-            min_events, len(dropped), n_before, dropped))
+            min_events, len(dropped), n_total, dropped))
 
     multi = [e for e in entries if len(e['tactics']) > 1]
     print('  Loaded {} unique sequences ({} multi-tactic — kept as multi-label, not dropped).'.format(
         len(entries), len(multi)))
-    for e in multi:
-        print('    - {} : {}'.format(e['file'], e['tactics']))
 
+    if return_total:
+        return entries, n_total
     return entries
 
 
@@ -163,27 +164,73 @@ def random_split(entries, test_size=0.2, seed=SEED):
     return train, test
 
 
-TECHNIQUES_USE_RE = re.compile(r'TECHNIQUES USE\s*\n-{10,}\s*\n+(.*?)\n+-{10,}', re.DOTALL)
+def stratified_split(entries, test_size=0.2, seed=SEED, min_test_per_tactic=1):
+    rng = random.Random(seed)
+    items = entries[:]
+    rng.shuffle(items)
+
+    n_test_target = max(1, int(len(items) * test_size))
+    all_tactics = sorted({t for e in items for t in e['tactics']})
+    tactic_total = {t: sum(1 for e in items if t in e['tactics']) for t in all_tactics}
+
+    test_idx_set = set()
+    tactic_test_count = {t: 0 for t in all_tactics}
+
+    for tactic in all_tactics:
+        target = min(min_test_per_tactic, max(0, tactic_total[tactic] - 1))
+        for i, e in enumerate(items):
+            if tactic_test_count[tactic] >= target:
+                break
+            if i in test_idx_set or tactic not in e['tactics']:
+                continue
+            test_idx_set.add(i)
+            for t in e['tactics']:
+                tactic_test_count[t] += 1
+
+    for i in range(len(items)):
+        if len(test_idx_set) >= n_test_target:
+            break
+        if i not in test_idx_set:
+            test_idx_set.add(i)
+
+    test  = [items[i] for i in sorted(test_idx_set)]
+    train = [items[i] for i in range(len(items)) if i not in test_idx_set]
+    return train, test
+
+
+OBJECTIVE_RE       = re.compile(r'OBJECTIVE\s*:\s*(.+)')
+TECHNIQUES_USE_RE  = re.compile(r'TECHNIQUES USE\s*\n-{10,}\s*\n+(.*?)\n+-{10,}', re.DOTALL)
+OUTCOME_RE         = re.compile(r'OUTCOME / TACTIC LINKS\s*\n-{10,}\s*\n+(.*?)\n+-{10,}', re.DOTALL)
 
 
 def extract_techniques_use(text):
+    parts = []
+    m = OBJECTIVE_RE.search(text)
+    if m:
+        parts.append(m.group(1).strip())
     m = TECHNIQUES_USE_RE.search(text)
-    return ' '.join(m.group(1).split()) if m else text
+    if m:
+        parts.append(' '.join(m.group(1).split()))
+    m = OUTCOME_RE.search(text)
+    if m:
+        parts.append(' '.join(m.group(1).split()))
+    return ' '.join(parts) if parts else text
 
 
-def load_templates():
+def load_templates(template_dir=None):
+    template_dir = template_dir or TEMPLATE_DIR
     templates = {}
-    for fname in sorted(os.listdir(TEMPLATE_DIR)):
+    for fname in sorted(os.listdir(template_dir)):
         if not fname.endswith('.txt'):
             continue
         label = None
         for lbl, tid in TACTIC_IDS.items():
-            if tid in fname:
+            if tid in fname or lbl in fname.lower():
                 label = lbl
                 break
         if label is None:
             continue
-        with open(os.path.join(TEMPLATE_DIR, fname), encoding='utf-8') as f:
+        with open(os.path.join(template_dir, fname), encoding='utf-8') as f:
             templates[label] = extract_techniques_use(f.read())
     return templates
 
@@ -222,12 +269,15 @@ def stratified_batch_indices(tactic_pools, all_tactics, k_per_tactic, rng):
 
 
 def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATIENCE, k_per_tactic=K_PER_TACTIC,
-                           test_size=0.2, split_seed=SEED, run_tag=None, min_events=None):
+                           test_size=0.2, split_seed=SEED, run_tag=None, min_events=3, template_dir=None,
+                           stratified=True, lambda_uniform=LAMBDA_UNIFORM, class_reweight=False, reweight_cap=3.0,
+                           sequences_dir=None):
     device = torch.device('cuda')
     print('  Device   : {}'.format(device))
     print()
 
-    entries = load_sequences(min_events=min_events)
+    entries, n_total_unfiltered = load_sequences(min_events=min_events, return_total=True, sequences_dir=sequences_dir)
+    n_excluded = n_total_unfiltered - len(entries)
 
     all_tactics = sorted({t for e in entries for t in e['tactics']})
     tactic_to_col = {t: i for i, t in enumerate(all_tactics)}
@@ -240,6 +290,10 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
     if test_file_match:
         train_entries, test_entries = leave_out_split(entries, test_file_match)
         print('  Split mode: leave-out — test = every file matching "{}"'.format(test_file_match))
+    elif stratified:
+        train_entries, test_entries = stratified_split(entries, test_size=test_size, seed=split_seed)
+        print('  Split mode: stratified {:.0f}/{:.0f} (split_seed={}, every tactic guaranteed >=1 test example)'.format(
+            (1 - test_size) * 100, test_size * 100, split_seed))
     else:
         train_entries, test_entries = random_split(entries, test_size=test_size, seed=split_seed)
         print('  Split mode: random {:.0f}/{:.0f} (split_seed={})'.format(
@@ -249,9 +303,8 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
     for e in train_entries:
         for t in e['tactics']:
             tactic_counts[t] += 1
-    print('  Train sequences: {}  Test sequences: {}'.format(len(train_entries), len(test_entries)))
-    for e in test_entries:
-        print('    [test] {} / {}'.format(e['tactics'], e['file']))
+    print('  Train sequences: {}  Test sequences: {}  Excluded (min-events filter): {}'.format(
+        len(train_entries), len(test_entries), n_excluded))
     for t in all_tactics:
         print('    {} : {} train'.format(t, tactic_counts[t]))
     if not train_entries:
@@ -262,8 +315,17 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
         print('  WARNING: these tactics have zero training examples: {} '
               '(their prototype will only ever be learned as a negative).'.format(missing))
 
-    templates = load_templates()
-    print('  Templates: {}'.format(', '.join(sorted(templates.keys()))))
+    class_weights = None
+    if class_reweight:
+        counts = torch.tensor([max(tactic_counts[t], 1) for t in all_tactics], dtype=torch.float32, device=device)
+        class_weights = (counts.mean() / counts).clamp(max=reweight_cap)
+        print('  Class reweighting ON -- per-tactic loss weights (mean count / count, capped at {:.1f}x, '
+              'rare tactics weighted up):'.format(reweight_cap))
+        for t, w in zip(all_tactics, class_weights.tolist()):
+            print('    {} : weight={:.2f}'.format(t, w))
+
+    templates = load_templates(template_dir=template_dir)
+    print('  Templates: {} (dir={})'.format(', '.join(sorted(templates.keys())), template_dir or TEMPLATE_DIR))
     print()
 
     print('  Loading RoBERTa encoders...')
@@ -328,7 +390,8 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
                 z = log_proj(torch.stack([encode_one(tokenizer, seq_encoder, t, device) for t in texts]))
                 prototypes = text_proj(torch.stack(
                     [encode_one(tokenizer, tmpl_encoder, templates[t], device) for t in all_tactics]))
-                loss = multilabel_prototype_loss(z, prototypes, pos_mask_batch, logit_scale)
+                loss = multilabel_prototype_loss(z, prototypes, pos_mask_batch, logit_scale, class_weights=class_weights) \
+                     + lambda_uniform * uniformity_loss(z)
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
@@ -388,6 +451,12 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
                 'test_size'   : test_size,
                 'run_tag'     : run_tag,
                 'test_file_match': test_file_match,
+                'template_dir': template_dir,
+                'stratified'  : stratified,
+                'lambda_uniform': lambda_uniform,
+                'class_reweight': class_reweight,
+                'reweight_cap': reweight_cap,
+                'sequences_dir': sequences_dir,
             }, ckpt_path)
             print('  [checkpoint] {} saved (best_loss={:.6f})'.format(ckpt_name, best_loss))
 
@@ -423,6 +492,12 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATI
         'test_size'   : test_size,
         'run_tag'     : run_tag,
         'test_file_match': test_file_match,
+        'template_dir': template_dir,
+        'stratified'  : stratified,
+        'lambda_uniform': lambda_uniform,
+        'class_reweight': class_reweight,
+        'reweight_cap': reweight_cap,
+        'sequences_dir': sequences_dir,
     }, model_path)
 
     hist_path = os.path.join(RESULTS_DIR, 'train_history_camlds_{}.json'.format(run_tag))
@@ -444,8 +519,30 @@ if __name__ == '__main__':
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
-    ap.add_argument('--min-events', type=int, default=None,
-                     help='Drop sequences with fewer than this many events before splitting.')
+    ap.add_argument('--template-dir', type=str, default=None,
+                     help='Directory of tactic template .txt files (default: templates_dc/). '
+                          'Use templates_dc_b/ or templates_dc_c/ for the alternative variants.')
+    ap.add_argument('--no-stratified', dest='stratified', action='store_false',
+                     help='Use a plain random split instead of the default stratified split (stratified '
+                          'guarantees every tactic has >=1 test example; random_split can leave some tactics '
+                          'with zero test coverage by chance).')
+    ap.add_argument('--lambda-uniform', type=float, default=LAMBDA_UNIFORM,
+                     help='Weight on the uniformity loss term (penalizes batch embeddings clustering '
+                          'together regardless of label). Default {}.'.format(LAMBDA_UNIFORM))
+    ap.add_argument('--class-reweight', action='store_true',
+                     help='Weight each tactic\'s loss contribution by (mean train count / that tactic\'s '
+                          'train count), so rare tactics (e.g. exfiltration with 2 examples) count for much '
+                          'more than common ones (e.g. persistence with 40) -- directly targets class '
+                          'imbalance, unlike --lambda-uniform which is label-blind.')
+    ap.add_argument('--reweight-cap', type=float, default=3.0,
+                     help='Max weight multiplier for --class-reweight (default 3.0). Uncapped inverse-frequency '
+                          'weighting (e.g. 8.2x for a tactic with 2 examples) was found to overcorrect -- the '
+                          'model just started defaulting to whichever tactic had the biggest weight instead of '
+                          'the biggest count. Capping keeps the nudge without flipping the bias the other way.')
+    ap.add_argument('--sequences-dir', type=str, default=None,
+                     help='Directory of built sequences to train on (default: sequences/, the generalized '
+                          'ones). Point at a different directory, e.g. sequences_raw/, to train on '
+                          'un-generalized data instead.')
     args = ap.parse_args()
     test_files = resolve_test_file_arg(args.test_file)
 
@@ -455,4 +552,8 @@ if __name__ == '__main__':
 
     run_contrastive_train(test_file_match=test_files, k_per_tactic=args.k_per_tactic,
                            test_size=args.test_size, split_seed=args.split_seed, run_tag=run_tag,
-                           min_events=args.min_events)
+                           template_dir=args.template_dir,
+                           stratified=args.stratified, lambda_uniform=args.lambda_uniform,
+                           class_reweight=args.class_reweight, reweight_cap=args.reweight_cap,
+                           sequences_dir=args.sequences_dir)
+

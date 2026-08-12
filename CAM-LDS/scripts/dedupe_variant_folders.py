@@ -11,17 +11,13 @@ SUFFIX_RE = re.compile(r'^(.*)-(\d+)$')
 
 
 def group_by_suffix(technique_dir):
-    """Groups variant folders in a technique dir by their trailing -<number> suffix.
-    Same suffix, different method-name prefix = duplicate content (verified by hand
-    on execution/T1059-000, persistence/T1053-000, initial_access/T1078-003,
-    command_and_control -- only timestamp/pid differ, not the actual commands)."""
     groups = defaultdict(list)
     for entry in sorted(technique_dir.iterdir()):
         if not entry.is_dir():
             continue
         m = SUFFIX_RE.match(entry.name)
         if not m:
-            groups[entry.name].append(entry)  # no recognizable suffix -- keep as its own group
+            groups[entry.name].append(entry)  
             continue
         suffix = m.group(2)
         groups[suffix].append(entry)
@@ -38,7 +34,7 @@ def main():
     total_before = 0
     total_kept = 0
     total_moved = 0
-    per_tactic = defaultdict(lambda: [0, 0, 0])  # before, kept, moved
+    per_tactic = defaultdict(lambda: [0, 0, 0])  
 
     for tactic_dir in sorted(GROUPED_DIR.iterdir()):
         if not tactic_dir.is_dir():
@@ -76,3 +72,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

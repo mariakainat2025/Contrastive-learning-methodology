@@ -1,17 +1,3 @@
-"""
-Simple/cheap way to detect multi-tactic steps: just check which tactic
-folders a given (technique, step) path appears under in grouped_by_tactic/.
-group_by_tactic.py copies a technique's ENTIRE folder into every tactic it
-officially maps to (via MITRE STIX kill_chain_phases) -- so if the same
-technique/step path shows up under N tactic directories, that technique
-belongs to N tactics.
-
-Note: this is TECHNIQUE-level, not step-level -- every step of a given
-technique gets the exact same tactic set, inherited from that technique's
-own official MITRE classification. It won't catch cases where a specific
-step's actual command chain pulls in tactics beyond its own technique's
-official ones (see build_multilabel_map.py for that finer-grained signal).
-"""
 import json
 from pathlib import Path
 from collections import defaultdict
@@ -75,3 +61,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
