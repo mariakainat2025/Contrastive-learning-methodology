@@ -1,0 +1,46 @@
+[
+  {
+    "event_id": "4882",
+    "timestamp": "1758566201.238",
+    "type": "SYSCALL",
+    "syscall": "execve",
+    "success": "yes",
+    "exit": "0",
+    "a0": "5627ca221340",
+    "ppid": "3018",
+    "pid": "3026",
+    "comm": "chmod",
+    "exe": "/usr/bin/chmod",
+    "subj": "=unconfined",
+    "key": "T1166_Seuid_and_Setgid",
+    "command": "chmod +x linpeas.sh",
+    "src": "pid:3018",
+    "dest": "/usr/bin/chmod",
+    "paths": [
+      "/usr/bin/chmod",
+      "/usr/bin/chmod",
+      "/lib64/ld-linux-x86-64.so.2"
+    ],
+    "path_types": [
+      "NORMAL",
+      "NORMAL",
+      "NORMAL"
+    ],
+    "pam_op": null,
+    "pam_acct": null,
+    "pam_res": null,
+    "acct": null,
+    "op": null,
+    "res": null,
+    "hostname": null,
+    "addr": null,
+    "unit": null,
+    "cmd": null,
+    "avc_result": null,
+    "avc_op": null,
+    "avc_name": null,
+    "avc_profile": null,
+    "bpf_op": null,
+    "bpf_progid": null
+  }
+]
