@@ -1,0 +1,10 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1036-005",
+  "step": "3_vnc_apt-50",
+  "host": "reposerver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:4269 execve /usr/bin/mkdir."
+  ]
+}

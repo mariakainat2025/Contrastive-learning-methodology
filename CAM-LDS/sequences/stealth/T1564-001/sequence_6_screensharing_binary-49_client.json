@@ -1,0 +1,11 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1564-001",
+  "step": "6_screensharing_binary-49",
+  "host": "client",
+  "n_triples": 2,
+  "sequence": [
+    "pid:10238 execve /usr/bin/curl.",
+    "/usr/bin/curl connect internal network address."
+  ]
+}

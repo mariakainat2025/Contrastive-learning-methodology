@@ -1,0 +1,14 @@
+{
+  "tactic": "Credential_Access",
+  "technique": "T1056-001",
+  "step": "6_plugin-31",
+  "host": "client",
+  "n_triples": 5,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/usr/lib/systemd/systemd-resolved connect internal network address.",
+    "/usr/lib/systemd/systemd-resolved connect internal network address."
+  ]
+}

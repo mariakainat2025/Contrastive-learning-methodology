@@ -1,0 +1,33 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_binary-45",
+  "host": "videoserver",
+  "n_triples": 24,
+  "sequence": [
+    "/usr/sbin/cron openat shadow file.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron login acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron execve /usr/bin/dash.",
+    "/usr/sbin/cron setgid syscall:setgid.",
+    "/usr/sbin/cron setuid syscall:setuid.",
+    "/usr/bin/dash execve /usr/sbin/logrotate.",
+    "/usr/sbin/logrotate unlink /var/lib/logrotate/.",
+    "/usr/sbin/logrotate rename /var/lib/logrotate/status.",
+    "/usr/sbin/cron openat shadow file.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron login acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron execve /usr/bin/dash.",
+    "/usr/sbin/cron setgid syscall:setgid.",
+    "/usr/sbin/cron setuid syscall:setuid.",
+    "/usr/bin/dash execve /usr/bin/run-parts."
+  ]
+}

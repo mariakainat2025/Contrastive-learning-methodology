@@ -1,0 +1,11 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1070-004",
+  "step": "1_cron_localaccount-34",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:17419 execve /usr/bin/rm.",
+    "/usr/bin/rm unlinkat /root."
+  ]
+}

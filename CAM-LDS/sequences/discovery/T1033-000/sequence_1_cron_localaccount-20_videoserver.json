@@ -1,0 +1,10 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1033-000",
+  "step": "1_cron_localaccount-20",
+  "host": "videoserver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:17419 execve /usr/bin/id."
+  ]
+}

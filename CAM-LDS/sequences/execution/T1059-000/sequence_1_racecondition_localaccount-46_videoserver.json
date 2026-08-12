@@ -1,0 +1,10 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-000",
+  "step": "1_racecondition_localaccount-46",
+  "host": "videoserver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:3063 execve /usr/bin/chmod."
+  ]
+}

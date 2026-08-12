@@ -1,0 +1,19 @@
+{
+  "tactic": "Execution",
+  "technique": "T1053-003",
+  "step": "6_screensharing_cron-24",
+  "host": "client",
+  "n_triples": 10,
+  "sequence": [
+    "/usr/bin/vim.basic fchmod syscall:fchmod.",
+    "/usr/bin/vim.basic setxattr crontab.o5f7Fw/crontab.",
+    "/usr/bin/vim.basic unlink swp file.",
+    "/usr/bin/crontab openat crontabs/tmp.h7sNsQ.",
+    "/usr/bin/crontab fchmod syscall:fchmod.",
+    "/usr/bin/crontab rename crontabs/judy.",
+    "/usr/bin/crontab unlink /tmp/crontab.o5f7Fw/crontab.",
+    "/usr/bin/crontab rmdir o5f7Fw file.",
+    "/usr/sbin/cron openat crontabs.",
+    "/usr/sbin/cron openat crontabs/judy."
+  ]
+}

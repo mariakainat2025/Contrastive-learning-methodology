@@ -1,0 +1,11 @@
+{
+  "tactic": "Credential_Access",
+  "technique": "T1003-008",
+  "step": "3_ssh_puppet-6",
+  "host": "reposerver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:3835 execve /usr/bin/cat.",
+    "/usr/bin/cat openat shadow file."
+  ]
+}

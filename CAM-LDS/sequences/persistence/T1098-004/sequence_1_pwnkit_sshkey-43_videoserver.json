@@ -1,0 +1,11 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1098-004",
+  "step": "1_pwnkit_sshkey-43",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:18783 execve /usr/bin/wget.",
+    "/usr/bin/wget connect external network address."
+  ]
+}

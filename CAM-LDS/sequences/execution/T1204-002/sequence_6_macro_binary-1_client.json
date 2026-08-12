@@ -1,0 +1,11 @@
+{
+  "tactic": "Execution",
+  "technique": "T1204-002",
+  "step": "6_macro_binary-1",
+  "host": "client",
+  "n_triples": 2,
+  "sequence": [
+    "pid:4407 execve /usr/bin/curl.",
+    "/usr/bin/curl connect internal network address."
+  ]
+}

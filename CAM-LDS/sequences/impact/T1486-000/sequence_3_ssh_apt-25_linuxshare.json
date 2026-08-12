@@ -1,0 +1,11 @@
+{
+  "tactic": "Impact",
+  "technique": "T1486-000",
+  "step": "3_ssh_apt-25",
+  "host": "linuxshare",
+  "n_triples": 2,
+  "sequence": [
+    "pid:2520 execve /usr/bin/curl.",
+    "/usr/bin/curl connect external network address."
+  ]
+}

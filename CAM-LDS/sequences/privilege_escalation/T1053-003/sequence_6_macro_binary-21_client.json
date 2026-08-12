@@ -1,0 +1,24 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1053-003",
+  "step": "6_macro_binary-21",
+  "host": "client",
+  "n_triples": 15,
+  "sequence": [
+    "vim avc_allowed /tmp/.",
+    "vim avc_allowed /tmp/.",
+    "vim avc_allowed /tmp/crontab.uDAXY0/crontab.",
+    "vim avc_allowed /tmp/crontab.uDAXY0/crontab.",
+    "vim avc_allowed /tmp/crontab.uDAXY0/crontab.",
+    "vim avc_allowed /home/judy/.viminfo.",
+    "vim avc_allowed swp file.",
+    "/usr/bin/vim.basic setxattr crontab.uDAXY0/crontab.",
+    "crontab avc_allowed /tmp/crontab.uDAXY0/crontab.",
+    "crontab avc_allowed /tmp/crontab.uDAXY0/crontab.",
+    "crontab avc_allowed var spool 7pZ4WC file.",
+    "crontab avc_allowed var spool 7pZ4WC file.",
+    "crontab avc_allowed /var/spool/cron/crontabs/judy.",
+    "crontab avc_allowed /tmp/crontab.uDAXY0/.",
+    "crontab avc_allowed /tmp/crontab.uDAXY0/."
+  ]
+}

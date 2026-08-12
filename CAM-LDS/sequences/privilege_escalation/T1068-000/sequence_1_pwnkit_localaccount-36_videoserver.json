@@ -1,0 +1,21 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1068-000",
+  "step": "1_pwnkit_localaccount-36",
+  "host": "videoserver",
+  "n_triples": 12,
+  "sequence": [
+    "pid:2732 execve /usr/bin/chmod.",
+    "pid:2732 execve /tmp/PwnKit.",
+    "pid:2732 execve /usr/bin/pkexec.",
+    "pid:2732 execve /usr/bin/bash.",
+    "/usr/bin/pkexec openat shells file.",
+    "/usr/bin/bash openat profile file.",
+    "/usr/bin/bash execve /usr/bin/id.",
+    "/usr/bin/bash openat etc profile.d sh file.",
+    "/usr/bin/bash execve /usr/bin/locale.",
+    "/usr/bin/bash openat etc profile.d sh file.",
+    "/usr/bin/bash openat etc profile.d sh file.",
+    "/usr/bin/bash execve /usr/bin/mesg."
+  ]
+}

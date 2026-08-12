@@ -1,0 +1,18 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1082-000",
+  "step": "4-22",
+  "host": "linuxshare",
+  "n_triples": 9,
+  "sequence": [
+    "/usr/sbin/sshd setregid syscall:setregid.",
+    "/usr/sbin/sshd setregid syscall:setregid.",
+    "/usr/sbin/sshd setreuid syscall:setreuid.",
+    "/usr/sbin/sshd connect /run/dbus/system_bus_socket.",
+    "/usr/sbin/sshd user_end acct:john.",
+    "/usr/sbin/sshd cred_disp acct:john.",
+    "/usr/sbin/sshd openat /var/run/utmp.",
+    "/usr/sbin/sshd openat /var/log/wtmp.",
+    "/usr/bin/bash chown /home/john/.bash_history."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1546-000",
+  "step": "1_racecondition_localaccount-49",
+  "host": "videoserver",
+  "n_triples": 11,
+  "sequence": [
+    "/usr/sbin/cron openat shadow file.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron login acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron execve /usr/bin/dash.",
+    "/usr/sbin/cron setgid syscall:setgid.",
+    "/usr/sbin/cron setuid syscall:setuid.",
+    "pid:3063 execve /usr/bin/rm."
+  ]
+}

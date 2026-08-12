@@ -1,0 +1,11 @@
+{
+  "tactic": "Credential_Access",
+  "technique": "T1003-008",
+  "step": "3_vnc_apt-45",
+  "host": "reposerver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:4269 execve /usr/bin/cat.",
+    "/usr/bin/cat openat shadow file."
+  ]
+}

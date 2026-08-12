@@ -1,0 +1,20 @@
+{
+  "tactic": "Execution",
+  "technique": "T1072-000",
+  "step": "3_ssh_apt-17",
+  "host": "reposerver",
+  "n_triples": 11,
+  "sequence": [
+    "pid:4266 execve /usr/bin/dpkg-deb.",
+    "/usr/bin/dpkg-deb unlink ELHhcP file.",
+    "/usr/bin/dpkg-deb execve /usr/bin/tar.",
+    "/usr/bin/dpkg-deb unlink BZtAVN file.",
+    "/usr/bin/dpkg-deb execve /usr/bin/tar.",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/bin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/bin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/sbin/tar [not found]."
+  ]
+}

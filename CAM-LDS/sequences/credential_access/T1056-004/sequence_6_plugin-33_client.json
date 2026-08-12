@@ -1,0 +1,14 @@
+{
+  "tactic": "Credential_Access",
+  "technique": "T1056-004",
+  "step": "6_plugin-33",
+  "host": "client",
+  "n_triples": 5,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin unlink user .mozilla permissions sqlite-journal file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla recovery baklz4 file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla recovery jsonlz4 file."
+  ]
+}

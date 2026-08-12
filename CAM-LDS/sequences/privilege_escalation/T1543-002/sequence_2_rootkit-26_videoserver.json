@@ -1,0 +1,11 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1543-002",
+  "step": "2_rootkit-26",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "/usr/bin/vim.basic unlink etc systemd service~ file.",
+    "/usr/bin/vim.basic unlink systemd library file."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1033-000",
+  "step": "7-7",
+  "host": "docker",
+  "n_triples": 7,
+  "sequence": [
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron cred_refr acct:root.",
+    "/usr/sbin/cron execve /usr/bin/dash."
+  ]
+}

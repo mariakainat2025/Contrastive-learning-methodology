@@ -1,0 +1,32 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_binary-51",
+  "host": "client",
+  "n_triples": 23,
+  "sequence": [
+    "pid:10238 execve /usr/bin/sudo.",
+    "pid:10238 execve /usr/bin/chmod.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo connect internal network address.",
+    "/usr/bin/sudo connect internal network address.",
+    "/usr/bin/sudo connect internal network address.",
+    "/usr/bin/sudo connect_fail syscall:connect.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:judy.",
+    "/usr/bin/sudo chown /dev/pts/2.",
+    "/usr/bin/sudo openat /var/run/utmp.",
+    "/usr/bin/sudo openat /var/run/utmp.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo user_end acct:root.",
+    "/usr/bin/sudo cred_disp acct:root.",
+    "/usr/lib/systemd/systemd-resolved connect internal network address.",
+    "/usr/lib/systemd/systemd-resolved connect internal network address.",
+    "acct:judy sudo_cmd chmod +x /home/judy/.index.",
+    "pid:21789 execve /usr/bin/chmod.",
+    "/usr/bin/chmod fchmodat /home/judy/.index.",
+    "/usr/bin/chmod fchmodat /home/judy/.local/share/firefox/firefox-startup."
+  ]
+}

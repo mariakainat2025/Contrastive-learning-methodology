@@ -1,0 +1,14 @@
+{
+  "tactic": "Execution",
+  "technique": "T1053-003",
+  "step": "3_ssh_apt-16",
+  "host": "reposerver",
+  "n_triples": 5,
+  "sequence": [
+    "/usr/bin/vim.basic fchmod syscall:fchmod.",
+    "/usr/bin/vim.basic setxattr DEBIAN/postinst.",
+    "/usr/bin/vim.basic unlink /root/.viminfo.",
+    "/usr/bin/vim.basic rename /root/.viminfo.",
+    "/usr/bin/vim.basic unlink swp file."
+  ]
+}

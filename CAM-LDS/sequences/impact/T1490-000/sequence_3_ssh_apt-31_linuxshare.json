@@ -1,0 +1,11 @@
+{
+  "tactic": "Impact",
+  "technique": "T1490-000",
+  "step": "3_ssh_apt-31",
+  "host": "linuxshare",
+  "n_triples": 2,
+  "sequence": [
+    "pid:2520 execve /usr/bin/rm.",
+    "/usr/bin/rm unlinkat /var/backups/."
+  ]
+}

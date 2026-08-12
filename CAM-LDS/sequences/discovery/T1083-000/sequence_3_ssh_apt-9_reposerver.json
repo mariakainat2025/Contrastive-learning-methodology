@@ -1,0 +1,10 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1083-000",
+  "step": "3_ssh_apt-9",
+  "host": "reposerver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:4266 execve /usr/bin/ls."
+  ]
+}

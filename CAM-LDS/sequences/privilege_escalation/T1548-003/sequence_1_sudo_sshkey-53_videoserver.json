@@ -1,0 +1,23 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1548-003",
+  "step": "1_sudo_sshkey-53",
+  "host": "videoserver",
+  "n_triples": 14,
+  "sequence": [
+    "pid:2807 execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:www-data.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo execve /usr/bin/dmesg.",
+    "acct:www-data sudo_cmd dmesg -H.",
+    "/usr/bin/dmesg execve /usr/bin/dash.",
+    "/usr/bin/dmesg execve_fail /usr/local/sbin/sh [not found].",
+    "/usr/bin/dmesg execve_fail /usr/local/bin/sh [not found].",
+    "/usr/bin/dmesg execve_fail /usr/sbin/sh [not found].",
+    "/usr/bin/dash execve /usr/bin/less."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "tactic": "Command_and_Control",
+  "technique": "T1219-000",
+  "step": "6_screensharing_binary-47",
+  "host": "client",
+  "n_triples": 12,
+  "sequence": [
+    "pid:5084 execve /usr/share/rustdesk/rustdesk.",
+    "/usr/share/rustdesk/rustdesk connect /tmp/RustDesk/ipc.",
+    "/usr/share/rustdesk/rustdesk connect /tmp/RustDesk/ipc.",
+    "/usr/share/rustdesk/rustdesk connect /run/user/1002/wayland-0.",
+    "/usr/share/rustdesk/rustdesk connect /tmp/.X11-unix/X0.",
+    "/usr/share/rustdesk/rustdesk connect /tmp/.X11-unix/X0.",
+    "/usr/share/rustdesk/rustdesk connect /run/user/1002/at-spi/bus_0.",
+    "/usr/share/rustdesk/rustdesk connect /home/judy/.cache/ibus/dbus-qxlu0DLG.",
+    "/usr/share/rustdesk/rustdesk execve /usr/bin/dash.",
+    "/usr/share/rustdesk/rustdesk execve_fail /usr/local/sbin/xdg-user-dir [not found].",
+    "/usr/share/rustdesk/rustdesk execve_fail /usr/local/bin/xdg-user-dir [not found].",
+    "/usr/share/rustdesk/rustdesk execve_fail /usr/sbin/xdg-user-dir [not found]."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tactic": "Lateral_Movement",
+  "technique": "T1080-000",
+  "step": "3_ssh_healthcheck-34",
+  "host": "reposerver",
+  "n_triples": 8,
+  "sequence": [
+    "/usr/lib/systemd/systemd connect /run/systemd/journal/stdout.",
+    "pid:1 execve /usr/sbin/anacron.",
+    "/usr/bin/vim.basic unlink /media/share/.",
+    "/usr/bin/vim.basic unlink root user tmp healthcheck_cron sh~ file.",
+    "/usr/bin/vim.basic unlink /root/.",
+    "/usr/bin/vim.basic fchmod_fail syscall:fchmod.",
+    "/usr/bin/vim.basic unlink sh~ file.",
+    "/usr/bin/vim.basic unlink var tmp swp file."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "tactic": "Collection",
+  "technique": "T1039-000",
+  "step": "3_vnc_apt-47",
+  "host": "reposerver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:4269 execve /usr/bin/cat."
+  ]
+}

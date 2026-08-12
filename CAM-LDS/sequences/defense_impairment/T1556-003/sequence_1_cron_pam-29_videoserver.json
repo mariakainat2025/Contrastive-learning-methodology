@@ -1,0 +1,16 @@
+{
+  "tactic": "Defense_Impairment",
+  "technique": "T1556-003",
+  "step": "1_cron_pam-29",
+  "host": "videoserver",
+  "n_triples": 7,
+  "sequence": [
+    "pid:17399 execve /usr/bin/dash.",
+    "pid:17399 execve /usr/bin/curl.",
+    "/usr/bin/dash execve /usr/bin/wget.",
+    "/usr/bin/dash execve /usr/bin/mv.",
+    "/usr/bin/curl connect external network address.",
+    "/usr/bin/wget connect external network address.",
+    "/usr/bin/mv rename x86_64-linux-gnu library file."
+  ]
+}

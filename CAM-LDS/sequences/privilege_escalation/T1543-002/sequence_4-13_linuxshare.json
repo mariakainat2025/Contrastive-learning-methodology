@@ -1,0 +1,20 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1543-002",
+  "step": "4-13",
+  "host": "linuxshare",
+  "n_triples": 11,
+  "sequence": [
+    "/opt/puppetlabs/puppet/bin/ruby execve /usr/bin/cat.",
+    "/opt/puppetlabs/puppet/bin/ruby execve /usr/bin/cat.",
+    "/opt/puppetlabs/puppet/bin/ruby execve /usr/bin/dash.",
+    "/opt/puppetlabs/puppet/bin/ruby openat conf file.",
+    "/opt/puppetlabs/puppet/bin/ruby connect internal network address.",
+    "/usr/bin/dash execve /usr/bin/getopt.",
+    "pid:2109 execve /usr/bin/cut.",
+    "pid:2109 execve /usr/bin/tr.",
+    "pid:2113 execve /usr/bin/cut.",
+    "pid:2116 execve /usr/bin/tr.",
+    "pid:2119 execve /usr/bin/tr."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tactic": "Execution",
+  "technique": "T1053-003",
+  "step": "6_screensharing_cron-20",
+  "host": "client",
+  "n_triples": 8,
+  "sequence": [
+    "pid:25611 execve /usr/bin/crontab.",
+    "/usr/bin/crontab execve /usr/bin/dash.",
+    "/usr/bin/crontab setgid syscall:setgid.",
+    "/usr/bin/crontab setuid syscall:setuid.",
+    "/usr/bin/dash execve /usr/bin/vim.basic.",
+    "/usr/bin/vim.basic unlink swpx file.",
+    "/usr/bin/vim.basic unlink swp file.",
+    "/usr/bin/vim.basic chmod swp file."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "tactic": "Collection",
+  "technique": "T1056-004",
+  "step": "6_plugin-29",
+  "host": "client",
+  "n_triples": 16,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla extension@example.com xpi file.",
+    "/home/judy/.local/share/firefox/firefox-bin chmod /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/extensions/trash.",
+    "/home/judy/.local/share/firefox/firefox-bin rmdir /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/extensions/trash.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla extensions json file.",
+    "/home/judy/.local/share/firefox/firefox-bin chmod /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/extensions/staged.",
+    "/home/judy/.local/share/firefox/firefox-bin rmdir /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/extensions/staged.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla prefs js file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla addonStartup.json lz4 file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .cache webext.sc lz4 file."
+  ]
+}

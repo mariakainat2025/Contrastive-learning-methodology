@@ -1,0 +1,15 @@
+{
+  "tactic": "Collection",
+  "technique": "T1074-001",
+  "step": "2_cron-12",
+  "host": "videoserver",
+  "n_triples": 6,
+  "sequence": [
+    "/usr/bin/zmcontroller execve /usr/bin/tar.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address.",
+    "/usr/bin/tar execve /usr/bin/dash.",
+    "/usr/bin/dash execve /usr/bin/gzip."
+  ]
+}

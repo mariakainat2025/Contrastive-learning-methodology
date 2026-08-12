@@ -1,0 +1,10 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1078-003",
+  "step": "1_validaccount_localaccount-55",
+  "host": "videoserver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:2738 execve /usr/bin/find."
+  ]
+}

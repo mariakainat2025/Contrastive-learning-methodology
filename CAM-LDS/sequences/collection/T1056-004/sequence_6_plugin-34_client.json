@@ -1,0 +1,15 @@
+{
+  "tactic": "Collection",
+  "technique": "T1056-004",
+  "step": "6_plugin-34",
+  "host": "client",
+  "n_triples": 6,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla recovery baklz4 file.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla recovery jsonlz4 file."
+  ]
+}

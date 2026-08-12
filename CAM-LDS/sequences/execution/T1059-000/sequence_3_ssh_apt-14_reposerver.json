@@ -1,0 +1,12 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-000",
+  "step": "3_ssh_apt-14",
+  "host": "reposerver",
+  "n_triples": 3,
+  "sequence": [
+    "/usr/bin/vim.basic fchmod syscall:fchmod.",
+    "/usr/bin/vim.basic setxattr DEBIAN/control.",
+    "/usr/bin/vim.basic unlink swp file."
+  ]
+}

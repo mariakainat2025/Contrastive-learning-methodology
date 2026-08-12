@@ -1,0 +1,10 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-000",
+  "step": "1_autostart_localaccount-10",
+  "host": "videoserver",
+  "n_triples": 1,
+  "sequence": [
+    "pid:3018 execve /usr/bin/stty."
+  ]
+}

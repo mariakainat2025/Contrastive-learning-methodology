@@ -1,0 +1,11 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1546-000",
+  "step": "1_racecondition_localaccount-48",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:17305 execve /usr/bin/dash.",
+    "pid:17305 execve /usr/bin/dash."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1201-000",
+  "step": "2_cron-18",
+  "host": "videoserver",
+  "n_triples": 7,
+  "sequence": [
+    "/usr/bin/zmcontroller execve /usr/bin/chage.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address.",
+    "/usr/bin/chage openat shadow file.",
+    "/usr/bin/chage setregid syscall:setregid.",
+    "/usr/bin/chage setreuid syscall:setreuid."
+  ]
+}

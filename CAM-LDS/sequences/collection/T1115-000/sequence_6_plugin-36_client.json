@@ -1,0 +1,10 @@
+{
+  "tactic": "Collection",
+  "technique": "T1115-000",
+  "step": "6_plugin-36",
+  "host": "client",
+  "n_triples": 1,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file."
+  ]
+}

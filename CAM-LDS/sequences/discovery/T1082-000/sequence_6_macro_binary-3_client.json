@@ -1,0 +1,10 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1082-000",
+  "step": "6_macro_binary-3",
+  "host": "client",
+  "n_triples": 1,
+  "sequence": [
+    "python3 avc_allowed passwd file."
+  ]
+}

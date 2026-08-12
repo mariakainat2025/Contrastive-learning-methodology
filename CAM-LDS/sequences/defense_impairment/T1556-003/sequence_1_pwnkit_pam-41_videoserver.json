@@ -1,0 +1,11 @@
+{
+  "tactic": "Defense_Impairment",
+  "technique": "T1556-003",
+  "step": "1_pwnkit_pam-41",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "pid:17157 execve /usr/bin/wget.",
+    "/usr/bin/wget connect external network address."
+  ]
+}

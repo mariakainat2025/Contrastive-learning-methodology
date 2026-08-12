@@ -1,0 +1,12 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1083-000",
+  "step": "7-11",
+  "host": "docker",
+  "n_triples": 3,
+  "sequence": [
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect external network address."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1087-001",
+  "step": "3_ssh_apt-28",
+  "host": "linuxshare",
+  "n_triples": 1,
+  "sequence": [
+    "pid:2520 execve /usr/bin/cat."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "tactic": "Defense_Impairment",
+  "technique": "T1222-002",
+  "step": "6_macro_binary-17",
+  "host": "client",
+  "n_triples": 21,
+  "sequence": [
+    "chmod avc_allowed x86_64-linux-gnu library file.",
+    "chmod avc_allowed cache file.",
+    "chmod avc_allowed x86_64-linux-gnu library file.",
+    "chmod avc_allowed x86_64-linux-gnu library file.",
+    "chmod avc_allowed /usr/lib/locale/locale-archive.",
+    "chmod avc_allowed alias file.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_IDENTIFICATION.",
+    "chmod avc_allowed x86_64-linux-gnu library file.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_MEASUREMENT.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_TELEPHONE.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_ADDRESS.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_NAME.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_PAPER.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_MONETARY.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_COLLATE.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_TIME.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_NUMERIC.",
+    "chmod avc_allowed /usr/lib/locale/C.utf8/LC_CTYPE.",
+    "chmod avc_allowed /home/judy/.local/bin/task_runner."
+  ]
+}

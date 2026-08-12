@@ -1,0 +1,12 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1548-003",
+  "step": "1_sudo_pam-54",
+  "host": "videoserver",
+  "n_triples": 3,
+  "sequence": [
+    "pid:16838 execve /usr/bin/dash.",
+    "/usr/bin/dash execve /usr/bin/bash.",
+    "/usr/bin/dash execve /usr/bin/bash."
+  ]
+}

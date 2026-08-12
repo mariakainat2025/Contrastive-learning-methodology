@@ -1,0 +1,31 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1057-000",
+  "step": "7-12",
+  "host": "docker",
+  "n_triples": 22,
+  "sequence": [
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect external network address.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_refr acct:root.",
+    "/usr/sbin/cron execve /usr/bin/chmod.",
+    "/usr/sbin/cron execve /opt/tool.",
+    "/usr/sbin/cron cred_refr acct:root.",
+    "/usr/sbin/cron execve /usr/bin/dash.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect internal network address.",
+    "/opt/tool connect external network address.",
+    "/opt/tool connect external network address."
+  ]
+}

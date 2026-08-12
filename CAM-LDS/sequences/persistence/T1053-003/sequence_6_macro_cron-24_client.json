@@ -1,0 +1,24 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1053-003",
+  "step": "6_macro_cron-24",
+  "host": "client",
+  "n_triples": 15,
+  "sequence": [
+    "vim avc_allowed /tmp/.",
+    "vim avc_allowed /tmp/.",
+    "vim avc_allowed /tmp/crontab.IuzwBp/crontab.",
+    "vim avc_allowed /tmp/crontab.IuzwBp/crontab.",
+    "vim avc_allowed /tmp/crontab.IuzwBp/crontab.",
+    "vim avc_allowed /home/judy/.viminfo.",
+    "vim avc_allowed swp file.",
+    "/usr/bin/vim.basic setxattr crontab.IuzwBp/crontab.",
+    "crontab avc_allowed /tmp/crontab.IuzwBp/crontab.",
+    "crontab avc_allowed /tmp/crontab.IuzwBp/crontab.",
+    "crontab avc_allowed var spool iXHSig file.",
+    "crontab avc_allowed var spool iXHSig file.",
+    "crontab avc_allowed /var/spool/cron/crontabs/judy.",
+    "crontab avc_allowed /tmp/crontab.IuzwBp/.",
+    "crontab avc_allowed /tmp/crontab.IuzwBp/."
+  ]
+}

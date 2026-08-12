@@ -1,0 +1,17 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1218-000",
+  "step": "1_pwnkit_sshkey-44",
+  "host": "videoserver",
+  "n_triples": 8,
+  "sequence": [
+    "pid:18783 execve /usr/bin/split.",
+    "/usr/bin/split execve /usr/bin/dash.",
+    "/usr/bin/dash execve /usr/bin/xargs.",
+    "/usr/bin/dash execve /usr/bin/cat.",
+    "/usr/bin/xargs execve /usr/bin/bash.",
+    "/usr/bin/xargs execve_fail /usr/local/sbin/bash [not found].",
+    "/usr/bin/xargs execve_fail /usr/local/bin/bash [not found].",
+    "/usr/bin/xargs execve_fail /usr/sbin/bash [not found]."
+  ]
+}

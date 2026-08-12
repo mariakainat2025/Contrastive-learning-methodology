@@ -1,0 +1,13 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1070-004",
+  "step": "2_cron-14",
+  "host": "videoserver",
+  "n_triples": 4,
+  "sequence": [
+    "/usr/bin/zmcontroller unlinkat gz file.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address."
+  ]
+}

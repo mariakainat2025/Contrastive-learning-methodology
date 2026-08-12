@@ -1,0 +1,11 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1574-008",
+  "step": "6_screensharing_binary-57",
+  "host": "client",
+  "n_triples": 2,
+  "sequence": [
+    "pid:10238 execve /usr/bin/ln.",
+    "/usr/bin/ln renameat /home/judy/.local/bin/firefox."
+  ]
+}

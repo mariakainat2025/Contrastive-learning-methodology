@@ -1,0 +1,32 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1057-000",
+  "step": "7-8",
+  "host": "docker",
+  "n_triples": 23,
+  "sequence": [
+    "/var/www/nextcloud/rJZMoLeJ connect internal network address.",
+    "/usr/sbin/cron user_acct acct:root.",
+    "/usr/sbin/cron cred_acq acct:root.",
+    "/usr/sbin/cron user_start acct:root.",
+    "/usr/sbin/cron cred_disp acct:root.",
+    "/usr/sbin/cron user_end acct:root.",
+    "/usr/sbin/cron cred_refr acct:root.",
+    "pid:3539 execve /runc.",
+    "pid:3539 execve /bin/bash.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setuid syscall:setuid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid.",
+    "/runc setgid syscall:setgid."
+  ]
+}

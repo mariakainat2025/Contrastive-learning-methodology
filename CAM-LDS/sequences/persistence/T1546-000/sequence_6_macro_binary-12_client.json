@@ -1,0 +1,32 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1546-000",
+  "step": "6_macro_binary-12",
+  "host": "client",
+  "n_triples": 23,
+  "sequence": [
+    "ln avc_allowed x86_64-linux-gnu library file.",
+    "ln avc_allowed cache file.",
+    "ln avc_allowed x86_64-linux-gnu library file.",
+    "ln avc_allowed x86_64-linux-gnu library file.",
+    "ln avc_allowed /usr/lib/locale/locale-archive.",
+    "ln avc_allowed alias file.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_IDENTIFICATION.",
+    "ln avc_allowed x86_64-linux-gnu library file.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_MEASUREMENT.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_TELEPHONE.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_ADDRESS.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_NAME.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_PAPER.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_MONETARY.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_COLLATE.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_TIME.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_NUMERIC.",
+    "ln avc_allowed /usr/lib/locale/C.utf8/LC_CTYPE.",
+    "ln avc_allowed /dev/urandom.",
+    "ln avc_allowed /home/judy/.local/bin/CuFwDzZ2.",
+    "ln avc_allowed /home/judy/.local/bin/firefox."
+  ]
+}

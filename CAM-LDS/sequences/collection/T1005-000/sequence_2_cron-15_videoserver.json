@@ -1,0 +1,12 @@
+{
+  "tactic": "Collection",
+  "technique": "T1005-000",
+  "step": "2_cron-15",
+  "host": "videoserver",
+  "n_triples": 3,
+  "sequence": [
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address."
+  ]
+}

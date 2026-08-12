@@ -1,0 +1,29 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-004",
+  "step": "6_macro_binary-9",
+  "host": "client",
+  "n_triples": 20,
+  "sequence": [
+    "stty avc_allowed x86_64-linux-gnu library file.",
+    "stty avc_allowed cache file.",
+    "stty avc_allowed x86_64-linux-gnu library file.",
+    "stty avc_allowed x86_64-linux-gnu library file.",
+    "stty avc_allowed /usr/lib/locale/locale-archive.",
+    "stty avc_allowed alias file.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_IDENTIFICATION.",
+    "stty avc_allowed x86_64-linux-gnu library file.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_MEASUREMENT.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_TELEPHONE.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_ADDRESS.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_NAME.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_PAPER.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_MONETARY.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_COLLATE.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_TIME.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_NUMERIC.",
+    "stty avc_allowed /usr/lib/locale/C.utf8/LC_CTYPE."
+  ]
+}

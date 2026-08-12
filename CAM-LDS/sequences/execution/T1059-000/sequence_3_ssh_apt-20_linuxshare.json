@@ -1,0 +1,11 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-000",
+  "step": "3_ssh_apt-20",
+  "host": "linuxshare",
+  "n_triples": 2,
+  "sequence": [
+    "pid:2433 execve /usr/bin/python3.11.",
+    "/usr/bin/python3.11 execve /usr/bin/bash."
+  ]
+}

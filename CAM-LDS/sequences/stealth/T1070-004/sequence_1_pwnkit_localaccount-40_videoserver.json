@@ -1,0 +1,12 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1070-004",
+  "step": "1_pwnkit_localaccount-40",
+  "host": "videoserver",
+  "n_triples": 3,
+  "sequence": [
+    "pid:16915 execve /usr/bin/rm.",
+    "pid:2732 execve /usr/bin/rm.",
+    "pid:2732 execve /usr/bin/rm."
+  ]
+}

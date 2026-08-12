@@ -1,0 +1,15 @@
+{
+  "tactic": "Privilege_Escalation",
+  "technique": "T1548-003",
+  "step": "4-7",
+  "host": "inetfw",
+  "n_triples": 6,
+  "sequence": [
+    "pid:4139 execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat conf file.",
+    "/usr/bin/sudo fchown syscall:fchown.",
+    "/usr/bin/sudo chown /run/sudo/ts.",
+    "/usr/bin/sudo openat shadow file."
+  ]
+}

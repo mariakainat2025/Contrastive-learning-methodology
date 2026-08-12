@@ -1,0 +1,13 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1018-000",
+  "step": "2_cron-19",
+  "host": "videoserver",
+  "n_triples": 4,
+  "sequence": [
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address.",
+    "/usr/bin/zmcontroller connect external network address."
+  ]
+}

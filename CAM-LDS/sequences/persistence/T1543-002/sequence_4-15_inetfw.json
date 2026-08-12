@@ -1,0 +1,31 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1543-002",
+  "step": "4-15",
+  "host": "inetfw",
+  "n_triples": 22,
+  "sequence": [
+    "pid:4162 execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat conf file.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:root.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo user_end acct:root.",
+    "/usr/bin/sudo cred_disp acct:root.",
+    "/usr/bin/sudo connect DynamicUser file.",
+    "/usr/bin/sudo chown /dev/pts/2.",
+    "/usr/bin/sudo openat /var/run/utmp.",
+    "/usr/bin/sudo openat /var/run/utmp.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "acct:root sudo_cmd systemctl start auditf.service.",
+    "pid:4246 execve /usr/bin/systemctl.",
+    "/usr/bin/systemctl connect /run/systemd/private.",
+    "/usr/lib/systemd/systemd connect /run/systemd/journal/stdout.",
+    "/usr/lib/systemd/systemd execve /usr/bin/auditf.",
+    "/usr/lib/systemd/systemd service_start unit:auditf.",
+    "/usr/bin/systemd-tty-ask-password-agent execve_fail /bin/systemd-tty-ask-password-agent [not found].",
+    "uid:0 anom_promiscuous iface:ens3."
+  ]
+}

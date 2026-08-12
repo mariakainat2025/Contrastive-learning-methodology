@@ -1,0 +1,11 @@
+{
+  "tactic": "Lateral_Movement",
+  "technique": "T1550-001",
+  "step": "5-3",
+  "host": "videoserver",
+  "n_triples": 2,
+  "sequence": [
+    "/usr/sbin/apache2 connect var run sock file.",
+    "/usr/sbin/apache2 connect var run sock file."
+  ]
+}

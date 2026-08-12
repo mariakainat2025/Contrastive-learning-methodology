@@ -1,0 +1,27 @@
+{
+  "tactic": "Defense_Impairment",
+  "technique": "T1599-000",
+  "step": "4-17",
+  "host": "inetfw",
+  "n_triples": 18,
+  "sequence": [
+    "/usr/bin/systemp execve /usr/bin/sudo.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/systemp connect external network address.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat conf file.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:root.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo user_end acct:root.",
+    "/usr/bin/sudo cred_disp acct:root.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "/usr/bin/sudo execve /usr/bin/sed.",
+    "acct:root sudo_cmd sed -i /# Kafka Ports/i\\ACCEPT dmz lan:$LINUXSHARE tcp  22  -   -   - /etc/shorewall/rules."
+  ]
+}

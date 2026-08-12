@@ -1,0 +1,17 @@
+{
+  "tactic": "Persistence",
+  "technique": "T1078-003",
+  "step": "4-20",
+  "host": "linuxshare",
+  "n_triples": 8,
+  "sequence": [
+    "pid:599 execve /usr/sbin/sshd.",
+    "/usr/sbin/sshd connect syscall:connect.",
+    "/usr/sbin/sshd connect syscall:connect.",
+    "/usr/sbin/sshd connect internal network address.",
+    "/usr/sbin/sshd openat allow file.",
+    "/usr/sbin/sshd openat deny file.",
+    "/usr/sbin/sshd setgid_fail syscall:setgid.",
+    "/usr/sbin/sshd setuid_fail syscall:setuid."
+  ]
+}

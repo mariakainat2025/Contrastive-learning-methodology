@@ -1,0 +1,11 @@
+{
+  "tactic": "Reconnaissance",
+  "technique": "T1592-002",
+  "step": "7-4",
+  "host": "docker",
+  "n_triples": 2,
+  "sequence": [
+    "/usr/sbin/apache2 connect internal network address.",
+    "/usr/sbin/apache2 connect internal network address."
+  ]
+}

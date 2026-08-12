@@ -1,0 +1,13 @@
+{
+  "tactic": "Collection",
+  "technique": "T1115-000",
+  "step": "6_plugin-37",
+  "host": "client",
+  "n_triples": 4,
+  "sequence": [
+    "/home/judy/.local/share/firefox/firefox-bin rename /home/judy/.mozilla/firefox/6l8yc87o.dev-edition-default/datareporting/aborted-session-ping.",
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin connect internal network address.",
+    "/home/judy/.local/share/firefox/firefox-bin rename user .mozilla data.safe bin file."
+  ]
+}

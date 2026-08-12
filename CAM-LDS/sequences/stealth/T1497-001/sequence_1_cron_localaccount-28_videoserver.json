@@ -1,0 +1,26 @@
+{
+  "tactic": "Stealth",
+  "technique": "T1497-001",
+  "step": "1_cron_localaccount-28",
+  "host": "videoserver",
+  "n_triples": 17,
+  "sequence": [
+    "pid:17500 execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:webadmin.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo user_end acct:root.",
+    "/usr/bin/sudo cred_disp acct:root.",
+    "/usr/bin/sudo execve /usr/bin/find.",
+    "acct:webadmin sudo_cmd find /usr -name *virtualbox*.",
+    "/usr/sbin/sshd setregid syscall:setregid.",
+    "/usr/sbin/sshd setregid syscall:setregid.",
+    "/usr/sbin/sshd setreuid syscall:setreuid.",
+    "/usr/sbin/sshd connect /run/dbus/system_bus_socket.",
+    "/usr/sbin/sshd user_end acct:webadmin.",
+    "/usr/sbin/sshd cred_disp acct:webadmin."
+  ]
+}

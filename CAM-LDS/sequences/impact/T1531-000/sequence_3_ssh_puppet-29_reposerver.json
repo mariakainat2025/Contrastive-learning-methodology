@@ -1,0 +1,11 @@
+{
+  "tactic": "Impact",
+  "technique": "T1531-000",
+  "step": "3_ssh_puppet-29",
+  "host": "reposerver",
+  "n_triples": 2,
+  "sequence": [
+    "/usr/sbin/vsftpd setgid syscall:setgid.",
+    "/usr/sbin/vsftpd setuid syscall:setuid."
+  ]
+}

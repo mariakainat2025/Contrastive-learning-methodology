@@ -1,0 +1,10 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-000",
+  "step": "3_ssh_apt-23",
+  "host": "linuxshare",
+  "n_triples": 1,
+  "sequence": [
+    "pid:2520 execve /usr/bin/stty."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "tactic": "Execution",
+  "technique": "T1059-004",
+  "step": "6_macro_binary-5",
+  "host": "client",
+  "n_triples": 5,
+  "sequence": [
+    "python3 avc_allowed /proc/4554/fd/.",
+    "sh avc_allowed x86_64-linux-gnu library file.",
+    "sh avc_allowed cache file.",
+    "sh avc_allowed x86_64-linux-gnu library file.",
+    "sh avc_allowed x86_64-linux-gnu library file."
+  ]
+}

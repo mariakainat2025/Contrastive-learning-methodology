@@ -1,0 +1,20 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1120-000",
+  "step": "1_cron_localaccount-25",
+  "host": "videoserver",
+  "n_triples": 11,
+  "sequence": [
+    "pid:17500 execve /usr/bin/sudo.",
+    "/usr/bin/sudo openat sudoers file.",
+    "/usr/bin/sudo openat shadow file.",
+    "/usr/bin/sudo user_acct acct:webadmin.",
+    "/usr/bin/sudo setgid syscall:setgid.",
+    "/usr/bin/sudo cred_refr acct:root.",
+    "/usr/bin/sudo user_start acct:root.",
+    "/usr/bin/sudo user_end acct:root.",
+    "/usr/bin/sudo cred_disp acct:root.",
+    "/usr/bin/sudo execve /usr/bin/lspci.",
+    "acct:webadmin sudo_cmd lspci."
+  ]
+}

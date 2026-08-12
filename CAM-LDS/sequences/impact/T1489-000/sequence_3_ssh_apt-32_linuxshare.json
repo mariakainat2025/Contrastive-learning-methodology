@@ -1,0 +1,20 @@
+{
+  "tactic": "Impact",
+  "technique": "T1489-000",
+  "step": "3_ssh_apt-32",
+  "host": "linuxshare",
+  "n_triples": 11,
+  "sequence": [
+    "pid:2520 execve /usr/bin/systemctl.",
+    "/usr/bin/systemctl connect /run/systemd/private.",
+    "/usr/bin/systemctl execve /usr/bin/systemd-tty-ask-password-agent.",
+    "/usr/lib/systemd/systemd connect /run/systemd/journal/stdout.",
+    "/usr/lib/systemd/systemd execve /usr/bin/dash.",
+    "/usr/lib/systemd/systemd service_stop unit:exim4.",
+    "/usr/bin/dash execve /usr/bin/run-parts.",
+    "/usr/bin/dash execve /usr/bin/systemctl.",
+    "/usr/bin/dash execve /usr/sbin/start-stop-daemon.",
+    "/usr/bin/systemctl connect /run/systemd/private.",
+    "pid:903 execve /usr/sbin/exim4."
+  ]
+}

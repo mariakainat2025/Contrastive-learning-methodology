@@ -1,0 +1,18 @@
+{
+  "tactic": "Discovery",
+  "technique": "T1018-000",
+  "step": "2_cron-21",
+  "host": "videoserver",
+  "n_triples": 9,
+  "sequence": [
+    "/usr/bin/zmcontroller execve /tmp/nmap.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect internal network address.",
+    "/usr/bin/zmcontroller connect external network address.",
+    "/tmp/nmap connect internal network address.",
+    "/tmp/nmap connect internal network address.",
+    "/usr/sbin/sshd connect /run/dbus/system_bus_socket.",
+    "/usr/sbin/sshd user_end acct:root.",
+    "/usr/sbin/sshd cred_disp acct:root."
+  ]
+}

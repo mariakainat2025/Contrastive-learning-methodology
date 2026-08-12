@@ -1,0 +1,20 @@
+{
+  "tactic": "Credential_Access",
+  "technique": "T1556-003",
+  "step": "1_pwnkit_pam-42",
+  "host": "videoserver",
+  "n_triples": 11,
+  "sequence": [
+    "pid:17157 execve /usr/bin/split.",
+    "/usr/bin/split execve /usr/bin/dash.",
+    "/usr/bin/dash execve /usr/bin/xargs.",
+    "/usr/bin/dash execve /usr/bin/cat.",
+    "/usr/bin/xargs execve /usr/bin/bash.",
+    "/usr/bin/xargs execve /usr/bin/mv.",
+    "/usr/bin/xargs execve_fail /usr/local/sbin/bash [not found].",
+    "/usr/bin/xargs execve_fail /usr/local/bin/bash [not found].",
+    "/usr/bin/xargs execve_fail /usr/sbin/bash [not found].",
+    "/usr/bin/mv execve /usr/bin/wget.",
+    "/usr/bin/wget connect external network address."
+  ]
+}

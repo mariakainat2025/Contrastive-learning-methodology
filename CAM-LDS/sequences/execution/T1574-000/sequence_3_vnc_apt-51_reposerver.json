@@ -1,0 +1,18 @@
+{
+  "tactic": "Execution",
+  "technique": "T1574-000",
+  "step": "3_vnc_apt-51",
+  "host": "reposerver",
+  "n_triples": 9,
+  "sequence": [
+    "pid:4269 execve /usr/bin/dpkg-deb.",
+    "/usr/bin/dpkg-deb execve /usr/bin/tar.",
+    "/usr/bin/dpkg-deb execve /usr/bin/tar.",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/bin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/sbin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/local/bin/tar [not found].",
+    "/usr/bin/dpkg-deb execve_fail /usr/sbin/tar [not found]."
+  ]
+}
