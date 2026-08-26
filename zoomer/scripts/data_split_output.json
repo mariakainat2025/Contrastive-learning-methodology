@@ -1,0 +1,1474 @@
+{
+  "seed": 0,
+  "min_train_samples": 4,
+  "test_fraction": 0.2,
+  "single_label_techniques": {
+    "T1105-000": {
+      "train": [
+        {
+          "filename": "graph_1_pwnkit_localaccount-38_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_localaccount-38_videoserver.json"
+        },
+        {
+          "filename": "graph_2_cron-3_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_2_cron-3_videoserver.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_pam-41_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_pam-41_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-11_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_macro_binary-11_client.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-35_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_localaccount-35_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-14_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-14_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-49_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-49_client.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-1_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_macro_binary-1_client.json"
+        },
+        {
+          "filename": "graph_2_rootkit-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_2_rootkit-23_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-39_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-39_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_screensharing_binary-53_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-53_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-4_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-4_client.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-25_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_3_ssh_apt-25_linuxshare.json"
+        }
+      ],
+      "tactic": "command_and_control"
+    },
+    "T1219-000": {
+      "train": [
+        {
+          "filename": "graph_6_screensharing_binary-44_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-44_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-51_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-51_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-46_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-46_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-47_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-47_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-43_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-43_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-57_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-57_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_screensharing_binary-45_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-45_videoserver.json"
+        }
+      ],
+      "tactic": "command_and_control"
+    },
+    "T1548-003": {
+      "train": [
+        {
+          "filename": "graph_4-8_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_4-8_inetfw.json"
+        },
+        {
+          "filename": "graph_1_sudo_sshkey-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_sshkey-53_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_localaccount-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_localaccount-53_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_sshkey-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_sshkey-54_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_pam-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_pam-54_videoserver.json"
+        },
+        {
+          "filename": "graph_4-7_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_4-7_inetfw.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_sudo_pam-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_pam-53_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_localaccount-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_localaccount-54_videoserver.json"
+        }
+      ],
+      "tactic": "privilege_escalation"
+    },
+    "T1078-003": {
+      "train": [
+        {
+          "filename": "graph_3_ssh_apt-4_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_apt-4_reposerver.json"
+        },
+        {
+          "filename": "graph_4-19_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-19_reposerver.json"
+        },
+        {
+          "filename": "graph_4-3_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-3_reposerver.json"
+        },
+        {
+          "filename": "graph_4-5_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-5_reposerver.json"
+        },
+        {
+          "filename": "graph_4-21_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-21_linuxshare.json"
+        },
+        {
+          "filename": "graph_1_validaccount_localaccount-56_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_1_validaccount_localaccount-56_videoserver.json"
+        },
+        {
+          "filename": "graph_4-6_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-6_linuxshare.json"
+        },
+        {
+          "filename": "graph_1_validaccount_localaccount-55_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_1_validaccount_localaccount-55_videoserver.json"
+        },
+        {
+          "filename": "graph_4-20_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-20_linuxshare.json"
+        },
+        {
+          "filename": "graph_4-4_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-4_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_ssh_puppet-37_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_puppet-37_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-5_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_apt-5_reposerver.json"
+        }
+      ],
+      "tactic": "initial_access"
+    },
+    "T1053-003": {
+      "train": [
+        {
+          "filename": "graph_6_macro_binary-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-22_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-20_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-20_client.json"
+        },
+        {
+          "filename": "graph_6_macro_cron-24_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_cron-24_client.json"
+        },
+        {
+          "filename": "graph_7-10_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_7-10_docker.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-22_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-20_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-20_client.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-16_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_3_ssh_apt-16_reposerver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-21_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-21_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-21_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-21_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-24_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-24_client.json"
+        }
+      ],
+      "tactic": "execution"
+    },
+    "T1546-000": {
+      "train": [
+        {
+          "filename": "graph_1_racecondition_localaccount-52_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-52_videoserver.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-49_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-49_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-12_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_6_macro_binary-12_client.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-48_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-48_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_racecondition_localaccount-50_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-50_videoserver.json"
+        }
+      ],
+      "tactic": "persistence"
+    },
+    "T1543-002": {
+      "train": [
+        {
+          "filename": "graph_2_rootkit-26_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-26_videoserver.json"
+        },
+        {
+          "filename": "graph_4-13_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-13_linuxshare.json"
+        },
+        {
+          "filename": "graph_4-14_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-14_inetfw.json"
+        },
+        {
+          "filename": "graph_4-12_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-12_inetfw.json"
+        },
+        {
+          "filename": "graph_2_rootkit-28_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-28_videoserver.json"
+        },
+        {
+          "filename": "graph_4-15_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-15_inetfw.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_rootkit-29_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-29_videoserver.json"
+        }
+      ],
+      "tactic": "persistence"
+    },
+    "T1056-001": {
+      "train": [
+        {
+          "filename": "graph_6_plugin-32_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-32_videoserver.json"
+        },
+        {
+          "filename": "graph_6_plugin-28_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-28_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-34_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-34_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-33_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-33_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-29_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-29_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-26_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-26_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_plugin-30_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-30_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-31_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-31_client.json"
+        }
+      ],
+      "tactic": "collection"
+    },
+    "T1059-004": {
+      "train": [
+        {
+          "filename": "graph_3_ssh_puppet-40_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_ssh_puppet-40_linuxshare.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-5_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-5_client.json"
+        },
+        {
+          "filename": "graph_7-6_docker-log.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_7-6_docker-log.json"
+        },
+        {
+          "filename": "graph_3_vnc_puppet-60_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_vnc_puppet-60_linuxshare.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-9_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-9_client.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-6_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-6_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-59_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_screensharing_binary-59_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_vnc_apt-49_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_vnc_apt-49_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-10_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_ssh_apt-10_reposerver.json"
+        }
+      ],
+      "tactic": "execution"
+    },
+    "T1036-005": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_apt-50_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_3_vnc_apt-50_reposerver.json"
+        },
+        {
+          "filename": "graph_4-9_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_4-9_inetfw.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-11_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_3_ssh_apt-11_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_4-16_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_4-16_inetfw.json"
+        }
+      ],
+      "tactic": "stealth"
+    },
+    "T1018-000": {
+      "train": [
+        {
+          "filename": "graph_2_cron-20_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-20_videoserver.json"
+        },
+        {
+          "filename": "graph_2_cron-21_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-21_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-27_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_3_ssh_apt-27_linuxshare.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_cron-19_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-19_videoserver.json"
+        }
+      ],
+      "tactic": "discovery"
+    },
+    "T1059-000": {
+      "train": [
+        {
+          "filename": "graph_3_ssh_apt-20_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-20_linuxshare.json"
+        },
+        {
+          "filename": "graph_1_autostart_localaccount-7_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-7_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-23_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-23_linuxshare.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-33_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_cron_localaccount-33_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-14_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-14_reposerver.json"
+        },
+        {
+          "filename": "graph_1_autostart_localaccount-12_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-12_videoserver.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-46_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_racecondition_localaccount-46_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_autostart_localaccount-10_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-10_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-19_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-19_linuxshare.json"
+        }
+      ],
+      "tactic": "execution"
+    },
+    "T1070-004": {
+      "train": [
+        {
+          "filename": "graph_4-10_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_4-10_inetfw.json"
+        },
+        {
+          "filename": "graph_2_cron-14_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_2_cron-14_videoserver.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-40_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_1_pwnkit_localaccount-40_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_cron_localaccount-34_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_1_cron_localaccount-34_videoserver.json"
+        }
+      ],
+      "tactic": "stealth"
+    },
+    "T1003-008": {
+      "train": [
+        {
+          "filename": "graph_7-13_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_7-13_docker.json"
+        },
+        {
+          "filename": "graph_2_cron-11_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_2_cron-11_videoserver.json"
+        },
+        {
+          "filename": "graph_2_cron-17_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_2_cron-17_videoserver.json"
+        },
+        {
+          "filename": "graph_3_vnc_apt-45_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_3_vnc_apt-45_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_ssh_puppet-6_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_3_ssh_puppet-6_reposerver.json"
+        }
+      ],
+      "tactic": "credential_access"
+    },
+    "T1083-000": {
+      "train": [
+        {
+          "filename": "graph_3_ssh_apt-9_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_3_ssh_apt-9_reposerver.json"
+        },
+        {
+          "filename": "graph_7-11_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_7-11_docker.json"
+        },
+        {
+          "filename": "graph_3_vnc_apt-48_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_3_vnc_apt-48_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_cron-5_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_2_cron-5_videoserver.json"
+        }
+      ],
+      "tactic": "discovery"
+    },
+    "T1033-000": {
+      "train": [
+        {
+          "filename": "graph_1_racecondition_localaccount-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_racecondition_localaccount-23_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-13_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-13_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-20_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-20_videoserver.json"
+        },
+        {
+          "filename": "graph_7-7_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_7-7_docker.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-37_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_pwnkit_localaccount-37_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-23_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_racecondition_localaccount-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_racecondition_localaccount-22_videoserver.json"
+        }
+      ],
+      "tactic": "discovery"
+    }
+  },
+  "multi_label_techniques": {
+    "T1222-002": {
+      "train": [
+        {
+          "filename": "graph_6_screensharing_binary-51_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/defense_impairment/T1222-002/graph_6_screensharing_binary-51_client.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-13_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/defense_impairment/T1222-002/graph_6_macro_binary-13_client.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-17_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/defense_impairment/T1222-002/graph_6_macro_binary-17_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-18_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/defense_impairment/T1222-002/graph_6_macro_binary-18_client.json"
+        }
+      ]
+    },
+    "T1548-003": {
+      "train": [
+        {
+          "filename": "graph_1_sudo_localaccount-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_localaccount-54_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_sshkey-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_sshkey-53_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_pam-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_pam-53_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_pam-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_pam-54_videoserver.json"
+        },
+        {
+          "filename": "graph_1_sudo_localaccount-53_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_localaccount-53_videoserver.json"
+        },
+        {
+          "filename": "graph_4-7_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_4-7_inetfw.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_4-8_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_4-8_inetfw.json"
+        },
+        {
+          "filename": "graph_1_sudo_sshkey-54_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1548-003/graph_1_sudo_sshkey-54_videoserver.json"
+        }
+      ]
+    },
+    "T1078-003": {
+      "train": [
+        {
+          "filename": "graph_4-5_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-5_reposerver.json"
+        },
+        {
+          "filename": "graph_4-20_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-20_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-5_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_apt-5_reposerver.json"
+        },
+        {
+          "filename": "graph_4-3_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-3_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-4_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_apt-4_reposerver.json"
+        },
+        {
+          "filename": "graph_4-4_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-4_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_puppet-37_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_3_ssh_puppet-37_reposerver.json"
+        },
+        {
+          "filename": "graph_1_validaccount_localaccount-55_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_1_validaccount_localaccount-55_videoserver.json"
+        },
+        {
+          "filename": "graph_1_validaccount_localaccount-56_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_1_validaccount_localaccount-56_videoserver.json"
+        },
+        {
+          "filename": "graph_4-19_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-19_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_4-6_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-6_linuxshare.json"
+        },
+        {
+          "filename": "graph_4-21_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1078-003/graph_4-21_linuxshare.json"
+        }
+      ]
+    },
+    "T1053-003": {
+      "train": [
+        {
+          "filename": "graph_6_macro_binary-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-22_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-20_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-20_client.json"
+        },
+        {
+          "filename": "graph_6_macro_cron-24_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_cron-24_client.json"
+        },
+        {
+          "filename": "graph_7-10_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_7-10_docker.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-22_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-20_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-20_client.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-16_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_3_ssh_apt-16_reposerver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-21_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-21_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-21_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1053-003/graph_6_macro_binary-21_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_cron-24_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1053-003/graph_6_screensharing_cron-24_client.json"
+        }
+      ]
+    },
+    "T1546-000": {
+      "train": [
+        {
+          "filename": "graph_1_racecondition_localaccount-49_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-49_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-12_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_6_macro_binary-12_client.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-50_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-50_videoserver.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-48_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-48_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_racecondition_localaccount-52_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1546-000/graph_1_racecondition_localaccount-52_videoserver.json"
+        }
+      ]
+    },
+    "T1543-002": {
+      "train": [
+        {
+          "filename": "graph_4-13_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-13_linuxshare.json"
+        },
+        {
+          "filename": "graph_2_rootkit-26_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-26_videoserver.json"
+        },
+        {
+          "filename": "graph_4-14_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-14_inetfw.json"
+        },
+        {
+          "filename": "graph_4-12_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-12_inetfw.json"
+        },
+        {
+          "filename": "graph_2_rootkit-28_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-28_videoserver.json"
+        },
+        {
+          "filename": "graph_4-15_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_4-15_inetfw.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_rootkit-29_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/privilege_escalation/T1543-002/graph_2_rootkit-29_videoserver.json"
+        }
+      ]
+    },
+    "T1056-004": {
+      "train": [
+        {
+          "filename": "graph_6_plugin-28_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-28_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-26_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-26_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-34_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-34_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-33_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-33_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-29_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-29_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-35_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-35_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_plugin-30_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-004/graph_6_plugin-30_client.json"
+        }
+      ]
+    },
+    "T1115-000": {
+      "train": [
+        {
+          "filename": "graph_6_plugin-28_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-28_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-26_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-26_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-29_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-29_client.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-15_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_macro_binary-15_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-36_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-36_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-37_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-37_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_plugin-30_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1115-000/graph_6_plugin-30_client.json"
+        }
+      ]
+    },
+    "T1056-001": {
+      "train": [
+        {
+          "filename": "graph_6_plugin-26_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-26_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-28_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-28_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-31_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-31_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-33_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-33_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-29_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-29_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-34_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-34_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_plugin-30_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-30_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-32_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/collection/T1056-001/graph_6_plugin-32_videoserver.json"
+        }
+      ]
+    },
+    "T1219-000": {
+      "train": [
+        {
+          "filename": "graph_6_screensharing_binary-49_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-49_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-59_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-59_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-53_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-53_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-47_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-47_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-57_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-57_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-43_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-43_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-44_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-44_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-45_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-45_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-51_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-51_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_screensharing_binary-46_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-46_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-41_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1219-000/graph_6_screensharing_binary-41_client.json"
+        }
+      ]
+    },
+    "T1105-000": {
+      "train": [
+        {
+          "filename": "graph_4-3_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_4-3_reposerver.json"
+        },
+        {
+          "filename": "graph_2_cron-19_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_2_cron-19_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_puppet-40_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_3_ssh_puppet-40_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-16_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_3_ssh_apt-16_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-25_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_3_ssh_apt-25_linuxshare.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-53_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-53_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-49_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-49_client.json"
+        },
+        {
+          "filename": "graph_2_cron-3_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_2_cron-3_videoserver.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-35_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_localaccount-35_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-14_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-14_videoserver.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-4_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-4_client.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_pam-41_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_pam-41_videoserver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-11_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_macro_binary-11_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-39_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_screensharing_binary-39_videoserver.json"
+        },
+        {
+          "filename": "graph_2_rootkit-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_2_rootkit-23_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_vnc_puppet-60_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_3_vnc_puppet-60_linuxshare.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-1_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_6_macro_binary-1_client.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_sshkey-43_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_sshkey-43_videoserver.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-38_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/command_and_control/T1105-000/graph_1_pwnkit_localaccount-38_videoserver.json"
+        }
+      ]
+    },
+    "T1574-000": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_apt-51_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1574-000/graph_3_vnc_apt-51_reposerver.json"
+        },
+        {
+          "filename": "graph_2_rootkit-27_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1574-000/graph_2_rootkit-27_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-12_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1574-000/graph_3_ssh_apt-12_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_ssh_apt-14_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1574-000/graph_3_ssh_apt-14_reposerver.json"
+        }
+      ]
+    },
+    "T1072-000": {
+      "train": [
+        {
+          "filename": "graph_3_ssh_puppet-40_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1072-000/graph_3_ssh_puppet-40_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-18_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1072-000/graph_3_ssh_apt-18_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-17_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1072-000/graph_3_ssh_apt-17_reposerver.json"
+        },
+        {
+          "filename": "graph_3_vnc_apt-54_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1072-000/graph_3_vnc_apt-54_linuxshare.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_vnc_puppet-60_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1072-000/graph_3_vnc_puppet-60_linuxshare.json"
+        }
+      ]
+    },
+    "T1059-004": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_apt-49_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_vnc_apt-49_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_puppet-40_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_ssh_puppet-40_linuxshare.json"
+        },
+        {
+          "filename": "graph_7-6_docker-log.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_7-6_docker-log.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-6_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-6_client.json"
+        },
+        {
+          "filename": "graph_6_screensharing_binary-59_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_screensharing_binary-59_client.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-10_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_ssh_apt-10_reposerver.json"
+        },
+        {
+          "filename": "graph_6_macro_binary-5_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-5_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-9_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_6_macro_binary-9_client.json"
+        },
+        {
+          "filename": "graph_3_vnc_puppet-60_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-004/graph_3_vnc_puppet-60_linuxshare.json"
+        }
+      ]
+    },
+    "T1059-000": {
+      "train": [
+        {
+          "filename": "graph_1_autostart_localaccount-12_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-12_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-23_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-23_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-20_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-20_linuxshare.json"
+        },
+        {
+          "filename": "graph_1_autostart_localaccount-10_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-10_videoserver.json"
+        },
+        {
+          "filename": "graph_1_racecondition_localaccount-46_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_racecondition_localaccount-46_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-33_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_cron_localaccount-33_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-19_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-19_linuxshare.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_autostart_localaccount-7_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_1_autostart_localaccount-7_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-14_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/execution/T1059-000/graph_3_ssh_apt-14_reposerver.json"
+        }
+      ]
+    },
+    "T1070-004": {
+      "train": [
+        {
+          "filename": "graph_1_pwnkit_localaccount-40_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_1_pwnkit_localaccount-40_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-34_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_1_cron_localaccount-34_videoserver.json"
+        },
+        {
+          "filename": "graph_2_cron-14_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_2_cron-14_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_4-10_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1070-004/graph_4-10_inetfw.json"
+        }
+      ]
+    },
+    "T1036-005": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_apt-50_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_3_vnc_apt-50_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-11_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_3_ssh_apt-11_reposerver.json"
+        },
+        {
+          "filename": "graph_4-16_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_4-16_inetfw.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_4-9_inetfw.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1036-005/graph_4-9_inetfw.json"
+        }
+      ]
+    },
+    "T1564-001": {
+      "train": [
+        {
+          "filename": "graph_6_screensharing_binary-49_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1564-001/graph_6_screensharing_binary-49_client.json"
+        },
+        {
+          "filename": "graph_3_vnc_apt-50_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1564-001/graph_3_vnc_apt-50_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-11_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1564-001/graph_3_ssh_apt-11_reposerver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-16_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/stealth/T1564-001/graph_6_macro_binary-16_client.json"
+        }
+      ]
+    },
+    "T1176-000": {
+      "train": [
+        {
+          "filename": "graph_6_plugin-29_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/persistence/T1176-000/graph_6_plugin-29_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-26_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/persistence/T1176-000/graph_6_plugin-26_client.json"
+        },
+        {
+          "filename": "graph_6_plugin-28_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/persistence/T1176-000/graph_6_plugin-28_client.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_plugin-30_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/persistence/T1176-000/graph_6_plugin-30_client.json"
+        }
+      ]
+    },
+    "T1083-000": {
+      "train": [
+        {
+          "filename": "graph_1_autostart_localaccount-13_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_1_autostart_localaccount-13_videoserver.json"
+        },
+        {
+          "filename": "graph_7-11_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_7-11_docker.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-9_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_3_ssh_apt-9_reposerver.json"
+        },
+        {
+          "filename": "graph_2_cron-5_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_2_cron-5_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_vnc_apt-48_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1083-000/graph_3_vnc_apt-48_reposerver.json"
+        }
+      ]
+    },
+    "T1057-000": {
+      "train": [
+        {
+          "filename": "graph_7-12_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1057-000/graph_7-12_docker.json"
+        },
+        {
+          "filename": "graph_7-8_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1057-000/graph_7-8_docker.json"
+        },
+        {
+          "filename": "graph_1_autostart_localaccount-13_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1057-000/graph_1_autostart_localaccount-13_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_cron-6_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1057-000/graph_2_cron-6_videoserver.json"
+        }
+      ]
+    },
+    "T1033-000": {
+      "train": [
+        {
+          "filename": "graph_1_racecondition_localaccount-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_racecondition_localaccount-23_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-13_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-13_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-20_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-20_videoserver.json"
+        },
+        {
+          "filename": "graph_7-7_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_7-7_docker.json"
+        },
+        {
+          "filename": "graph_1_pwnkit_localaccount-37_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_pwnkit_localaccount-37_videoserver.json"
+        },
+        {
+          "filename": "graph_1_cron_localaccount-23_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_cron_localaccount-23_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_1_racecondition_localaccount-22_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1033-000/graph_1_racecondition_localaccount-22_videoserver.json"
+        }
+      ]
+    },
+    "T1082-000": {
+      "train": [
+        {
+          "filename": "graph_1_autostart_localaccount-13_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1082-000/graph_1_autostart_localaccount-13_videoserver.json"
+        },
+        {
+          "filename": "graph_4-22_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1082-000/graph_4-22_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_healthcheck-35_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1082-000/graph_3_ssh_healthcheck-35_linuxshare.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_6_macro_binary-3_client.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1082-000/graph_6_macro_binary-3_client.json"
+        }
+      ]
+    },
+    "T1018-000": {
+      "train": [
+        {
+          "filename": "graph_2_cron-20_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-20_videoserver.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-27_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_3_ssh_apt-27_linuxshare.json"
+        },
+        {
+          "filename": "graph_2_cron-19_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-19_videoserver.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_cron-21_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/discovery/T1018-000/graph_2_cron-21_videoserver.json"
+        }
+      ]
+    },
+    "T1003-008": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_apt-45_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_3_vnc_apt-45_reposerver.json"
+        },
+        {
+          "filename": "graph_3_ssh_puppet-6_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_3_ssh_puppet-6_reposerver.json"
+        },
+        {
+          "filename": "graph_2_cron-17_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_2_cron-17_videoserver.json"
+        },
+        {
+          "filename": "graph_7-13_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_7-13_docker.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_2_cron-11_videoserver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1003-008/graph_2_cron-11_videoserver.json"
+        }
+      ]
+    },
+    "T1110-001": {
+      "train": [
+        {
+          "filename": "graph_3_vnc_puppet-58_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1110-001/graph_3_vnc_puppet-58_linuxshare.json"
+        },
+        {
+          "filename": "graph_3_ssh_apt-1_reposerver.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1110-001/graph_3_ssh_apt-1_reposerver.json"
+        },
+        {
+          "filename": "graph_7-3_docker.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1110-001/graph_7-3_docker.json"
+        }
+      ],
+      "test": [
+        {
+          "filename": "graph_3_vnc_healthcheck-55_linuxshare.json",
+          "path": "/csse/research/contructive-learning/CAM-LDS/graphs/credential_access/T1110-001/graph_3_vnc_healthcheck-55_linuxshare.json"
+        }
+      ]
+    }
+  },
+  "zoomer_tactics": [
+    "collection",
+    "command_and_control",
+    "credential_access",
+    "discovery",
+    "execution",
+    "initial_access",
+    "persistence",
+    "privilege_escalation",
+    "stealth"
+  ],
+  "zoomer_test_instances": [
+    "1_autostart_localaccount-10",
+    "1_cron_localaccount-34",
+    "1_racecondition_localaccount-22",
+    "1_racecondition_localaccount-50",
+    "1_sudo_localaccount-54",
+    "1_sudo_pam-53",
+    "2_cron-19",
+    "2_cron-5",
+    "2_rootkit-29",
+    "3_ssh_apt-10",
+    "3_ssh_apt-19",
+    "3_ssh_apt-25",
+    "3_ssh_apt-5",
+    "3_ssh_puppet-37",
+    "3_ssh_puppet-6",
+    "3_vnc_apt-49",
+    "4-16",
+    "6_macro_binary-21",
+    "6_plugin-30",
+    "6_plugin-31",
+    "6_screensharing_binary-4",
+    "6_screensharing_binary-45",
+    "6_screensharing_binary-53",
+    "6_screensharing_cron-24"
+  ]
+}
