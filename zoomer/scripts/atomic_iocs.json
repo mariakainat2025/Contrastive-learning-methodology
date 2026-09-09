@@ -1,0 +1,3634 @@
+{
+  "by_tactic": {
+    "credential_access": {
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\gsecdump.exe": 1,
+        "C:\\Windows\\Temp\\lsass_dump.dmp": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\procdump.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\Outflank-Dumpert.exe": 1,
+        "%tmp%\\lsass.DMP": 1,
+        "C:\\Windows\\Temp\\xordump.exe": 1,
+        "C:\\Windows\\Temp\\lsass-xordump.t1003.001.dmp": 1,
+        "%temp%\\SilentProcessExit": 1,
+        "%SystemRoot%/system32/config/SAM": 1,
+        "C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\ntds_T1003": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1003.004\\bin\\PsExec.exe": 1,
+        "%tmp%\\mimikatz\\x64\\mimikatz.exe": 1,
+        "/tmp/T1003.007.bin": 3,
+        "/tmp/T1003.007.sh": 3,
+        "PathToAtomicsFolder/T1003.007/src/dump_heap.py": 1,
+        "/tmp/T1003.007Test3.txt": 1,
+        "PathToAtomicsFolder/../ExternalPayloads/mimipenguin/mimipenguin.sh": 1,
+        "/tmp/T1003.008.txt": 5,
+        "c:\\program files\\wireshark\\tshark.exe": 1,
+        "C:\\Program Files\\Npcap\\npcap.sys": 1,
+        "$env:TEMP\\key.log": 1,
+        "PathToAtomicsFolder/T1056.001/src/MacOSKeylogger.swift": 1,
+        "PathToAtomicsFolder\\T1056.004\\bin\\T1056.004x64.dll": 1,
+        "PathToAtomicsFolder\\T1110.001\\src\\passwords.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\PetitPotam.exe": 1,
+        "$env:temp/T1528_function_code.zip": 1,
+        "site/wwwroot/function_app.py": 1,
+        "$PathToAtomicsFolder/T1528/src/code_to_insert.py": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\sqlite-tools-win32-x86-3380200\\sqlite3.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1539FirefoxCookies.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1539ChromeCookies.txt": 1,
+        "/private/tmp": 1,
+        "$PathToAtomicsFolder/T1552/src": 1,
+        "~/loot.txt": 2,
+        "-e '-p ' -e 'pass' -e 'ssh": 2,
+        "~/.bash_history": 1,
+        "~/.history": 1,
+        "/": 7,
+        "/tmp/keyfile_locations.txt": 1,
+        "/tmp/art-staging": 4,
+        "/tmp/GnuPG": 2,
+        "c:\\temp\\atomic.pfx": 1,
+        "$env:Temp\\AtomicRedTeam.cer": 1,
+        "/tmp/T1552.005_aws_imds_creds.json": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\Get-GPPPassword.ps1": 1,
+        "/tmp/certs.pem": 2,
+        "/tmp/keychain": 1,
+        "PathToAtomicsFolder\\T1555.003\\bin\\LaZagne.exe": 1,
+        "/tmp/T1555.003_chrome_logins.txt": 1,
+        "C:\\ExternalPayloads\\Mimikatz\\x64\\mimikatz.exe": 1,
+        "C:\\ExternalPayloads\\Mimikatz\\mimikatz.zip": 1,
+        "C:\\ExternalPayloads\\Mimikatz": 1,
+        "PathToAtomicsFolder\\T1556.002\\bin": 2,
+        "PathToAtomicsFolder/T1556.003/src/pam_evil.c": 1,
+        "/tmp/pam_evil.so": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 2,
+        "$Env:temp": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads": 2,
+        ".\\ADFS_signing.pfx": 1
+      },
+      "ips": {
+        "10.0.0.3": 1,
+        "10.0.0.2": 1,
+        "169.254.169.254": 4
+      }
+    },
+    "collection": {
+      "file_paths": {
+        "/private/tmp": 1,
+        "Windows\\temp\\Easter_Bunny.password": 2,
+        "$env:TEMP\\key.log": 1,
+        "PathToAtomicsFolder/T1056.001/src/MacOSKeylogger.swift": 1,
+        "PathToAtomicsFolder\\T1056.004\\bin\\T1056.004x64.dll": 1,
+        "$env:TEMP\\discovery.bat": 1,
+        "/tmp/T1074.001_discovery.log": 1,
+        "$env:TEMP\\Folder_to_zip.zip": 1,
+        "PathToAtomicsFolder\\T1074.001\\bin\\Folder_to_zip": 1,
+        "/tmp/T1113_desktop.png": 4,
+        "/tmp/T1113_desktop.xwd": 2,
+        "c:\\temp\\T1113_desktop.zip": 1,
+        "$env:TEMP\\T1113.png": 1,
+        "$env:LOCALAPPDATA\\Microsoft\\Terminal Server Client\\Cache": 1,
+        "$env:TEMP\\rdp_screens": 1,
+        "PathToAtomicsFolder/T1123/src/T1123.sh": 1,
+        "/tmp/T1123.m4a": 1,
+        "$env:temp\\T1530_storage_account_objects": 1,
+        "$env:temp\\T1619_storage_account_objects.csv": 1,
+        "$env:USERPROFILE": 1,
+        "$env:USERPROFILE\\T1560-data-ps.zip": 1,
+        "%USERPROFILE%": 1,
+        "%USERPROFILE%\\T1560.001-data.rar": 1,
+        "%TEMP%\\winrar.exe": 2,
+        "%programfiles%/WinRAR/Rar.exe": 2,
+        "%ProgramFiles%\\\\WinZip\\\\winzip64.exe": 1,
+        "%TEMP%\\\\7zip.exe": 1,
+        "%ProgramFiles%\\\\7-zip\\\\7z.exe": 1,
+        "/var/log/{w,b}tmp": 1,
+        "$HOME/data.zip": 1,
+        "$HOME/victim-gzip.txt": 1,
+        "$HOME/$USERNAME": 1,
+        "$HOME/data.tar.gz": 1,
+        "/tmp/T1560": 1,
+        "T1560": 1,
+        "/tmp/t1560": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "C:\\Temp\\sam.hiv": 1,
+        "C:\\Temp\\art.zip": 1,
+        "$HOME/Library/Keychains": 1,
+        "/tmp/T1560.001_ditto_archive.zip": 1,
+        "/etc/passwd": 4,
+        "/tmp/passwd.gz": 1,
+        "/tmp/passwd.bz2": 1,
+        "/tmp/passwd.zip": 1,
+        "/tmp/passwd.tar.gz": 1
+      },
+      "ips": {}
+    },
+    "initial_access": {
+      "file_paths": {
+        "$env:TEMP\\ExplorerSync.db": 1
+      },
+      "ips": {
+        "8.8.8.8": 2
+      }
+    },
+    "stealth": {
+      "file_paths": {
+        "PathToAtomicsFolder/T1014/src/Linux": 2,
+        "PathToAtomicsFolder\\T1027\\src\\T1027-cc-macro.xlsm": 2,
+        "Atomic-license.txt": 1,
+        "/tmp/evil-binary": 2,
+        "PathToAtomicsFolder/T1027.002/bin/linux/test_upx": 1,
+        "PathToAtomicsFolder/T1027.002/bin/linux/test_upx_header_changed": 1,
+        "PathToAtomicsFolder/T1027.002/bin/darwin/test_upx": 1,
+        "PathToAtomicsFolder/T1027.002/bin/darwin/test_upx_header_changed": 1,
+        "C:\\Windows\\Temp\\T1027.004.exe": 1,
+        "PathToAtomicsFolder\\T1027.004\\src\\calc.cs": 1,
+        "PathToAtomicsFolder\\T1027.004\\bin\\T1027.004_DynamicCompile.exe": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.c": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.cc": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.go": 1,
+        "PathToAtomicsFolder\\T1027.007\\bin\\ninja_syscall1.exe": 1,
+        "[System.IO.Path]::Combine($env:USERPROFILE, \"Desktop\")": 1,
+        "[System.IO.Path]::Combine($env:USERPROFILE, \"Downloads\")": 1,
+        "($env:TEMP + \"\\svchost.exe\")": 2,
+        "PathToAtomicsFolder\\T1036.003\\bin\\T1036.003.exe": 1,
+        "$env:ComSpec": 1,
+        "/tmp/T1036_004_prctl_rename": 1,
+        "C:\\Windows\\System32\\calc.exe": 5,
+        "PathToAtomicsFolder\\T1036.007\\src\\T1036.007_masquerading.vbs": 1,
+        "PathToAtomicsFolder\\T1036.007\\src\\T1036.007_masquerading.ps1": 1,
+        "PathToAtomicsFolder\\T1055\\src\\x64\\T1055-macrocode.txt": 1,
+        "%tmp%\\mimikatz\\x64\\mimikatz.exe": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\vuln_dll\\msys-2.0.dll": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\uuid_injection.exe": 1,
+        "PathToAtomicsFolder\\T1055.001\\src\\x64\\T1055.001.dll": 1,
+        "PathToAtomicsFolder\\T1055.002\\bin\\RedInjection.exe": 1,
+        "PathToAtomicsFolder\\T1055.004\\bin\\T1055.exe": 1,
+        "PathToAtomicsFolder/T1055.009/bin/inplace_instruction_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/instruction_overwrite_jump": 1,
+        "PathToAtomicsFolder/T1055.009/bin/got_injection": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/rop_mprotect_return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite_fullROPchain": 1,
+        "PathToAtomicsFolder\\T1055.011\\bin\\T1055.011_#{arch}.exe": 1,
+        "PathToAtomicsFolder\\T1055.011\\bin\\payload.exe_#{arch}.bin": 1,
+        "PathToAtomicsFolder\\T1055.012\\src\\Start-Hollow.ps1": 1,
+        "PathToAtomicsFolder\\T1055.015\\bin\\ListPlanting.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1070-2.txt": 1,
+        "~/.bash_history": 5,
+        "/tmp/victim-files/": 1,
+        "/tmp/victim-files/T1070.004-test.txt": 1,
+        "/tmp/victim-folder": 1,
+        "/tmp/victim-shred.txt": 1,
+        "/tmp/T1070.006-access.txt": 1,
+        "/tmp/T1070.006-modification.txt": 1,
+        "/tmp/T1070.006-creation.txt": 1,
+        "/tmp/T1070.006-reference.txt": 1,
+        "/bin/sh": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1551.006_timestomp.txt": 3,
+        "/tmp/T1070.006-modified.txt": 1,
+        "PathToAtomicsFolder\\T1127\\src\\hello.js": 1,
+        "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319": 4,
+        "jsc.exe": 2,
+        "PathToAtomicsFolder\\T1127\\src\\LibHello.js": 1,
+        "PathToAtomicsFolder\\T1127.001\\src\\T1127.001.csproj": 1,
+        "msbuild.exe": 2,
+        "PathToAtomicsFolder\\T1127.001\\src\\vb.xml": 1,
+        "PathToAtomicsFolder\\T1134.001\\bin\\NSudoLG.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\JuicyPotato.exe": 1,
+        "$env:windir\\system32\\notepad.exe": 1,
+        "C:\\Program Files\\Internet Explorer\\iexplore.exe": 1,
+        "PathToAtomicsFolder\\T1134.004\\bin\\calc.dll": 1,
+        "$Env:windir\\System32\\WindowsPowerShell\\v1.0\\powershell.exe": 3,
+        "$Env:windir\\System32\\notepad.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 1,
+        "/tmp/T1140.encoded": 5,
+        "%TEMP%\\art-expand-test.cab": 1,
+        "%TEMP%\\art-expand-out": 1,
+        "%temp%\\bitsadmin1_flag.ps1": 1,
+        "$env:TEMP\\bitsadmin2_flag.ps1": 1,
+        "C:\\Windows\\system32\\notepad.exe": 1,
+        "%temp%\\bitsadmin3_flag.ps1": 1,
+        "SYSTEMROOT=C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\Personalization\\LockScreenImage": 1,
+        "%windir%\\System32\\calc.exe": 2,
+        "PathToAtomicsFolder\\T1218\\src\\x64\\T1218.dll": 1,
+        "PathToAtomicsFolder\\T1218\\src\\Win32\\T1218-2.dll": 1,
+        "PathToAtomicsFolder\\T1218\\src\\T1218.xml": 2,
+        "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319": 2,
+        "microsoft.workflow.compiler.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\svchost.exe": 1,
+        "PathToAtomicsFolder\\T1218\\src\\T1218.txt": 1,
+        "C:\\Windows\\System32\\diskshadow.exe": 1,
+        "PathToAtomicsFolder\\T1218\\src\\ieuinit.inf": 1,
+        "c:\\windows\\system32\\ie4uinit.exe": 1,
+        "C:\\test": 1,
+        "PathToAtomicsFolder\\T1218.001\\src\\T1218.001.chm": 2,
+        "$env:windir\\hh.exe": 4,
+        "PathToAtomicsFolder\\T1218.002\\bin\\calc.cpl": 1,
+        "PathToAtomicsFolder\\T1218.003\\src\\T1218.003.inf": 1,
+        "PathToAtomicsFolder\\T1218.003\\src\\T1218.003_uacbypass.inf": 1,
+        "PathToAtomicsFolder\\T1218.004\\src\\InstallUtilTestHarness.ps1": 8,
+        "$Env:TEMP\\": 7,
+        "$env:windir\\system32\\rundll32.exe": 1,
+        "$env:windir\\system32\\mshta.exe": 1,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_JScript.msi": 2,
+        "c:\\windows\\system32\\msiexec.exe": 7,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_VBScript.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_DLL.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_EXE.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\MSIRunner.dll": 2,
+        "PathToAtomicsFolder\\T1218.008\\src\\Win32\\T1218-2.dll": 1,
+        "%tmp%\\T1218.009.dll": 1,
+        "PathToAtomicsFolder\\T1218.009\\src\\T1218.009.cs": 2,
+        "$Env:TEMP\\T1218.009.dll": 1,
+        "PathToAtomicsFolder\\T1218.010\\src\\RegSvr32.sct": 1,
+        "C:\\Windows\\system32": 4,
+        "PathToAtomicsFolder\\T1218.010\\bin\\AllTheThingsx86.dll": 1,
+        "%temp%\\shell32.jpg": 1,
+        "%windir%\\System32\\notepad.exe": 1,
+        "%windir%\\\\System32\\\\calc.exe": 1,
+        "PathToAtomicsFolder\\T1220\\src\\msxslxmlfile.xml": 1,
+        "PathToAtomicsFolder\\T1220\\src\\msxslscript.xsl": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\msxsl.exe": 2,
+        "PathToAtomicsFolder\\T1220\\src\\wmicscript.xsl": 1,
+        "PathToAtomicsFolder\\T1221\\src\\Calculator.docx": 1,
+        "/tmp/evil": 1,
+        "c:\\ADS\\": 1,
+        "c:\\windows\\system32\\cmd.exe": 1,
+        "C:\\Users\\Public\\Libraries\\yanki\\desktop.ini": 1,
+        "PathToAtomicsFolder\\T1564.006\\bin\\Virtualbox_52.msi": 1,
+        "PathToAtomicsFolder\\T1564.006\\bin\\common.cab": 1,
+        "C:\\Program Files\\Oracle\\VirtualBox\\VirtualBox.exe": 1,
+        "C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe": 1,
+        "C:\\Temp\\ARTExclusionTest": 1,
+        "PathToAtomicsFolder\\T1574.002\\bin\\GUP.exe": 1,
+        "PathToAtomicsFolder\\T1574.002\\bin\\preloader.dll": 1,
+        "PathToAtomicsFolder\\T1574.001\\bin\\ntprint.dll": 1,
+        "PathToAtomicsFolder/T1574.006/src/Linux/T1574.006.c": 2,
+        "/tmp/T1574006.so": 2,
+        "/Applications/Firefox.app/Contents/MacOS/firefox": 1,
+        "PathToAtomicsFolder/T1574.006/src/MacOS/T1574.006.c": 1,
+        "/tmp/T1574006MOS.dylib": 1,
+        "PathToAtomicsFolder\\T1574.009\\bin\\WindowsServiceExample.exe": 1,
+        "PathToAtomicsFolder\\T1574.012\\bin\\T1574.012x64.dll": 3
+      },
+      "ips": {
+        "8.8.8.8": 1
+      }
+    },
+    "persistence": {
+      "file_paths": {
+        "/tmp/persistevil": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_005_WMI.xml": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml": 1,
+        "/etc/systemd/system/art-timer.service": 1,
+        "/etc/systemd/system/art-timer.timer": 1,
+        "$env:LOCALAPPDATA\\AtomicRedTeam\\$env:USERNAME.txt": 7,
+        "C:\\windows\\system32\\notepad.exe": 1,
+        "%temp%\\bitsadmin1_flag.ps1": 1,
+        "$env:TEMP\\bitsadmin2_flag.ps1": 1,
+        "C:\\Windows\\system32\\notepad.exe": 1,
+        "%temp%\\bitsadmin3_flag.ps1": 1,
+        "SYSTEMROOT=C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\Personalization\\LockScreenImage": 1,
+        "c:\\program files\\microsoft\\Exchange Server\\v15\\bin\\Microsoft.Exchange.Security.Interop.dll": 1,
+        "PathToAtomicsFolder\\T1505.003\\src": 1,
+        "%windir%\\system32\\inetsrv\\defdoc.dll": 2,
+        "$PathToAtomicsFolder/T1543.001/src/atomicredteam_T1543_001.plist": 1,
+        "/etc/emond.d/rules/atomicredteam_T1543_001.plist": 1,
+        "/etc/systemd/system": 1,
+        "/usr/local/etc/rc.d": 1,
+        "PathToAtomicsFolder\\T1543.003\\bin\\AtomicService.exe": 3,
+        "txtfile": 1,
+        "C:\\Windows\\System32\\cmd.exe": 7,
+        "PathToAtomicsFolder\\T1546.007\\bin\\NetshHelper.dll": 1,
+        "C:\\windows\\system32\\cmd.exe": 1,
+        "PathToAtomicsFolder\\T1546.009\\bin\\AtomicTest.dll": 1,
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010.reg": 1,
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010-cleanup.reg": 1,
+        "calc.exe": 2,
+        "notepad.exe": 1,
+        "PathToAtomicsFolder/T1546.014/src/T1546.014_emond.plist": 1,
+        "C:\\Windows\\INF\\usbstor.inf": 1,
+        "C:\\Windows\\INF\\acpipmi.inf": 1,
+        "C:\\Path\\AtomicRedTeam.exe": 1,
+        "C:\\Path\\AtomicRedTeam.dll": 1,
+        "powershell.exe": 1,
+        "HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce": 1,
+        "powershell.exe -windowstyle hidden -ExecutionPolicy Bypass -File": 1,
+        "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run": 1,
+        "C:\\Windows\\Temp\\atomicNotificationPackage.dll": 1,
+        "/tmp/T1547.006/T1547006.ko": 1,
+        "/tmp/T1547.006": 1,
+        "PathToAtomicsFolder/T1547.006/src": 1,
+        "/Library/Extensions/SoftRAID.kext": 1,
+        "PathToAtomicsFolder/T1547.006/src/macos_kextload.c": 1,
+        "/tmp/T1547006_iokit_loader": 1,
+        "PathToAtomicsFolder/T1547.007/src/reopen_loginwindow_calc.plist": 1,
+        "/path/to/script": 1,
+        "PathToAtomicsFolder/T1547.007/src/append_reopen_loginwindow.m": 1,
+        "/tmp/t1547007_append_exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\lsass_lib.dll": 1,
+        "%temp%\\T1547.009_modified_shortcut.url": 1,
+        "$PathToAtomicsFolder\\T1547.010\\bin\\PortMonitor.dll": 1,
+        "~\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json": 1,
+        "~\\AppData\\Local\\Temp\\settings.json": 1,
+        "~\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\wt.exe": 1,
+        "C:\\ExternalPayloads\\Mimikatz\\x64\\mimikatz.exe": 1,
+        "C:\\ExternalPayloads\\Mimikatz\\mimikatz.zip": 1,
+        "C:\\ExternalPayloads\\Mimikatz": 1,
+        "PathToAtomicsFolder\\T1556.002\\bin": 2,
+        "PathToAtomicsFolder/T1556.003/src/pam_evil.c": 1,
+        "/tmp/pam_evil.so": 1
+      },
+      "ips": {}
+    },
+    "command_and_control": {
+      "file_paths": {
+        "PathToAtomicsFolder\\T1001.002\\bin\\T1001.002.jpg": 1,
+        "$env:PUBLIC\\Downloads\\T1001.002.tarz": 1,
+        "$env:PUBLIC\\Downloads\\T1001.002New.jpg": 1,
+        "$env:TEMP\\random_passwords.txt": 1,
+        "PathToAtomicsFolder\\T1001.002\\bin\\evil_kitten.jpg": 1,
+        "PathToAtomicsFolder\\ExternalPayloads\\Extract-Invoke-PSImage.ps1": 1,
+        "PathToAtomicsFolder\\T1071\\bin\\telnet_client.exe  # Update the path if needed": 1,
+        "C:\\Windows\\System32\\Curl.exe": 3,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1095\\nmap-7.80\\ncat.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1095": 1,
+        "/tmp/victim-files": 2,
+        "/tmp/adversary-rsync/": 2,
+        "/tmp/victim-files/": 4,
+        "/tmp/adversary-scp": 2,
+        "/tmp/adversary-sftp": 2,
+        "Atomic-license.txt": 2,
+        "%temp%\\Atomic-license.txt": 3,
+        "$env:TEMP\\Atomic-license.txt": 2,
+        "/tmp/T1105.whois.out": 1,
+        "PathToAtomicsFolder\\T1105\\src\\T1105.bat": 1,
+        "\\\\127.0.0.1\\c$\\AtomicRedTeam\\atomics\\T1105\\src\\": 1,
+        "C:\\Windows\\System32\\spool\\tools\\PrintBrm.exe": 1,
+        "PathToAtomicsFolder\\T1105\\src\\redcanary.cab": 1,
+        "C:\\Windows\\System32\\replace.exe": 2,
+        "\\\\127.0.0.1\\c$\\AtomicRedTeam\\atomics\\T1105\\src\\redcanary.cab": 1,
+        "PathToAtomicsFolder\\T1105\\bin\\": 1,
+        "license.txt": 1,
+        "C:\\T1105.zip": 1,
+        "C:\\Temp\\T1105_scp.zip": 1,
+        "/tmp/": 1,
+        "C:\\temp": 4,
+        "/tmp/T1105.txt": 2,
+        "/tmp": 1,
+        "C:\\Users\\$env:USERNAME\\AppData\\Local\\Microsoft\\OneDrive\\OneDriveStandaloneUpdater.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\ammyy.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\RemotePC.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1219_NetSupport.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1219_UltraViewer.exe": 1,
+        "$env:ProgramFiles\\'uvnc bvba\\UltraVnc\\vncviewer.exe": 1,
+        "$env:ProgramFiles\\Connect\\Connect.exe": 1,
+        "${env:programfiles(x86)}\\Splashtop\\Splashtop Remote\\Client for STP\\strwinclt.exe": 1
+      },
+      "ips": {
+        "8.8.8.8": 3
+      }
+    },
+    "execution": {
+      "file_paths": {
+        "/tmp/persistevil": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_005_WMI.xml": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml": 1,
+        "/etc/systemd/system/art-timer.service": 1,
+        "/etc/systemd/system/art-timer.timer": 1,
+        "PathToAtomicsFolder\\T1059\\src\\calc.au3": 1,
+        "C:\\Program Files (x86)\\AutoIt3\\AutoIt3.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1059.003_script.bat": 1,
+        "%TEMP%\\test.bin": 1,
+        "PathToAtomicsFolder\\T1059.003\\src\\t1059.003_cmd.cmd": 1,
+        "%TEMP%\\": 1,
+        "/tmp/art.sh": 1,
+        "PathToAtomicsFolder/T1059.004/src/AutoSUID.sh": 1,
+        "PathToAtomicsFolder/T1059.004/src/LinEnum.sh": 1,
+        "T1059.006.py": 2,
+        "T1059.006.pyc": 1,
+        "PathToAtomicsFolder\\T1059.010\\src\\calc.ahk": 1,
+        "$PathToAtomicsFolder\\..\\ExternalPayloads\\ahk\\AutoHotKeyU64.exe": 1,
+        "RadminViewer.msi": 1,
+        "Radmin Viewer 3/Radmin.exe": 1,
+        "PDQDeploysetup.exe": 1,
+        "Admin Arsenal/PDQ Deploy/PDQDeployConsole.exe": 1,
+        "PathToAtomicsFolder\\T1106\\src\\CreateProcess.cs": 1,
+        "%tmp%\\T1106.exe": 1,
+        "PathToAtomicsFolder\\T1127\\src\\hello.js": 1,
+        "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319": 4,
+        "jsc.exe": 2,
+        "PathToAtomicsFolder\\T1127\\src\\LibHello.js": 1,
+        "PathToAtomicsFolder\\T1127.001\\src\\T1127.001.csproj": 1,
+        "msbuild.exe": 2,
+        "PathToAtomicsFolder\\T1127.001\\src\\vb.xml": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\pscp.exe": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\esxi_vibinstall.txt": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\esxi_vibremove.txt": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\atomicvibes.vib": 1,
+        "%temp%\\bitsadmin1_flag.ps1": 1,
+        "$env:TEMP\\bitsadmin2_flag.ps1": 1,
+        "C:\\Windows\\system32\\notepad.exe": 1,
+        "%temp%\\bitsadmin3_flag.ps1": 1,
+        "SYSTEMROOT=C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\Personalization\\LockScreenImage": 1,
+        "%TEMP%\\OSTapGet.js": 1,
+        "C:\\Users\\Public\\art.jse": 1,
+        "$env:TEMP/PotentiallyUnwanted.exe": 1,
+        "PathToAtomicsFolder/T1204.002/src/test9-GenericPayloadDownload.txt": 1,
+        "": 1,
+        "$env:TEMP\\click-fix.bat": 1,
+        "/System/Applications/Calculator.app/Contents/MacOS/Calculator": 1,
+        "/tmp/atomic_tmp.service": 1,
+        "/dev/shm/atomic_shm.service": 1,
+        "/tmp/atomic_payload.sh": 1,
+        "PathToAtomicsFolder\\T1574.002\\bin\\GUP.exe": 1,
+        "PathToAtomicsFolder\\T1574.002\\bin\\preloader.dll": 1,
+        "PathToAtomicsFolder\\T1574.001\\bin\\ntprint.dll": 1,
+        "PathToAtomicsFolder/T1574.006/src/Linux/T1574.006.c": 2,
+        "/tmp/T1574006.so": 2,
+        "/Applications/Firefox.app/Contents/MacOS/firefox": 1,
+        "PathToAtomicsFolder/T1574.006/src/MacOS/T1574.006.c": 1,
+        "/tmp/T1574006MOS.dylib": 1,
+        "PathToAtomicsFolder\\T1574.009\\bin\\WindowsServiceExample.exe": 1,
+        "PathToAtomicsFolder\\T1574.012\\bin\\T1574.012x64.dll": 3
+      },
+      "ips": {
+        "8.8.8.8": 2,
+        "10.0.1.14": 2
+      }
+    },
+    "discovery": {
+      "file_paths": {
+        "%temp%\\service-list.txt": 1,
+        "PathToAtomicsFolder\\T1010\\src\\T1010.cs": 1,
+        "$env:USERPROFILE\\Desktop\\open-ports.txt": 1,
+        "PathToAtomicsFolder\\T1016\\src\\top-128.txt": 1,
+        "PathToAtomicsFolder\\T1016\\src\\qakbot.bat": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\netscan\\64-bit\\netscan.exe": 1,
+        "c:\\program files\\wireshark\\tshark.exe": 1,
+        "C:\\Program Files\\Npcap\\npcap.sys": 1,
+        "PathToAtomicsFolder\\T1046\\src\\T1046.py": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\SharpView.exe": 1,
+        "/tmp/loot.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\SharpHound.exe": 1,
+        "$env:TEMP\\SharpHound\\": 1,
+        "$env:COMPUTERNAME": 1,
+        "C:\\Windows\\temp": 1,
+        "/tmp/T1082.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 4,
+        "PathToAtomicsFolder\\T1082\\src\\esx_vmdiscovery.txt": 1,
+        "PathToAtomicsFolder\\T1082\\src\\esx_darkside_discovery.txt": 1,
+        "/tmp/T1083.txt": 2,
+        "PathToAtomicsFolder\\T1083\\src\\esxi_file_discovery.txt": 1,
+        "/tmp/T1087.001.txt": 4,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\ADRecon.ps1": 1,
+        "/tmp/T1217-Firefox.txt": 1,
+        "/tmp/T1217_Firefox.txt": 1,
+        "/tmp/T1217-Chrome.txt": 2,
+        "/tmp/T1217-Safari.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\TruffleSnout.exe": 1,
+        "C:\\Program Files\\Windows Defender\\MpCmdRun.exe": 1,
+        "$PathToAtomicsFolder/T1580/src": 1,
+        "C:\\Windows\\System32\\Curl.exe": 1,
+        "$env:temp\\T1619_storage_account_objects.csv": 1
+      },
+      "ips": {
+        "8.8.8.8": 9,
+        "192.168.1.1": 6,
+        "192.168.1.0": 1
+      }
+    },
+    "privilege_escalation": {
+      "file_paths": {
+        "/tmp/persistevil": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_005_WMI.xml": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml": 1,
+        "/etc/systemd/system/art-timer.service": 1,
+        "/etc/systemd/system/art-timer.timer": 1,
+        "PathToAtomicsFolder\\T1055\\src\\x64\\T1055-macrocode.txt": 1,
+        "%tmp%\\mimikatz\\x64\\mimikatz.exe": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\vuln_dll\\msys-2.0.dll": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\uuid_injection.exe": 1,
+        "PathToAtomicsFolder\\T1055.001\\src\\x64\\T1055.001.dll": 1,
+        "PathToAtomicsFolder\\T1055.002\\bin\\RedInjection.exe": 1,
+        "PathToAtomicsFolder\\T1055.004\\bin\\T1055.exe": 1,
+        "PathToAtomicsFolder/T1055.009/bin/inplace_instruction_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/instruction_overwrite_jump": 1,
+        "PathToAtomicsFolder/T1055.009/bin/got_injection": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/rop_mprotect_return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite_fullROPchain": 1,
+        "PathToAtomicsFolder\\T1055.011\\bin\\T1055.011_#{arch}.exe": 1,
+        "PathToAtomicsFolder\\T1055.011\\bin\\payload.exe_#{arch}.bin": 1,
+        "PathToAtomicsFolder\\T1055.012\\src\\Start-Hollow.ps1": 1,
+        "PathToAtomicsFolder\\T1055.015\\bin\\ListPlanting.exe": 1,
+        "$env:LOCALAPPDATA\\AtomicRedTeam\\$env:USERNAME.txt": 7,
+        "PathToAtomicsFolder\\T1134.001\\bin\\NSudoLG.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\JuicyPotato.exe": 1,
+        "$env:windir\\system32\\notepad.exe": 1,
+        "C:\\Program Files\\Internet Explorer\\iexplore.exe": 1,
+        "PathToAtomicsFolder\\T1134.004\\bin\\calc.dll": 1,
+        "$Env:windir\\System32\\WindowsPowerShell\\v1.0\\powershell.exe": 3,
+        "$Env:windir\\System32\\notepad.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 1,
+        "$PathToAtomicsFolder/T1543.001/src/atomicredteam_T1543_001.plist": 1,
+        "/etc/emond.d/rules/atomicredteam_T1543_001.plist": 1,
+        "/etc/systemd/system": 1,
+        "/usr/local/etc/rc.d": 1,
+        "PathToAtomicsFolder\\T1543.003\\bin\\AtomicService.exe": 3,
+        "txtfile": 1,
+        "C:\\Windows\\System32\\cmd.exe": 13,
+        "PathToAtomicsFolder\\T1546.007\\bin\\NetshHelper.dll": 1,
+        "C:\\windows\\system32\\cmd.exe": 1,
+        "PathToAtomicsFolder\\T1546.009\\bin\\AtomicTest.dll": 1,
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010.reg": 1,
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010-cleanup.reg": 1,
+        "calc.exe": 2,
+        "notepad.exe": 1,
+        "PathToAtomicsFolder/T1546.014/src/T1546.014_emond.plist": 1,
+        "C:\\Windows\\INF\\usbstor.inf": 1,
+        "C:\\Windows\\INF\\acpipmi.inf": 1,
+        "C:\\Path\\AtomicRedTeam.exe": 1,
+        "C:\\Path\\AtomicRedTeam.dll": 1,
+        "powershell.exe": 1,
+        "HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce": 1,
+        "powershell.exe -windowstyle hidden -ExecutionPolicy Bypass -File": 1,
+        "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run": 1,
+        "C:\\Windows\\Temp\\atomicNotificationPackage.dll": 1,
+        "/tmp/T1547.006/T1547006.ko": 1,
+        "/tmp/T1547.006": 1,
+        "PathToAtomicsFolder/T1547.006/src": 1,
+        "/Library/Extensions/SoftRAID.kext": 1,
+        "PathToAtomicsFolder/T1547.006/src/macos_kextload.c": 1,
+        "/tmp/T1547006_iokit_loader": 1,
+        "PathToAtomicsFolder/T1547.007/src/reopen_loginwindow_calc.plist": 1,
+        "/path/to/script": 1,
+        "PathToAtomicsFolder/T1547.007/src/append_reopen_loginwindow.m": 1,
+        "/tmp/t1547007_append_exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\lsass_lib.dll": 1,
+        "%temp%\\T1547.009_modified_shortcut.url": 1,
+        "$PathToAtomicsFolder\\T1547.010\\bin\\PortMonitor.dll": 1,
+        "~\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json": 1,
+        "~\\AppData\\Local\\Temp\\settings.json": 1,
+        "~\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\wt.exe": 1,
+        "PathToAtomicsFolder/T1548.001/src/hello.c": 2,
+        "/tmp/evilBinary": 5,
+        "PathToAtomicsFolder/T1548.001/src/cap.c": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\23 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\31 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\33 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\34 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\39 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\56 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\59 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\61 Akagi64.exe": 1,
+        "/dev/dm-0": 1,
+        "/mnt/T1611.002": 1,
+        "/etc/cron.d": 1
+      },
+      "ips": {}
+    }
+  },
+  "by_technique": {
+    "T1001.002": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1001.002/T1001.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1001.002\\bin\\T1001.002.jpg": 1,
+        "$env:PUBLIC\\Downloads\\T1001.002.tarz": 1,
+        "$env:PUBLIC\\Downloads\\T1001.002New.jpg": 1,
+        "$env:TEMP\\random_passwords.txt": 1,
+        "PathToAtomicsFolder\\T1001.002\\bin\\evil_kitten.jpg": 1,
+        "PathToAtomicsFolder\\ExternalPayloads\\Extract-Invoke-PSImage.ps1": 1
+      },
+      "ips": {}
+    },
+    "T1003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003/T1003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\gsecdump.exe": 1
+      },
+      "ips": {}
+    },
+    "T1003.001": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.001/T1003.001.yaml",
+      "file_paths": {
+        "C:\\Windows\\Temp\\lsass_dump.dmp": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\procdump.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\Outflank-Dumpert.exe": 1,
+        "%tmp%\\lsass.DMP": 1,
+        "C:\\Windows\\Temp\\xordump.exe": 1,
+        "C:\\Windows\\Temp\\lsass-xordump.t1003.001.dmp": 1,
+        "%temp%\\SilentProcessExit": 1
+      },
+      "ips": {}
+    },
+    "T1003.002": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.002/T1003.002.yaml",
+      "file_paths": {
+        "%SystemRoot%/system32/config/SAM": 1
+      },
+      "ips": {}
+    },
+    "T1003.003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.003/T1003.003.yaml",
+      "file_paths": {
+        "C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\ntds_T1003": 1
+      },
+      "ips": {}
+    },
+    "T1003.004": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.004/T1003.004.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1003.004\\bin\\PsExec.exe": 1
+      },
+      "ips": {}
+    },
+    "T1003.005": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.005/T1003.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1003.006": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.006/T1003.006.yaml",
+      "file_paths": {
+        "%tmp%\\mimikatz\\x64\\mimikatz.exe": 1
+      },
+      "ips": {}
+    },
+    "T1003.007": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.007/T1003.007.yaml",
+      "file_paths": {
+        "/tmp/T1003.007.bin": 3,
+        "/tmp/T1003.007.sh": 3,
+        "PathToAtomicsFolder/T1003.007/src/dump_heap.py": 1,
+        "/tmp/T1003.007Test3.txt": 1,
+        "PathToAtomicsFolder/../ExternalPayloads/mimipenguin/mimipenguin.sh": 1
+      },
+      "ips": {}
+    },
+    "T1003.008": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1003.008/T1003.008.yaml",
+      "file_paths": {
+        "/tmp/T1003.008.txt": 5
+      },
+      "ips": {}
+    },
+    "T1005": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1005/T1005.yaml",
+      "file_paths": {
+        "/private/tmp": 1
+      },
+      "ips": {}
+    },
+    "T1006": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1006/T1006.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1007": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1007/T1007.yaml",
+      "file_paths": {
+        "%temp%\\service-list.txt": 1
+      },
+      "ips": {}
+    },
+    "T1010": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1010/T1010.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1010\\src\\T1010.cs": 1
+      },
+      "ips": {}
+    },
+    "T1012": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1012/T1012.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1014": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1014/T1014.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1014/src/Linux": 2
+      },
+      "ips": {}
+    },
+    "T1016": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1016/T1016.yaml",
+      "file_paths": {
+        "$env:USERPROFILE\\Desktop\\open-ports.txt": 1,
+        "PathToAtomicsFolder\\T1016\\src\\top-128.txt": 1,
+        "PathToAtomicsFolder\\T1016\\src\\qakbot.bat": 1
+      },
+      "ips": {}
+    },
+    "T1016.001": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1016.001/T1016.001.yaml",
+      "file_paths": {},
+      "ips": {
+        "8.8.8.8": 8
+      }
+    },
+    "T1016.002": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1016.002/T1016.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1018": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1018/T1018.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\netscan\\64-bit\\netscan.exe": 1
+      },
+      "ips": {
+        "192.168.1.1": 3
+      }
+    },
+    "T1025": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1025/T1025.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1027": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027/T1027.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1027\\src\\T1027-cc-macro.xlsm": 2,
+        "Atomic-license.txt": 1
+      },
+      "ips": {}
+    },
+    "T1027.001": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.001/T1027.001.yaml",
+      "file_paths": {
+        "/tmp/evil-binary": 2
+      },
+      "ips": {}
+    },
+    "T1027.002": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.002/T1027.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1027.002/bin/linux/test_upx": 1,
+        "PathToAtomicsFolder/T1027.002/bin/linux/test_upx_header_changed": 1,
+        "PathToAtomicsFolder/T1027.002/bin/darwin/test_upx": 1,
+        "PathToAtomicsFolder/T1027.002/bin/darwin/test_upx_header_changed": 1
+      },
+      "ips": {}
+    },
+    "T1027.004": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.004/T1027.004.yaml",
+      "file_paths": {
+        "C:\\Windows\\Temp\\T1027.004.exe": 1,
+        "PathToAtomicsFolder\\T1027.004\\src\\calc.cs": 1,
+        "PathToAtomicsFolder\\T1027.004\\bin\\T1027.004_DynamicCompile.exe": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.c": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.cc": 1,
+        "PathToAtomicsFolder/T1027.004/src/T1027-004-test.go": 1
+      },
+      "ips": {}
+    },
+    "T1027.006": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.006/T1027.006.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1027.007": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.007/T1027.007.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1027.007\\bin\\ninja_syscall1.exe": 1
+      },
+      "ips": {}
+    },
+    "T1027.013": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.013/T1027.013.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1027.018": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1027.018/T1027.018.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1033": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1033/T1033.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1036": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036/T1036.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1036.002": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.002/T1036.002.yaml",
+      "file_paths": {
+        "[System.IO.Path]::Combine($env:USERPROFILE, \"Desktop\")": 1,
+        "[System.IO.Path]::Combine($env:USERPROFILE, \"Downloads\")": 1
+      },
+      "ips": {}
+    },
+    "T1036.003": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.003/T1036.003.yaml",
+      "file_paths": {
+        "($env:TEMP + \"\\svchost.exe\")": 2,
+        "PathToAtomicsFolder\\T1036.003\\bin\\T1036.003.exe": 1,
+        "$env:ComSpec": 1
+      },
+      "ips": {}
+    },
+    "T1036.004": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.004/T1036.004.yaml",
+      "file_paths": {
+        "/tmp/T1036_004_prctl_rename": 1
+      },
+      "ips": {}
+    },
+    "T1036.005": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.005/T1036.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1036.006": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.006/T1036.006.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1036.007": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.007/T1036.007.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\calc.exe": 1,
+        "PathToAtomicsFolder\\T1036.007\\src\\T1036.007_masquerading.vbs": 1,
+        "PathToAtomicsFolder\\T1036.007\\src\\T1036.007_masquerading.ps1": 1
+      },
+      "ips": {}
+    },
+    "T1036.008": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1036.008/T1036.008.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1037.001": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1037.001/T1037.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1037.002": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1037.002/T1037.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1037.004": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1037.004/T1037.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1037.005": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1037.005/T1037.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1039": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1039/T1039.yaml",
+      "file_paths": {
+        "Windows\\temp\\Easter_Bunny.password": 2
+      },
+      "ips": {}
+    },
+    "T1040": {
+      "tactics": [
+        "credential_access",
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1040/T1040.yaml",
+      "file_paths": {
+        "c:\\program files\\wireshark\\tshark.exe": 1,
+        "C:\\Program Files\\Npcap\\npcap.sys": 1
+      },
+      "ips": {}
+    },
+    "T1046": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1046/T1046.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1046\\src\\T1046.py": 1
+      },
+      "ips": {
+        "192.168.1.1": 3,
+        "192.168.1.0": 1
+      }
+    },
+    "T1047": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1047/T1047.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1049": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1049/T1049.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\SharpView.exe": 1
+      },
+      "ips": {}
+    },
+    "T1053.002": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1053.002/T1053.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1053.003": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1053.003/T1053.003.yaml",
+      "file_paths": {
+        "/tmp/persistevil": 1
+      },
+      "ips": {}
+    },
+    "T1053.005": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1053.005/T1053.005.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_005_WMI.xml": 1,
+        "PathToAtomicsFolder\\T1053.005\\src\\T1053_05_SCTASK_HIDDEN_ATTRIB.xml": 1
+      },
+      "ips": {}
+    },
+    "T1053.006": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1053.006/T1053.006.yaml",
+      "file_paths": {
+        "/etc/systemd/system/art-timer.service": 1,
+        "/etc/systemd/system/art-timer.timer": 1
+      },
+      "ips": {}
+    },
+    "T1053.007": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1053.007/T1053.007.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1055": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055/T1055.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055\\src\\x64\\T1055-macrocode.txt": 1,
+        "%tmp%\\mimikatz\\x64\\mimikatz.exe": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\vuln_dll\\msys-2.0.dll": 1,
+        "PathToAtomicsFolder\\T1055\\bin\\x64\\uuid_injection.exe": 1
+      },
+      "ips": {}
+    },
+    "T1055.001": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.001/T1055.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.001\\src\\x64\\T1055.001.dll": 1
+      },
+      "ips": {}
+    },
+    "T1055.002": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.002/T1055.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.002\\bin\\RedInjection.exe": 1
+      },
+      "ips": {}
+    },
+    "T1055.003": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.003/T1055.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1055.004": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.004/T1055.004.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.004\\bin\\T1055.exe": 1
+      },
+      "ips": {}
+    },
+    "T1055.009": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.009/T1055.009.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1055.009/bin/inplace_instruction_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/instruction_overwrite_jump": 1,
+        "PathToAtomicsFolder/T1055.009/bin/got_injection": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/rop_mprotect_return_address_overwrite": 1,
+        "PathToAtomicsFolder/T1055.009/bin/return_address_overwrite_fullROPchain": 1
+      },
+      "ips": {}
+    },
+    "T1055.011": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.011/T1055.011.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.011\\bin\\T1055.011_#{arch}.exe": 1,
+        "PathToAtomicsFolder\\T1055.011\\bin\\payload.exe_#{arch}.bin": 1
+      },
+      "ips": {}
+    },
+    "T1055.012": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.012/T1055.012.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.012\\src\\Start-Hollow.ps1": 1
+      },
+      "ips": {}
+    },
+    "T1055.015": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1055.015/T1055.015.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1055.015\\bin\\ListPlanting.exe": 1
+      },
+      "ips": {}
+    },
+    "T1056.001": {
+      "tactics": [
+        "collection",
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1056.001/T1056.001.yaml",
+      "file_paths": {
+        "$env:TEMP\\key.log": 1,
+        "PathToAtomicsFolder/T1056.001/src/MacOSKeylogger.swift": 1
+      },
+      "ips": {}
+    },
+    "T1056.002": {
+      "tactics": [
+        "collection",
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1056.002/T1056.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1056.004": {
+      "tactics": [
+        "collection",
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1056.004/T1056.004.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1056.004\\bin\\T1056.004x64.dll": 1
+      },
+      "ips": {}
+    },
+    "T1057": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1057/T1057.yaml",
+      "file_paths": {
+        "/tmp/loot.txt": 1
+      },
+      "ips": {}
+    },
+    "T1059": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059/T1059.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1059\\src\\calc.au3": 1,
+        "C:\\Program Files (x86)\\AutoIt3\\AutoIt3.exe": 1
+      },
+      "ips": {}
+    },
+    "T1059.001": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.001/T1059.001.yaml",
+      "file_paths": {},
+      "ips": {
+        "8.8.8.8": 1,
+        "10.0.1.14": 2
+      }
+    },
+    "T1059.002": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.002/T1059.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1059.003": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.003/T1059.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1059.003_script.bat": 1,
+        "%TEMP%\\test.bin": 1,
+        "PathToAtomicsFolder\\T1059.003\\src\\t1059.003_cmd.cmd": 1,
+        "%TEMP%\\": 1
+      },
+      "ips": {}
+    },
+    "T1059.004": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.004/T1059.004.yaml",
+      "file_paths": {
+        "/tmp/art.sh": 1,
+        "PathToAtomicsFolder/T1059.004/src/AutoSUID.sh": 1,
+        "PathToAtomicsFolder/T1059.004/src/LinEnum.sh": 1
+      },
+      "ips": {
+        "8.8.8.8": 1
+      }
+    },
+    "T1059.005": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.005/T1059.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1059.006": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.006/T1059.006.yaml",
+      "file_paths": {
+        "T1059.006.py": 2,
+        "T1059.006.pyc": 1
+      },
+      "ips": {}
+    },
+    "T1059.007": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.007/T1059.007.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1059.010": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1059.010/T1059.010.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1059.010\\src\\calc.ahk": 1,
+        "$PathToAtomicsFolder\\..\\ExternalPayloads\\ahk\\AutoHotKeyU64.exe": 1
+      },
+      "ips": {}
+    },
+    "T1069.001": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1069.001/T1069.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\SharpHound.exe": 1,
+        "$env:TEMP\\SharpHound\\": 1
+      },
+      "ips": {}
+    },
+    "T1069.002": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1069.002/T1069.002.yaml",
+      "file_paths": {
+        "$env:COMPUTERNAME": 1,
+        "C:\\Windows\\temp": 1
+      },
+      "ips": {}
+    },
+    "T1070": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070/T1070.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1070-2.txt": 1
+      },
+      "ips": {}
+    },
+    "T1070.003": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070.003/T1070.003.yaml",
+      "file_paths": {
+        "~/.bash_history": 5
+      },
+      "ips": {}
+    },
+    "T1070.004": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070.004/T1070.004.yaml",
+      "file_paths": {
+        "/tmp/victim-files/": 1,
+        "/tmp/victim-files/T1070.004-test.txt": 1,
+        "/tmp/victim-folder": 1,
+        "/tmp/victim-shred.txt": 1
+      },
+      "ips": {}
+    },
+    "T1070.005": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070.005/T1070.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1070.006": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070.006/T1070.006.yaml",
+      "file_paths": {
+        "/tmp/T1070.006-access.txt": 1,
+        "/tmp/T1070.006-modification.txt": 1,
+        "/tmp/T1070.006-creation.txt": 1,
+        "/tmp/T1070.006-reference.txt": 1,
+        "/bin/sh": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1551.006_timestomp.txt": 3,
+        "/tmp/T1070.006-modified.txt": 1
+      },
+      "ips": {}
+    },
+    "T1070.008": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1070.008/T1070.008.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1071": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1071/T1071.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1071\\bin\\telnet_client.exe  # Update the path if needed": 1
+      },
+      "ips": {}
+    },
+    "T1071.001": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1071.001/T1071.001.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\Curl.exe": 1
+      },
+      "ips": {}
+    },
+    "T1071.004": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1071.004/T1071.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1072": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1072/T1072.yaml",
+      "file_paths": {
+        "RadminViewer.msi": 1,
+        "Radmin Viewer 3/Radmin.exe": 1,
+        "PDQDeploysetup.exe": 1,
+        "Admin Arsenal/PDQ Deploy/PDQDeployConsole.exe": 1
+      },
+      "ips": {}
+    },
+    "T1074.001": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1074.001/T1074.001.yaml",
+      "file_paths": {
+        "$env:TEMP\\discovery.bat": 1,
+        "/tmp/T1074.001_discovery.log": 1,
+        "$env:TEMP\\Folder_to_zip.zip": 1,
+        "PathToAtomicsFolder\\T1074.001\\bin\\Folder_to_zip": 1
+      },
+      "ips": {}
+    },
+    "T1078.001": {
+      "tactics": [
+        "initial_access",
+        "persistence",
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1078.001/T1078.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1078.003": {
+      "tactics": [
+        "initial_access",
+        "persistence",
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1078.003/T1078.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1078.004": {
+      "tactics": [
+        "initial_access",
+        "persistence",
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1078.004/T1078.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1082": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1082/T1082.yaml",
+      "file_paths": {
+        "/tmp/T1082.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 2,
+        "PathToAtomicsFolder\\T1082\\src\\esx_vmdiscovery.txt": 1,
+        "PathToAtomicsFolder\\T1082\\src\\esx_darkside_discovery.txt": 1
+      },
+      "ips": {}
+    },
+    "T1083": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1083/T1083.yaml",
+      "file_paths": {
+        "/tmp/T1083.txt": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "PathToAtomicsFolder\\T1083\\src\\esxi_file_discovery.txt": 1
+      },
+      "ips": {}
+    },
+    "T1087.001": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1087.001/T1087.001.yaml",
+      "file_paths": {
+        "/tmp/T1087.001.txt": 4,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1
+      },
+      "ips": {}
+    },
+    "T1087.002": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1087.002/T1087.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\ADRecon.ps1": 1
+      },
+      "ips": {}
+    },
+    "T1090.001": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1090.001/T1090.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1090.003": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1090.003/T1090.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1091": {
+      "tactics": [
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1091/T1091.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1095": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1095/T1095.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1095\\nmap-7.80\\ncat.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1095": 1
+      },
+      "ips": {}
+    },
+    "T1098": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1098/T1098.yaml",
+      "file_paths": {
+        "$env:LOCALAPPDATA\\AtomicRedTeam\\$env:USERNAME.txt": 7
+      },
+      "ips": {}
+    },
+    "T1098.001": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1098.001/T1098.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1098.002": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1098.002/T1098.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1098.003": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1098.003/T1098.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1098.004": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1098.004/T1098.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1102.002": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1102.002/T1102.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1105": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1105/T1105.yaml",
+      "file_paths": {
+        "/tmp/victim-files": 2,
+        "/tmp/adversary-rsync/": 2,
+        "/tmp/victim-files/": 4,
+        "/tmp/adversary-scp": 2,
+        "/tmp/adversary-sftp": 2,
+        "Atomic-license.txt": 2,
+        "%temp%\\Atomic-license.txt": 3,
+        "$env:TEMP\\Atomic-license.txt": 2,
+        "/tmp/T1105.whois.out": 1,
+        "C:\\Windows\\System32\\Curl.exe": 2,
+        "PathToAtomicsFolder\\T1105\\src\\T1105.bat": 1,
+        "\\\\127.0.0.1\\c$\\AtomicRedTeam\\atomics\\T1105\\src\\": 1,
+        "C:\\Windows\\System32\\spool\\tools\\PrintBrm.exe": 1,
+        "PathToAtomicsFolder\\T1105\\src\\redcanary.cab": 1,
+        "C:\\Windows\\System32\\replace.exe": 2,
+        "\\\\127.0.0.1\\c$\\AtomicRedTeam\\atomics\\T1105\\src\\redcanary.cab": 1,
+        "PathToAtomicsFolder\\T1105\\bin\\": 1,
+        "license.txt": 1,
+        "C:\\T1105.zip": 1,
+        "C:\\Temp\\T1105_scp.zip": 1,
+        "/tmp/": 1,
+        "C:\\temp": 4,
+        "/tmp/T1105.txt": 2,
+        "/tmp": 1,
+        "C:\\Users\\$env:USERNAME\\AppData\\Local\\Microsoft\\OneDrive\\OneDriveStandaloneUpdater.exe": 1
+      },
+      "ips": {}
+    },
+    "T1106": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1106/T1106.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1106\\src\\CreateProcess.cs": 1,
+        "%tmp%\\T1106.exe": 1
+      },
+      "ips": {}
+    },
+    "T1110.001": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1110.001/T1110.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1110.001\\src\\passwords.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1
+      },
+      "ips": {}
+    },
+    "T1110.002": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1110.002/T1110.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1110.003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1110.003/T1110.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1110.004": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1110.004/T1110.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1112": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1112/T1112.yaml",
+      "file_paths": {
+        "C:\\windows\\system32\\notepad.exe": 1
+      },
+      "ips": {}
+    },
+    "T1113": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1113/T1113.yaml",
+      "file_paths": {
+        "/tmp/T1113_desktop.png": 4,
+        "/tmp/T1113_desktop.xwd": 2,
+        "c:\\temp\\T1113_desktop.zip": 1,
+        "$env:TEMP\\T1113.png": 1,
+        "$env:LOCALAPPDATA\\Microsoft\\Terminal Server Client\\Cache": 1,
+        "$env:TEMP\\rdp_screens": 1
+      },
+      "ips": {}
+    },
+    "T1114.001": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1114.001/T1114.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1114.002": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1114.002/T1114.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1114.003": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1114.003/T1114.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1115": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1115/T1115.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1119": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1119/T1119.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1120": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1120/T1120.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1123": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1123/T1123.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1123/src/T1123.sh": 1,
+        "/tmp/T1123.m4a": 1
+      },
+      "ips": {}
+    },
+    "T1124": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1124/T1124.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1125": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1125/T1125.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1127": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1127/T1127.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1127\\src\\hello.js": 1,
+        "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319": 2,
+        "jsc.exe": 2,
+        "PathToAtomicsFolder\\T1127\\src\\LibHello.js": 1
+      },
+      "ips": {}
+    },
+    "T1127.001": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1127.001/T1127.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1127.001\\src\\T1127.001.csproj": 1,
+        "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319": 2,
+        "msbuild.exe": 2,
+        "PathToAtomicsFolder\\T1127.001\\src\\vb.xml": 1
+      },
+      "ips": {}
+    },
+    "T1129": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1129/T1129.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\pscp.exe": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\esxi_vibinstall.txt": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\esxi_vibremove.txt": 1,
+        "PathToAtomicsFolder\\..\\atomics\\T1129\\src\\atomicvibes.vib": 1
+      },
+      "ips": {}
+    },
+    "T1132.001": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1132.001/T1132.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1133": {
+      "tactics": [
+        "initial_access",
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1133/T1133.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1134.001": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1134.001/T1134.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1134.001\\bin\\NSudoLG.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\JuicyPotato.exe": 1,
+        "$env:windir\\system32\\notepad.exe": 1
+      },
+      "ips": {}
+    },
+    "T1134.002": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1134.002/T1134.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1134.004": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1134.004/T1134.004.yaml",
+      "file_paths": {
+        "C:\\Program Files\\Internet Explorer\\iexplore.exe": 1,
+        "PathToAtomicsFolder\\T1134.004\\bin\\calc.dll": 1,
+        "$Env:windir\\System32\\WindowsPowerShell\\v1.0\\powershell.exe": 3,
+        "$Env:windir\\System32\\notepad.exe": 1
+      },
+      "ips": {}
+    },
+    "T1134.005": {
+      "tactics": [
+        "privilege_escalation",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1134.005/T1134.005.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 1
+      },
+      "ips": {}
+    },
+    "T1135": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1135/T1135.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1136.001": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1136.001/T1136.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1136.002": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1136.002/T1136.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1136.003": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1136.003/T1136.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137/T1137.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137.001": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137.001/T1137.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137.002": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137.002/T1137.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137.004": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137.004/T1137.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137.005": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137.005/T1137.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1137.006": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1137.006/T1137.006.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1140": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1140/T1140.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\calc.exe": 2,
+        "/tmp/T1140.encoded": 5,
+        "%TEMP%\\art-expand-test.cab": 1,
+        "%TEMP%\\art-expand-out": 1
+      },
+      "ips": {}
+    },
+    "T1176": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1176/T1176.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1187": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1187/T1187.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\PetitPotam.exe": 1
+      },
+      "ips": {
+        "10.0.0.3": 1,
+        "10.0.0.2": 1
+      }
+    },
+    "T1195": {
+      "tactics": [
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1195/T1195.yaml",
+      "file_paths": {
+        "$env:TEMP\\ExplorerSync.db": 1
+      },
+      "ips": {}
+    },
+    "T1195.002": {
+      "tactics": [
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1195.002/T1195.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1197": {
+      "tactics": [
+        "execution",
+        "persistence",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1197/T1197.yaml",
+      "file_paths": {
+        "%temp%\\bitsadmin1_flag.ps1": 1,
+        "$env:TEMP\\bitsadmin2_flag.ps1": 1,
+        "C:\\Windows\\system32\\notepad.exe": 1,
+        "%temp%\\bitsadmin3_flag.ps1": 1,
+        "SYSTEMROOT=C:\\Windows\\Temp": 1,
+        "C:\\Windows\\Temp\\Personalization\\LockScreenImage": 1
+      },
+      "ips": {}
+    },
+    "T1201": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1201/T1201.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1202": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1202/T1202.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\calc.exe": 1
+      },
+      "ips": {}
+    },
+    "T1204.002": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1204.002/T1204.002.yaml",
+      "file_paths": {
+        "%TEMP%\\OSTapGet.js": 1,
+        "C:\\Users\\Public\\art.jse": 1,
+        "$env:TEMP/PotentiallyUnwanted.exe": 1,
+        "PathToAtomicsFolder/T1204.002/src/test9-GenericPayloadDownload.txt": 1,
+        "": 1,
+        "$env:TEMP\\click-fix.bat": 1
+      },
+      "ips": {}
+    },
+    "T1204.003": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1204.003/T1204.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1204.004": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1204.004/T1204.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1216": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1216/T1216.yaml",
+      "file_paths": {
+        "%windir%\\System32\\calc.exe": 1
+      },
+      "ips": {}
+    },
+    "T1216.001": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1216.001/T1216.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1216.002": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1216.002/T1216.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1217": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1217/T1217.yaml",
+      "file_paths": {
+        "/tmp/T1217-Firefox.txt": 1,
+        "/tmp/T1217_Firefox.txt": 1,
+        "/tmp/T1217-Chrome.txt": 2,
+        "/tmp/T1217-Safari.txt": 1
+      },
+      "ips": {}
+    },
+    "T1218": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218/T1218.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218\\src\\x64\\T1218.dll": 1,
+        "PathToAtomicsFolder\\T1218\\src\\Win32\\T1218-2.dll": 1,
+        "PathToAtomicsFolder\\T1218\\src\\T1218.xml": 2,
+        "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319": 2,
+        "microsoft.workflow.compiler.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\svchost.exe": 1,
+        "PathToAtomicsFolder\\T1218\\src\\T1218.txt": 1,
+        "C:\\Windows\\System32\\diskshadow.exe": 1,
+        "PathToAtomicsFolder\\T1218\\src\\ieuinit.inf": 1,
+        "c:\\windows\\system32\\ie4uinit.exe": 1,
+        "C:\\test": 1
+      },
+      "ips": {}
+    },
+    "T1218.001": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.001/T1218.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.001\\src\\T1218.001.chm": 2,
+        "$env:windir\\hh.exe": 4
+      },
+      "ips": {}
+    },
+    "T1218.002": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.002/T1218.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.002\\bin\\calc.cpl": 1
+      },
+      "ips": {}
+    },
+    "T1218.003": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.003/T1218.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.003\\src\\T1218.003.inf": 1,
+        "PathToAtomicsFolder\\T1218.003\\src\\T1218.003_uacbypass.inf": 1
+      },
+      "ips": {}
+    },
+    "T1218.004": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.004/T1218.004.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.004\\src\\InstallUtilTestHarness.ps1": 8,
+        "$Env:TEMP\\": 7
+      },
+      "ips": {}
+    },
+    "T1218.005": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.005/T1218.005.yaml",
+      "file_paths": {
+        "$env:windir\\system32\\rundll32.exe": 1,
+        "$env:windir\\system32\\mshta.exe": 1
+      },
+      "ips": {}
+    },
+    "T1218.007": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.007/T1218.007.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_JScript.msi": 2,
+        "c:\\windows\\system32\\msiexec.exe": 7,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_VBScript.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_DLL.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\T1218.007_EXE.msi": 2,
+        "PathToAtomicsFolder\\T1218.007\\bin\\MSIRunner.dll": 2
+      },
+      "ips": {}
+    },
+    "T1218.008": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.008/T1218.008.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.008\\src\\Win32\\T1218-2.dll": 1
+      },
+      "ips": {}
+    },
+    "T1218.009": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.009/T1218.009.yaml",
+      "file_paths": {
+        "%tmp%\\T1218.009.dll": 1,
+        "PathToAtomicsFolder\\T1218.009\\src\\T1218.009.cs": 2,
+        "$Env:TEMP\\T1218.009.dll": 1
+      },
+      "ips": {}
+    },
+    "T1218.010": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.010/T1218.010.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1218.010\\src\\RegSvr32.sct": 1,
+        "C:\\Windows\\system32": 4,
+        "PathToAtomicsFolder\\T1218.010\\bin\\AllTheThingsx86.dll": 1,
+        "%temp%\\shell32.jpg": 1
+      },
+      "ips": {}
+    },
+    "T1218.011": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1218.011/T1218.011.yaml",
+      "file_paths": {
+        "%windir%\\System32\\notepad.exe": 1,
+        "%windir%\\System32\\calc.exe": 1,
+        "%windir%\\\\System32\\\\calc.exe": 1
+      },
+      "ips": {}
+    },
+    "T1219": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1219/T1219.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\ammyy.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\RemotePC.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1219_NetSupport.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1219_UltraViewer.exe": 1,
+        "$env:ProgramFiles\\'uvnc bvba\\UltraVnc\\vncviewer.exe": 1,
+        "$env:ProgramFiles\\Connect\\Connect.exe": 1,
+        "${env:programfiles(x86)}\\Splashtop\\Splashtop Remote\\Client for STP\\strwinclt.exe": 1
+      },
+      "ips": {}
+    },
+    "T1220": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1220/T1220.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1220\\src\\msxslxmlfile.xml": 1,
+        "PathToAtomicsFolder\\T1220\\src\\msxslscript.xsl": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\msxsl.exe": 2,
+        "PathToAtomicsFolder\\T1220\\src\\wmicscript.xsl": 1
+      },
+      "ips": {}
+    },
+    "T1221": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1221/T1221.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1221\\src\\Calculator.docx": 1
+      },
+      "ips": {}
+    },
+    "T1482": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1482/T1482.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\TruffleSnout.exe": 1
+      },
+      "ips": {}
+    },
+    "T1484.001": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1484.001/T1484.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1484.002": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1484.002/T1484.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1497.001": {
+      "tactics": [
+        "discovery",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1497.001/T1497.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1497.003": {
+      "tactics": [
+        "discovery",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1497.003/T1497.003.yaml",
+      "file_paths": {},
+      "ips": {
+        "8.8.8.8": 1
+      }
+    },
+    "T1505.002": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1505.002/T1505.002.yaml",
+      "file_paths": {
+        "c:\\program files\\microsoft\\Exchange Server\\v15\\bin\\Microsoft.Exchange.Security.Interop.dll": 1
+      },
+      "ips": {}
+    },
+    "T1505.003": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1505.003/T1505.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1505.003\\src": 1
+      },
+      "ips": {}
+    },
+    "T1505.004": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1505.004/T1505.004.yaml",
+      "file_paths": {
+        "%windir%\\system32\\inetsrv\\defdoc.dll": 2
+      },
+      "ips": {}
+    },
+    "T1505.005": {
+      "tactics": [
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1505.005/T1505.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1518": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1518/T1518.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1518.001": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1518.001/T1518.001.yaml",
+      "file_paths": {
+        "C:\\Program Files\\Windows Defender\\MpCmdRun.exe": 1
+      },
+      "ips": {}
+    },
+    "T1526": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1526/T1526.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1528": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1528/T1528.yaml",
+      "file_paths": {
+        "$env:temp/T1528_function_code.zip": 1,
+        "site/wwwroot/function_app.py": 1,
+        "$PathToAtomicsFolder/T1528/src/code_to_insert.py": 1
+      },
+      "ips": {}
+    },
+    "T1530": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1530/T1530.yaml",
+      "file_paths": {
+        "$env:temp\\T1530_storage_account_objects": 1,
+        "$env:temp\\T1619_storage_account_objects.csv": 1
+      },
+      "ips": {}
+    },
+    "T1539": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1539/T1539.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\sqlite-tools-win32-x86-3380200\\sqlite3.exe": 2,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1539FirefoxCookies.txt": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\T1539ChromeCookies.txt": 1,
+        "/private/tmp": 1
+      },
+      "ips": {}
+    },
+    "T1542.001": {
+      "tactics": [
+        "persistence",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1542.001/T1542.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1543.001": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1543.001/T1543.001.yaml",
+      "file_paths": {
+        "$PathToAtomicsFolder/T1543.001/src/atomicredteam_T1543_001.plist": 1,
+        "/etc/emond.d/rules/atomicredteam_T1543_001.plist": 1
+      },
+      "ips": {}
+    },
+    "T1543.002": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1543.002/T1543.002.yaml",
+      "file_paths": {
+        "/etc/systemd/system": 1,
+        "/usr/local/etc/rc.d": 1
+      },
+      "ips": {}
+    },
+    "T1543.003": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1543.003/T1543.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1543.003\\bin\\AtomicService.exe": 3
+      },
+      "ips": {}
+    },
+    "T1543.004": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1543.004/T1543.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546/T1546.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.001": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.001/T1546.001.yaml",
+      "file_paths": {
+        "txtfile": 1
+      },
+      "ips": {}
+    },
+    "T1546.002": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.002/T1546.002.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\cmd.exe": 1
+      },
+      "ips": {}
+    },
+    "T1546.003": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.003/T1546.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.004": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.004/T1546.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.005": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.005/T1546.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.007": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.007/T1546.007.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1546.007\\bin\\NetshHelper.dll": 1
+      },
+      "ips": {}
+    },
+    "T1546.008": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.008/T1546.008.yaml",
+      "file_paths": {
+        "C:\\windows\\system32\\cmd.exe": 1
+      },
+      "ips": {}
+    },
+    "T1546.009": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.009/T1546.009.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1546.009\\bin\\AtomicTest.dll": 1
+      },
+      "ips": {}
+    },
+    "T1546.010": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.010/T1546.010.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010.reg": 1,
+        "PathToAtomicsFolder\\T1546.010\\src\\T1546.010-cleanup.reg": 1
+      },
+      "ips": {}
+    },
+    "T1546.011": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.011/T1546.011.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.012": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.012/T1546.012.yaml",
+      "file_paths": {
+        "calc.exe": 1,
+        "C:\\Windows\\System32\\cmd.exe": 2,
+        "notepad.exe": 1
+      },
+      "ips": {}
+    },
+    "T1546.013": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.013/T1546.013.yaml",
+      "file_paths": {
+        "calc.exe": 1
+      },
+      "ips": {}
+    },
+    "T1546.014": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.014/T1546.014.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1546.014/src/T1546.014_emond.plist": 1
+      },
+      "ips": {}
+    },
+    "T1546.015": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.015/T1546.015.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1546.018": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1546.018/T1546.018.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547/T1547.yaml",
+      "file_paths": {
+        "C:\\Windows\\INF\\usbstor.inf": 1,
+        "C:\\Windows\\INF\\acpipmi.inf": 1
+      },
+      "ips": {}
+    },
+    "T1547.001": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.001/T1547.001.yaml",
+      "file_paths": {
+        "C:\\Path\\AtomicRedTeam.exe": 1,
+        "C:\\Path\\AtomicRedTeam.dll": 1,
+        "powershell.exe": 1,
+        "HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce": 1,
+        "powershell.exe -windowstyle hidden -ExecutionPolicy Bypass -File": 1,
+        "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run": 1
+      },
+      "ips": {}
+    },
+    "T1547.002": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.002/T1547.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547.003": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.003/T1547.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547.004": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.004/T1547.004.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\cmd.exe": 4,
+        "C:\\Windows\\Temp\\atomicNotificationPackage.dll": 1
+      },
+      "ips": {}
+    },
+    "T1547.005": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.005/T1547.005.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547.006": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.006/T1547.006.yaml",
+      "file_paths": {
+        "/tmp/T1547.006/T1547006.ko": 1,
+        "/tmp/T1547.006": 1,
+        "PathToAtomicsFolder/T1547.006/src": 1,
+        "/Library/Extensions/SoftRAID.kext": 1,
+        "PathToAtomicsFolder/T1547.006/src/macos_kextload.c": 1,
+        "/tmp/T1547006_iokit_loader": 1
+      },
+      "ips": {}
+    },
+    "T1547.007": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.007/T1547.007.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1547.007/src/reopen_loginwindow_calc.plist": 1,
+        "/path/to/script": 1,
+        "PathToAtomicsFolder/T1547.007/src/append_reopen_loginwindow.m": 1,
+        "/tmp/t1547007_append_exe": 1
+      },
+      "ips": {}
+    },
+    "T1547.008": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.008/T1547.008.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\lsass_lib.dll": 1
+      },
+      "ips": {}
+    },
+    "T1547.009": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.009/T1547.009.yaml",
+      "file_paths": {
+        "%temp%\\T1547.009_modified_shortcut.url": 1
+      },
+      "ips": {}
+    },
+    "T1547.010": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.010/T1547.010.yaml",
+      "file_paths": {
+        "$PathToAtomicsFolder\\T1547.010\\bin\\PortMonitor.dll": 1
+      },
+      "ips": {}
+    },
+    "T1547.012": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.012/T1547.012.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547.014": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.014/T1547.014.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1547.015": {
+      "tactics": [
+        "persistence",
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1547.015/T1547.015.yaml",
+      "file_paths": {
+        "~\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json": 1,
+        "~\\AppData\\Local\\Temp\\settings.json": 1,
+        "~\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\wt.exe": 1
+      },
+      "ips": {}
+    },
+    "T1548.001": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1548.001/T1548.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1548.001/src/hello.c": 2,
+        "/tmp/evilBinary": 5,
+        "PathToAtomicsFolder/T1548.001/src/cap.c": 1
+      },
+      "ips": {}
+    },
+    "T1548.002": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1548.002/T1548.002.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\cmd.exe": 6,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\23 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\31 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\33 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\34 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\39 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\56 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\59 Akagi64.exe": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\uacme\\61 Akagi64.exe": 1
+      },
+      "ips": {}
+    },
+    "T1548.003": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1548.003/T1548.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1552": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552/T1552.yaml",
+      "file_paths": {
+        "$PathToAtomicsFolder/T1552/src": 1
+      },
+      "ips": {}
+    },
+    "T1552.001": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.001/T1552.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1552.002": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.002/T1552.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1552.003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.003/T1552.003.yaml",
+      "file_paths": {
+        "~/loot.txt": 2,
+        "-e '-p ' -e 'pass' -e 'ssh": 2,
+        "~/.bash_history": 1,
+        "~/.history": 1
+      },
+      "ips": {}
+    },
+    "T1552.004": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.004/T1552.004.yaml",
+      "file_paths": {
+        "/": 7,
+        "/tmp/keyfile_locations.txt": 1,
+        "/tmp/art-staging": 4,
+        "/tmp/GnuPG": 2,
+        "c:\\temp\\atomic.pfx": 1,
+        "$env:Temp\\AtomicRedTeam.cer": 1
+      },
+      "ips": {}
+    },
+    "T1552.005": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.005/T1552.005.yaml",
+      "file_paths": {
+        "/tmp/T1552.005_aws_imds_creds.json": 1
+      },
+      "ips": {
+        "169.254.169.254": 4
+      }
+    },
+    "T1552.006": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.006/T1552.006.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\Get-GPPPassword.ps1": 1
+      },
+      "ips": {}
+    },
+    "T1552.007": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1552.007/T1552.007.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1555": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1555/T1555.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1555.001": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1555.001/T1555.001.yaml",
+      "file_paths": {
+        "/tmp/certs.pem": 2,
+        "/tmp/keychain": 1
+      },
+      "ips": {}
+    },
+    "T1555.003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1555.003/T1555.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1555.003\\bin\\LaZagne.exe": 1,
+        "/tmp/T1555.003_chrome_logins.txt": 1
+      },
+      "ips": {}
+    },
+    "T1555.004": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1555.004/T1555.004.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1555.006": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1555.006/T1555.006.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1556.001": {
+      "tactics": [
+        "credential_access",
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1556.001/T1556.001.yaml",
+      "file_paths": {
+        "C:\\ExternalPayloads\\Mimikatz\\x64\\mimikatz.exe": 1,
+        "C:\\ExternalPayloads\\Mimikatz\\mimikatz.zip": 1,
+        "C:\\ExternalPayloads\\Mimikatz": 1
+      },
+      "ips": {}
+    },
+    "T1556.002": {
+      "tactics": [
+        "credential_access",
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1556.002/T1556.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1556.002\\bin": 2
+      },
+      "ips": {}
+    },
+    "T1556.003": {
+      "tactics": [
+        "credential_access",
+        "persistence"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1556.003/T1556.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1556.003/src/pam_evil.c": 1,
+        "/tmp/pam_evil.so": 1
+      },
+      "ips": {}
+    },
+    "T1557.001": {
+      "tactics": [
+        "collection",
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1557.001/T1557.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1558.001": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1558.001/T1558.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 1,
+        "$Env:temp": 1
+      },
+      "ips": {}
+    },
+    "T1558.002": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1558.002/T1558.002.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\mimikatz\\x64\\mimikatz.exe": 1
+      },
+      "ips": {}
+    },
+    "T1558.003": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1558.003/T1558.003.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads": 1
+      },
+      "ips": {}
+    },
+    "T1558.004": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1558.004/T1558.004.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\..\\ExternalPayloads": 1
+      },
+      "ips": {}
+    },
+    "T1559": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1559/T1559.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1559.002": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1559.002/T1559.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1560": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1560/T1560.yaml",
+      "file_paths": {
+        "$env:USERPROFILE": 1,
+        "$env:USERPROFILE\\T1560-data-ps.zip": 1
+      },
+      "ips": {}
+    },
+    "T1560.001": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1560.001/T1560.001.yaml",
+      "file_paths": {
+        "%USERPROFILE%": 1,
+        "%USERPROFILE%\\T1560.001-data.rar": 1,
+        "%TEMP%\\winrar.exe": 2,
+        "%programfiles%/WinRAR/Rar.exe": 2,
+        "%ProgramFiles%\\\\WinZip\\\\winzip64.exe": 1,
+        "%TEMP%\\\\7zip.exe": 1,
+        "%ProgramFiles%\\\\7-zip\\\\7z.exe": 1,
+        "/var/log/{w,b}tmp": 1,
+        "$HOME/data.zip": 1,
+        "$HOME/victim-gzip.txt": 1,
+        "$HOME/$USERNAME": 1,
+        "$HOME/data.tar.gz": 1,
+        "/tmp/T1560": 1,
+        "T1560": 1,
+        "/tmp/t1560": 1,
+        "PathToAtomicsFolder\\..\\ExternalPayloads\\plink.exe": 1,
+        "C:\\Temp\\sam.hiv": 1,
+        "C:\\Temp\\art.zip": 1,
+        "$HOME/Library/Keychains": 1,
+        "/tmp/T1560.001_ditto_archive.zip": 1
+      },
+      "ips": {}
+    },
+    "T1560.002": {
+      "tactics": [
+        "collection"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1560.002/T1560.002.yaml",
+      "file_paths": {
+        "/etc/passwd": 4,
+        "/tmp/passwd.gz": 1,
+        "/tmp/passwd.bz2": 1,
+        "/tmp/passwd.zip": 1,
+        "/tmp/passwd.tar.gz": 1
+      },
+      "ips": {}
+    },
+    "T1564": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564/T1564.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1564.001": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.001/T1564.001.yaml",
+      "file_paths": {
+        "/tmp/evil": 1
+      },
+      "ips": {}
+    },
+    "T1564.002": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.002/T1564.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1564.003": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.003/T1564.003.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1564.004": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.004/T1564.004.yaml",
+      "file_paths": {
+        "c:\\ADS\\": 1,
+        "c:\\windows\\system32\\cmd.exe": 1,
+        "C:\\Users\\Public\\Libraries\\yanki\\desktop.ini": 1
+      },
+      "ips": {}
+    },
+    "T1564.006": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.006/T1564.006.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1564.006\\bin\\Virtualbox_52.msi": 1,
+        "PathToAtomicsFolder\\T1564.006\\bin\\common.cab": 1,
+        "C:\\Program Files\\Oracle\\VirtualBox\\VirtualBox.exe": 1,
+        "C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe": 1
+      },
+      "ips": {}
+    },
+    "T1564.008": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.008/T1564.008.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1564.012": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1564.012/T1564.012.yaml",
+      "file_paths": {
+        "C:\\Temp\\ARTExclusionTest": 1,
+        "C:\\Windows\\System32\\calc.exe": 1
+      },
+      "ips": {}
+    },
+    "T1566.001": {
+      "tactics": [
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1566.001/T1566.001.yaml",
+      "file_paths": {},
+      "ips": {
+        "8.8.8.8": 2
+      }
+    },
+    "T1566.002": {
+      "tactics": [
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1566.002/T1566.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1568.002": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1568.002/T1568.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1569.001": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1569.001/T1569.001.yaml",
+      "file_paths": {
+        "/System/Applications/Calculator.app/Contents/MacOS/Calculator": 1
+      },
+      "ips": {}
+    },
+    "T1569.002": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1569.002/T1569.002.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1569.003": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1569.003/T1569.003.yaml",
+      "file_paths": {
+        "/tmp/atomic_tmp.service": 1,
+        "/dev/shm/atomic_shm.service": 1,
+        "/tmp/atomic_payload.sh": 1
+      },
+      "ips": {}
+    },
+    "T1571": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1571/T1571.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1572": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1572/T1572.yaml",
+      "file_paths": {},
+      "ips": {
+        "8.8.8.8": 3
+      }
+    },
+    "T1573": {
+      "tactics": [
+        "command_and_control"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1573/T1573.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1574.001": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.001/T1574.001.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1574.002\\bin\\GUP.exe": 1,
+        "PathToAtomicsFolder\\T1574.002\\bin\\preloader.dll": 1,
+        "PathToAtomicsFolder\\T1574.001\\bin\\ntprint.dll": 1
+      },
+      "ips": {}
+    },
+    "T1574.006": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.006/T1574.006.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder/T1574.006/src/Linux/T1574.006.c": 2,
+        "/tmp/T1574006.so": 2,
+        "/Applications/Firefox.app/Contents/MacOS/firefox": 1,
+        "PathToAtomicsFolder/T1574.006/src/MacOS/T1574.006.c": 1,
+        "/tmp/T1574006MOS.dylib": 1
+      },
+      "ips": {}
+    },
+    "T1574.008": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.008/T1574.008.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1574.009": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.009/T1574.009.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1574.009\\bin\\WindowsServiceExample.exe": 1
+      },
+      "ips": {}
+    },
+    "T1574.011": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.011/T1574.011.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1574.012": {
+      "tactics": [
+        "execution",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1574.012/T1574.012.yaml",
+      "file_paths": {
+        "PathToAtomicsFolder\\T1574.012\\bin\\T1574.012x64.dll": 3
+      },
+      "ips": {}
+    },
+    "T1580": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1580/T1580.yaml",
+      "file_paths": {
+        "$PathToAtomicsFolder/T1580/src": 1
+      },
+      "ips": {}
+    },
+    "T1606.002": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1606.002/T1606.002.yaml",
+      "file_paths": {
+        ".\\ADFS_signing.pfx": 1
+      },
+      "ips": {}
+    },
+    "T1609": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1609/T1609.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1610": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1610/T1610.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1611": {
+      "tactics": [
+        "privilege_escalation"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1611/T1611.yaml",
+      "file_paths": {
+        "/dev/dm-0": 1,
+        "/mnt/T1611.002": 1,
+        "/etc/cron.d": 1
+      },
+      "ips": {}
+    },
+    "T1612": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1612/T1612.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1613": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1613/T1613.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1614": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1614/T1614.yaml",
+      "file_paths": {
+        "C:\\Windows\\System32\\Curl.exe": 1
+      },
+      "ips": {}
+    },
+    "T1614.001": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1614.001/T1614.001.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1615": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1615/T1615.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1619": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1619/T1619.yaml",
+      "file_paths": {
+        "$env:temp\\T1619_storage_account_objects.csv": 1
+      },
+      "ips": {}
+    },
+    "T1620": {
+      "tactics": [
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1620/T1620.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1622": {
+      "tactics": [
+        "discovery",
+        "stealth"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1622/T1622.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1648": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1648/T1648.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1649": {
+      "tactics": [
+        "credential_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1649/T1649.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1651": {
+      "tactics": [
+        "execution"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1651/T1651.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1652": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1652/T1652.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1654": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1654/T1654.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1659": {
+      "tactics": [
+        "command_and_control",
+        "initial_access"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1659/T1659.yaml",
+      "file_paths": {},
+      "ips": {}
+    },
+    "T1680": {
+      "tactics": [
+        "discovery"
+      ],
+      "source_yaml": "/csse/research/contructive-learning/CAM-LDS/zoomer/atomic-red-team/atomics/T1680/T1680.yaml",
+      "file_paths": {},
+      "ips": {}
+    }
+  }
+}
