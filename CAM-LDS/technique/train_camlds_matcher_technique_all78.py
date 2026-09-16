@@ -1,0 +1,505 @@
+"""
+Technique-level CAM-LDS matcher across all 78 base MITRE techniques found in the dataset
+(templates_all92/) -- text embedding CONCATENATED with ZOOMER's node-abstract + edge-type
+wide features (IoC excluded, the best-performing variant found at tactic level). Plain
+stratified 80/20 split, no ZOOMER-instance-matching restriction -- this pipeline covers
+the full CAM-LDS technique scope, not just ZOOMER's 15/16-technique subset.
+"""
+import os
+import sys
+import json
+import glob
+import math
+import random
+import time
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from transformers import RobertaTokenizer, RobertaModel
+
+TECHNIQUE_DIR = os.path.dirname(os.path.abspath(__file__))
+if TECHNIQUE_DIR not in sys.path:
+    sys.path.insert(0, TECHNIQUE_DIR)
+PROJECT_ROOT = '/csse/research/contructive-learning'
+CAM_LDS_SCRIPTS = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'scripts')
+if CAM_LDS_SCRIPTS not in sys.path:
+    sys.path.insert(0, CAM_LDS_SCRIPTS)
+
+from config import ROBERTA_MODEL
+from encoder_utils import embed_text
+from prototype_multilabel_loss import multilabel_prototype_loss, uniformity_loss
+from wide_feature_bridge import build_step_to_graph_path, fit_node_edge_bins_and_masks, node_edge_vector_for_step
+
+CAM_LDS_DIR       = os.path.join(PROJECT_ROOT, 'CAM-LDS')
+SEQUENCES_DIR     = os.path.join(CAM_LDS_DIR, 'sequences')
+TEMPLATE_DIR      = os.path.join(TECHNIQUE_DIR, 'templates_all92')
+STEP_TACTICS_PATH = os.path.join(CAM_LDS_DIR, 'scripts', 'step_tactics.json')
+OUTPUT_TRAINING   = os.path.join(TECHNIQUE_DIR, 'checkpoints')
+RESULTS_DIR       = os.path.join(TECHNIQUE_DIR, 'results')
+os.makedirs(OUTPUT_TRAINING, exist_ok=True)
+os.makedirs(RESULTS_DIR,     exist_ok=True)
+
+SEED       = 42
+LR         = 1e-5
+DROPOUT    = 0.5
+N_EPOCHS   = 100
+EMB_DIM    = 768
+PROJ_DIM   = 128
+WIDE_DIM_OUT = 64
+COMBINED_DIM = PROJ_DIM + WIDE_DIM_OUT
+PATIENCE   = 20
+N_FREEZE   = 9
+K_PER_TECHNIQUE = 1
+LAMBDA_UNIFORM = 0.1
+MAX_CHUNKS = None
+
+random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed_all(SEED)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark     = False
+
+
+class ProjectionNetwork(nn.Module):
+    def __init__(self, in_dim=EMB_DIM, out_dim=PROJ_DIM, dropout=DROPOUT):
+        super().__init__()
+        self.fc1     = nn.Linear(in_dim, out_dim)
+        self.fc2     = nn.Linear(out_dim, out_dim)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x):
+        h1 = F.relu(self.fc1(x))
+        h1 = self.dropout(h1)
+        h2 = F.relu(self.fc2(h1))
+        h2 = self.dropout(h2)
+        return h1 + h2
+
+
+class WideModel(nn.Module):
+    def __init__(self, in_dim, out_dim=WIDE_DIM_OUT):
+        super().__init__()
+        self.linear = nn.Linear(in_dim, out_dim)
+
+    def forward(self, x):
+        return self.linear(x)
+
+
+def freeze_lower_layers(model, n_freeze=N_FREEZE):
+    for param in model.embeddings.parameters():
+        param.requires_grad = False
+    for i in range(n_freeze):
+        for param in model.encoder.layer[i].parameters():
+            param.requires_grad = False
+
+
+def load_technique_ids():
+    ids = set()
+    for fp in sorted(glob.glob(os.path.join(TEMPLATE_DIR, '*.txt'))):
+        ids.add(os.path.basename(fp).split('_', 1)[0])
+    return ids
+
+
+TECHNIQUE_IDS = load_technique_ids()
+
+
+def load_step_techniques():
+    with open(STEP_TACTICS_PATH) as f:
+        report = json.load(f)
+    step_techniques = {}
+    for row in report:
+        techs = set()
+        for occ in row['occurrences']:
+            base = occ['technique'].split('-')[0]
+            techs.add(base)
+        step_techniques[row['step']] = sorted(t for t in techs if t in TECHNIQUE_IDS)
+    return step_techniques
+
+
+def load_sequences(min_events=None, return_total=False, sequences_dir=None):
+    sequences_dir = sequences_dir or SEQUENCES_DIR
+    step_techniques = load_step_techniques()
+
+    by_step = {}
+    for fpath in sorted(glob.glob(os.path.join(sequences_dir, '*', '*', 'sequence_*.json'))):
+        with open(fpath) as f:
+            seq = json.load(f)
+        step = seq['step']
+        if step in by_step:
+            continue
+        labels = step_techniques.get(step, [])
+        by_step[step] = {
+            'sequence': ' '.join(seq['sequence']),
+            'techniques': labels,
+            'file'    : step,
+            'n_events': len(seq['sequence']),
+        }
+
+    entries = [e for e in by_step.values() if e['techniques']]
+    n_total = len(entries)
+
+    if min_events is not None:
+        dropped = [e['file'] for e in entries if e['n_events'] < min_events]
+        entries = [e for e in entries if e['n_events'] >= min_events]
+        print('  min_events={}: dropped {}/{} sequences with too few events: {}'.format(
+            min_events, len(dropped), n_total, dropped))
+
+    multi = [e for e in entries if len(e['techniques']) > 1]
+    print('  Loaded {} unique sequences ({} multi-technique — kept as multi-label, not dropped).'.format(
+        len(entries), len(multi)))
+
+    if return_total:
+        return entries, n_total
+    return entries
+
+
+def random_split(entries, test_size=0.2, seed=SEED):
+    rng = random.Random(seed)
+    items = entries[:]
+    rng.shuffle(items)
+    n_test = max(1, int(len(items) * test_size))
+    test  = items[:n_test]
+    train = items[n_test:]
+    return train, test
+
+
+def stratified_split(entries, test_size=0.2, seed=SEED, min_test_per_technique=1):
+    rng = random.Random(seed)
+    items = entries[:]
+    rng.shuffle(items)
+
+    n_test_target = max(1, int(len(items) * test_size))
+    all_techniques = sorted({t for e in items for t in e['techniques']})
+    technique_total = {t: sum(1 for e in items if t in e['techniques']) for t in all_techniques}
+
+    test_ids, train_ids = set(), set()
+    covered = {t: 0 for t in all_techniques}
+    for e in items:
+        needed = [t for t in e['techniques'] if covered[t] < min_test_per_technique]
+        if needed and len(test_ids) < n_test_target:
+            test_ids.add(e['file'])
+            for t in e['techniques']:
+                covered[t] += 1
+    for e in items:
+        if e['file'] in test_ids:
+            continue
+        if len(test_ids) < n_test_target:
+            test_ids.add(e['file'])
+        else:
+            train_ids.add(e['file'])
+
+    test  = [e for e in items if e['file'] in test_ids]
+    train = [e for e in items if e['file'] in train_ids]
+    return train, test
+
+
+def extract_techniques_use(text):
+    return text
+
+
+def load_templates(template_dir=None):
+    template_dir = template_dir or TEMPLATE_DIR
+    templates = {}
+    for fname in sorted(os.listdir(template_dir)):
+        if not fname.endswith('.txt'):
+            continue
+        tid = fname.split('_', 1)[0]
+        with open(os.path.join(template_dir, fname), encoding='utf-8') as f:
+            templates[tid] = f.read().strip()
+    return templates
+
+
+def encode_one(tokenizer, encoder, text, device):
+    enc  = tokenizer(text, padding=False, truncation=False, return_tensors='pt')
+    rlen = int(enc['attention_mask'][0].sum())
+    ids  = enc['input_ids'][0][:rlen].unsqueeze(0).to(device)
+    mask = enc['attention_mask'][0][:rlen].unsqueeze(0).to(device)
+    return embed_text(encoder, tokenizer, ids, mask, device, truncate=False, max_chunks=MAX_CHUNKS).squeeze(0)
+
+
+def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
+    text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
+    wide_vec = node_edge_vector_for_step(entry['file'], step_to_path, bins, masks)
+    wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)
+    wide_embed = wide_model(wide_t)
+    return torch.cat([text_embed, wide_embed], dim=-1)
+
+
+def build_pos_mask(entries, all_techniques, technique_to_col):
+    mask = torch.zeros(len(entries), len(all_techniques))
+    for i, e in enumerate(entries):
+        for t in e['techniques']:
+            mask[i, technique_to_col[t]] = 1
+    return mask
+
+
+def build_technique_pools(entries, all_techniques):
+    return {t: [i for i, e in enumerate(entries) if t in e['techniques']] for t in all_techniques}
+
+
+def stratified_batch_indices(technique_pools, all_techniques, k_per_technique, rng):
+    chosen = set()
+    for t in all_techniques:
+        pool = technique_pools[t]
+        if not pool:
+            continue
+        if len(pool) >= k_per_technique:
+            chosen.update(rng.sample(pool, k_per_technique))
+        else:
+            chosen.update(rng.choices(pool, k=k_per_technique))
+    return sorted(chosen)
+
+
+def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, patience=PATIENCE, k_per_technique=K_PER_TECHNIQUE,
+                           test_size=0.2, split_seed=SEED, run_tag=None, min_events=None, template_dir=None,
+                           stratified=True, lambda_uniform=LAMBDA_UNIFORM, class_reweight=False, reweight_cap=3.0,
+                           sequences_dir=None):
+    device = torch.device('cuda')
+    print('  Device   : {}'.format(device))
+    print()
+
+    entries, n_total_unfiltered = load_sequences(min_events=min_events, return_total=True, sequences_dir=sequences_dir)
+    n_excluded = n_total_unfiltered - len(entries)
+
+    all_techniques = sorted({t for e in entries for t in e['techniques']})
+    technique_to_col = {t: i for i, t in enumerate(all_techniques)}
+    print('  Techniques (from full true multi-label membership of our {} steps): {}'.format(
+        len(entries), len(all_techniques)))
+
+    if run_tag is None:
+        run_tag = test_file_match if test_file_match else 'seed{}'.format(split_seed)
+
+    if test_file_match:
+        train_entries, test_entries = leave_out_split(entries, test_file_match)
+        print('  Split mode: leave-out — test = every file matching "{}"'.format(test_file_match))
+    elif stratified:
+        train_entries, test_entries = stratified_split(entries, test_size=test_size, seed=split_seed)
+        print('  Split mode: stratified {:.0f}/{:.0f} (split_seed={}, every technique guaranteed >=1 test example where possible)'.format(
+            (1 - test_size) * 100, test_size * 100, split_seed))
+    else:
+        train_entries, test_entries = random_split(entries, test_size=test_size, seed=split_seed)
+        print('  Split mode: random {:.0f}/{:.0f} (split_seed={})'.format(
+            (1 - test_size) * 100, test_size * 100, split_seed))
+
+    technique_counts = {t: 0 for t in all_techniques}
+    for e in train_entries:
+        for t in e['techniques']:
+            technique_counts[t] += 1
+    exclusion_reason = 'min-events filter' if min_events is not None else 'not in requested sequence pool'
+    print('  Train sequences: {}  Test sequences: {}  Excluded ({}): {}'.format(
+        len(train_entries), len(test_entries), exclusion_reason, n_excluded))
+    missing = [t for t in all_techniques if technique_counts[t] == 0]
+    if missing:
+        print('  WARNING: these techniques have zero training examples: {} '
+              '(their prototype will only ever be learned as a negative).'.format(missing))
+    if not train_entries:
+        print('  ERROR: no training sequences found.')
+        return
+
+    class_weights = None
+    if class_reweight:
+        counts = torch.tensor([max(technique_counts[t], 1) for t in all_techniques], dtype=torch.float32, device=device)
+        class_weights = (counts.mean() / counts).clamp(max=reweight_cap)
+
+    templates = load_templates(template_dir=template_dir)
+    missing_templates = [t for t in all_techniques if t not in templates]
+    if missing_templates:
+        print('  ERROR: missing templates for techniques: {}'.format(missing_templates))
+        return
+    print('  Templates: {} (dir={})'.format(len(templates), template_dir or TEMPLATE_DIR))
+
+    print('  Fitting wide-feature bins/masks on this seed\'s training instances (ZOOMER\'s own pipeline)...')
+    step_to_path = build_step_to_graph_path()
+    train_steps = [e['file'] for e in train_entries]
+    bins, masks, wide_dim = fit_node_edge_bins_and_masks(train_steps, step_to_path, seed=split_seed)
+    print('  wide_dim={} (raw h_cat + cross-product, before the {}-dim wide projection)'.format(wide_dim, WIDE_DIM_OUT))
+    print()
+
+    print('  Loading RoBERTa encoders...')
+    tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
+    seq_encoder  = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
+    freeze_lower_layers(seq_encoder, n_freeze=N_FREEZE)
+    seq_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
+    seq_encoder.train()
+
+    tmpl_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
+    freeze_lower_layers(tmpl_encoder, n_freeze=N_FREEZE)
+    tmpl_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
+    tmpl_encoder.train()
+    text_proj = ProjectionNetwork(EMB_DIM, COMBINED_DIM, DROPOUT).to(device)
+
+    n_layers = len(seq_encoder.encoder.layer)
+    print('  Encoders loaded — layers 0-{} frozen, layers {}-{} trainable, gradient checkpointing ON.'.format(
+        N_FREEZE - 1, N_FREEZE, n_layers - 1))
+    print()
+
+    log_proj  = ProjectionNetwork(EMB_DIM, PROJ_DIM, DROPOUT).to(device)
+    wide_model = WideModel(wide_dim, WIDE_DIM_OUT).to(device)
+
+    logit_scale = nn.Parameter(torch.ones([], device=device) * math.log(1 / 0.07))
+
+    trainable_params = ([p for p in seq_encoder.parameters() if p.requires_grad] + list(log_proj.parameters()) +
+                         list(wide_model.parameters()) +
+                         [p for p in tmpl_encoder.parameters() if p.requires_grad] + list(text_proj.parameters()) +
+                         [logit_scale])
+
+    optimizer = torch.optim.Adam(trainable_params, lr=LR)
+    scaler = torch.amp.GradScaler('cuda')
+
+    best_loss  = float('inf')
+    no_improve = 0
+    best_state = None
+    history    = []
+
+    train_start = time.time()
+    batch_size = min(len(train_entries), k_per_technique * len(all_techniques))
+    print('  Training  epochs={} lr={} dropout={} patience={} batch_size={}'.format(
+        n_epochs, LR, DROPOUT, patience, batch_size))
+    print('  Start time: {}'.format(time.strftime('%Y-%m-%d %H:%M:%S')))
+    print()
+
+    train_pos_mask = build_pos_mask(train_entries, all_techniques, technique_to_col).to(device)
+    technique_pools = build_technique_pools(train_entries, all_techniques)
+    steps_per_epoch = max(1, -(-len(train_entries) // batch_size))
+
+    for epoch in range(1, n_epochs + 1):
+        epoch_start = time.time()
+        seq_encoder.train(); tmpl_encoder.train(); log_proj.train(); text_proj.train(); wide_model.train()
+
+        epoch_losses = []
+
+        for _ in range(steps_per_epoch):
+            batch_idxs = stratified_batch_indices(technique_pools, all_techniques, k_per_technique, random)
+            batch_entries = [train_entries[i] for i in batch_idxs]
+            pos_mask_batch = train_pos_mask[batch_idxs]
+
+            MICRO_BATCH = 12
+            chunks = [batch_idxs[i:i + MICRO_BATCH] for i in range(0, len(batch_idxs), MICRO_BATCH)]
+
+            optimizer.zero_grad()
+            step_loss = 0.0
+            for chunk in chunks:
+                chunk_entries = [train_entries[i] for i in chunk]
+                chunk_pos_mask = train_pos_mask[chunk]
+                with torch.amp.autocast('cuda'):
+                    z = torch.stack([
+                        encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, e,
+                                                  step_to_path, bins, masks, device)
+                        for e in chunk_entries
+                    ])
+                    prototypes = text_proj(torch.stack(
+                        [encode_one(tokenizer, tmpl_encoder, templates[t], device) for t in all_techniques]))
+                    loss = multilabel_prototype_loss(z, prototypes, chunk_pos_mask, logit_scale, class_weights=class_weights) \
+                        + lambda_uniform * uniformity_loss(z)
+                    loss = loss / len(chunks)
+
+                scaler.scale(loss).backward()
+                step_loss += loss.item()
+
+            scaler.step(optimizer)
+            scaler.update()
+            epoch_losses.append(step_loss)
+
+        episode_loss = sum(epoch_losses) / max(len(epoch_losses), 1)
+        history.append(episode_loss)
+
+        if episode_loss < best_loss:
+            best_loss = episode_loss
+            no_improve = 0
+            best_state = {
+                'seq_encoder' : {k: v.clone() for k, v in seq_encoder.state_dict().items()},
+                'tmpl_encoder': {k: v.clone() for k, v in tmpl_encoder.state_dict().items()},
+                'log_proj'    : {k: v.clone() for k, v in log_proj.state_dict().items()},
+                'text_proj'   : {k: v.clone() for k, v in text_proj.state_dict().items()},
+                'wide_model'  : {k: v.clone() for k, v in wide_model.state_dict().items()},
+                'logit_scale' : logit_scale.detach().clone(),
+                'epoch'       : epoch,
+            }
+        else:
+            no_improve += 1
+            if no_improve >= patience:
+                print('  Early stopping at epoch {} (best_loss={:.4f} at epoch {})'.format(
+                    epoch, best_loss, best_state['epoch'] if best_state else -1))
+                break
+
+        if epoch % 5 == 0 or epoch == 1:
+            print('  epoch {:4d}  loss={:.4f}  best={:.4f}  ({:.1f}s)'.format(
+                epoch, episode_loss, best_loss, time.time() - epoch_start))
+
+    total_time = (time.time() - train_start) / 60
+    print()
+    print('  Training complete.')
+    print('  Best loss       : {:.4f}'.format(best_loss))
+    print('  End time        : {}'.format(time.strftime('%Y-%m-%d %H:%M:%S')))
+    print('  Total time      : {:.2f}m'.format(total_time))
+
+    if best_state is not None:
+        seq_encoder.load_state_dict(best_state['seq_encoder'])
+        tmpl_encoder.load_state_dict(best_state['tmpl_encoder'])
+        log_proj.load_state_dict(best_state['log_proj'])
+        text_proj.load_state_dict(best_state['text_proj'])
+        wide_model.load_state_dict(best_state['wide_model'])
+        with torch.no_grad():
+            logit_scale.copy_(best_state['logit_scale'])
+
+    model_path = os.path.join(OUTPUT_TRAINING, 'camlds_wide_matcher_{}.pt'.format(run_tag))
+    torch.save({
+        'seq_encoder' : seq_encoder.state_dict(),
+        'tmpl_encoder': tmpl_encoder.state_dict(),
+        'log_proj'    : log_proj.state_dict(),
+        'text_proj'   : text_proj.state_dict(),
+        'wide_model'  : wide_model.state_dict(),
+        'logit_scale' : logit_scale,
+        'proj_dims'   : (EMB_DIM, PROJ_DIM, WIDE_DIM_OUT, wide_dim),
+        'techniques'  : all_techniques,
+        'best_loss'   : best_loss,
+        'best_epoch'  : best_state['epoch'] if best_state else None,
+        'history'     : history,
+        'template_dir': template_dir or TEMPLATE_DIR,
+        'test_size': test_size,
+        'split_seed': split_seed,
+        'run_tag': run_tag,
+        'lambda_uniform': lambda_uniform,
+        'class_reweight': class_reweight,
+        'reweight_cap': reweight_cap,
+        'test_file_match': test_file_match,
+        'test_files': [e['file'] for e in test_entries],
+        'sequences_dir': sequences_dir,
+    }, model_path)
+
+    hist_path = os.path.join(RESULTS_DIR, 'train_history_camlds_wide_{}.json'.format(run_tag))
+    with open(hist_path, 'w') as f:
+        json.dump(history, f, indent=2)
+
+    print('  Checkpoint    → {}'.format(model_path))
+    print('  Train history → {}'.format(hist_path))
+    print()
+    print('  Run test_camlds_matcher_technique_all78.py --run-tag {} for the detailed per-file test report.'.format(run_tag))
+
+
+if __name__ == '__main__':
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--test-file', type=str, default=None)
+    ap.add_argument('--k-per-technique', type=int, default=K_PER_TECHNIQUE)
+    ap.add_argument('--test-size', type=float, default=0.2)
+    ap.add_argument('--split-seed', type=int, default=SEED)
+    ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--template-dir', type=str, default=None)
+    ap.add_argument('--no-stratified', dest='stratified', action='store_false')
+    ap.add_argument('--lambda-uniform', type=float, default=LAMBDA_UNIFORM)
+    ap.add_argument('--class-reweight', action='store_true')
+    ap.add_argument('--reweight-cap', type=float, default=3.0)
+    ap.add_argument('--sequences-dir', type=str, default=None)
+    args = ap.parse_args()
+
+    run_tag = args.run_tag
+    if run_tag is None and args.test_file:
+        run_tag = args.test_file
+
+    run_contrastive_train(test_file_match=args.test_file, k_per_technique=args.k_per_technique,
+                           test_size=args.test_size, split_seed=args.split_seed, run_tag=run_tag,
+                           template_dir=args.template_dir,
+                           stratified=args.stratified, lambda_uniform=args.lambda_uniform,
+                           class_reweight=args.class_reweight, reweight_cap=args.reweight_cap,
+                           sequences_dir=args.sequences_dir)

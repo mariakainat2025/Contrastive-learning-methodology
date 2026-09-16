@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from sklearn.metrics import average_precision_score, label_ranking_average_precision_score
 from Deep_Wide_Model import TSGModel
-from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics
+from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics, technique_tactics
 from create_data_split import get_zoomer_split_multilabel
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
@@ -100,8 +100,8 @@ def main(seed, verbose=True):
 
     tactic_map = load_tactic_map()
     prototypes = build_final_prototypes(model, cache, split, classes, device)
-    class_tactic = {t: split[t]['tactic'] for t in classes}
-    all_tactics = sorted(set(class_tactic.values()))
+    class_tactics_all = {t: technique_tactics(tactic_map, t) for t in classes}
+    all_tactics = sorted({tac for tacs in class_tactics_all.values() for tac in tacs})
     unique_test = {}
     for technique in classes:
         for (filename, path) in split[technique]['test']:
@@ -129,14 +129,14 @@ def main(seed, verbose=True):
         n_total += 1
         if pred_technique in true_techniques:
             n_correct_tech += 1
-        if class_tactic[pred_technique] in true_tactics:
+        if class_tactics_all[pred_technique] & true_tactics:
             n_correct_tac += 1
         scores_by_class = (-dists).tolist()
         tactic_scores = {t: -1000000000.0 for t in all_tactics}
         for (c, s) in zip(classes, scores_by_class):
-            t = class_tactic[c]
-            if s > tactic_scores[t]:
-                tactic_scores[t] = s
+            for t in class_tactics_all[c]:
+                if s > tactic_scores[t]:
+                    tactic_scores[t] = s
         y_true_tac.append([1 if t in all_tactics and t in true_tactics else 0 for t in all_tactics])
         y_score_tac.append([tactic_scores[t] for t in all_tactics])
         ranked = sorted(zip(classes, scores_by_class), key=lambda x: x[1], reverse=True)

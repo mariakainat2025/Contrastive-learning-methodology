@@ -63,8 +63,7 @@ def print_sample_scarcity_summary(split, classes):
 
 def run_episode(model, cache, split, classes, rng, device):
     prototypes = []
-    query_embeds = []
-    query_labels = []
+    query_items = []
     for (class_idx, technique) in enumerate(classes):
         pool = list(split[technique]['train'])
         rng.shuffle(pool)
@@ -74,17 +73,34 @@ def run_episode(model, cache, split, classes, rng, device):
         support_embeds = torch.stack([embed_graph(model, cache, path, device) for (_, path) in support])
         prototypes.append(support_embeds.mean(dim=0))
         for (_, path) in remaining:
-            query_embeds.append(embed_graph(model, cache, path, device))
-            query_labels.append(class_idx)
+            query_items.append((path, class_idx))
     prototypes = torch.stack(prototypes)
-    query_embeds = torch.stack(query_embeds)
-    query_labels = torch.tensor(query_labels, device=device)
-    return (prototypes, query_embeds, query_labels)
+
+    by_path = {}
+    for (path, class_idx) in query_items:
+        by_path.setdefault(path, []).append(class_idx)
+
+    single_items = [(path, cidxs[0]) for (path, cidxs) in by_path.items() if len(cidxs) == 1]
+    multi_items = [(path, cidxs) for (path, cidxs) in by_path.items() if len(cidxs) > 1]
+
+    return (prototypes, single_items, multi_items)
 
 def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     dists = torch.cdist(query_embeds, prototypes) ** 2
     logits = -dists
     return F.cross_entropy(logits, query_labels)
+
+def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
+    """Cross-entropy of one query embedding against a subset of prototypes: the true
+    class plus every class NOT in exempt_idxs. exempt_idxs holds this same graph's
+    OTHER true labels, which must never be pushed away from as if they were wrong."""
+    n = prototypes.shape[0]
+    keep = [i for i in range(n) if i == true_idx or i not in exempt_idxs]
+    sub_protos = prototypes[torch.tensor(keep, device=embed.device)]
+    dists = torch.cdist(embed.unsqueeze(0), sub_protos) ** 2
+    logits = -dists
+    target = torch.tensor([keep.index(true_idx)], device=embed.device)
+    return F.cross_entropy(logits, target)
 
 def main(seed):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -120,12 +136,30 @@ def main(seed):
     stale_windows = 0
     recent_losses = []
     for episode in range(1, N_EPISODES + 1):
-        (prototypes, query_embeds, query_labels) = run_episode(model, cache, split, classes, rng, device)
-        loss = ttp_recognition_loss(prototypes, query_embeds, query_labels)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        recent_losses.append(loss.item())
+        (prototypes, single_items, multi_items) = run_episode(model, cache, split, classes, rng, device)
+
+        episode_loss = 0.0
+        if single_items:
+            query_embeds = torch.stack([embed_graph(model, cache, path, device) for (path, _) in single_items])
+            query_labels = torch.tensor([cidx for (_, cidx) in single_items], device=device)
+            loss = ttp_recognition_loss(prototypes, query_embeds, query_labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            episode_loss += loss.item()
+
+        protos_fixed = prototypes.detach()
+        for (path, cidxs) in multi_items:
+            for true_idx in cidxs:
+                exempt = set(cidxs) - {true_idx}
+                embed = embed_graph(model, cache, path, device)
+                step_loss = masked_single_label_loss(embed, protos_fixed, true_idx, exempt)
+                optimizer.zero_grad()
+                step_loss.backward()
+                optimizer.step()
+                episode_loss += step_loss.item()
+
+        recent_losses.append(episode_loss)
         if episode % LOG_EVERY == 0 or episode == 1:
             avg_loss = sum(recent_losses) / len(recent_losses)
             recent_losses = []
@@ -135,7 +169,7 @@ def main(seed):
                 stale_windows = 0
             else:
                 stale_windows += 1
-            print('episode {:5d}  loss {:.4f}  best_loss {:.4f}'.format(episode, loss.item(), best_loss))
+            print('episode {:5d}  loss {:.4f}  best_loss {:.4f}'.format(episode, episode_loss, best_loss))
             if stale_windows >= PATIENCE:
                 print("loss hasn't improved for {} checks (best={:.4f}) -- stopping early at episode {}.".format(PATIENCE, best_loss, episode))
                 break
