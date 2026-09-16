@@ -1,15 +1,4 @@
-"""
-Bridges CAM-LDS matcher sequence instances to ZOOMER's existing Wide-feature pipeline
-(node-abstract + edge-type + IoC counts, discretized, plus cross-product features).
-Nothing here recomputes that logic -- it's a thin reuse layer over the already-working
-code in CAM-LDS/zoomer/scripts/ (discretize_features.py, cross_product.py).
 
-Every CAM-LDS matcher instance (identified by its 'step', e.g. "1_pwnkit_pam-41") is the
-same underlying attack run as one of ZOOMER's graph files -- this module maps step name
--> graph file path, then produces the same wide feature vector ZOOMER's own Wide_Model.py
-would compute for it. Bins/masks are refit fresh per seed from that seed's own training
-set, matching how Train_TTP_Recognition_Multilabel.py does it (not a stale shared cache).
-"""
 import glob
 import os
 import sys
