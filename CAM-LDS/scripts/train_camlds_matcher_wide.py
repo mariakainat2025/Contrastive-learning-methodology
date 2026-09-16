@@ -1,14 +1,4 @@
-"""
-Same as train_camlds_matcher.py (tactic-level, 9 tactic prototypes), but each sequence's
-embedding is the text embedding CONCATENATED with ZOOMER's node-abstract + edge-type
-counts for that same instance (IoC counts deliberately excluded -- see
-wide_feature_bridge.fit_node_edge_bins_and_masks for why), discretized + cross-product --
-see CAM-LDS/scripts/wide_feature_bridge.py, reused as-is here since it's
-technique-agnostic: it just maps an instance name to its graph file and computes the
-vector, nothing tactic/technique-specific about it. Templates get no wide vector (not
-backed by a graph); text_proj's output dim is widened to match the combined sequence
-embedding size, and the model learns where to place each tactic template in that space.
-"""
+
 import os
 import re
 import sys
