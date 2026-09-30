@@ -15,7 +15,7 @@ from scripts.config import ROBERTA_MODEL, MAX_LEN, STRIDE
 from scripts.encoder_utils import embed_text
 from scripts.subgraph_sequence_builder import _rebuild_graph, extract_triples, triples_to_text
 
-# ── Paths ─────────────
+
 TACTIC_DATA   = os.path.join(PROJECT_ROOT, 'output', 'theia', 'tactic_data')
 TRAIN_DIR     = os.path.join(TACTIC_DATA, 'training', 'abstract')
 TEST_DIR      = os.path.join(TACTIC_DATA, 'testing',  'abstract')
@@ -25,13 +25,13 @@ RESULTS_DIR   = os.path.join(TACTIC_DATA, 'results')
 os.makedirs(MODEL_DIR,   exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-#  Tactic label map 
+
 TACTIC_LABELS = {
     'Initial_Access': 'TA0001',
     'Execution'     : 'TA0002',
 }
 
-#  Hyperparameters ─
+
 SEED          = 42
 LR_ROBERTA    = 1e-5
 LR_PROJ       = 1e-3
@@ -40,7 +40,7 @@ PROJ_DIM      = 128
 DROPOUT       = 0.3
 PATIENCE      = 30
 TEMP_INIT     = 0.5
-N_UNFREEZE    = 4  
+N_UNFREEZE    = 4
 
 random.seed(SEED)
 torch.manual_seed(SEED)
@@ -48,7 +48,6 @@ if torch.cuda.is_available():
     torch.cuda.manual_seed_all(SEED)
 
 
-# ── Projection network 
 class ProjectionHead(nn.Module):
     def __init__(self, in_dim=768, out_dim=PROJ_DIM, dropout=DROPOUT):
         super().__init__()
@@ -62,7 +61,6 @@ class ProjectionHead(nn.Module):
         return self.fc2(h)
 
 
-# ── InfoNCE loss ──────
 def info_nce_loss(z_log, z_tmpl, logit_scale):
     z_log  = F.normalize(z_log,  dim=-1)
     z_tmpl = F.normalize(z_tmpl, dim=-1)
@@ -72,7 +70,6 @@ def info_nce_loss(z_log, z_tmpl, logit_scale):
     return (F.cross_entropy(S, labels) + F.cross_entropy(S.T, labels)) / 2
 
 
-# ── Convert subgraph JSON → sequence text ─────────────────────────────────────
 def subgraph_to_text(path):
     with open(path) as f:
         data = json.load(f)
@@ -82,14 +79,13 @@ def subgraph_to_text(path):
     return ' '.join(tokens) if tokens else 'empty subgraph'
 
 
-# ── Load all subgraphs from a tactic folder ───────────────────────────────────
 def load_tactic_subgraphs(base_dir):
-    pairs = []   # list of (text, tactic_label)
+    pairs = []
     for tactic in os.listdir(base_dir):
         tactic_dir = os.path.join(base_dir, tactic)
         if not os.path.isdir(tactic_dir):
             continue
-        label = tactic  # e.g. 'Initial_Access', 'Execution'
+        label = tactic
         for fname in sorted(os.listdir(tactic_dir)):
             if not fname.endswith('.json'):
                 continue
@@ -98,8 +94,8 @@ def load_tactic_subgraphs(base_dir):
             pairs.append({'text': text, 'tactic': label, 'file': fname})
             print(f'  [subgraph] {label}/{fname}')
 
-    # save subgraph texts to file
-    split_name = os.path.basename(os.path.dirname(base_dir))  # 'training' or 'testing'
+
+    split_name = os.path.basename(os.path.dirname(base_dir))
     out_path = os.path.join(RESULTS_DIR, f'subgraph_sequences_{split_name}.txt')
     out_path = os.path.normpath(out_path)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
@@ -111,15 +107,14 @@ def load_tactic_subgraphs(base_dir):
     return pairs
 
 
-# ── Load templates (original + augmented) ─────────────────────────────────────
 def load_templates(template_dir, use_aug=True):
-    templates = {}   # tactic_id → list of texts
+    templates = {}
     for fname in sorted(os.listdir(template_dir)):
         if not fname.endswith('.txt'):
             continue
         if not use_aug and '_aug' in fname:
             continue
-        # map filename to tactic label
+
         tactic_id = None
         for label, tid in TACTIC_LABELS.items():
             if tid in fname:
@@ -135,7 +130,6 @@ def load_templates(template_dir, use_aug=True):
     return templates
 
 
-# ── Tokenize a list of texts ──────────────────────────────────────────────────
 def tokenize(tokenizer, texts):
     all_ids, all_masks = [], []
     for text in texts:
@@ -151,7 +145,6 @@ def tokenize(tokenizer, texts):
     return all_ids, all_masks
 
 
-# ── Encode a list of tokenized texts using RoBERTa ───────────────────────────
 def encode_batch(model, tokenizer, ids_list, masks_list, device):
     embeddings = []
     for ids, mask in zip(ids_list, masks_list):
@@ -162,15 +155,10 @@ def encode_batch(model, tokenizer, ids_list, masks_list, device):
     return torch.stack(embeddings)
 
 
-# ── Build training pairs ──────────────────────────────────────────────────────
 def build_pairs(subgraphs, templates):
-    """
-    Returns list of (subgraph_idx, template_idx) positive pairs.
-    Each subgraph is paired with every version of its matching template.
-    """
     pairs = []
-    tmpl_flat  = []   # flat list of all template texts in order
-    tmpl_labels = []  # corresponding tactic label
+    tmpl_flat  = []
+    tmpl_labels = []
     for label, tmpl_list in templates.items():
         for t in tmpl_list:
             tmpl_flat.append(t)
@@ -184,7 +172,6 @@ def build_pairs(subgraphs, templates):
     return pairs, tmpl_flat, tmpl_labels
 
 
-# ── Quick test accuracy during training ───────────────────────────────────────
 def test_accuracy(device, log_proj, text_proj, test_embs, tmpl_embs,
                   test_labels, tmpl_labels, tmpl_flat=None):
     log_proj.eval()
@@ -195,7 +182,7 @@ def test_accuracy(device, log_proj, text_proj, test_embs, tmpl_embs,
             z_log = F.normalize(log_proj(test_embs[i].to(device)), dim=-1)
             scores = {}
             for j, t_label in enumerate(tmpl_labels):
-                # only score against original templates (not aug versions)
+
                 if tmpl_flat and '_aug' in tmpl_flat[j].get('file', ''):
                     continue
                 z_t = F.normalize(text_proj(tmpl_embs[j].to(device)), dim=-1)
@@ -206,7 +193,6 @@ def test_accuracy(device, log_proj, text_proj, test_embs, tmpl_embs,
     return correct / len(test_labels)
 
 
-# ── Training ──────────
 def train(device, log_proj, text_proj, sg_embs, tmpl_embs,
           sg_labels, tmpl_labels, test_embs, test_labels, tmpl_flat=None, test_subgraphs=None):
 
@@ -258,12 +244,12 @@ def train(device, log_proj, text_proj, sg_embs, tmpl_embs,
         )
         optimizer.step()
 
-       
+
         if epoch % 10 == 0 or epoch == 1:
             log_proj.eval()
             text_proj.eval()
             all_tactics = sorted(set(tmpl_labels))
-            # only original templates for scoring
+
             orig_indices = [j for j, t in enumerate(tmpl_flat)
                             if '_aug' not in t.get('file', '')]
             correct = 0
@@ -284,7 +270,7 @@ def train(device, log_proj, text_proj, sg_embs, tmpl_embs,
             acc  = correct / len(test_labels)
             temp = logit_scale.exp().item()
 
-            # print one row per test subgraph
+
             for idx, r in enumerate(sg_results):
                 mark  = '✓' if r['pred'] == r['true'] else '✗'
                 e_sc  = r['scores'].get('Execution', 0)
@@ -299,10 +285,10 @@ def train(device, log_proj, text_proj, sg_embs, tmpl_embs,
             epoch_log.append({'epoch': epoch, 'loss': loss.item(),
                                'temp': temp, 'acc': acc})
 
-        # only save/check patience at evaluation epochs
+
         if epoch % 10 == 0 or epoch == 1:
             acc_now = epoch_log[-1]['acc']
-            # compute average score gap across test subgraphs
+
             if acc_now > best_acc or (acc_now == best_acc and loss.item() < best_loss):
                 best_acc    = acc_now
                 best_loss   = loss.item()
@@ -325,7 +311,6 @@ def train(device, log_proj, text_proj, sg_embs, tmpl_embs,
     return best_state, best_loss, best_acc, epoch_log
 
 
-# ── Evaluation ─────────
 def evaluate(device, log_proj, text_proj, sg_embs, tmpl_embs,
              test_subgraphs, tmpl_flat, tmpl_labels):
 
@@ -343,7 +328,7 @@ def evaluate(device, log_proj, text_proj, sg_embs, tmpl_embs,
         for i, sg in enumerate(test_subgraphs):
             z_log = F.normalize(log_proj(sg_embs[i].to(device)), dim=-1)
 
-            # score against original templates only
+
             scores = {}
             for j in orig_indices:
                 t_label = tmpl_labels[j]
@@ -371,12 +356,11 @@ def evaluate(device, log_proj, text_proj, sg_embs, tmpl_embs,
     return results
 
 
-# ── Main ──────────────
 def run(use_aug=True):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f'  Device: {device}')
 
-    # ── Stage 1: Load subgraphs ───────────────────────────────────────────────
+
     print('\n  Stage 1 — Loading training subgraphs...')
     train_subgraphs = load_tactic_subgraphs(TRAIN_DIR)
     print(f'  Loaded {len(train_subgraphs)} training subgraphs')
@@ -385,13 +369,13 @@ def run(use_aug=True):
     test_subgraphs = load_tactic_subgraphs(TEST_DIR)
     print(f'  Loaded {len(test_subgraphs)} test subgraphs')
 
-    # ── Stage 2: Load templates ───────────────────────────────────────────────
+
     print(f'\n  Stage 2 — Loading templates (aug={use_aug})...')
     templates = load_templates(TEMPLATE_DIR, use_aug=use_aug)
     for label, tmpls in templates.items():
         print(f'  {label}: {len(tmpls)} versions')
 
-    # ── Stage 3: Tokenize ─────────────────────────────────────────────────────
+
     print('\n  Stage 3 — Tokenizing...')
     tokenizer = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
 
@@ -407,15 +391,15 @@ def run(use_aug=True):
 
     print(f'  Train seqs: {len(train_ids)}  Test seqs: {len(test_ids)}  Templates: {len(tmpl_ids)}')
 
-    # ── Stage 4: Encode with RoBERTa ─────────────────────────────────────────
+
     print('\n  Stage 4 — Encoding with RoBERTa...')
     roberta = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
 
-    # freeze all layers first
+
     for param in roberta.parameters():
         param.requires_grad = False
 
-    # unfreeze last N_UNFREEZE transformer layers
+
     n_layers = len(roberta.encoder.layer)
     for i in range(n_layers - N_UNFREEZE, n_layers):
         for param in roberta.encoder.layer[i].parameters():
@@ -432,7 +416,7 @@ def run(use_aug=True):
         test_embs  = encode_batch(roberta, tokenizer, test_ids,  test_masks,  device).cpu()
         tmpl_embs  = encode_batch(roberta, tokenizer, tmpl_ids,  tmpl_masks,  device).cpu()
 
-    # encode training subgraphs once (will re-encode during training via fine-tuning)
+
     with torch.no_grad():
         train_embs = encode_batch(roberta, tokenizer, train_ids, train_masks, device).cpu()
 
@@ -440,14 +424,14 @@ def run(use_aug=True):
     print(f'  Test  embs: {test_embs.shape}')
     print(f'  Tmpl  embs: {tmpl_embs.shape}')
 
-    # ── Stage 5: Build training pairs ────────────────────────────────────────
+
     print(f'\n  Stage 5 — Building {len(tmpl_pairs)} training pairs...')
     for sg_idx, t_idx in tmpl_pairs:
         sg    = train_subgraphs[sg_idx]
         tmpl  = tmpl_flat[t_idx]
         print(f'    ({sg["tactic"]}/{sg["file"]})  ↔  ({tmpl_labels[t_idx]}/{tmpl["file"]})')
 
-    # ── Stage 6: Train 
+
     print('\n  Stage 6 — Training...')
     log_proj  = ProjectionHead().to(device)
     text_proj = ProjectionHead().to(device)
@@ -460,11 +444,11 @@ def run(use_aug=True):
         test_embs, test_labels, tmpl_flat=tmpl_flat
     )
 
-    # restore best model
+
     log_proj.load_state_dict(best_state['log_proj'])
     text_proj.load_state_dict(best_state['text_proj'])
 
-    # save
+
     ckpt_path = os.path.join(MODEL_DIR, 'tactic_matcher.pt')
     torch.save({
         'log_proj'   : best_state['log_proj'],
@@ -474,7 +458,7 @@ def run(use_aug=True):
     }, ckpt_path)
     print(f'  Model saved → {ckpt_path}  (best_acc={best_acc:.2f}  best_loss={best_loss:.4f}  epoch={best_state["epoch"]})')
 
-    # ── Stage 7: Evaluate ─────────────────────────────────────────────────────
+
     print('\n  Stage 7 — Evaluating on test subgraphs...')
     results = evaluate(
         device, log_proj, text_proj,
@@ -482,7 +466,7 @@ def run(use_aug=True):
         test_subgraphs, tmpl_flat, tmpl_labels
     )
 
-    # save results
+
     results_path = os.path.join(RESULTS_DIR, 'tactic_matcher_results.json')
     with open(results_path, 'w') as f:
         json.dump(results, f, indent=2)

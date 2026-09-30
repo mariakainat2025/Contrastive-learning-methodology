@@ -21,7 +21,7 @@ BENIGN_JSON  = os.path.join(OUTPUT_BENIGN,  'benign_subgraphs.json')
 TRAIN_JSON   = os.path.join(OUTPUT_BENIGN,  'benign_training.json')
 TEST_JSON    = os.path.join(OUTPUT_BENIGN,  'benign_testing.json')
 
-MAX_NODES    = 50  
+MAX_NODES    = 50
 TRAIN_SIZE   = 10000
 TEST_SIZE    = 2000
 
@@ -78,14 +78,14 @@ def main():
         json.dump({'total_subgraphs': len(test_sgs), 'subgraphs': test_sgs}, f, indent=2)
     print(f'  Saved testing  -> {TEST_JSON}')
 
-    # ── Save raw test subgraphs to input/test/ for evaluation ─────────────────
+
     os.makedirs(INPUT_TEST, exist_ok=True)
     test_sg_path = os.path.join(INPUT_TEST, 'benign_subgraphs.json')
     with open(test_sg_path, 'w') as f:
         json.dump({'total_subgraphs': len(test_sgs), 'subgraphs': test_sgs}, f, indent=2)
     print(f'  Saved test subgraphs -> {test_sg_path}')
 
-    # ── Extract sequences from test subgraphs and save to input/test/ ────────
+
     print(f'\n--- Extracting sequences from {len(test_sgs):,} test subgraphs ---')
     os.makedirs(INPUT_TEST, exist_ok=True)
     test_seq_path = os.path.join(INPUT_TEST, 'sequences_benign.json')

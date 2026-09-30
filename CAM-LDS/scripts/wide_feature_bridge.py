@@ -1,22 +1,17 @@
-"""
-Bridges CAM-LDS matcher sequence instances to ZOOMER's existing Wide-feature pipeline
-(node-abstract + edge-type + IoC counts, discretized, plus cross-product features).
-Nothing here recomputes that logic -- it's a thin reuse layer over the already-working
-code in CAM-LDS/zoomer/scripts/ (discretize_features.py, cross_product.py).
 
-Every CAM-LDS matcher instance (identified by its 'step', e.g. "1_pwnkit_pam-41") is the
-same underlying attack run as one of ZOOMER's graph files -- this module maps step name
--> graph file path, then produces the same wide feature vector ZOOMER's own Wide_Model.py
-would compute for it. Bins/masks are refit fresh per seed from that seed's own training
-set, matching how Train_TTP_Recognition_Multilabel.py does it (not a stale shared cache).
-"""
 import glob
 import os
 import sys
 
+CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
+while CAM_LDS_SCRIPTS in sys.path:
+    sys.path.remove(CAM_LDS_SCRIPTS)
+sys.path.insert(0, CAM_LDS_SCRIPTS)
+
 ZOOMER_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/zoomer/scripts'
-if ZOOMER_SCRIPTS not in sys.path:
-    sys.path.insert(0, ZOOMER_SCRIPTS)
+while ZOOMER_SCRIPTS in sys.path:
+    sys.path.remove(ZOOMER_SCRIPTS)
+sys.path.insert(0, ZOOMER_SCRIPTS)
 
 from data_utils import instance_from_filename
 from discretize_features import ALL_DIMS, fit_bins, load_raw_vector, discretize_vector, _bucket_index
@@ -26,6 +21,7 @@ from edge_feature import EDGE_TYPE_DIMS, edge_type_counts
 from Feature_Initialization import load_graph
 
 GRAPHS_DIR = '/csse/research/contructive-learning/CAM-LDS/graphs'
+
 
 NODE_EDGE_DIMS = HNODE_DIMS + EDGE_TYPE_DIMS
 
@@ -43,12 +39,6 @@ def raw_node_edge_vector(graph_path):
 
 
 def fit_node_edge_bins(train_paths, k=4):
-    """Same k-means-per-dimension recipe as discretize_features.fit_bins, but over
-    NODE_EDGE_DIMS only -- IoC counts dropped. IoC is literally 'occurrence frequency
-    of tactic-associated keywords', the most directly tactic-biased feature group, and
-    a likely driver of the false-positive overfitting found in the full-wide run (two
-    unrelated files getting inflated credential_access confidence on ~94 training
-    examples). This isolates whether removing it fixes that."""
     from sklearn.cluster import KMeans
     import numpy as np
 
@@ -103,9 +93,6 @@ def raw_node_only_vector(graph_path):
 
 
 def fit_node_only_bins(train_paths, k=4):
-    """Same recipe again, node-abstract counts only -- edge-type counts also dropped
-    this time, to see whether they were adding signal or adding more of the same
-    small-data overfitting risk that IoC did."""
     from sklearn.cluster import KMeans
     import numpy as np
 
@@ -157,9 +144,6 @@ def build_step_to_graph_path():
 
 
 def fit_wide_bins_and_masks(train_steps, step_to_path, seed):
-    """train_steps: the CAM-LDS matcher's own training instance names for this seed.
-    Fits bins on exactly those instances' graphs -- same graphs, same seed's training
-    split, kept in lockstep with what the text side is training on."""
     train_paths = sorted({step_to_path[s] for s in train_steps if s in step_to_path})
     bins = fit_bins(train_paths)
     h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
@@ -178,6 +162,7 @@ def wide_vector_for_step(step, step_to_path, bins, masks):
 
 
 if __name__ == '__main__':
+
     step_to_path = build_step_to_graph_path()
     print('mapped', len(step_to_path), 'instances to graph files')
     sample_steps = list(step_to_path.keys())[:20]

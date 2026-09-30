@@ -90,7 +90,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
             )
         ]
 
-        # ── Fluxbox UUID filter ───────────────────────────────────────────────
+
         if sg.get('seed_name', '') == 'fluxbox':
             csv_path_fluxbox = os.path.join(PROJECT_ROOT, 'input', 'malicious_nodes', f'node_{attack_name}.csv')
             if os.path.exists(csv_path_fluxbox):
@@ -115,7 +115,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
                     n for n in filtered_nodes
                     if n[1].get('uuid', '') in keep_uuids or n[1].get('uuid', '') in mal_uuids
                 ]
-        # ─────────────────────────────────────────────────────────────────────
+
 
         edge_ts   = [e[3].get('ts', 0) for e in filtered_edges if e[3].get('ts', 0) > 0]
         start_ts  = min(edge_ts) if edge_ts else sg['start_ts']
@@ -124,7 +124,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
         if not filtered_edges:
             continue
 
-        # ── Ensure all malicious UUIDs from CSV are included ─────────────────
+
         csv_path = os.path.join(PROJECT_ROOT, 'input', 'malicious_nodes', f'node_{attack_name}.csv')
         csv_uuids = set()
         if os.path.exists(csv_path):
@@ -142,7 +142,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
                 if isinstance(n, (list, tuple)) and n[1].get('uuid', '') in missing_csv:
                     filtered_nodes.append(n)
                     added += 1
-            # ─────────────────────────────────────────────────────────────────────
+
 
         filtered_node_uuids = {n[1].get('uuid', '') for n in filtered_nodes}
         n_malicious = sum(1 for u in mal_uuids if u in filtered_node_uuids)
@@ -180,7 +180,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
     for r in results:
         print(f'  {r["dep_id"]:<8}  {r["part_idx"]:<6}  {r["n_nodes"]:>9,}  {r["n_edges"]:>9,}  {r["n_malicious"]:>9,}  {ns_to_est(r["start_ts"]):<22}  {ns_to_est(r["end_ts"]):<22}  {r["seed_name"]}')
 
-    # ── Run labeling on filtered subgraphs ────────────────────────────────────
+
     csv_path = os.path.join(PROJECT_ROOT, 'input', 'malicious_nodes', f'node_{attack_name}.csv')
     label_out = os.path.join(OUTPUT_ATTACK, f'subgraph_labels_{attack_name}.json')
     if os.path.exists(csv_path):
@@ -190,7 +190,7 @@ def filter_attack_subgraphs(attack_name, attack_start_ns, attack_end_ns):
         run_labeling(results, attack_uuids, attack_name, label_out)
     else:
         print(f'\n  [WARNING] No CSV found for labeling: {csv_path}')
-    # ─────────────────────────────────────────────────────────────────────────
+
 
 def run_all():
     for atk in ATTACKS:

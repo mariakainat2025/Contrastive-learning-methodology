@@ -8,7 +8,6 @@ if PROJECT_ROOT not in sys.path:
 
 nlp = spacy.load('en_core_web_sm')
 
-# ── Abstract vocabulary mapping ───────────────────────────────────────────────
 
 _PROCESS_MAP = {
     'browser': 'web_process', 'firefox': 'web_process', 'chrome': 'web_process',
@@ -51,7 +50,6 @@ def _abstract(word, mapping):
 
 
 def _follow_chain(token):
-    """Follow xcomp/pcomp chain to find the real action verb."""
     current = token
     for _ in range(3):
         children_verbs = [c for c in current.children
@@ -64,7 +62,6 @@ def _follow_chain(token):
 
 
 def _get_objects(verb_token):
-    """Get direct objects and prepositional objects of a verb."""
     objects = []
     for child in verb_token.children:
         if child.dep_ in ('dobj', 'attr'):
@@ -82,17 +79,17 @@ def extract_svos(text):
 
     for sent in doc.sents:
         for token in sent:
-            # find subject
+
             if token.dep_ in ('nsubj', 'nsubjpass') and token.head.pos_ == 'VERB':
                 subj     = token
                 root_verb = token.head
 
-                # follow xcomp/pcomp chain to real action
+
                 real_verb = _follow_chain(root_verb)
                 action    = real_verb.lemma_.lower()
 
                 if action not in _VERB_MAP and action == root_verb.lemma_.lower():
-                    continue  # skip non-attack verbs
+                    continue
 
                 objects = _get_objects(real_verb)
                 if not objects and real_verb != root_verb:
@@ -101,7 +98,7 @@ def extract_svos(text):
                 for obj in objects:
                     svos.append((subj.text, action, obj.text))
 
-        # also catch participial phrases without explicit subject (pcomp of "by")
+
         for token in sent:
             if token.dep_ == 'pcomp' and token.pos_ == 'VERB':
                 action = token.lemma_.lower()

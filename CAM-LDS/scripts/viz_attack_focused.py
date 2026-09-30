@@ -1,8 +1,3 @@
-"""
-Clean, focused visualization of the phishing-email-executable-attachment attack.
-Shows only the key nodes: fluxbox, thunderbird chain, IMAP server, INBOX file,
-gnome-terminal, and bash — with clear colour coding and labels.
-"""
 import os, sys, json, collections
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
@@ -14,9 +9,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
-# ── Key node UUIDs ──────────────────────────────────────────────────────────
+
 FOCUS_NODES = {
-    # Attack chain
+
     '8C081700-0000-0000-0000-000000000020': ('fluxbox\n(window mgr)', 'process',  True),
     'A414A414-0400-0000-0000-000000000020': ('fluxbox\n(session)',    'process',  True),
     'A514A414-0400-0000-0000-000000000020': ('thunderbird\n(launcher)','process', True),
@@ -24,23 +19,23 @@ FOCUS_NODES = {
     '0100D00F-BB0E-2600-0000-0000BF8A1F28': ('INBOX-1\n(phishing email)', 'file',  True),
     '0100D00F-890E-2600-0000-00008D17591E': ('INBOX-1.msf\n(mail store)',  'file',  True),
     '80370C6E-09A5-8037-0C49-8F0000000040': ('128.55.12.73:143\n(IMAP server)', 'net', True),
-    # Background noise
+
     '17173C19-0400-0000-0000-000000000020': ('gnome-terminal\n(background)', 'process', False),
     '1E173C19-0400-0000-0000-000000000020': ('bash\n(background)',           'process', False),
 }
 
 COLOURS = {
-    ('process', True):  '#E74C3C',   # red  = attack process
-    ('process', False): '#7F8C8D',   # grey = background process
-    ('file',    True):  '#F39C12',   # orange = attack file
-    ('net',     True):  '#8E44AD',   # purple = network
+    ('process', True):  '#E74C3C',
+    ('process', False): '#7F8C8D',
+    ('file',    True):  '#F39C12',
+    ('net',     True):  '#8E44AD',
 }
 
 INPUT  = 'input/test/attack_subgraphs_phishing_email_executable_attachment.json'
 OUTPUT = 'output/theia/viz/phishing_attack_focused.png'
 
 def short(name):
-    return name  # already short labels
+    return name
 
 def main():
     with open(INPUT) as f:
@@ -52,15 +47,15 @@ def main():
     focus_uuids = set(FOCUS_NODES.keys())
     focus_ints  = {uuid_to_int[u] for u in focus_uuids if u in uuid_to_int}
 
-    # ── Build graph with only focus nodes ──────────────────────────────────
+
     G = nx.MultiDiGraph()
     for uid, (label, ntype, is_attack) in FOCUS_NODES.items():
         iid = uuid_to_int.get(uid)
         if iid is not None:
             G.add_node(iid, label=label, ntype=ntype, is_attack=is_attack)
 
-    # Aggregate edges between focus nodes
-    edge_agg = collections.defaultdict(set)  # (src, dst) -> set of etypes
+
+    edge_agg = collections.defaultdict(set)
     for edge in sg['edges']:
         src_uuid, dst_uuid, _, edata = edge
         si = uuid_to_int.get(src_uuid)
@@ -72,19 +67,18 @@ def main():
     for (si, di), etypes in edge_agg.items():
         G.add_edge(si, di, label='\n'.join(sorted(etypes)))
 
-    # ── Layout ─────────────────────────────────────────────────────────────
-    # Manual positions for clarity (attack chain left-to-right, noise on side)
+
     pos_map = {
-        '8C081700-0000-0000-0000-000000000020': (0.0,  0.0),   # fluxbox seed
-        'A414A414-0400-0000-0000-000000000020': (1.5,  0.0),   # fluxbox session
-        'A514A414-0400-0000-0000-000000000020': (3.0,  0.0),   # tb launcher
-        'BC14A414-0400-0000-0000-000000000020': (4.5,  0.0),   # tb thread
-        '0100D00F-BB0E-2600-0000-0000BF8A1F28': (6.0,  0.8),   # INBOX
-        '0100D00F-890E-2600-0000-00008D17591E': (6.0, -0.8),   # INBOX.msf
-        '80370C6E-09A5-8037-0C49-8F0000000040': (7.5,  0.0),   # IMAP server
-        # Background — below the main chain
-        '17173C19-0400-0000-0000-000000000020': (3.0, -2.0),   # gnome-terminal
-        '1E173C19-0400-0000-0000-000000000020': (4.5, -2.0),   # bash
+        '8C081700-0000-0000-0000-000000000020': (0.0,  0.0),
+        'A414A414-0400-0000-0000-000000000020': (1.5,  0.0),
+        'A514A414-0400-0000-0000-000000000020': (3.0,  0.0),
+        'BC14A414-0400-0000-0000-000000000020': (4.5,  0.0),
+        '0100D00F-BB0E-2600-0000-0000BF8A1F28': (6.0,  0.8),
+        '0100D00F-890E-2600-0000-00008D17591E': (6.0, -0.8),
+        '80370C6E-09A5-8037-0C49-8F0000000040': (7.5,  0.0),
+
+        '17173C19-0400-0000-0000-000000000020': (3.0, -2.0),
+        '1E173C19-0400-0000-0000-000000000020': (4.5, -2.0),
     }
     pos = {}
     for uid, xy in pos_map.items():
@@ -92,7 +86,7 @@ def main():
         if iid in G.nodes():
             pos[iid] = xy
 
-    # ── Styling ────────────────────────────────────────────────────────────
+
     node_colours, node_sizes, labels = [], [], {}
     for n in G.nodes():
         nd = G.nodes[n]
@@ -125,7 +119,7 @@ def main():
                                  font_size=7, font_color='#F0E68C',
                                  bbox=dict(alpha=0))
 
-    # Annotation boxes
+
     ax.text(3.75, 0.55, 'ATTACK CHAIN', color='#E74C3C',
             fontsize=10, fontweight='bold', ha='center',
             bbox=dict(boxstyle='round,pad=0.3', facecolor='#1a1a2e', edgecolor='#E74C3C'))

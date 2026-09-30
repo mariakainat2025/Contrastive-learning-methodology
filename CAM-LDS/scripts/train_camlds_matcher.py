@@ -1,4 +1,3 @@
-
 import os
 import re
 import sys
@@ -16,14 +15,11 @@ from transformers import RobertaTokenizer, RobertaModel
 PROJECT_ROOT = '/csse/research/contructive-learning'
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
-TECHNIQUE_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'technique')
-if TECHNIQUE_DIR not in sys.path:
-    sys.path.insert(0, TECHNIQUE_DIR)
 
 from scripts.config import ROBERTA_MODEL
 from scripts.encoder_utils import embed_text
+from test_split_presets import resolve_test_file_arg
 from prototype_multilabel_loss import multilabel_prototype_loss, uniformity_loss
-from wide_feature_bridge import build_step_to_graph_path, fit_node_edge_bins_and_masks, node_edge_vector_for_step
 
 CAM_LDS_DIR       = '/csse/research/contructive-learning/CAM-LDS'
 SEQUENCES_DIR     = os.path.join(CAM_LDS_DIR, 'sequences')
@@ -55,17 +51,16 @@ TACTIC_IDS = {
 
 SEED       = 42
 LR         = 1e-5
+LR_PROJ    = 1e-3
 DROPOUT    = 0.5
 N_EPOCHS   = 100
 EMB_DIM    = 768
 PROJ_DIM   = 128
-WIDE_DIM_OUT = 64
-COMBINED_DIM = PROJ_DIM + WIDE_DIM_OUT
 PATIENCE   = 20
 N_FREEZE   = 9
 K_PER_TACTIC = 1
 LAMBDA_UNIFORM = 0.1
-MAX_CHUNKS = None
+MAX_CHUNKS = 200
 
 
 random.seed(SEED)
@@ -88,15 +83,6 @@ class ProjectionNetwork(nn.Module):
         h2 = F.relu(self.fc2(h1))
         h2 = self.dropout(h2)
         return h1 + h2
-
-
-class WideModel(nn.Module):
-    def __init__(self, in_dim, out_dim=WIDE_DIM_OUT):
-        super().__init__()
-        self.linear = nn.Linear(in_dim, out_dim)
-
-    def forward(self, x):
-        return self.linear(x)
 
 
 def freeze_lower_layers(model, n_freeze=N_FREEZE):
@@ -273,14 +259,6 @@ def encode_one(tokenizer, encoder, text, device):
     return embed_text(encoder, tokenizer, ids, mask, device, truncate=False, max_chunks=MAX_CHUNKS).squeeze(0)
 
 
-def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
-    text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
-    wide_vec = node_edge_vector_for_step(entry['file'], step_to_path, bins, masks)
-    wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)
-    wide_embed = wide_model(wide_t)
-    return torch.cat([text_embed, wide_embed], dim=-1)
-
-
 def build_pos_mask(entries, all_tactics, tactic_to_col):
     mask = torch.zeros(len(entries), len(all_tactics))
     for i, e in enumerate(entries):
@@ -341,7 +319,8 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
 
     if test_scenario:
         train_entries, test_entries = leave_out_scenario_split(entries, test_scenario, seed=split_seed)
-        print('  Split mode: leave-one-scenario-out — test = ALL steps of scenario {}'.format(test_scenario))
+        print('  Split mode: leave-one-scenario-out — test = ALL steps of scenario {} '
+              '({} scenarios remaining for training)'.format(test_scenario, 'other 6'))
     elif test_file_match:
         train_entries, test_entries = leave_out_split(entries, test_file_match)
         print('  Split mode: leave-out — test = every file matching "{}"'.format(test_file_match))
@@ -382,12 +361,6 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
 
     templates = load_templates(template_dir=template_dir)
     print('  Templates: {} (dir={})'.format(', '.join(sorted(templates.keys())), template_dir or TEMPLATE_DIR))
-
-    print('  Fitting wide-feature bins/masks on this seed\'s training instances (ZOOMER\'s own pipeline)...')
-    step_to_path = build_step_to_graph_path()
-    train_steps = [e['file'] for e in train_entries]
-    bins, masks, wide_dim = fit_node_edge_bins_and_masks(train_steps, step_to_path, seed=split_seed)
-    print('  wide_dim={} (raw h_cat + cross-product, before the {}-dim wide projection)'.format(wide_dim, WIDE_DIM_OUT))
     print()
 
     print('  Loading RoBERTa encoders...')
@@ -401,20 +374,18 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     freeze_lower_layers(tmpl_encoder, n_freeze=N_FREEZE)
     tmpl_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
     tmpl_encoder.train()
-    text_proj = ProjectionNetwork(EMB_DIM, COMBINED_DIM, DROPOUT).to(device)
+    text_proj = ProjectionNetwork(EMB_DIM, PROJ_DIM, DROPOUT).to(device)
 
     n_layers = len(seq_encoder.encoder.layer)
     print('  Encoders loaded — layers 0-{} frozen, layers {}-{} trainable, gradient checkpointing ON.'.format(
         N_FREEZE - 1, N_FREEZE, n_layers - 1))
     print()
 
-    log_proj  = ProjectionNetwork(EMB_DIM, PROJ_DIM, DROPOUT).to(device)
-    wide_model = WideModel(wide_dim, WIDE_DIM_OUT).to(device)
+    log_proj = ProjectionNetwork(EMB_DIM, PROJ_DIM, DROPOUT).to(device)
 
     logit_scale = nn.Parameter(torch.ones([], device=device) * math.log(1 / 0.07))
 
     trainable_params = ([p for p in seq_encoder.parameters() if p.requires_grad] + list(log_proj.parameters()) +
-                         list(wide_model.parameters()) +
                          [p for p in tmpl_encoder.parameters() if p.requires_grad] + list(text_proj.parameters()) +
                          [logit_scale])
 
@@ -440,22 +411,18 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
 
     for epoch in range(1, n_epochs + 1):
         epoch_start = time.time()
-        seq_encoder.train(); tmpl_encoder.train(); log_proj.train(); text_proj.train(); wide_model.train()
+        seq_encoder.train(); tmpl_encoder.train(); log_proj.train(); text_proj.train()
 
         epoch_losses = []
 
         for _ in range(steps_per_epoch):
             batch_idxs = stratified_batch_indices(tactic_pools, all_tactics, k_per_tactic, random)
-            batch_entries = [train_entries[i] for i in batch_idxs]
+            texts = [train_entries[i]['sequence'] for i in batch_idxs]
             pos_mask_batch = train_pos_mask[batch_idxs]
 
             optimizer.zero_grad()
             with torch.amp.autocast('cuda'):
-                z = torch.stack([
-                    encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, e,
-                                              step_to_path, bins, masks, device)
-                    for e in batch_entries
-                ])
+                z = log_proj(torch.stack([encode_one(tokenizer, seq_encoder, t, device) for t in texts]))
                 prototypes = text_proj(torch.stack(
                     [encode_one(tokenizer, tmpl_encoder, templates[t], device) for t in all_tactics]))
                 loss = multilabel_prototype_loss(z, prototypes, pos_mask_batch, logit_scale, class_weights=class_weights)\
@@ -492,7 +459,6 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
                 'tmpl_encoder': {k: v.clone() for k, v in tmpl_encoder.state_dict().items()},
                 'log_proj'    : {k: v.clone() for k, v in log_proj.state_dict().items()},
                 'text_proj'   : {k: v.clone() for k, v in text_proj.state_dict().items()},
-                'wide_model'  : {k: v.clone() for k, v in wide_model.state_dict().items()},
                 'logit_scale' : logit_scale.detach().clone(),
                 'epoch'       : epoch,
             }
@@ -503,16 +469,15 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
                 break
 
         if epoch % 10 == 0 and best_state:
-            ckpt_name = 'camlds_wide_{}_epoch{}.pt'.format(run_tag, epoch)
+            ckpt_name = 'camlds_{}_epoch{}.pt'.format(run_tag, epoch)
             ckpt_path = os.path.join(OUTPUT_TRAINING, ckpt_name)
             torch.save({
                 'seq_encoder' : best_state['seq_encoder'],
                 'tmpl_encoder': best_state['tmpl_encoder'],
                 'log_proj'    : best_state['log_proj'],
                 'text_proj'   : best_state['text_proj'],
-                'wide_model'  : best_state['wide_model'],
                 'logit_scale' : best_state['logit_scale'],
-                'proj_dims'   : (EMB_DIM, PROJ_DIM, WIDE_DIM_OUT, wide_dim),
+                'proj_dims'   : (EMB_DIM, PROJ_DIM),
                 'tactics'     : all_tactics,
                 'best_loss'   : best_loss,
                 'history'     : history[:epoch],
@@ -537,7 +502,6 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
         tmpl_encoder.load_state_dict(best_state['tmpl_encoder'])
         log_proj.load_state_dict(best_state['log_proj'])
         text_proj.load_state_dict(best_state['text_proj'])
-        wide_model.load_state_dict(best_state['wide_model'])
         with torch.no_grad():
             logit_scale.copy_(best_state['logit_scale'])
 
@@ -548,15 +512,14 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     print('  End time        : {}'.format(time.strftime('%Y-%m-%d %H:%M:%S')))
     print('  Total time      : {:.2f}m'.format(total_time))
 
-    model_path = os.path.join(OUTPUT_TRAINING, 'camlds_wide_matcher_{}.pt'.format(run_tag))
+    model_path = os.path.join(OUTPUT_TRAINING, 'camlds_matcher_{}.pt'.format(run_tag))
     torch.save({
         'seq_encoder' : seq_encoder.state_dict(),
         'tmpl_encoder': tmpl_encoder.state_dict(),
         'log_proj'    : log_proj.state_dict(),
         'text_proj'   : text_proj.state_dict(),
-        'wide_model'  : wide_model.state_dict(),
         'logit_scale' : logit_scale,
-        'proj_dims'   : (EMB_DIM, PROJ_DIM, WIDE_DIM_OUT, wide_dim),
+        'proj_dims'   : (EMB_DIM, PROJ_DIM),
         'tactics'     : all_tactics,
         'best_loss'   : best_loss,
         'best_epoch'  : best_state['epoch'] if best_state else None,
@@ -576,7 +539,7 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
         'sequences_dir': sequences_dir,
     }, model_path)
 
-    hist_path = os.path.join(RESULTS_DIR, 'train_history_camlds_wide_{}.json'.format(run_tag))
+    hist_path = os.path.join(RESULTS_DIR, 'train_history_camlds_{}.json'.format(run_tag))
     with open(hist_path, 'w') as f:
         json.dump(history, f, indent=2)
 
@@ -584,7 +547,7 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     print('  Checkpoint    → {}'.format(model_path))
     print('  Train history → {}'.format(hist_path))
     print()
-    print('  Run test_camlds_matcher_wide.py --run-tag {} for the detailed per-file test report.'.format(run_tag))
+    print('  Run test_camlds_matcher.py --run-tag {} for the detailed per-file test report.'.format(run_tag))
 
 
 if __name__ == '__main__':
@@ -593,7 +556,9 @@ if __name__ == '__main__':
     ap.add_argument('--k-per-tactic', type=int, default=K_PER_TACTIC)
     ap.add_argument('--test-file', type=str, default=None)
     ap.add_argument('--test-scenario', type=str, default=None,
-                     help='Hold out an ENTIRE scenario as test (e.g. "7"). Overrides --test-file when set.')
+                     help='Hold out an ENTIRE scenario as test (e.g. "7" for Scenario 7). Every step '
+                          'belonging to that scenario goes to test, every step from the other 6 scenarios '
+                          'goes to train. Overrides --test-file when set.')
     ap.add_argument('--exclude', type=str, default=None,
                      help='Comma-separated substrings of step names to drop from BOTH train and test '
                           '(a leakage guard) -- e.g. "3_vnc_apt" to remove a variant that shares near-duplicate '
@@ -601,13 +566,32 @@ if __name__ == '__main__':
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
-    ap.add_argument('--template-dir', type=str, default=None)
-    ap.add_argument('--no-stratified', dest='stratified', action='store_false')
-    ap.add_argument('--lambda-uniform', type=float, default=LAMBDA_UNIFORM)
-    ap.add_argument('--class-reweight', action='store_true')
-    ap.add_argument('--reweight-cap', type=float, default=3.0)
-    ap.add_argument('--sequences-dir', type=str, default=None)
+    ap.add_argument('--template-dir', type=str, default=None,
+                     help='Directory of tactic template .txt files (default: templates_dc/). '
+                          'Use templates_dc_b/ or templates_dc_c/ for the alternative variants.')
+    ap.add_argument('--no-stratified', dest='stratified', action='store_false',
+                     help='Use a plain random split instead of the default stratified split (stratified '
+                          'guarantees every tactic has >=1 test example; random_split can leave some tactics '
+                          'with zero test coverage by chance).')
+    ap.add_argument('--lambda-uniform', type=float, default=LAMBDA_UNIFORM,
+                     help='Weight on the uniformity loss term (penalizes batch embeddings clustering '
+                          'together regardless of label). Default {}.'.format(LAMBDA_UNIFORM))
+    ap.add_argument('--class-reweight', action='store_true',
+                     help='Weight each tactic\'s loss contribution by (mean train count / that tactic\'s '
+                          'train count), so rare tactics (e.g. exfiltration with 2 examples) count for much '
+                          'more than common ones (e.g. persistence with 40) -- directly targets class '
+                          'imbalance, unlike --lambda-uniform which is label-blind.')
+    ap.add_argument('--reweight-cap', type=float, default=3.0,
+                     help='Max weight multiplier for --class-reweight (default 3.0). Uncapped inverse-frequency '
+                          'weighting (e.g. 8.2x for a tactic with 2 examples) was found to overcorrect -- the '
+                          'model just started defaulting to whichever tactic had the biggest weight instead of '
+                          'the biggest count. Capping keeps the nudge without flipping the bias the other way.')
+    ap.add_argument('--sequences-dir', type=str, default=None,
+                     help='Directory of built sequences to train on (default: sequences/, the generalized '
+                          'ones). Point at a different directory, e.g. sequences_raw/, to train on '
+                          'un-generalized data instead.')
     args = ap.parse_args()
+    test_files = resolve_test_file_arg(args.test_file)
 
     run_tag = args.run_tag
     if run_tag is None:
@@ -618,7 +602,7 @@ if __name__ == '__main__':
 
     exclude_match = [s.strip() for s in args.exclude.split(',')] if args.exclude else None
 
-    run_contrastive_train(test_file_match=args.test_file, test_scenario=args.test_scenario,
+    run_contrastive_train(test_file_match=test_files, test_scenario=args.test_scenario,
                            exclude_match=exclude_match,
                            k_per_tactic=args.k_per_tactic,
                            test_size=args.test_size, split_seed=args.split_seed, run_tag=run_tag,

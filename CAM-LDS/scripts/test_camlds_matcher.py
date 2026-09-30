@@ -1,3 +1,4 @@
+
 import os
 import re
 import sys
@@ -13,16 +14,19 @@ from sklearn.metrics import label_ranking_average_precision_score, average_preci
 PROJECT_ROOT = '/csse/research/contructive-learning'
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
-TECHNIQUE_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'technique')
-if TECHNIQUE_DIR not in sys.path:
-    sys.path.insert(0, TECHNIQUE_DIR)
 
 from scripts.config import ROBERTA_MODEL
-from train_camlds_matcher_wide import (
+from scripts.encoder_utils import embed_text
+from test_split_presets import resolve_test_file_arg
+from train_camlds_matcher import (
     load_sequences, leave_out_split, leave_out_scenario_split, random_split, stratified_split, load_templates,
-    encode_one, ProjectionNetwork, WideModel, SEED, TACTIC_IDS,
+    extract_techniques_use, ProjectionNetwork, SEED, TACTIC_IDS, MAX_CHUNKS,
 )
-from wide_feature_bridge import build_step_to_graph_path, fit_node_edge_bins_and_masks, node_edge_vector_for_step
+
+CAM_LDS_DIR = '/csse/research/contructive-learning/CAM-LDS'
+MODEL_DIR   = os.path.join(CAM_LDS_DIR, 'checkpoints')
+RESULTS_DIR = os.path.join(CAM_LDS_DIR, 'results')
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
 def step_sort_key(step_name):
@@ -37,19 +41,14 @@ def run_group_of(step_name):
     m = RUN_GROUP_RE.match(step_name)
     return m.group(1) if m else step_name
 
-CAM_LDS_DIR = '/csse/research/contructive-learning/CAM-LDS'
-MODEL_DIR   = os.path.join(CAM_LDS_DIR, 'checkpoints')
-RESULTS_DIR = os.path.join(CAM_LDS_DIR, 'results')
-os.makedirs(RESULTS_DIR, exist_ok=True)
 
-
-def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
+def encode_one(tokenizer, encoder, text, device):
+    enc  = tokenizer(text, padding=False, truncation=False, return_tensors='pt')
+    rlen = int(enc['attention_mask'][0].sum())
+    ids  = enc['input_ids'][0][:rlen].unsqueeze(0).to(device)
+    mask = enc['attention_mask'][0][:rlen].unsqueeze(0).to(device)
     with torch.no_grad():
-        text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
-        wide_vec = node_edge_vector_for_step(entry['file'], step_to_path, bins, masks)
-        wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)
-        wide_embed = wide_model(wide_t)
-        return torch.cat([text_embed, wide_embed], dim=-1).cpu()
+        return embed_text(encoder, tokenizer, ids, mask, device, truncate=False, max_chunks=MAX_CHUNKS).squeeze(0).cpu()
 
 
 def score_table(test_entries, seq_embs, all_tactics, tmpl_embs_by_tactic, display_scale):
@@ -168,10 +167,10 @@ def run(test_file_match=None, test_scenario=None, exclude_match=None, temp=0.07,
         else:
             run_tag = 'seed{}'.format(split_seed)
 
-    ckpt_path = os.path.join(MODEL_DIR, 'camlds_wide_matcher_{}.pt'.format(run_tag))
+    ckpt_path = os.path.join(MODEL_DIR, 'camlds_matcher_{}.pt'.format(run_tag))
     if not os.path.exists(ckpt_path):
         print('  ERROR: model not found at {}'.format(ckpt_path))
-        print('  Run train_camlds_matcher_wide.py --run-tag {} first.'.format(run_tag))
+        print('  Run train_camlds_matcher.py --run-tag {} first (or matching --test-file/--split-seed).'.format(run_tag))
         return
 
     print('\n  Loading model from {}'.format(ckpt_path))
@@ -187,20 +186,12 @@ def run(test_file_match=None, test_scenario=None, exclude_match=None, temp=0.07,
         trained_scale, 1 / trained_scale, display_scale,
         ' (temp={} override)'.format(temp) if temp else ' (using trained value)'))
 
-    proj_dims = ckpt['proj_dims']
-    proj_dim = proj_dims[1]
-    combined_dim = proj_dim + proj_dims[2]
-    wide_dim_raw = proj_dims[3]
-
-    log_proj   = ProjectionNetwork(out_dim=proj_dim).to(device)
-    text_proj  = ProjectionNetwork(out_dim=combined_dim).to(device)
-    wide_model = WideModel(wide_dim_raw, proj_dims[2]).to(device)
+    log_proj  = ProjectionNetwork().to(device)
+    text_proj = ProjectionNetwork().to(device)
     log_proj.load_state_dict(ckpt['log_proj'])
     text_proj.load_state_dict(ckpt['text_proj'])
-    wide_model.load_state_dict(ckpt['wide_model'])
     log_proj.eval()
     text_proj.eval()
-    wide_model.eval()
 
     print('\n  Loading RoBERTa encoders (fine-tuned weights from checkpoint)...')
     tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
@@ -233,33 +224,24 @@ def run(test_file_match=None, test_scenario=None, exclude_match=None, temp=0.07,
     if ckpt_test_scenario:
         print('\n  Loading test sequences (leave-one-scenario-out — test = ALL steps of scenario {})...'.format(
             ckpt_test_scenario))
-        train_entries, test_entries = leave_out_scenario_split(entries, ckpt_test_scenario, seed=ckpt_split_seed)
+        _, test_entries = leave_out_scenario_split(entries, ckpt_test_scenario, seed=ckpt_split_seed)
     elif ckpt_test_file_match:
         print('\n  Loading test sequences (leave-out mode — test = files matching "{}")...'.format(ckpt_test_file_match))
-        train_entries, test_entries = leave_out_split(entries, ckpt_test_file_match)
+        _, test_entries = leave_out_split(entries, ckpt_test_file_match)
     elif ckpt_stratified:
         print('\n  Loading test sequences (same stratified split as training, test_size={} split_seed={})...'.format(
             ckpt_test_size, ckpt_split_seed))
-        train_entries, test_entries = stratified_split(entries, test_size=ckpt_test_size, seed=ckpt_split_seed)
+        _, test_entries = stratified_split(entries, test_size=ckpt_test_size, seed=ckpt_split_seed)
     else:
         print('\n  Loading test sequences (same random split as training, test_size={} split_seed={})...'.format(
             ckpt_test_size, ckpt_split_seed))
-        train_entries, test_entries = random_split(entries, test_size=ckpt_test_size, seed=ckpt_split_seed)
+        _, test_entries = random_split(entries, test_size=ckpt_test_size, seed=ckpt_split_seed)
     print('  Test sequences: {}'.format(len(test_entries)))
 
-    print('\n  Refitting wide-feature bins/masks on this seed\'s training instances (same recipe as training)...')
-    step_to_path = build_step_to_graph_path()
-    train_steps = [e['file'] for e in train_entries]
-    bins, masks, wide_dim_check = fit_node_edge_bins_and_masks(train_steps, step_to_path, seed=ckpt_split_seed)
-    if wide_dim_check != wide_dim_raw:
-        print('  WARNING: refit wide_dim={} does not match checkpoint wide_dim={} -- '
-              'sequences_dir or split may not match training exactly.'.format(wide_dim_check, wide_dim_raw))
-
-    print('\n  Encoding test sequences (text + wide, combined)...')
-    seq_embs = [encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, e,
-                                          step_to_path, bins, masks, device)
-                for e in test_entries]
-    seq_embs = [F.normalize(z, dim=-1) for z in seq_embs]
+    print('\n  Encoding test sequences...')
+    with torch.no_grad():
+        seq_embs = [F.normalize(log_proj(encode_one(tokenizer, seq_encoder, e['sequence'], device).to(device)), dim=-1).cpu()
+                    for e in test_entries]
 
     ckpt_template_dir = template_dir or ckpt.get('template_dir')
     print('\n  Encoding {} tactic templates... (dir={})'.format(len(all_tactics), ckpt_template_dir or 'templates_dc (default)'))
@@ -285,7 +267,7 @@ def run(test_file_match=None, test_scenario=None, exclude_match=None, temp=0.07,
     out = print_table(display_results, all_tactics)
     out['results'] = results
 
-    results_path = os.path.join(RESULTS_DIR, 'camlds_wide_test_results_{}.json'.format(run_tag))
+    results_path = os.path.join(RESULTS_DIR, 'camlds_test_results_{}.json'.format(run_tag))
     with open(results_path, 'w') as f:
         json.dump(out, f, indent=2)
     print('\n  Results saved → {}'.format(results_path))
@@ -296,8 +278,9 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--test-file', type=str, default=None)
     ap.add_argument('--test-scenario', type=str, default=None,
-                     help='Evaluate on an ENTIRE held-out scenario (e.g. "7"). Normally read automatically '
-                          'from the checkpoint if trained with --test-scenario.')
+                     help='Evaluate on an ENTIRE held-out scenario (e.g. "7"). Normally not needed -- '
+                          'this is read from the checkpoint automatically if it was trained with '
+                          '--test-scenario. Pass it here only to override.')
     ap.add_argument('--exclude', type=str, default=None,
                      help='Comma-separated substrings to drop from both train and test (normally read '
                           'automatically from the checkpoint). Pass it here only to override.')
@@ -305,12 +288,15 @@ if __name__ == '__main__':
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
-    ap.add_argument('--template-dir', type=str, default=None)
-    ap.add_argument('--sequences-dir', type=str, default=None)
+    ap.add_argument('--template-dir', type=str, default=None,
+                     help='Override the template dir (default: reads it from the checkpoint, same one used to train).')
+    ap.add_argument('--sequences-dir', type=str, default=None,
+                     help='Override the sequences dir (default: reads it from the checkpoint, same one used to train).')
     ap.add_argument('--run', type=str, default=None,
                      help='Only print/score this one run group (exact match), e.g. --run 2_cron. '
                           'The saved JSON still has everything.')
     args = ap.parse_args()
+    test_files = resolve_test_file_arg(args.test_file)
     exclude_match = [s.strip() for s in args.exclude.split(',')] if args.exclude else None
 
     run_tag = args.run_tag
@@ -320,7 +306,7 @@ if __name__ == '__main__':
         elif args.test_file:
             run_tag = args.test_file
 
-    run(test_file_match=args.test_file, test_scenario=args.test_scenario, exclude_match=exclude_match,
+    run(test_file_match=test_files, test_scenario=args.test_scenario, exclude_match=exclude_match,
         temp=args.temp, test_size=args.test_size,
         split_seed=args.split_seed, run_tag=run_tag, run_filter=args.run,
         template_dir=args.template_dir, sequences_dir=args.sequences_dir)

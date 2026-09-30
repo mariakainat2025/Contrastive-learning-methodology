@@ -71,8 +71,6 @@ def tokenize_and_encode(tokenizer, encoder, proj, text, device):
 
 
 def abstract_and_save(in_path, out_path):
-    """Read subgraphs from original in_path, apply abstraction, save to out_path.
-    Always abstracts from the original so test matches training abstraction rules."""
     with open(in_path) as f:
         data = json.load(f)
 
@@ -105,8 +103,8 @@ def sg_to_text(sg):
 
 CHECKPOINTS        = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 THRESHOLD          = 0.3
-USE_ABSTRACTION    = True   # set True to abstract node names, False for raw
-USE_DEDUPLICATION  = True   # remove exact duplicate sentences from sequences
+USE_ABSTRACTION    = True
+USE_DEDUPLICATION  = True
 
 CTI_DISPLAY_NAMES = {
     'applejeus_spearphishing': 'Phishing',
@@ -134,10 +132,9 @@ def _load_model(ckpt_path, device):
 
 
 def _load_texts(use_abstraction):
-    """Load benign and attack texts with or without node abstraction."""
     prefix = 'abstracted_' if use_abstraction else ''
 
-    # ── Benign ────────────────────────────────────────────────────────────────
+
     original_ben_path = os.path.join(INPUT_TEST, TEST_BEN_SG_FILE)
 
     if use_abstraction:
@@ -150,7 +147,7 @@ def _load_texts(use_abstraction):
             data = json.load(f)
         ben_subgraphs = data['subgraphs'] if isinstance(data, dict) else data
 
-    # Build sequences and save before dedup
+
     ben_raw_texts = [sg_to_text(sg) for sg in ben_subgraphs]
     abs_ben_file  = '{}benign_sequences.json'.format(prefix)
     abs_ben_path  = os.path.join(INPUT_TEST, abs_ben_file)
@@ -159,7 +156,7 @@ def _load_texts(use_abstraction):
                    for i in range(len(ben_raw_texts))], f, indent=2)
     print('  Saved: {}'.format(abs_ben_path))
 
-    # Dedup from abstracted sequences file and save
+
     if USE_DEDUPLICATION:
         print('  Deduplicating: {}'.format(abs_ben_file))
     ben_texts = [deduplicate_sequence(t) if USE_DEDUPLICATION else t for t in ben_raw_texts]
@@ -170,7 +167,7 @@ def _load_texts(use_abstraction):
                        for i in range(len(ben_texts))], f, indent=2)
         print('  Saved: {}'.format(dedup_ben_path))
 
-    # ── Attack ────────────────────────────────────────────────────────────────
+
     atk_raw_texts = []
     atk_texts     = []
     atk_labels    = []
@@ -193,7 +190,7 @@ def _load_texts(use_abstraction):
             atk_labels.append('{} dep={} part={} seed={}'.format(
                 scenario['name'], sg['dep_id'], sg.get('part_idx', 0), sg.get('seed_name', '')))
 
-    # Save attack sequences before dedup
+
     abs_atk_file = '{}attack_sequences.json'.format(prefix)
     abs_atk_path = os.path.join(INPUT_TEST, abs_atk_file)
     with open(abs_atk_path, 'w') as f:
@@ -201,7 +198,7 @@ def _load_texts(use_abstraction):
                    for i in range(len(atk_raw_texts))], f, indent=2)
     print('  Saved: {}'.format(abs_atk_path))
 
-    # Dedup from abstracted attack sequences file and save
+
     if USE_DEDUPLICATION:
         print('  Deduplicating: {}'.format(abs_atk_file))
     atk_texts = [deduplicate_sequence(t) if USE_DEDUPLICATION else t for t in atk_raw_texts]
@@ -216,10 +213,9 @@ def _load_texts(use_abstraction):
 
 
 def _run_checkpoints(device, tokenizer, ben_texts, atk_texts, atk_labels, cti_keys, cti_texts):
-    """Evaluate all checkpoints and return results list."""
     os.makedirs(OUTPUT_TEST, exist_ok=True)
     results = []
-    TOP_K = 3  # show top-3 matches per attack in terminal
+    TOP_K = 3
 
     best_link_score = -1
     best_ckpt       = None
@@ -244,14 +240,14 @@ def _run_checkpoints(device, tokenizer, ben_texts, atk_texts, atk_labels, cti_ke
         ben_max        = ben_scores_max.max().item()
         ben_min        = ben_scores_max.min().item()
 
-        # resolve ground truth key — prefer abstracted version if present
+
         link_gt_key = TEST_SCENARIOS[0]['ground_truth'] if len(TEST_SCENARIOS) > 0 else ''
         if link_gt_key not in cti_keys:
             link_gt_key = link_gt_key + '_abstracted'
-        link_score = atk_scores[0, cti_keys.index(link_gt_key)].item() \
+        link_score = atk_scores[0, cti_keys.index(link_gt_key)].item()\
                      if link_gt_key in cti_keys and len(atk_texts) > 0 else -1
 
-        # ── Terminal: top-3 per attack ────────────────────────────────────────
+
         print('  {} '.format(ckpt_name))
         for i, label in enumerate(atk_labels):
             display = TEST_SCENARIOS[i]['display'] if i < len(TEST_SCENARIOS) else label[:40]
@@ -290,7 +286,7 @@ def evaluate():
     print('  Device: {}'.format(device))
     print()
 
-    # load CTI reports — prefer _abstracted.txt if it exists, else abstract on the fly
+
     cti_keys, cti_texts = [], []
     for fname in sorted(os.listdir(INPUT_TEST)):
         if not fname.endswith('.txt') or fname.startswith('.') or fname.endswith('_abstracted.txt'):
@@ -298,13 +294,13 @@ def evaluate():
         abs_fname = fname.replace('.txt', '_abstracted.txt')
         abs_path  = os.path.join(INPUT_TEST, abs_fname)
         if os.path.exists(abs_path):
-            # use saved abstracted version — key uses abstracted filename
+
             with open(abs_path) as f:
                 text = f.read().strip()
             key = abs_fname.replace('.txt', '')
             print('  [cti] using abstracted: {}'.format(abs_fname))
         else:
-            # abstract on the fly and save if changed
+
             with open(os.path.join(INPUT_TEST, fname)) as f:
                 raw = f.read().strip()
             text = abstract_cti_text(raw)
@@ -321,8 +317,8 @@ def evaluate():
     print('  CTI reports: {}'.format(len(cti_keys)))
     print()
 
-    # load test data
-    mode = 'WITH Node Abstraction (stem + role: e.g. libc library, passwd config, tcexec download)' \
+
+    mode = 'WITH Node Abstraction (stem + role: e.g. libc library, passwd config, tcexec download)'\
            if USE_ABSTRACTION else 'WITHOUT Node Abstraction (raw node names)'
     print('=' * 100)
     print('  {}'.format(mode))
@@ -336,14 +332,14 @@ def evaluate():
     results = _run_checkpoints(device, tokenizer, ben_texts, atk_texts,
                                atk_labels, cti_keys, cti_texts)
 
-    # Save JSON
+
     print()
     out_path = os.path.join(OUTPUT_TEST, 'evaluation_results.json')
     with open(out_path, 'w') as f:
         json.dump({'mode': mode, 'cti_reports': cti_keys, 'results': results}, f, indent=2)
     print('  Saved: {}'.format(out_path))
 
-    # Save human-readable text report
+
     txt_path = os.path.join(OUTPUT_TEST, 'evaluation_report.txt')
     lines = []
     lines.append('=' * 100)

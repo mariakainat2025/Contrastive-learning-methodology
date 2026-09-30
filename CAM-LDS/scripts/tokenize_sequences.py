@@ -20,7 +20,7 @@ from transformers import RobertaTokenizer
 SCENARIOS = {
     'browser_extension': 'Browser_Extension_Drakon_Dropper',
     'firefox_backdoor' : 'Firefox_Backdoor_Drakon_In_Memory',
-    # phishing_email_credential_harvest is kept as test-only — not tokenized here
+
 }
 
 BENIGN_TEXT = 'This is a benign sequence.'
@@ -43,9 +43,7 @@ def tokenize_texts(tokenizer, texts, desc):
             all_ids.append(enc['input_ids'][j][:real_len].clone())
             all_masks.append(enc['attention_mask'][j][:real_len].clone())
 
-    # Return as lists of 1-D tensors (variable length).
-    # Padding to the longest sequence would create a huge tensor for 10k sequences.
-    # The training loop pads each mini-batch on-the-fly instead.
+
     return {'input_ids': all_ids, 'attention_mask': all_masks}
 
 
@@ -55,7 +53,7 @@ def tokenize_all():
     print('  Loading tokenizer: {}'.format(ROBERTA_MODEL))
     tokenizer = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
 
-    # ── Benign sequences ──────────────────────────────────────────────────────
+
     ben_dedup_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_dedup_benign.json')
     ben_path       = os.path.join(OUTPUT_SEQUENCES, 'sequences_benign.json')
     if os.path.exists(ben_dedup_path):
@@ -73,11 +71,11 @@ def tokenize_all():
     print('  Tokenizing {} benign sequences...'.format(len(benign_texts)))
     benign_enc = tokenize_texts(tokenizer, benign_texts, '  benign')
 
-    # ── Attack sequences ──────────────────────────────────────────────────────
+
     attack_enc = {}
     for scenario, tag in SCENARIOS.items():
         dedup_path = os.path.join(OUTPUT_SEQUENCES, 'sequences_dedup_{}.json'.format(tag))
-        seq_path   = dedup_path if os.path.exists(dedup_path) else \
+        seq_path   = dedup_path if os.path.exists(dedup_path) else\
                      os.path.join(OUTPUT_SEQUENCES, 'sequences_{}.json'.format(tag))
         if os.path.exists(dedup_path):
             print('  [dedup] using deduplicated sequences for {}'.format(tag))
@@ -102,7 +100,7 @@ def tokenize_all():
         enc = tokenize_texts(tokenizer, texts, '  {}'.format(scenario))
         attack_enc[scenario] = {'enc': enc, 'meta': meta}
 
-    # ── CTI reports ───────────────────────────────────────────────────────────
+
     cti_keys  = []
     cti_texts = []
     for fname in sorted(os.listdir(CTI_REPORTS_DIR)):
@@ -118,10 +116,10 @@ def tokenize_all():
     print('  Tokenizing {} CTI reports...'.format(len(cti_texts)))
     cti_enc = tokenize_texts(tokenizer, cti_texts, '  CTI')
 
-    # ── Benign CTI text ───────────────────────────────────────────────────────
+
     benign_cti_enc = tokenize_texts(tokenizer, [BENIGN_TEXT], '  benign_cti')
 
-    # ── Save ──────────────────────────────────────────────────────────────────
+
     out_path = os.path.join(OUTPUT_TRAINING, 'tokenized.pt')
     torch.save({
         'benign'    : benign_enc,
@@ -140,7 +138,6 @@ def tokenize_all():
 
 
 def tokenize_benign_testing():
-    """Tokenize benign_testing.json subgraphs for evaluation."""
     os.makedirs(OUTPUT_TRAINING, exist_ok=True)
 
     testing_path = os.path.join(OUTPUT_BENIGN, 'benign_testing.json')
