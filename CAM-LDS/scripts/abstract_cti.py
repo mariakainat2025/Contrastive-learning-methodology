@@ -114,7 +114,7 @@ def run_cti_abstraction(dirs: list, inplace: bool = False):
                 continue
 
             in_path  = os.path.join(d, fname)
-            out_path = in_path if inplace else \
+            out_path = in_path if inplace else\
                        os.path.join(d, fname.replace('.txt', '_abstracted.txt'))
 
             with open(in_path, 'r', encoding='utf-8') as f:

@@ -182,7 +182,6 @@ def build_log_sequences(in_path, out_path, label='unknown', max_subgraphs=None):
     return sequences
 
 def _prefer_abstract(path):
-    """Use abstract_ prefixed file if it exists, otherwise use original."""
     from scripts.node_abstraction import abstract_path
     abs_path = abstract_path(path)
     if os.path.exists(abs_path):

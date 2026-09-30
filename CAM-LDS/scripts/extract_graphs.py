@@ -105,13 +105,13 @@ def read_single_graph(dataset, path, tag=None):
 
     return node_map, g
 
-THETA_MAX_NS  = 20 * 60 * int(1e9) 
+THETA_MAX_NS  = 20 * 60 * int(1e9)
 MIN_NODES     = 6
 MIN_EDGES     = 1
 MIN_TYPES     = 2
 
 def temporal_split(E_dep, theta_max):
-   
+
     if not E_dep:
         return []
 
@@ -147,7 +147,7 @@ def dfs(node, G_prov, visited, V_dep):
             stack.append(neighbor)
 
 def subgraph_partition(G_prov, theta_max=THETA_MAX_NS):
-   
+
 
     if G_prov.number_of_nodes() == 0:
         return []
@@ -261,7 +261,7 @@ def run_extract_windows(g, tag='subgraphs'):
         part_info = 'dep#{} part {}/{}'.format(
             sg['dep_id'], sg['part_idx'] + 1, sg['total_parts'])
 
-      
+
         print('  {:<6}  {:<8}  {:<8}  {:<38}  {:<20}  {:<24}  {}'.format(
               i,
               len(sg['nodes']),
@@ -272,6 +272,3 @@ def run_extract_windows(g, tag='subgraphs'):
               ', '.join(sorted(types))))
 
     return subgraphs
-
-   
-

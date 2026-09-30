@@ -1,41 +1,3 @@
-"""
-Runs the CAM-LDS matcher (train_camlds_matcher.py / test_camlds_matcher.py)
-3 times, once per seed (0, 1, 2), each time restricted to the EXACT same
-train/test instances ZOOMER's multi-label pipeline used for that seed
-(zoomer/scripts/create_data_split.py's get_zoomer_split_multilabel(seed)) --
-so both systems are compared on identical data, seed for seed.
-
-Unlike run_sequence_pipeline.py (which reads a single, pre-saved, fixed-seed
-split from data_split_output.json), this calls get_zoomer_split_multilabel
-LIVE for each of the 3 seeds, since that function itself builds a fresh
-random split per seed rather than reading one fixed file.
-
-Two runtime patches, same as run_sequence_pipeline.py and for the same
-reasons (see that file's docstring for the full explanation):
-1. load_sequences() -- restricted to only this seed's ZOOMER instances, and
-   (matching ZOOMER's own 9-tactic scope) each entry's tactic labels are
-   narrowed to ZOOMER's 9 tactics, dropping labels outside it. Without this,
-   the matcher would be scored on tactics ZOOMER can never predict at all
-   (it has no output class for them), which isn't a fair comparison.
-2. leave_out_split() -- exact match instead of substring match. The
-   original does `any(m in e['file'] for m in match_substrs)`, which has
-   real false positives on these instance ids (e.g. "6_macro_binary-1" is a
-   literal prefix of "6_macro_binary-11/-12/-13/-15/-17").
-
-Uses sequences/ (IP/path-generalized), the same generalized text your main
-CAM-LDS pipeline (CAM-LDS/main.py) trains on by default -- so this compares
-your real, as-used matcher configuration against ZOOMER, not a stripped-down
-raw-text variant built just for this comparison. (sequences_raw/, built
-straight from the raw graphs with no generalization step, is the other
-option if a same-raw-source comparison is ever wanted instead -- both
-directories have full coverage of every ZOOMER-scoped instance, verified
-2026-09-10.)
-
-Both train_camlds_matcher and test_camlds_matcher get patched, because
-test_camlds_matcher imported its own copies of load_sequences/leave_out_split
-via `from train_camlds_matcher import (...)` -- patching the source module
-alone would not reach test_camlds_matcher's already-bound references.
-"""
 import json
 import os
 import random
@@ -45,6 +7,8 @@ import sys
 PROJECT_ROOT = '/csse/research/contructive-learning'
 CAM_LDS_SCRIPTS = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'scripts')
 ZOOMER_SCRIPTS = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'zoomer', 'scripts')
+
+
 for _p in (PROJECT_ROOT, CAM_LDS_SCRIPTS, ZOOMER_SCRIPTS):
     if _p in sys.path:
         sys.path.remove(_p)
@@ -67,9 +31,6 @@ SEQUENCES_DIR = os.path.join(CAM_LDS_DIR, 'sequences')
 
 
 def zoomer_instances_and_tactics(seed):
-    """Same multi-label train/test split ZOOMER trained/tested on for this
-    seed, read LIVE (not from a saved file) so this always matches whatever
-    ZOOMER's own split logic currently does."""
     split = get_zoomer_split_multilabel(seed)
     train_instances = set()
     test_instances = set()

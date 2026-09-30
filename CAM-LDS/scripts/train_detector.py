@@ -114,7 +114,7 @@ def run_contrastive_train():
     print('  Scenarios: {}'.format(', '.join(ALL_SCENARIOS)))
     print()
 
-    
+
     tok_path = os.path.join(OUTPUT_TRAINING, 'tokenized.pt')
     if not os.path.exists(tok_path):
         print('  ERROR: {} not found — run Stage 8 (tokenize) first'.format(tok_path))
@@ -129,7 +129,7 @@ def run_contrastive_train():
     print('  Benign over {} tokens: {}/{}'.format(MAX_TRAIN_TOKENS, n_over, len(all_ben_ids)))
     ben_ids  = [x[:MAX_TRAIN_TOKENS] for x in all_ben_ids]
     ben_mask = [x[:MAX_TRAIN_TOKENS] for x in all_ben_mask]
-    ben_cti_ids  = tok_data['benign_cti']['input_ids'][0] 
+    ben_cti_ids  = tok_data['benign_cti']['input_ids'][0]
     ben_cti_mask = tok_data['benign_cti']['attention_mask'][0]
     n_benign     = len(ben_ids)
 
@@ -160,14 +160,13 @@ def run_contrastive_train():
                 if cti_idx is None:
                     print('  WARNING: CTI key {} not in tokenized.pt'.format(cti_key))
                     continue
-                atk_log_ids_list.append(atk_enc['input_ids'][seq_idx])   
+                atk_log_ids_list.append(atk_enc['input_ids'][seq_idx])
                 atk_log_mask_list.append(atk_enc['attention_mask'][seq_idx])
                 atk_cti_ids_list.append(tok_data['cti']['input_ids'][cti_idx])
                 atk_cti_mask_list.append(tok_data['cti']['attention_mask'][cti_idx])
             n_loaded += 1
         print('  {} attack seqs loaded: {}'.format(scenario, n_loaded))
 
-   
 
     n_attack           = len(atk_log_ids_list)
     n_benign_per_batch = BATCH_SIZE - n_attack
@@ -192,7 +191,7 @@ def run_contrastive_train():
     tokenizer    = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
     log_encoder  = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
     text_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
-    # Freeze first 8 transformer layers (0-7) + embeddings; train layers 8-11
+
     def freeze_lower_layers(model, n_freeze=8):
         for param in model.embeddings.parameters():
             param.requires_grad = False
@@ -228,7 +227,7 @@ def run_contrastive_train():
         lr=LR,
     )
 
-   
+
     scaler = torch.amp.GradScaler('cuda')
 
     best_loss  = float('inf')
@@ -253,13 +252,13 @@ def run_contrastive_train():
             if not b_idx:
                 continue
 
-           
+
             b_log_seq  = [ben_ids[i]  for i in b_idx]
             b_log_msk  = [ben_mask[i] for i in b_idx]
             b_cti_seq  = [ben_cti_ids]  * len(b_idx)
             b_cti_msk  = [ben_cti_mask] * len(b_idx)
 
-            # Pad attack + benign together (variable-length → same width per batch)
+
             all_log_seqs = atk_log_ids_list  + b_log_seq
             all_log_msks = atk_log_mask_list + b_log_msk
             all_cti_seqs = atk_cti_ids_list  + b_cti_seq

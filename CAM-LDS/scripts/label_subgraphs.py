@@ -28,7 +28,7 @@ RUNS = [
 
 def ns_to_est(ns):
     utc = datetime.fromtimestamp(ns / 1e9, tz=timezone.utc)
-    est = utc - timedelta(hours=4)   
+    est = utc - timedelta(hours=4)
     return est.strftime('%Y-%m-%d %H:%M:%S')
 
 def load_attack_uuids(csv_path, attack_name):

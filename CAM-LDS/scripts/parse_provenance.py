@@ -68,7 +68,7 @@ def run_parser(file=None):
     for p in json_files:
         print('    {}'.format(p))
 
-   
+
     node_type_map_path = os.path.join(OUTPUT_PARSED, 'node_type_map.json')
     edge_type_map_path = os.path.join(OUTPUT_PARSED, 'edge_type_map.json')
 
@@ -84,7 +84,6 @@ def run_parser(file=None):
     else:
         edge_type_dict = {}
 
-   
 
     id_nodetype_map   = {}
     id_nodename_map   = {}
@@ -157,7 +156,7 @@ def run_parser(file=None):
                     try:
                         obj = json.loads(line)
                         subj_obj = obj["datum"]["com.bbn.tc.schema.avro.cdm18.Subject"]
-                      
+
                         cmd_raw = subj_obj.get("cmdLine")
                         if isinstance(cmd_raw, str):
                             cmd = cmd_raw
@@ -176,7 +175,7 @@ def run_parser(file=None):
                         id_nodename_map[uuid] = cmd
                     elif exe:
                         id_nodename_map[uuid] = exe
-                
+
                 elif subject_type == 'NetFlowObject':
                     srcaddr = "null"
                     srcport = "null"
@@ -214,7 +213,7 @@ def run_parser(file=None):
     print('  ── Pass 2 / 2 : event (edge) extraction ──')
     total_events_skipped = 0
     skip_type_counts     = {}
-    edges_files          = []   
+    edges_files          = []
 
     for filepath in json_files:
         basename   = os.path.basename(filepath)
@@ -279,7 +278,7 @@ def run_parser(file=None):
 
         total_events_skipped += skip_count
 
-        
+
         file_edges.sort(key=lambda x: x[0])
         edges_out = os.path.join(OUTPUT_PARSED, 'edges_{}.txt'.format(tag))
         with open(edges_out, 'w', encoding='utf-8') as fw:
@@ -321,7 +320,7 @@ def run_parser(file=None):
         json.dump(edge_type_dict, f, indent=2)
     print('  edge_type_map.json saved : {:,} types'.format(len(edge_type_dict)))
 
-   
+
     combined_edges_path = os.path.join(OUTPUT_PARSED, 'edges_all.txt')
     total_combined = 0
     with open(combined_edges_path, 'w', encoding='utf-8') as fw:
@@ -342,8 +341,8 @@ def run_parser(file=None):
         'id_localport_map'  : id_localport_map,
         'id_memaddr_map'    : id_memaddr_map,
         'id_ts_map'         : id_ts_map,
-        'edges_files'       : edges_files,          
-        'edges_all'         : combined_edges_path,  
+        'edges_files'       : edges_files,
+        'edges_all'         : combined_edges_path,
     }
 
     print()

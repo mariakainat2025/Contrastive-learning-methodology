@@ -73,7 +73,7 @@ else:
 
 ROBERTA_MODEL = 'FacebookAI/roberta-base'
 MAX_LEN       = 512
-STRIDE        = 384  
+STRIDE        = 384
 EMB_DIM       = 768
 
 CTI_REPORTS_DIR = os.path.join(BASE_DIR, 'input', 'cti_reports')

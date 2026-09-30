@@ -16,14 +16,14 @@ def embed_text(model, tokenizer, input_ids, attention_mask, device,
 
     bs = input_ids.size(0)
 
-   
+
     if truncate:
         ids_t  = input_ids[:, :max_len].to(device)
         mask_t = attention_mask[:, :max_len].to(device)
         out    = model(input_ids=ids_t, attention_mask=mask_t, return_dict=True)
-        return out.last_hidden_state[:, 0]   # CLS token for every sequence
+        return out.last_hidden_state[:, 0]
 
-   
+
     sentence_embeddings = [None] * bs
     short_texts         = []
     long_texts          = []
@@ -39,7 +39,7 @@ def embed_text(model, tokenizer, input_ids, attention_mask, device,
         else:
             long_texts.append((ids_i, mask_i, i))
 
-  
+
     if short_texts:
         s_ids  = torch.nn.utils.rnn.pad_sequence(
             [t[0] for t in short_texts], batch_first=True, padding_value=1
@@ -54,7 +54,7 @@ def embed_text(model, tokenizer, input_ids, attention_mask, device,
 
     if long_texts:
         all_chunks = []
-        chunk_meta = []   # orig_idx for each chunk
+        chunk_meta = []
         cls_id     = tokenizer.bos_token_id
 
         for ids_i, mask_i, orig_idx in long_texts:
@@ -80,7 +80,7 @@ def embed_text(model, tokenizer, input_ids, attention_mask, device,
                 chunk_meta.append(orig_idx)
 
         cls_per_orig = {}
-        CHUNK_BATCH = 32   # process at most 32 chunks at a time to avoid OOM
+        CHUNK_BATCH = 32
         for cb_start in range(0, len(all_chunks), CHUNK_BATCH):
             cb_end  = min(cb_start + CHUNK_BATCH, len(all_chunks))
             c_ids   = torch.stack([c[0] for c in all_chunks[cb_start:cb_end]]).to(device)

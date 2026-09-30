@@ -91,7 +91,7 @@ def _load_cti_reports(cti_filter=None):
         if fname.endswith('.txt') and not fname.startswith('.'):
             key = fname.replace('.txt', '')
             if cti_filter and key not in cti_filter:
-                continue 
+                continue
             if not key.endswith('_abstracted'):
                 abstracted_path = os.path.join(INPUT_TEST, f'{key}_abstracted.txt')
                 if os.path.exists(abstracted_path):

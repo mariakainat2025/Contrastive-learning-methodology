@@ -111,7 +111,6 @@ def _abstract_process(name):
 
 
 def _get_dst_ip(name):
-    """Return destination IP string from a netflow name, or None."""
     n = name.strip()
     parts = n.split('_')
     ip_indices = [i for i, p in enumerate(parts) if _IP_RE.match(p)]
@@ -135,11 +134,6 @@ def _get_dst_ip(name):
 
 
 def build_netflow_map(sg):
-    """
-    Scan all netflow nodes in a subgraph and return a dict mapping
-    raw node name → abstract label, using public_netflow_1/2/... when
-    multiple distinct public IPs exist, plain public_netflow when only one.
-    """
     ip_order = []
     for entry in sg.get('nodes', []):
         node = entry[1] if isinstance(entry, (list, tuple)) and len(entry) > 1 else entry

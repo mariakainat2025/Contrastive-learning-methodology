@@ -1,9 +1,4 @@
-"""
-Same purpose as run_camlds_matcher_multiseed.py: restricts the (now wide-feature-fused)
-tactic-level matcher to the EXACT same train/test instances ZOOMER used for a given seed,
-so this is directly comparable to your existing tactic-level baseline -- same seeds, same
-data, only the model itself (text+wide vs text-only) differs.
-"""
+
 import json
 import os
 import random

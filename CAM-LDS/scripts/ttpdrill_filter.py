@@ -1,7 +1,3 @@
-"""
-TTPDrill sentence filter using exact verb_list.txt and cyber_object_list.txt
-from https://github.com/KaiLiu-Leo/TTPDrill-0.5
-"""
 
 import os
 import re
@@ -20,7 +16,7 @@ nltk.download('averaged_perceptron_tagger', quiet=True)
 
 stemmer = PorterStemmer()
 
-# ── Exact TTPDrill verb_list.txt ─────────────────────────────────────────────
+
 _VERB_LIST_RAW = """abusing
 accept
 accessing
@@ -621,7 +617,7 @@ writing
 written
 zipped"""
 
-# ── Exact TTPDrill cyber_object_list.txt ─────────────────────────────────────
+
 _CYBER_OBJECT_LIST_RAW = """access control
 access control list
 access tokens
@@ -1278,7 +1274,7 @@ zip
 zip file
 zlib"""
 
-# Build sets from exact TTPDrill files
+
 ATTACK_VERBS = {
     stemmer.stem(v.strip().split()[0])
     for v in _VERB_LIST_RAW.strip().split('\n')
@@ -1291,7 +1287,7 @@ CYBER_OBJECTS = [
     if obj.strip()
 ]
 
-# Build BM25 corpus
+
 _corpus = [obj.lower().split() for obj in CYBER_OBJECTS]
 _bm25   = BM25Okapi(_corpus)
 
@@ -1312,7 +1308,7 @@ def _has_cyber_object(sentence):
     scores    = _bm25.get_scores(tokens)
     best_idx  = scores.argmax()
     best_score = scores[best_idx]
-    print(f'         BM25 best score: {best_score:.4f}  matched: {CYBER_OBJECTS[best_idx]}')  # ← add this
+    print(f'         BM25 best score: {best_score:.4f}  matched: {CYBER_OBJECTS[best_idx]}')
     if best_score >= BM25_THRESHOLD:
         return CYBER_OBJECTS[best_idx], True
     return None, False
@@ -1326,7 +1322,7 @@ def filter_sentences(text, verbose=True):
         verbs, has_verb = _has_attack_verb(sent)
         obj,   has_obj  = _has_cyber_object(sent)
         keep = has_obj
-        if verbose and not keep:  # ← only print REMOVE
+        if verbose and not keep:
             print(f'  [REMOVE] {sent.strip()[:90]}')
         if keep:
             kept.append(sent)

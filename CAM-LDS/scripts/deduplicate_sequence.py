@@ -15,8 +15,8 @@ SIMILARITY_THRESHOLD = 0.7
 def _to_sentences(text):
     if isinstance(text, list):
         text = '. '.join(str(s) for s in text)
-    # return [s.strip() for s in str(text).split('.') if s.strip()]
-    # correct one
+
+
     return [s.strip() for s in str(text).split('. ') if s.strip()]
 
 
@@ -32,7 +32,7 @@ def deduplicate_sequence(text, threshold=SIMILARITY_THRESHOLD):
 def _deduplicate_with_report(text, threshold=SIMILARITY_THRESHOLD):
     sentences = _to_sentences(text)
     kept = []
-    removed = []          # list of (removed_sent, matched_kept_sent, similarity)
+    removed = []
     for sent in sentences:
         match = next((k for k in kept if lev_ratio(sent, k) >= threshold), None)
         if match is None:
@@ -63,7 +63,7 @@ def deduplicate_sequences_file(in_path, out_path, threshold=SIMILARITY_THRESHOLD
             'removed_sentences': len(removed),
             'reduction_pct'    : round(100 * len(removed) / len(original), 1) if original else 0,
             'kept'             : kept,
-            'removed'          : removed,   # list of (removed, matched, sim)
+            'removed'          : removed,
         })
 
     with open(out_path, 'w') as f:
@@ -135,7 +135,7 @@ def run_deduplication():
     total_before = 0
     total_after  = 0
 
-    # Benign sequences
+
     benign_fname = 'sequences_benign.json'
     benign_in    = os.path.join(OUTPUT_SEQUENCES, benign_fname)
     benign_out   = os.path.join(OUTPUT_SEQUENCES, 'sequences_dedup_benign.json')
@@ -148,7 +148,7 @@ def run_deduplication():
     else:
         print(f'  skipping (not found): {benign_fname}')
 
-    # Attack sequences
+
     for atk in ATTACKS:
         fname       = f'sequences_{atk["name"]}.json'
         out_fname   = dedup_filename(fname)

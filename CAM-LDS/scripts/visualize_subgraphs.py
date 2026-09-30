@@ -75,7 +75,7 @@ def build_png(sg, mal_uuids, out_path, focus_uuid=None, hops=3, max_netflow=None
     int_to_data = {iid: nd   for iid, nd in sg['nodes']}
     mal_ints    = {uuid_to_int[u] for u in mal_uuids if u in uuid_to_int}
 
-    # Support multiple focus UUIDs
+
     if focus_uuids is None and focus_uuid is not None:
         focus_uuids = [focus_uuid]
 
@@ -282,7 +282,7 @@ def main():
     os.makedirs(VIZ_DIR, exist_ok=True)
 
     if args.input is not None:
-        # Load from a custom input file (e.g. input/test/)
+
         attack_json = args.input
         labels_json = None
         with open(attack_json) as f:
