@@ -4,7 +4,7 @@ import torch
 from sklearn.metrics import average_precision_score, label_ranking_average_precision_score
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics
-from create_data_split import get_zoomer_split
+from create_data_split import get_zoomer_split, get_zoomer_split_scenario
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 from Train_TTP_Recognition import IN_DIM, checkpoint_path
@@ -12,6 +12,20 @@ _CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
 if _CAM_LDS_SCRIPTS not in sys.path:
     sys.path.insert(0, _CAM_LDS_SCRIPTS)
 from train_camlds_matcher import TACTIC_IDS
+from tactic_to_stage import STAGE_ORDER, stage_scores_from_tactic_scores, tactics_to_stages
+
+STAGE_ABBREV = {
+    'Initial Compromise':      'IC',
+    'Establish Foothold':      'EF',
+    'Escalate Privilege':      'EP',
+    'Internal Reconnaissance': 'IR',
+    'Move Laterally':          'ML',
+    'Maintain Persistence':    'MP',
+    'Complete Mission':        'CM',
+}
+
+def sid(stage):
+    return STAGE_ABBREV.get(stage, stage)
 
 def embed_graph(model, cache, path, device):
     (h, adjacency, wide_x) = cache.get(path)
@@ -81,17 +95,55 @@ def print_tactic_results_table(tactic_rows, n_tactics, top_n=3):
         print(header_fmt.format(i, fname, true_str, *cols, 'WRONG' if wrong else ''))
     return n_wrong
 
-def main(seed, verbose=True):
+def print_stage_results_table(stage_rows, max_stages=4):
+    col_file = 26
+    col_true = 22
+    col_score = 12
+    col_found = 7
+    print()
+    print('-- Stage Results (KnowHow 7-stage lifecycle) --')
+    print('IC=Initial Compromise  EF=Establish Foothold  EP=Escalate Privilege  IR=Internal Reconnaissance '
+          'ML=Move Laterally  MP=Maintain Persistence  CM=Complete Mission')
+    header_fmt = ('{:<4} {:<' + str(col_file) + '} {:<' + str(col_true) + '} ' +
+                  ' '.join(['{:<' + str(col_score) + '}'] * max_stages) + ' {:<' + str(col_found) + '} {:<6} {}')
+    print(header_fmt.format('#', 'File', 'True stage(s)', *['#{}'.format(j + 1) for j in range(max_stages)], 'Found', 'Wrong', 'Missing'))
+    print('-' * (4 + col_file + col_true + col_score * max_stages + col_found + 6 + max_stages + 4))
+    n_wrong = 0
+    for (i, r) in enumerate(stage_rows, 1):
+        kept = r['ranked'][:max_stages]
+        cols = []
+        for j in range(max_stages):
+            cols.append('{} ({:.2f})'.format(sid(kept[j][0]), kept[j][1]) if j < len(kept) else '')
+        true_str = ', '.join(sid(s) for s in sorted(r['true_stages'], key=STAGE_ORDER.index)) or '(none)'
+        kept_names = {s for (s, _) in kept}
+        n_found = len(kept_names & r['true_stages'])
+        n_true = len(r['true_stages'])
+        found_str = '{}/{}'.format(n_found, n_true) if n_true else '-'
+        missing = sorted(r['true_stages'] - kept_names, key=STAGE_ORDER.index)
+        missing_str = ','.join(sid(s) for s in missing)
+        wrong = not (kept_names & r['true_stages'])
+        if wrong:
+            n_wrong += 1
+        fname = r['file'] if len(r['file']) <= col_file else r['file'][:col_file - 3] + '...'
+        print(header_fmt.format(i, fname, true_str, *cols, found_str, 'WRONG' if wrong else '', missing_str))
+    return n_wrong
+
+def main(seed, scenario=None, run_tag=None, verbose=True):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if run_tag is None:
+        run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
     if verbose:
-        print('Seed: {}  Device: {}'.format(seed, device))
-    ckpt = torch.load(checkpoint_path(seed), map_location=device)
+        if scenario:
+            print('Scenario held out: {}  Device: {}'.format(scenario, device))
+        else:
+            print('Seed: {}  Device: {}'.format(seed, device))
+    ckpt = torch.load(checkpoint_path(run_tag), map_location=device)
     classes = ckpt['classes']
     model = TSGModel(deep_in_dim=IN_DIM, wide_in_dim=ckpt['wide_in_dim']).to(device)
     model.load_state_dict(ckpt['model'])
     model.eval()
 
-    split = get_zoomer_split(seed)
+    split = get_zoomer_split_scenario(scenario, single_label=True) if scenario else get_zoomer_split(seed)
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     bins = fit_bins(train_paths)
     h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
@@ -103,11 +155,19 @@ def main(seed, verbose=True):
     class_tactic = {t: split[t]['tactic'] for t in classes}
     all_tactics = sorted(set(class_tactic.values()))
     unique_test = {}
-    for technique in classes:
+    for technique in split:
         for (filename, path) in split[technique]['test']:
             inst = instance_from_filename(filename)
             entry = unique_test.setdefault(inst, {'filename': filename, 'path': path, 'true_techniques': set()})
             entry['true_techniques'].add(technique)
+    if scenario and verbose:
+        classes_set = set(classes)
+        orphaned = sorted(inst for (inst, e) in unique_test.items() if not (e['true_techniques'] & classes_set))
+        print()
+        print('  Test steps with NO trained technique (scored anyway, will show WRONG): {}/{}'.format(
+            len(orphaned), len(unique_test)))
+        for inst in orphaned:
+            print('    {:20s} true technique(s): {}'.format(inst, sorted(unique_test[inst]['true_techniques'])))
     n_total = 0
     n_correct_tech = 0
     n_correct_tac = 0
@@ -115,6 +175,7 @@ def main(seed, verbose=True):
     y_score_tac = []
     rows = []
     tactic_rows = []
+    stage_rows = []
     for inst in sorted(unique_test):
         filename = unique_test[inst]['filename']
         path = unique_test[inst]['path']
@@ -143,12 +204,19 @@ def main(seed, verbose=True):
         rows.append({'file': filename, 'true_technique': '/'.join(sorted(true_techniques)), 'true_techniques': true_techniques, 'ranked': ranked})
         tactic_ranked = sorted(tactic_scores.items(), key=lambda x: x[1], reverse=True)
         tactic_rows.append({'file': inst, 'true_tactics': true_tactics, 'ranked': tactic_ranked})
+        stage_scores = stage_scores_from_tactic_scores(tactic_scores)
+        stage_ranked = sorted(stage_scores.items(), key=lambda x: x[1], reverse=True)
+        true_stages = set(tactics_to_stages(true_tactics))
+        stage_rows.append({'file': inst, 'true_stages': true_stages, 'ranked': stage_ranked})
     if verbose:
         print_results_table(rows, len(classes))
         n_wrong_top3_tac = print_tactic_results_table(tactic_rows, len(all_tactics))
+        n_wrong_stage = print_stage_results_table(stage_rows)
     else:
         top_tactics_by_row = [{t for (t, _) in r['ranked'][:3]} for r in tactic_rows]
         n_wrong_top3_tac = sum(1 for (r, top) in zip(tactic_rows, top_tactics_by_row) if not r['true_tactics'] & top)
+        top_stages_by_row = [{s for (s, _) in r['ranked'][:4]} for r in stage_rows]
+        n_wrong_stage = sum(1 for (r, top) in zip(stage_rows, top_stages_by_row) if not r['true_stages'] & top)
     tech_acc = n_correct_tech / n_total
     tac_acc = n_correct_tac / n_total
     y_true_tac = np.array(y_true_tac)
@@ -162,15 +230,21 @@ def main(seed, verbose=True):
     tactic_results = [{'file': r['file'], 'true_tactics': sorted(r['true_tactics']),
                         'ranked': [{'tactic': t, 'score': s} for (t, s) in r['ranked']]}
                        for r in tactic_rows]
-    metrics = {'seed': seed, 'n_total': n_total, 'n_classes': len(classes), 'n_tactics': len(all_tactics),
+    stage_results = [{'file': r['file'], 'true_stages': sorted(r['true_stages'], key=STAGE_ORDER.index),
+                       'ranked': [{'stage': s, 'score': sc} for (s, sc) in r['ranked']]}
+                      for r in stage_rows]
+    metrics = {'seed': seed, 'scenario': scenario, 'run_tag': run_tag, 'n_total': n_total,
+               'n_classes': len(classes), 'n_tactics': len(all_tactics),
                'tech_acc': tech_acc, 'tac_acc': tac_acc, 'lrap': lrap, 'aupr': aupr,
-               'n_wrong_top3_tac': n_wrong_top3_tac,
-               'technique_results': technique_results, 'tactic_results': tactic_results}
+               'n_wrong_top3_tac': n_wrong_top3_tac, 'n_wrong_stage': n_wrong_stage,
+               'technique_results': technique_results, 'tactic_results': tactic_results,
+               'stage_results': stage_results}
     if verbose:
         print()
         print('LRAP (Label Ranking Average Precision)          : {:.1f}%'.format(lrap * 100))
         print('AUPR (Area Under Precision-Recall Curve, macro) : {:.1f}%'.format(aupr * 100))
         print('Wrong (true label not in top-3)                 : {}/{} samples'.format(n_wrong_top3_tac, n_total))
+        print('Wrong at stage level (no true stage in top-4)   : {}/{} samples'.format(n_wrong_stage, n_total))
         print()
         print('Test samples          : {}'.format(n_total))
         print('Technique classes     : {}'.format(len(classes)))
@@ -180,5 +254,11 @@ def main(seed, verbose=True):
         print('Tactic Accuracy       : {:.1f}%'.format(tac_acc * 100))
     return metrics
 if __name__ == '__main__':
-    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0
-    main(seed)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--seed', type=int, default=0)
+    ap.add_argument('--scenario', type=str, default=None,
+                     help='Test against the checkpoint trained with this scenario held out.')
+    ap.add_argument('--run-tag', type=str, default=None)
+    args = ap.parse_args()
+    main(args.seed, scenario=args.scenario, run_tag=args.run_tag)

@@ -7,10 +7,10 @@ import torch
 from sklearn.metrics import average_precision_score, label_ranking_average_precision_score
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics, technique_tactics
-from create_data_split import get_zoomer_split_multilabel, get_zoomer_split_scenario_multilabel
+from create_data_split import get_zoomer_split_scenario_technique_singlelabel
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
-from Train_TTP_Recognition_Multilabel import IN_DIM, checkpoint_path
+from Train_TTP_Recognition_SingleTrainMultiTest import IN_DIM, checkpoint_path
 
 RESULTS_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/results'
 _CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
@@ -20,11 +20,8 @@ from train_camlds_matcher import TACTIC_IDS
 from tactic_to_stage import STAGE_ORDER, TACTIC_TO_STAGE, tactics_to_stages
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
-    """ZOOMER-only stage scoring: a stage's score is the BEST (max) of its tactics'
-    scores, not the sum. This guarantees the stage holding the single best-scoring
-    tactic overall always wins at the stage level too -- sum (CAM-LDS's method,
-    left untouched in tactic_to_stage.py) can lose that race just by having to add
-    a weaker second or third tactic on top."""
+    """Same max-based stage scoring as the other ZOOMER test scripts -- a stage's
+    score is the best of its tactics' scores, not the sum."""
     stage_scores = {}
     for (tactic, score) in tactic_scores.items():
         stage = TACTIC_TO_STAGE.get(tactic)
@@ -153,11 +150,10 @@ def print_technique_training_summary(split, classes):
         for (filename, _) in pools['train']:
             inst = instance_from_filename(filename)
             train_step_techniques.setdefault(inst, set()).add(technique)
-    include_train_steps = sorted(inst for (inst, techs) in train_step_techniques.items() if techs & classes_set)
     skip_train_steps = sorted(inst for (inst, techs) in train_step_techniques.items() if not (techs & classes_set))
 
     print()
-    print('-- Technique Training Summary --')
+    print('-- Technique Training Summary (single-label train / multi-label test) --')
     print('Total techniques             : {}'.format(len(all_techs)))
     print('Include techniques (trained) : {}'.format(len(classes)))
     print('Skip techniques (not trained): {}'.format(len(skip_techs)))
@@ -174,14 +170,12 @@ def print_technique_training_summary(split, classes):
     print()
 
 def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
+    assert scenario, 'Test_TTP_Recognition_SingleTrainMultiTest.py only supports --scenario mode.'
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if run_tag is None:
-        run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
+        run_tag = 'scenario{}'.format(scenario)
     if verbose:
-        if scenario:
-            print('[multilabel] Scenario held out: {}  Device: {}'.format(scenario, device))
-        else:
-            print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
+        print('[singletrainmultitest] Scenario held out: {}  Device: {}'.format(scenario, device))
         if run_filter:
             print('  (reporting headline metrics only for run group: {} -- full scenario still trained/scored)'.format(run_filter))
     ckpt = torch.load(checkpoint_path(run_tag), map_location=device)
@@ -190,7 +184,7 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
     model.load_state_dict(ckpt['model'])
     model.eval()
 
-    split = get_zoomer_split_scenario_multilabel(scenario) if scenario else get_zoomer_split_multilabel(seed)
+    split = get_zoomer_split_scenario_technique_singlelabel(scenario)
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     bins = fit_bins(train_paths)
     h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
@@ -199,9 +193,6 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
 
     tactic_map = load_tactic_map()
     prototypes = build_final_prototypes(model, cache, split, classes, device)
-    # each technique's FULL set of real tactics (not just one "primary" pick) -- a
-    # technique's score should count toward every tactic it genuinely maps to, same as
-    # how the CAM-LDS matcher scores directly against all true tactics
     class_tactics_all = {t: technique_tactics(tactic_map, t) for t in classes}
     all_tactics = sorted({tac for tacs in class_tactics_all.values() for tac in tacs})
     unique_test = {}
@@ -243,8 +234,6 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
             'y_score': [tactic_scores[t] for t in all_tactics],
         })
 
-    # full scenario is always trained and scored (nothing hidden) -- run_filter only narrows
-    # which steps the HEADLINE metrics below are computed from, same as CAM-LDS's --run flag
     display_rows = [r for r in all_rows if run_group_of(r['file']) == run_filter] if run_filter else all_rows
     if run_filter and verbose:
         print('\n  (showing only run group: {})'.format(run_filter))
@@ -271,7 +260,6 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
     lrap = label_ranking_average_precision_score(y_true_tac, y_score_tac)
     valid_cols = y_true_tac.sum(axis=0) > 0
     aupr = average_precision_score(y_true_tac[:, valid_cols], y_score_tac[:, valid_cols], average='macro') if valid_cols.any() else 0.0
-    # full (unfiltered) per-step breakdown -- saved in full even when run_filter narrows the headline numbers above
     technique_results = [{'file': r['filename'], 'true_techniques': sorted(r['true_techniques']),
                            'ranked': [{'technique': t, 'score': s} for (t, s) in r['ranked']]}
                           for r in all_rows]
@@ -289,7 +277,7 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
                'stage_results': stage_results}
 
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    out_path = os.path.join(RESULTS_DIR, 'ttp_recognition_multilabel_{}.json'.format(run_tag))
+    out_path = os.path.join(RESULTS_DIR, 'ttp_recognition_singletrainmultitest_{}.json'.format(run_tag))
     with open(out_path, 'w') as f:
         json.dump(metrics, f, indent=2)
 
@@ -314,7 +302,7 @@ if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument('--seed', type=int, default=0)
-    ap.add_argument('--scenario', type=str, default=None,
+    ap.add_argument('--scenario', type=str, required=True,
                      help='Test against the checkpoint trained with this scenario held out.')
     ap.add_argument('--run-tag', type=str, default=None)
     ap.add_argument('--run', type=str, default=None,

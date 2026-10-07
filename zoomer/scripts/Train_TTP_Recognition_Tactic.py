@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, K_SHOT, instance_from_filename
-from create_data_split import get_zoomer_split_multilabel, get_zoomer_split_scenario_multilabel, classes_for_scenario_split
+from create_data_split import get_zoomer_split_tactic, get_zoomer_split_scenario_tactic, classes_for_scenario_split
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 IN_DIM = 126
@@ -19,7 +19,7 @@ MIN_DELTA = 0.001
 CHECKPOINT_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/checkpoints'
 
 def checkpoint_path(run_tag):
-    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_multilabel_{}.pt'.format(run_tag))
+    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_tactic_{}.pt'.format(run_tag))
 
 def embed_graph(model, cache, path, device):
     (h, adjacency, wide_x) = cache.get(path)
@@ -62,43 +62,43 @@ def print_sample_scarcity_summary(split, classes):
     print()
 
 def print_orphaned_test_steps(split, classes):
-    """Test steps where every true technique got excluded from training -- these will
+    """Test steps where every true tactic got excluded from training -- these will
     still be scored (nothing is hidden), but can only ever come out wrong since no
     prototype exists for any of their real labels."""
     classes_set = set(classes)
-    step_techniques = {}
-    for (technique, pools) in split.items():
+    step_tactics = {}
+    for (tactic, pools) in split.items():
         for (filename, _) in pools['test']:
             inst = instance_from_filename(filename)
-            step_techniques.setdefault(inst, set()).add(technique)
-    orphaned = sorted((inst, sorted(techs)) for (inst, techs) in step_techniques.items() if not (techs & classes_set))
+            step_tactics.setdefault(inst, set()).add(tactic)
+    orphaned = sorted((inst, sorted(tacs)) for (inst, tacs) in step_tactics.items() if not (tacs & classes_set))
     print()
-    print('  Test steps with NO trained technique (will score as wrong, not hidden): {}/{}'.format(
-        len(orphaned), len(step_techniques)))
-    for (inst, techs) in orphaned:
-        print('    {:20s} true technique(s): {}'.format(inst, techs))
+    print('  Test steps with NO trained tactic (will score as wrong, not hidden): {}/{}'.format(
+        len(orphaned), len(step_tactics)))
+    for (inst, tacs) in orphaned:
+        print('    {:20s} true tactic(s): {}'.format(inst, tacs))
     print()
 
-def print_technique_training_summary(split, classes):
+def print_tactic_training_summary(split, classes):
     classes_set = set(classes)
-    all_techs = sorted(split.keys())
-    skip_techs = sorted(t for t in all_techs if t not in classes_set)
+    all_tacs = sorted(split.keys())
+    skip_tacs = sorted(t for t in all_tacs if t not in classes_set)
 
-    step_techniques = {}
-    for (technique, pools) in split.items():
+    step_tactics = {}
+    for (tactic, pools) in split.items():
         for (filename, _) in pools['train']:
             inst = instance_from_filename(filename)
-            step_techniques.setdefault(inst, set()).add(technique)
-    include_steps = sorted(inst for (inst, techs) in step_techniques.items() if techs & classes_set)
-    exclude_steps = sorted(inst for (inst, techs) in step_techniques.items() if not (techs & classes_set))
+            step_tactics.setdefault(inst, set()).add(tactic)
+    include_steps = sorted(inst for (inst, tacs) in step_tactics.items() if tacs & classes_set)
+    exclude_steps = sorted(inst for (inst, tacs) in step_tactics.items() if not (tacs & classes_set))
 
     print()
-    print('-- Technique Training Summary --')
-    print('Total techniques             : {}'.format(len(all_techs)))
-    print('Include techniques (trained) : {}'.format(len(classes)))
-    print('Skip techniques (not trained): {}'.format(len(skip_techs)))
+    print('-- Tactic Training Summary --')
+    print('Total tactics             : {}'.format(len(all_tacs)))
+    print('Include tactics (trained) : {}'.format(len(classes)))
+    print('Skip tactics (not trained): {}'.format(len(skip_tacs)))
     print()
-    print('Total training steps : {}'.format(len(step_techniques)))
+    print('Total training steps : {}'.format(len(step_tactics)))
     print('Include steps ({}): {}'.format(len(include_steps), ', '.join(include_steps)))
     print('Exclude steps ({}): {}'.format(len(exclude_steps), ', '.join(exclude_steps)))
     print()
@@ -106,8 +106,8 @@ def print_technique_training_summary(split, classes):
 def run_episode(model, cache, split, classes, rng, device):
     prototypes = []
     query_items = []
-    for (class_idx, technique) in enumerate(classes):
-        pool = list(split[technique]['train'])
+    for (class_idx, tactic) in enumerate(classes):
+        pool = list(split[tactic]['train'])
         rng.shuffle(pool)
         (support_size, query_size) = support_and_query_size(len(pool))
         support = pool[:support_size]
@@ -152,19 +152,19 @@ def main(seed, scenario=None, run_tag=None):
     if run_tag is None:
         run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
     if scenario:
-        print('[multilabel] Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
+        print('[tactic] Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
     else:
-        print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
+        print('[tactic] Seed: {}  Device: {}'.format(seed, device))
     torch.manual_seed(seed)
 
-    split = get_zoomer_split_scenario_multilabel(scenario) if scenario else get_zoomer_split_multilabel(seed)
+    split = get_zoomer_split_scenario_tactic(scenario) if scenario else get_zoomer_split_tactic(seed)
     classes = classes_for_scenario_split(split) if scenario else sorted(split.keys())
-    print('Training classes (techniques): {}'.format(len(classes)))
+    print('Training classes (tactics): {}'.format(len(classes)))
     for t in classes:
-        print('  {:14s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
+        print('  {:24s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
     print_sample_scarcity_summary(split, classes)
     if scenario:
-        print_technique_training_summary(split, classes)
+        print_tactic_training_summary(split, classes)
         print_orphaned_test_steps(split, classes)
 
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})

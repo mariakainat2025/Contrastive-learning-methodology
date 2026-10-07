@@ -1,0 +1,582 @@
+{
+  "6_plugin-34": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-28": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-31": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-29": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-30": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-32": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "train"
+  },
+  "6_plugin-26": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "test"
+  },
+  "6_plugin-33": {
+    "technique": "T1056-001",
+    "tactic": "collection",
+    "split": "test"
+  },
+  "6_screensharing_cron-20": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_macro_binary-20": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "7-10": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-16": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_macro_binary-21": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_screensharing_cron-21": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_screensharing_cron-24": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_macro_cron-24": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_screensharing_cron-22": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "6_macro_binary-22": {
+    "technique": "T1053-003",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "3_vnc_apt-50": {
+    "technique": "T1036-005",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "4-16": {
+    "technique": "T1036-005",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "3_ssh_apt-11": {
+    "technique": "T1036-005",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "4-9": {
+    "technique": "T1036-005",
+    "tactic": "stealth",
+    "split": "test"
+  },
+  "6_screensharing_binary-59": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_vnc_apt-49": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_puppet-40": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_vnc_puppet-60": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_macro_binary-5": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "6_macro_binary-6": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "7-6": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-10": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "6_macro_binary-9": {
+    "technique": "T1059-004",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "6_macro_binary-11": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_macro_binary-1": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "1_pwnkit_localaccount-35": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-39": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "2_rootkit-23": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-49": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "2_cron-3": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-53": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "3_ssh_apt-25": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-14": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "1_pwnkit_pam-41": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "test"
+  },
+  "6_screensharing_binary-4": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "test"
+  },
+  "1_pwnkit_localaccount-38": {
+    "technique": "T1105-000",
+    "tactic": "command_and_control",
+    "split": "test"
+  },
+  "2_cron-21": {
+    "technique": "T1018-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "2_cron-20": {
+    "technique": "T1018-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "3_ssh_apt-27": {
+    "technique": "T1018-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "2_cron-19": {
+    "technique": "T1018-000",
+    "tactic": "discovery",
+    "split": "test"
+  },
+  "4-19": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "4-6": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "3_ssh_apt-5": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "4-5": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "4-3": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "1_validaccount_localaccount-55": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "4-20": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "4-21": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "1_validaccount_localaccount-56": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "3_ssh_apt-4": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "train"
+  },
+  "3_ssh_puppet-37": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "test"
+  },
+  "4-4": {
+    "technique": "T1078-003",
+    "tactic": "initial_access",
+    "split": "test"
+  },
+  "6_screensharing_binary-46": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-43": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-47": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-51": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-44": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-45": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "train"
+  },
+  "6_screensharing_binary-57": {
+    "technique": "T1219-000",
+    "tactic": "command_and_control",
+    "split": "test"
+  },
+  "2_cron-17": {
+    "technique": "T1003-008",
+    "tactic": "credential_access",
+    "split": "train"
+  },
+  "2_cron-11": {
+    "technique": "T1003-008",
+    "tactic": "credential_access",
+    "split": "train"
+  },
+  "7-13": {
+    "technique": "T1003-008",
+    "tactic": "credential_access",
+    "split": "train"
+  },
+  "3_vnc_apt-45": {
+    "technique": "T1003-008",
+    "tactic": "credential_access",
+    "split": "train"
+  },
+  "3_ssh_puppet-6": {
+    "technique": "T1003-008",
+    "tactic": "credential_access",
+    "split": "test"
+  },
+  "1_cron_localaccount-13": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-23": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "1_cron_localaccount-20": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-22": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "1_cron_localaccount-23": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "1_pwnkit_localaccount-37": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "7-7": {
+    "technique": "T1033-000",
+    "tactic": "discovery",
+    "split": "test"
+  },
+  "2_cron-5": {
+    "technique": "T1083-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "7-11": {
+    "technique": "T1083-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "3_vnc_apt-48": {
+    "technique": "T1083-000",
+    "tactic": "discovery",
+    "split": "train"
+  },
+  "3_ssh_apt-9": {
+    "technique": "T1083-000",
+    "tactic": "discovery",
+    "split": "test"
+  },
+  "1_autostart_localaccount-7": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-14": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-19": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-23": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "1_autostart_localaccount-10": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-46": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "3_ssh_apt-20": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "train"
+  },
+  "1_cron_localaccount-33": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "1_autostart_localaccount-12": {
+    "technique": "T1059-000",
+    "tactic": "execution",
+    "split": "test"
+  },
+  "1_racecondition_localaccount-48": {
+    "technique": "T1546-000",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-49": {
+    "technique": "T1546-000",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-50": {
+    "technique": "T1546-000",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "6_macro_binary-12": {
+    "technique": "T1546-000",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "1_racecondition_localaccount-52": {
+    "technique": "T1546-000",
+    "tactic": "persistence",
+    "split": "test"
+  },
+  "2_rootkit-29": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "4-13": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "2_rootkit-28": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "4-14": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "2_rootkit-26": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "4-12": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "train"
+  },
+  "4-15": {
+    "technique": "T1543-002",
+    "tactic": "persistence",
+    "split": "test"
+  },
+  "1_sudo_pam-53": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "4-8": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "1_sudo_sshkey-53": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "1_sudo_localaccount-54": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "4-7": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "1_sudo_pam-54": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "train"
+  },
+  "1_sudo_localaccount-53": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "test"
+  },
+  "1_sudo_sshkey-54": {
+    "technique": "T1548-003",
+    "tactic": "privilege_escalation",
+    "split": "test"
+  },
+  "1_cron_localaccount-34": {
+    "technique": "T1070-004",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "2_cron-14": {
+    "technique": "T1070-004",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "1_pwnkit_localaccount-40": {
+    "technique": "T1070-004",
+    "tactic": "stealth",
+    "split": "train"
+  },
+  "4-10": {
+    "technique": "T1070-004",
+    "tactic": "stealth",
+    "split": "test"
+  }
+}

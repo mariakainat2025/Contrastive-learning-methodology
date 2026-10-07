@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, K_SHOT, instance_from_filename
-from create_data_split import get_zoomer_split
+from create_data_split import get_zoomer_split, get_zoomer_split_scenario, classes_for_scenario_split
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 IN_DIM = 126
@@ -18,8 +18,8 @@ PATIENCE = 4
 MIN_DELTA = 0.001
 CHECKPOINT_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/checkpoints'
 
-def checkpoint_path(seed):
-    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_seed{}.pt'.format(seed))
+def checkpoint_path(run_tag):
+    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_{}.pt'.format(run_tag))
 
 def embed_graph(model, cache, path, device):
     (h, adjacency, wide_x) = cache.get(path)
@@ -61,6 +61,24 @@ def print_sample_scarcity_summary(split, classes):
     print('  Total samples overall: {} rows  ({} unique instances)'.format(total_train_samples + total_test_samples, len(unique_total)))
     print()
 
+def print_orphaned_test_steps(split, classes):
+    """Test steps where every true technique got excluded from training -- these will
+    still be scored (nothing is hidden), but can only ever come out wrong since no
+    prototype exists for any of their real labels."""
+    classes_set = set(classes)
+    step_techniques = {}
+    for (technique, pools) in split.items():
+        for (filename, _) in pools['test']:
+            inst = instance_from_filename(filename)
+            step_techniques.setdefault(inst, set()).add(technique)
+    orphaned = sorted((inst, sorted(techs)) for (inst, techs) in step_techniques.items() if not (techs & classes_set))
+    print()
+    print('  Test steps with NO trained technique (will score as wrong, not hidden): {}/{}'.format(
+        len(orphaned), len(step_techniques)))
+    for (inst, techs) in orphaned:
+        print('    {:20s} true technique(s): {}'.format(inst, techs))
+    print()
+
 def run_episode(model, cache, split, classes, rng, device):
     prototypes = []
     query_embeds = []
@@ -86,17 +104,24 @@ def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     logits = -dists
     return F.cross_entropy(logits, query_labels)
 
-def main(seed):
+def main(seed, scenario=None, run_tag=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('Seed: {}  Device: {}'.format(seed, device))
+    if run_tag is None:
+        run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
+    if scenario:
+        print('Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
+    else:
+        print('Seed: {}  Device: {}'.format(seed, device))
     torch.manual_seed(seed)
 
-    split = get_zoomer_split(seed)
-    classes = sorted(split.keys())
+    split = get_zoomer_split_scenario(scenario, single_label=True) if scenario else get_zoomer_split(seed)
+    classes = classes_for_scenario_split(split) if scenario else sorted(split.keys())
     print('Training classes (techniques): {}'.format(len(classes)))
     for t in classes:
         print('  {:14s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
     print_sample_scarcity_summary(split, classes)
+    if scenario:
+        print_orphaned_test_steps(split, classes)
 
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     print('Fitting k-means bins on {} training graphs (seed={})...'.format(len(train_paths), seed))
@@ -141,11 +166,18 @@ def main(seed):
                 break
     os.makedirs(CHECKPOINT_DIR, exist_ok=True)
     final_state = best_state if best_state is not None else model.state_dict()
-    out_path = checkpoint_path(seed)
-    torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'wide_in_dim': wide_in_dim}, out_path)
+    out_path = checkpoint_path(run_tag)
+    torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'scenario': scenario,
+                'run_tag': run_tag, 'wide_in_dim': wide_in_dim}, out_path)
     print('Saved -> {}'.format(out_path))
     return out_path
 
 if __name__ == '__main__':
-    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0
-    main(seed)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--seed', type=int, default=0)
+    ap.add_argument('--scenario', type=str, default=None,
+                     help='Hold out this whole scenario (e.g. "4") instead of a random split.')
+    ap.add_argument('--run-tag', type=str, default=None)
+    args = ap.parse_args()
+    main(args.seed, scenario=args.scenario, run_tag=args.run_tag)

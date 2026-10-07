@@ -1,0 +1,11 @@
+[
+  "/opt/puppetlabs/puppet/bin/augparse",
+  "/opt/puppetlabs/puppet/bin/ruby",
+  "/opt/tool",
+  "/runc",
+  "/snap/snapd/25577/usr/bin/snap",
+  "/tmp/logrotten",
+  "/tmp/nmap",
+  "/var/www/nextcloud/rJZMoLeJ",
+  "rustdesk --password password"
+]

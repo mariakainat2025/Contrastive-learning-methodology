@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, K_SHOT, instance_from_filename
-from create_data_split import get_zoomer_split_multilabel, get_zoomer_split_scenario_multilabel, classes_for_scenario_split
+from create_data_split import get_zoomer_split_scenario_tactic_singlelabel, classes_for_scenario_split
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 IN_DIM = 126
@@ -19,7 +19,7 @@ MIN_DELTA = 0.001
 CHECKPOINT_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/checkpoints'
 
 def checkpoint_path(run_tag):
-    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_multilabel_{}.pt'.format(run_tag))
+    return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_tactic_singlelabel_{}.pt'.format(run_tag))
 
 def embed_graph(model, cache, path, device):
     (h, adjacency, wide_x) = cache.get(path)
@@ -62,52 +62,56 @@ def print_sample_scarcity_summary(split, classes):
     print()
 
 def print_orphaned_test_steps(split, classes):
-    """Test steps where every true technique got excluded from training -- these will
+    """Test steps where every true tactic got excluded from training -- these will
     still be scored (nothing is hidden), but can only ever come out wrong since no
     prototype exists for any of their real labels."""
     classes_set = set(classes)
-    step_techniques = {}
-    for (technique, pools) in split.items():
+    step_tactics = {}
+    for (tactic, pools) in split.items():
         for (filename, _) in pools['test']:
             inst = instance_from_filename(filename)
-            step_techniques.setdefault(inst, set()).add(technique)
-    orphaned = sorted((inst, sorted(techs)) for (inst, techs) in step_techniques.items() if not (techs & classes_set))
+            step_tactics.setdefault(inst, set()).add(tactic)
+    orphaned = sorted((inst, sorted(tacs)) for (inst, tacs) in step_tactics.items() if not (tacs & classes_set))
     print()
-    print('  Test steps with NO trained technique (will score as wrong, not hidden): {}/{}'.format(
-        len(orphaned), len(step_techniques)))
-    for (inst, techs) in orphaned:
-        print('    {:20s} true technique(s): {}'.format(inst, techs))
+    print('  Test steps with NO trained tactic (will score as wrong, not hidden): {}/{}'.format(
+        len(orphaned), len(step_tactics)))
+    for (inst, tacs) in orphaned:
+        print('    {:20s} true tactic(s): {}'.format(inst, tacs))
     print()
 
-def print_technique_training_summary(split, classes):
+def print_tactic_training_summary(split, classes):
     classes_set = set(classes)
-    all_techs = sorted(split.keys())
-    skip_techs = sorted(t for t in all_techs if t not in classes_set)
+    all_tacs = sorted(split.keys())
+    skip_tacs = sorted(t for t in all_tacs if t not in classes_set)
 
-    step_techniques = {}
-    for (technique, pools) in split.items():
+    step_tactics = {}
+    for (tactic, pools) in split.items():
         for (filename, _) in pools['train']:
             inst = instance_from_filename(filename)
-            step_techniques.setdefault(inst, set()).add(technique)
-    include_steps = sorted(inst for (inst, techs) in step_techniques.items() if techs & classes_set)
-    exclude_steps = sorted(inst for (inst, techs) in step_techniques.items() if not (techs & classes_set))
+            step_tactics.setdefault(inst, set()).add(tactic)
+    include_steps = sorted(inst for (inst, tacs) in step_tactics.items() if tacs & classes_set)
+    exclude_steps = sorted(inst for (inst, tacs) in step_tactics.items() if not (tacs & classes_set))
 
     print()
-    print('-- Technique Training Summary --')
-    print('Total techniques             : {}'.format(len(all_techs)))
-    print('Include techniques (trained) : {}'.format(len(classes)))
-    print('Skip techniques (not trained): {}'.format(len(skip_techs)))
+    print('-- Tactic Training Summary (single-label train / multi-label test) --')
+    print('Total tactics             : {}'.format(len(all_tacs)))
+    print('Include tactics (trained) : {}'.format(len(classes)))
+    print('Skip tactics (not trained): {}'.format(len(skip_tacs)))
     print()
-    print('Total training steps : {}'.format(len(step_techniques)))
+    print('Total training steps : {}'.format(len(step_tactics)))
     print('Include steps ({}): {}'.format(len(include_steps), ', '.join(include_steps)))
     print('Exclude steps ({}): {}'.format(len(exclude_steps), ', '.join(exclude_steps)))
     print()
 
 def run_episode(model, cache, split, classes, rng, device):
+    # train side is single-label by construction (each instance only lives under its
+    # one winning tactic's train pool), so a graph can never be drawn as a query point
+    # for more than one class here -- this plain batched path is all that ever runs
     prototypes = []
-    query_items = []
-    for (class_idx, technique) in enumerate(classes):
-        pool = list(split[technique]['train'])
+    query_embeds = []
+    query_labels = []
+    for (class_idx, tactic) in enumerate(classes):
+        pool = list(split[tactic]['train'])
         rng.shuffle(pool)
         (support_size, query_size) = support_and_query_size(len(pool))
         support = pool[:support_size]
@@ -115,57 +119,34 @@ def run_episode(model, cache, split, classes, rng, device):
         support_embeds = torch.stack([embed_graph(model, cache, path, device) for (_, path) in support])
         prototypes.append(support_embeds.mean(dim=0))
         for (_, path) in remaining:
-            query_items.append((path, class_idx))
+            query_embeds.append(embed_graph(model, cache, path, device))
+            query_labels.append(class_idx)
     prototypes = torch.stack(prototypes)
-
-    by_path = {}
-    for (path, class_idx) in query_items:
-        by_path.setdefault(path, []).append(class_idx)
-
-    # a graph drawn as a query point under only one class this episode -- ordinary single-label case
-    single_items = [(path, cidxs[0]) for (path, cidxs) in by_path.items() if len(cidxs) == 1]
-    # a graph drawn as a query point under 2+ classes this episode (it genuinely has multiple true
-    # labels) -- trained sequentially below, one label at a time, not batched together
-    multi_items = [(path, cidxs) for (path, cidxs) in by_path.items() if len(cidxs) > 1]
-
-    return (prototypes, single_items, multi_items)
+    query_embeds = torch.stack(query_embeds)
+    query_labels = torch.tensor(query_labels, device=device)
+    return (prototypes, query_embeds, query_labels)
 
 def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     dists = torch.cdist(query_embeds, prototypes) ** 2
     logits = -dists
     return F.cross_entropy(logits, query_labels)
 
-def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
-    """Cross-entropy of one query embedding against a subset of prototypes: the true
-    class plus every class NOT in exempt_idxs. exempt_idxs holds this same graph's
-    OTHER true labels, which must never be pushed away from as if they were wrong."""
-    n = prototypes.shape[0]
-    keep = [i for i in range(n) if i == true_idx or i not in exempt_idxs]
-    sub_protos = prototypes[torch.tensor(keep, device=embed.device)]
-    dists = torch.cdist(embed.unsqueeze(0), sub_protos) ** 2
-    logits = -dists
-    target = torch.tensor([keep.index(true_idx)], device=embed.device)
-    return F.cross_entropy(logits, target)
-
 def main(seed, scenario=None, run_tag=None):
+    assert scenario, 'Train_TTP_Recognition_Tactic_SingleLabel.py only supports --scenario mode.'
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if run_tag is None:
-        run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
-    if scenario:
-        print('[multilabel] Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
-    else:
-        print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
+        run_tag = 'scenario{}'.format(scenario)
+    print('[tactic-singlelabel] Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
     torch.manual_seed(seed)
 
-    split = get_zoomer_split_scenario_multilabel(scenario) if scenario else get_zoomer_split_multilabel(seed)
-    classes = classes_for_scenario_split(split) if scenario else sorted(split.keys())
-    print('Training classes (techniques): {}'.format(len(classes)))
+    split = get_zoomer_split_scenario_tactic_singlelabel(scenario)
+    classes = classes_for_scenario_split(split)
+    print('Training classes (tactics): {}'.format(len(classes)))
     for t in classes:
-        print('  {:14s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
+        print('  {:24s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
     print_sample_scarcity_summary(split, classes)
-    if scenario:
-        print_technique_training_summary(split, classes)
-        print_orphaned_test_steps(split, classes)
+    print_tactic_training_summary(split, classes)
+    print_orphaned_test_steps(split, classes)
 
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     print('Fitting k-means bins on {} training graphs (seed={})...'.format(len(train_paths), seed))
@@ -189,34 +170,12 @@ def main(seed, scenario=None, run_tag=None):
     stale_windows = 0
     recent_losses = []
     for episode in range(1, N_EPISODES + 1):
-        (prototypes, single_items, multi_items) = run_episode(model, cache, split, classes, rng, device)
-
-        episode_loss = 0.0
-        if single_items:
-            query_embeds = torch.stack([embed_graph(model, cache, path, device) for (path, _) in single_items])
-            query_labels = torch.tensor([cidx for (_, cidx) in single_items], device=device)
-            loss = ttp_recognition_loss(prototypes, query_embeds, query_labels)
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            episode_loss += loss.item()
-
-        # sequential, one label at a time, per multi-label query graph -- prototypes are
-        # detached here since they've already been used in the backward pass above (and,
-        # unlike the main step, these extra updates only refine the query path, not the
-        # support/prototype path)
-        protos_fixed = prototypes.detach()
-        for (path, cidxs) in multi_items:
-            for true_idx in cidxs:
-                exempt = set(cidxs) - {true_idx}
-                embed = embed_graph(model, cache, path, device)
-                step_loss = masked_single_label_loss(embed, protos_fixed, true_idx, exempt)
-                optimizer.zero_grad()
-                step_loss.backward()
-                optimizer.step()
-                episode_loss += step_loss.item()
-
-        recent_losses.append(episode_loss)
+        (prototypes, query_embeds, query_labels) = run_episode(model, cache, split, classes, rng, device)
+        loss = ttp_recognition_loss(prototypes, query_embeds, query_labels)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        recent_losses.append(loss.item())
         if episode % LOG_EVERY == 0 or episode == 1:
             avg_loss = sum(recent_losses) / len(recent_losses)
             recent_losses = []
@@ -226,7 +185,7 @@ def main(seed, scenario=None, run_tag=None):
                 stale_windows = 0
             else:
                 stale_windows += 1
-            print('episode {:5d}  loss {:.4f}  best_loss {:.4f}'.format(episode, episode_loss, best_loss))
+            print('episode {:5d}  loss {:.4f}  best_loss {:.4f}'.format(episode, loss.item(), best_loss))
             if stale_windows >= PATIENCE:
                 print("loss hasn't improved for {} checks (best={:.4f}) -- stopping early at episode {}.".format(PATIENCE, best_loss, episode))
                 break
@@ -242,8 +201,8 @@ if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument('--seed', type=int, default=0)
-    ap.add_argument('--scenario', type=str, default=None,
-                     help='Hold out this whole scenario (e.g. "4") instead of a random split.')
+    ap.add_argument('--scenario', type=str, required=True,
+                     help='Hold out this whole scenario (e.g. "4").')
     ap.add_argument('--run-tag', type=str, default=None)
     args = ap.parse_args()
     main(args.seed, scenario=args.scenario, run_tag=args.run_tag)
