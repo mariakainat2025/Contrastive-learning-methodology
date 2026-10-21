@@ -59,15 +59,6 @@ def closest_gioc_events(emb, gioc_points, top_n=3):
 
 
 def closest_gioc_technique_scores(emb, gioc_points):
-    """Best (score, matching gIoC phrase) per TECHNIQUE across every one of
-    its gIoC points, for every technique in gioc_points -- not the top-N
-    closest raw points like closest_gioc_events() returns. A technique with
-    hundreds of points (e.g. T1059) can dominate every top-N point list even
-    when a rarer technique's single best point is a closer match for this
-    specific event; truncating to top-N points there would silently drop
-    that rarer technique's real score to 0 for this event. LRAP/AUPR need a
-    genuine score for every candidate technique (missing = true 0), so this
-    keeps all of them."""
     import torch
     from torch.nn.functional import cosine_similarity
     best = {}
@@ -92,14 +83,6 @@ def find_step_files(sequences_dir, step):
 
 
 def techniques_to_top_tactics(tech_matches, tech2tac, top_n=4):
-    """Step 2: same first-occurrence-wins rule CAM-LDS's own test script uses
-    (expand_ranked in test_camlds_matcher_technique_wide.py) -- walking the
-    technique ranking top-down (tech_matches is assumed pre-sorted, highest
-    score first), a tactic's score is inherited from the FIRST, so
-    highest-scoring, technique that maps to it -- NOT summed across every
-    technique that happens to share it. This keeps the top-ranked technique
-    as the top-ranked tactic too, instead of letting several weaker
-    techniques sharing one tactic out-rank a single strong one."""
     seen = set()
     tac_scores = []
     for technique, _phrase, score in tech_matches:
@@ -111,9 +94,6 @@ def techniques_to_top_tactics(tech_matches, tech2tac, top_n=4):
 
 
 def tactics_to_stage_scores(tac_scores):
-    """Step 3: a stage's score is the BEST (max) of its tactics' scores, not
-    the sum -- if two kept tactics land on the same stage, only the higher
-    one counts."""
     stage_scores = defaultdict(float)
     for tac, score in tac_scores:
         stage = mitre_tactic_to_stage(tac)
@@ -134,10 +114,6 @@ def _pair_list(pairs, fmt='{}:{:.2f}'):
 
 
 def _readable_phrase(phrase):
-    """gIoC phrases are stored as the string form of a (subject, verb,
-    object) tuple, e.g. "('stuxnet', 'access', 'network resources')" --
-    parse that back into real strings and render as subject -> verb ->
-    object instead of raw Python-tuple punctuation."""
     try:
         parts = ast.literal_eval(phrase)
     except (ValueError, SyntaxError):
@@ -149,13 +125,6 @@ def _readable_phrase(phrase):
 
 
 def print_event_table(rows, top_keys):
-    """One line per event, then one indented line per matched gIoC point --
-    readable at any --top-keys width, instead of cramming every match onto
-    a single long semicolon-separated line:
-      [#] Event: <event text>
-            1. T1234 0.89  subject -> verb -> object
-            2. ...
-    """
     idx_width = max((len(str(r[0])) for r in rows), default=1)
     header = f'[{"#".rjust(idx_width)}] Event  (then top {top_keys} matched gIoC points, one per line, most similar first)'
     print(header)

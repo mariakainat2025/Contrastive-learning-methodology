@@ -20,9 +20,6 @@ DEFAULT_SEQUENCES_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'sequences')
 
 
 def sequence_instance_from_filename(filename):
-    """Same rule as ZOOMER's instance_from_filename(), but for sequence_*.json
-    filenames instead of graph_*.json (e.g. sequence_2_cron-15_videoserver.json
-    -> "2_cron-15")."""
     stem = filename[len('sequence_'):-len('.json')]
     for host in KNOWN_HOSTS:
         suffix = '_' + host

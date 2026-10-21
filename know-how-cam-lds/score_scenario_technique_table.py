@@ -74,11 +74,6 @@ def mitre_tactic_to_camlds(tactic_name):
 
 
 def load_step_ground_truth(step_names):
-    """Per-step true techniques (base, from ALL occurrences -- CKD isn't
-    limited to 36 in-scope techniques the way CAM-LDS/ZOOMER prototypes are,
-    so there's no reason to drop out-of-scope true labels here) and true
-    tactics taken directly from step_tactics.json (not derived through
-    tech2tac.txt -- see module docstring)."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     step_names = set(step_names)
@@ -96,14 +91,6 @@ def load_step_ground_truth(step_names):
 
 
 def predict_step(tagger, gioc_points, fpath):
-    """Per-step technique ranking: for EACH event, score it against EVERY
-    technique in scope (not just the top-N closest raw gIoC points -- see
-    closest_gioc_technique_scores()'s docstring for why that truncation was
-    wrong for this), then take the union across the step's events -- every
-    technique gets its best (max) similarity anywhere in the step, sorted
-    highest-to-lowest. Nothing is cut to a top-N here; LRAP/AUPR need a real
-    score for all 47 techniques, not an arbitrary subset defaulted to 0.
-    Only the printed table and the top-3 verdict truncate afterward."""
     with open(fpath, 'r', encoding='utf-8') as f:
         data = json.load(f)
     best_score = defaultdict(float)
@@ -119,9 +106,6 @@ def predict_step(tagger, gioc_points, fpath):
 
 
 def step_sort_key(step_name):
-    """Sort by the real trailing step number (2_rootkit-3 before
-    2_rootkit-10), not plain string order -- same helper ZOOMER's own test
-    scripts use, so step tables read in the same order as theirs."""
     m = re.search(r'(\d+)$', step_name)
     return (int(m.group(1)) if m else 0, step_name)
 
@@ -156,10 +140,6 @@ def classify(true_set, top_set, top_n):
 
 
 def top_k_accuracy(rows, true_key, ks=(1, 3)):
-    """Strict (subset/exact-match) accuracy: correct only if EVERY true label
-    is among the top-k predictions -- same standard accuracy_at_n_true() below
-    uses, and the same convention CAM-LDS's and ZOOMER's own stage_accuracy.py
-    now use."""
     if not rows:
         return {k: 0.0 for k in ks}
     return {k: sum(1 for r in rows if r[true_key] <= {lbl for lbl, _ in r['ranked'][:k]}) / len(rows) for k in ks}
@@ -184,9 +164,6 @@ def lrap_aupr(rows, true_key, all_labels):
 
 
 def topn_any_all_match(rows, top_n):
-    """Prof-requested pair of metrics, same as CAM-LDS's test script computes:
-    ANY-match = row counts as correct if at least one true label is in the
-    top-n. ALL-match = correct only if every true label is in the top-n."""
     if not rows:
         return 0.0, 0.0
     n_any, n_all = 0, 0
@@ -200,11 +177,6 @@ def topn_any_all_match(rows, top_n):
 
 
 def row_is_seen(true_set, train_counts):
-    """A row counts as 'seen' only if EVERY true label it has has >=1 gIoC
-    point in the database -- CKD's analog of CAM-LDS/ZOOMER's '>=1 training
-    example' bar. CKD has no training step, but a technique with zero gIoC
-    points can never be matched regardless, same as a zero-sample class can
-    never get a prototype on the other two models."""
     return all(train_counts.get(t, 0) >= 1 for t in true_set)
 
 
@@ -222,9 +194,6 @@ def compute_metrics_block(rows, top_n):
 
 
 def print_level_table(level_name, rows, top_n, label_fn=None):
-    """label_fn (sid/tid, or None for technique level) converts a raw label
-    to the same short form CAM-LDS/ZOOMER's own test scripts print, so all
-    three models' terminal output reads the same way."""
     label_fn = label_fn or (lambda x: x)
     col_file, col_true, col_score = 22, 30, 16
     print()

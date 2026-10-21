@@ -24,17 +24,10 @@ STEP_TACTICS_PATH = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'technique', 'step_tac
 
 
 def base_technique(t):
-    """CKD's own technique universe is dot-separated (T1548.002), unlike this
-    project's step_tactics.json ground truth (hyphen-separated, T1078-002) --
-    both collapse to the same base MITRE number either way."""
     return t.split('.')[0].split('-')[0]
 
 
 def group_files_by_step(files):
-    """A step can have more than one sequence_*.json file (one per true
-    technique/tactic folder it's labeled under) with byte-identical sequence
-    content -- keep just one representative file per step so its events aren't
-    scored (and unioned) more than once."""
     by_step = {}
     for fpath in files:
         step = sequence_instance_from_filename(os.path.basename(fpath))
@@ -58,10 +51,6 @@ def load_scenario_ground_truth(scenario, step_names):
 
 
 def union_techniques_for_step(tagger, gioc_points, fpath, top_keys):
-    """Every technique seen in ANY event's top-K match for this step, not
-    reduced to one best-score-per-technique -- returns {technique: n_events}
-    (this step's own event-count per technique, before the scenario-wide
-    flat union sums it in with every other step's)."""
     with open(fpath, 'r', encoding='utf-8') as f:
         data = json.load(f)
     step_techs = defaultdict(int)
