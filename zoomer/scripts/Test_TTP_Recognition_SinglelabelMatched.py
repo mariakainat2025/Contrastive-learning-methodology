@@ -8,10 +8,7 @@ from create_data_split import get_zoomer_split_singlelabel_matched
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 from Train_TTP_Recognition_SinglelabelMatched import IN_DIM, checkpoint_path
-_CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
-if _CAM_LDS_SCRIPTS not in sys.path:
-    sys.path.insert(0, _CAM_LDS_SCRIPTS)
-from train_camlds_matcher import TACTIC_IDS
+from tactic_ids import TACTIC_IDS
 
 def embed_graph(model, cache, path, device):
     (h, adjacency, wide_x) = cache.get(path)

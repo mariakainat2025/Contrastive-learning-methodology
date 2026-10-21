@@ -1,92 +1,59 @@
-import json
 import os
+import sys
 
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
-ZOOMER_DIR = os.path.dirname(SCRIPTS_DIR)
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
 
-DATA_SPLIT_PATH = os.path.join(SCRIPTS_DIR, 'data_split_output.json')
-FILE_PATHS_PATH = os.path.join(SCRIPTS_DIR, 'file_paths.json')
+import Train_TTP_Recognition_Multilabel as train_mod
+import Test_TTP_Recognition_Multilabel as test_mod
 
-CACHE_DIR = os.path.join(ZOOMER_DIR, 'cache')
-FEATURES_CACHE_DIR = os.path.join(CACHE_DIR, 'features')
-DEEP_TENSORS_CACHE_DIR = os.path.join(CACHE_DIR, 'deep_tensors')
-WIDE_FEATURES_CACHE_DIR = os.path.join(CACHE_DIR, 'wide_features')
 
-SEEDS = (0, 1, 2)
+def header(title):
+    print()
+    print('=' * 70)
+    print('  {}'.format(title))
+    print('=' * 70)
 
-def stage_data_split():
-    print('== Stage 1: data split ==')
-    if not os.path.exists(DATA_SPLIT_PATH):
-        import create_data_split
-        create_data_split.main()
-    else:
-        print('  cached ->', DATA_SPLIT_PATH)
-    with open(DATA_SPLIT_PATH) as f:
-        return json.load(f)
-
-def scoped_graph_paths(split_data):
-    paths = set()
-    for pools in split_data['single_label_techniques'].values():
-        for row in pools['train'] + pools['test']:
-            paths.add(row['path'])
-    return sorted(paths)
-
-def stage_file_paths(graph_paths):
-    print('== Stage 2: file paths ==')
-    paths = set()
-    for fp in graph_paths:
-        with open(fp) as f:
-            d = json.load(f)
-        for n in d.get('nodes', []):
-            if n.get('type') == 'FILE':
-                name = n.get('name')
-                if name:
-                    paths.add(name)
-    result = sorted(paths)
-    with open(FILE_PATHS_PATH, 'w') as f:
-        json.dump(result, f, indent=2)
-    print('  {} unique FILE paths -> {}'.format(len(result), FILE_PATHS_PATH))
-    return result
-
-def stage_feature_initialization(graph_paths):
-    print('== Stage 3: Feature_Initialization ==')
-    from Feature_Initialization import GRAPHS_DIR, batch_main_scoped
-    batch_main_scoped(graph_paths, graphs_dir=GRAPHS_DIR, out_dir=FEATURES_CACHE_DIR)
-
-def stage_deep_model(graph_paths):
-    print('== Stage 4: Deep Model (per-graph node/edge tensors) ==')
-    from Feature_Initialization import GRAPHS_DIR
-    from Deep_Model import cache_graph_tensors
-    cache_graph_tensors(graph_paths, graphs_dir=GRAPHS_DIR, out_dir=DEEP_TENSORS_CACHE_DIR)
-
-def stage_wide_model(graph_paths):
-    print('== Stage 5: Wide Model (node-abstract + edge-type + ioc counts) ==')
-    from Feature_Initialization import GRAPHS_DIR
-    from Wide_Model import cache_wide_features
-    cache_wide_features(graph_paths, graphs_dir=GRAPHS_DIR, out_dir=WIDE_FEATURES_CACHE_DIR)
-
-def stage_train_test(seeds=SEEDS):
-    print('== Stage 6: Combine + Train + Test ({} seeds) =='.format(len(seeds)))
-    from run_multi_seed import main as run_multi_seed_main
-    return run_multi_seed_main(seeds)
 
 def main():
-    split_data = stage_data_split()
-    graph_paths = scoped_graph_paths(split_data)
-    print("  {} graphs in ZOOMER's 9-tactic scope: {}".format(
-        len(graph_paths), ', '.join(sorted(split_data['zoomer_tactics']))))
-    print()
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--seed', type=int, default=0, help='RNG seed for k-means bins/masks (and the random split when --scenario is not given).')
+    ap.add_argument('--scenario', type=str, default=None,
+                     help='Hold out this scenario/run-group (e.g. "3" for the whole scenario, '
+                          '"3_ssh_apt" for only that run-group) instead of a random split.')
+    ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--min-train-samples', type=int, default=None,
+                     help='Override MIN_TRAIN_SAMPLES_SCENARIO (default 2) for scenario mode. '
+                          'Ignored when --fixed-scope is set.')
+    ap.add_argument('--fixed-scope', action='store_true',
+                     help="Use CAM-LDS's fixed 36 base-technique scope on both train and test, "
+                          'so this run is directly comparable to the CAM-LDS text+wide side.')
+    ap.add_argument('--run', type=str, default=None,
+                     help='Only report headline test metrics for this one run group (exact match), '
+                          'e.g. --run 3_ssh_apt. Training/scoring still cover the full scenario.')
+    ap.add_argument('--skip-train', action='store_true', help='Skip training, test an existing checkpoint.')
+    ap.add_argument('--skip-test', action='store_true', help='Skip testing (train only).')
+    args = ap.parse_args()
 
-    stage_file_paths(graph_paths)
-    stage_feature_initialization(graph_paths)
-    stage_deep_model(graph_paths)
-    stage_wide_model(graph_paths)
+    run_tag = args.run_tag
+    if run_tag is None and args.scenario:
+        if args.fixed_scope:
+            run_tag = 'scenario{}_camldsscope'.format(args.scenario)
+        elif args.min_train_samples is not None:
+            run_tag = 'scenario{}_min{}'.format(args.scenario, args.min_train_samples)
 
-    print()
-    stage_train_test()
+    if not args.skip_train:
+        header('Step 1/2: Training (ZOOMER graph + wide features, technique prototypes)')
+        train_mod.main(args.seed, scenario=args.scenario, run_tag=run_tag,
+                        min_train_samples=args.min_train_samples, fixed_scope=args.fixed_scope)
 
-    print()
-    print('Pipeline complete.')
+    if not args.skip_test:
+        header('Step 2/2: Testing (technique / tactic / stage accuracy)')
+        test_mod.main(args.seed, scenario=args.scenario, run_tag=run_tag,
+                       run_filter=args.run, fixed_scope=args.fixed_scope)
+
 
 if __name__ == '__main__':
     main()

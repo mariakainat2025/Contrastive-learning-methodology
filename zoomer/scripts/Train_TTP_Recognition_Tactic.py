@@ -122,10 +122,7 @@ def run_episode(model, cache, split, classes, rng, device):
     for (path, class_idx) in query_items:
         by_path.setdefault(path, []).append(class_idx)
 
-    # a graph drawn as a query point under only one class this episode -- ordinary single-label case
     single_items = [(path, cidxs[0]) for (path, cidxs) in by_path.items() if len(cidxs) == 1]
-    # a graph drawn as a query point under 2+ classes this episode (it genuinely has multiple true
-    # labels) -- trained sequentially below, one label at a time, not batched together
     multi_items = [(path, cidxs) for (path, cidxs) in by_path.items() if len(cidxs) > 1]
 
     return (prototypes, single_items, multi_items)
@@ -201,10 +198,6 @@ def main(seed, scenario=None, run_tag=None):
             optimizer.step()
             episode_loss += loss.item()
 
-        # sequential, one label at a time, per multi-label query graph -- prototypes are
-        # detached here since they've already been used in the backward pass above (and,
-        # unlike the main step, these extra updates only refine the query path, not the
-        # support/prototype path)
         protos_fixed = prototypes.detach()
         for (path, cidxs) in multi_items:
             for true_idx in cidxs:

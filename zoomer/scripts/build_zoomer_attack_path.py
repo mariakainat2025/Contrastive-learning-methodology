@@ -1,8 +1,3 @@
-"""
-ZOOMER equivalent of CAM-LDS's scripts/build_attack_path.py -- same table
-format, same columns, reading from an already-saved ZOOMER results JSON
-(Test_TTP_Recognition_Tactic.py), which already has per-file stage scores.
-"""
 import argparse
 import json
 import os

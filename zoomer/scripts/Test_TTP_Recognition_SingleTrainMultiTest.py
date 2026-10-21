@@ -13,11 +13,11 @@ from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 from Train_TTP_Recognition_SingleTrainMultiTest import IN_DIM, checkpoint_path
 
 RESULTS_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/results'
-_CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
-if _CAM_LDS_SCRIPTS not in sys.path:
-    sys.path.insert(0, _CAM_LDS_SCRIPTS)
-from train_camlds_matcher import TACTIC_IDS
+from tactic_ids import TACTIC_IDS
 from tactic_to_stage import STAGE_ORDER, TACTIC_TO_STAGE, tactics_to_stages
+from stage_accuracy import (stage_top_k_accuracy, stage_accuracy_at_n_true,
+                             tactic_top_k_accuracy, tactic_accuracy_at_n_true,
+                             technique_top_k_accuracy, technique_accuracy_at_n_true)
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
     """Same max-based stage scoring as the other ZOOMER test scripts -- a stage's
@@ -69,6 +69,39 @@ def build_final_prototypes(model, cache, split, classes, device):
 
 def tid(tactic):
     return TACTIC_IDS.get(tactic, tactic)
+
+def print_technique_results_table(technique_rows, n_classes, top_n=3):
+    col_file = 26
+    col_true = 24
+    col_score = 18
+    col_found = 7
+    print()
+    print('-- Technique Results (scored against {} technique prototypes) --'.format(n_classes))
+    header_fmt = ('{:<4} {:<' + str(col_file) + '} {:<' + str(col_true) + '} ' +
+                  ' '.join(['{:<' + str(col_score) + '}'] * top_n) + ' {:<' + str(col_found) + '} {:<6} {}')
+    print(header_fmt.format('#', 'File', 'True technique(s)', *['#{} (score)'.format(j + 1) for j in range(top_n)], 'Found', 'Wrong', 'Missing'))
+    print('-' * (4 + col_file + col_true + col_score * top_n + col_found + 6 + top_n + 4))
+    n_wrong = 0
+    for (i, r) in enumerate(technique_rows, 1):
+        kept = r['ranked'][:top_n]
+        cols = []
+        for j in range(top_n):
+            cols.append('{} ({:.4f})'.format(*kept[j]) if j < len(kept) else '')
+        true_str = ', '.join(sorted(r['true_techniques'])) or '(none)'
+        if len(true_str) > col_true:
+            true_str = true_str[:col_true - 3] + '...'
+        kept_names = {t for (t, _) in kept}
+        n_found = len(kept_names & r['true_techniques'])
+        n_true = len(r['true_techniques'])
+        found_str = '{}/{}'.format(n_found, n_true) if n_true else '-'
+        missing = sorted(r['true_techniques'] - kept_names)
+        missing_str = ','.join(missing)
+        wrong = not (kept_names & r['true_techniques'])
+        if wrong:
+            n_wrong += 1
+        fname = r['file'] if len(r['file']) <= col_file else r['file'][:col_file - 3] + '...'
+        print(header_fmt.format(i, fname, true_str, *cols, found_str, 'WRONG' if wrong else '', missing_str))
+    return n_wrong
 
 def print_tactic_results_table(tactic_rows, n_tactics, top_n=3):
     col_file = 26
@@ -246,13 +279,25 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
     n_correct_tech = sum(1 for r in display_rows if r['pred_technique'] in r['true_techniques'])
     n_correct_tac = sum(1 for r in display_rows if class_tactics_all[r['pred_technique']] & r['true_tactics'])
     if verbose:
+        n_wrong_tech = print_technique_results_table(rows, len(classes), top_n=4)
         n_wrong_top3_tac = print_tactic_results_table(tactic_rows, len(all_tactics), top_n=4)
         n_wrong_stage = print_stage_results_table(stage_rows)
     else:
+        top_techniques_by_row = [{t for (t, _) in r['ranked'][:4]} for r in rows]
+        n_wrong_tech = sum(1 for (r, top) in zip(rows, top_techniques_by_row) if not r['true_techniques'] & top)
         top_tactics_by_row = [{t for (t, _) in r['ranked'][:4]} for r in tactic_rows]
         n_wrong_top3_tac = sum(1 for (r, top) in zip(tactic_rows, top_tactics_by_row) if not r['true_tactics'] & top)
         top_stages_by_row = [{s for (s, _) in r['ranked'][:4]} for r in stage_rows]
         n_wrong_stage = sum(1 for (r, top) in zip(stage_rows, top_stages_by_row) if not r['true_stages'] & top)
+    stage_acc = stage_top_k_accuracy(stage_rows)
+    stage_acc_top1, stage_acc_top3 = stage_acc[1], stage_acc[3]
+    stage_acc_at_n = stage_accuracy_at_n_true(stage_rows)
+    tac_acc_k = tactic_top_k_accuracy(tactic_rows)
+    tac_acc_top1, tac_acc_top3 = tac_acc_k[1], tac_acc_k[3]
+    tac_acc_at_n = tactic_accuracy_at_n_true(tactic_rows)
+    tech_acc_k = technique_top_k_accuracy(rows)
+    tech_acc_top1, tech_acc_top3 = tech_acc_k[1], tech_acc_k[3]
+    tech_acc_at_n = technique_accuracy_at_n_true(rows)
     tech_acc = n_correct_tech / n_total
     tac_acc = n_correct_tac / n_total
     y_true_tac = np.array([r['y_true'] for r in display_rows])
@@ -272,7 +317,13 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
     metrics = {'seed': seed, 'scenario': scenario, 'run_tag': run_tag, 'run_filter': run_filter, 'n_total': n_total,
                'n_classes': len(classes), 'n_tactics': len(all_tactics),
                'tech_acc': float(tech_acc), 'tac_acc': float(tac_acc), 'lrap': float(lrap), 'aupr': float(aupr),
-               'n_wrong_top3_tac': n_wrong_top3_tac, 'n_wrong_stage': n_wrong_stage,
+               'stage_acc_top3': float(stage_acc_top3), 'stage_acc_top1': float(stage_acc_top1),
+               'stage_acc_at_n': float(stage_acc_at_n),
+               'tac_acc_top3': float(tac_acc_top3), 'tac_acc_top1': float(tac_acc_top1),
+               'tac_acc_at_n': float(tac_acc_at_n),
+               'tech_acc_top3': float(tech_acc_top3), 'tech_acc_top1': float(tech_acc_top1),
+               'tech_acc_at_n': float(tech_acc_at_n),
+               'n_wrong_tech': n_wrong_tech, 'n_wrong_top3_tac': n_wrong_top3_tac, 'n_wrong_stage': n_wrong_stage,
                'technique_results': technique_results, 'tactic_results': tactic_results,
                'stage_results': stage_results}
 
@@ -283,15 +334,20 @@ def main(seed, scenario=None, run_tag=None, verbose=True, run_filter=None):
 
     if verbose:
         print()
-        print('Wrong (true label not in top-4)                 : {}/{} samples'.format(n_wrong_top3_tac, n_total))
-        print('Wrong at stage level (no true stage in top-4)   : {}/{} samples'.format(n_wrong_stage, n_total))
+        print('Technique level wrong (no true technique in top-4) : {}/{} samples'.format(n_wrong_tech, n_total))
+        print('Tactic level wrong (no true tactic in top-4)       : {}/{} samples'.format(n_wrong_top3_tac, n_total))
+        print('Stage level wrong (no true stage in top-4)         : {}/{} samples'.format(n_wrong_stage, n_total))
         print()
         print('Test samples          : {}'.format(n_total))
         print('Technique classes     : {}'.format(len(classes)))
         print('Tactics represented   : {}'.format(len(all_tactics)))
         print()
-        print('Technique Accuracy    : {:.1f}%'.format(tech_acc * 100))
-        print('Tactic Accuracy       : {:.1f}%'.format(tac_acc * 100))
+        print('Technique Accuracy     top-1: {:.1f}%   top-3: {:.1f}%   at-n: {:.1f}%'.format(
+            tech_acc_top1 * 100, tech_acc_top3 * 100, tech_acc_at_n * 100))
+        print('Tactic Accuracy        top-1: {:.1f}%   top-3: {:.1f}%   at-n: {:.1f}%'.format(
+            tac_acc_top1 * 100, tac_acc_top3 * 100, tac_acc_at_n * 100))
+        print('Stage Accuracy        top-1: {:.1f}%   top-3: {:.1f}%   at-n: {:.1f}%'.format(
+            stage_acc_top1 * 100, stage_acc_top3 * 100, stage_acc_at_n * 100))
         print()
         print('LRAP (Label Ranking Average Precision)          : {:.1f}%'.format(lrap * 100))
         print('AUPR (Area Under Precision-Recall Curve, macro) : {:.1f}%'.format(aupr * 100))

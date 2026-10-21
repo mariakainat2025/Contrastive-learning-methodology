@@ -3,7 +3,7 @@ import json
 import os
 import random
 from collections import defaultdict
-from data_utils import instance_from_filename, technique_tactics, load_tactic_map
+from data_utils import instance_from_filename, technique_tactics, load_tactic_map, base_technique
 ZOOMER_SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 CAM_LDS_DIR = os.path.dirname(os.path.dirname(ZOOMER_SCRIPTS_DIR))
 OUTPUT_PATH = os.path.join(ZOOMER_SCRIPTS_DIR, 'data_split_output.json')
@@ -11,7 +11,7 @@ INSTANCE_TECHNIQUE_MAP_PATH = os.path.join(ZOOMER_SCRIPTS_DIR, 'instance_techniq
 ZOOMER_INSTANCE_LABEL_PATH = os.path.join(ZOOMER_SCRIPTS_DIR, 'zoomer_instance_label.json')
 GRAPHS_DIR = os.path.join(CAM_LDS_DIR, 'graphs')
 SEED = 0
-MIN_TRAIN_SAMPLES = 4
+MIN_TRAIN_SAMPLES = 3
 TEST_FRACTION = 0.2
 
 def discover_technique_files(single_label=True):
@@ -19,6 +19,7 @@ def discover_technique_files(single_label=True):
     for fp in sorted(glob.glob(os.path.join(GRAPHS_DIR, '*', '*', '*.json'))):
         parts = fp.split(os.sep)
         (technique, filename) = (parts[-2], parts[-1])
+        technique = base_technique(technique)
         raw_by_technique[technique].setdefault(filename, fp)
     if not single_label:
         return raw_by_technique
@@ -29,9 +30,28 @@ def discover_technique_files(single_label=True):
             inst = instance_from_filename(filename)
             instance_to_techniques[inst].add(technique)
             instance_to_filename[inst] = filename
+
+    technique_to_instances = defaultdict(list)
+    for (inst, techs) in instance_to_techniques.items():
+        for t in techs:
+            technique_to_instances[t].append(inst)
+
+    assigned = {}
+    for technique in sorted(technique_to_instances, key=lambda t: len(technique_to_instances[t])):
+        claimed = 0
+        for inst in sorted(technique_to_instances[technique]):
+            if claimed >= MIN_TRAIN_SAMPLES:
+                break
+            if inst not in assigned:
+                assigned[inst] = technique
+                claimed += 1
+
+    for (inst, techs) in instance_to_techniques.items():
+        if inst not in assigned:
+            assigned[inst] = sorted(techs)[0]
+
     by_technique = defaultdict(dict)
-    for (inst, techniques) in instance_to_techniques.items():
-        winning_technique = sorted(techniques)[0]
+    for (inst, winning_technique) in assigned.items():
         filename = instance_to_filename[inst]
         by_technique[winning_technique][filename] = raw_by_technique[winning_technique][filename]
     return by_technique
@@ -120,38 +140,44 @@ def _scenario_assign(files_dict, scenario):
         (test if is_test else train).append((filename, path))
     return train, test
 
-def build_split_scenario(scenario, single_label=True):
-    # keeps EVERY technique, even ones with 0 or 1 training samples -- callers decide
-    # which techniques are trainable (classes_for_scenario_split below); test steps for
-    # an excluded technique still show up here so no real step ever gets hidden
+def _file_match_assign(files_dict, match_substr):
+    train, test = [], []
+    for (filename, path) in files_dict.items():
+        instance = instance_from_filename(filename)
+        (test if match_substr in instance else train).append((filename, path))
+    return train, test
+
+def build_split_scenario(scenario, single_label=True, test_file=None):
     by_technique = discover_technique_files(single_label=single_label)
     split = {}
     for technique in sorted(by_technique):
-        train, test = _scenario_assign(by_technique[technique], scenario)
+        if test_file:
+            train, test = _file_match_assign(by_technique[technique], test_file)
+        else:
+            train, test = _scenario_assign(by_technique[technique], scenario)
         split[technique] = {'train': train, 'test': test}
     return split
 
-def get_zoomer_split_scenario(scenario, single_label=True):
+def get_zoomer_split_scenario(scenario, single_label=True, test_file=None):
     tactic_map = load_tactic_map()
-    split = build_split_scenario(scenario, single_label=single_label)
+    split = build_split_scenario(scenario, single_label=single_label, test_file=test_file)
     return {technique: {'train': pools['train'], 'test': pools['test'], 'tactic': technique_primary_tactic(tactic_map, technique)}
             for (technique, pools) in split.items()}
 
-def get_zoomer_split_scenario_multilabel(scenario):
+def get_zoomer_split_scenario_multilabel(scenario, test_file=None):
     tactic_map = load_tactic_map()
     raw_by_technique = discover_technique_files(single_label=False)
     split = {}
     for technique in sorted(raw_by_technique):
-        train, test = _scenario_assign(raw_by_technique[technique], scenario)
+        if test_file:
+            train, test = _file_match_assign(raw_by_technique[technique], test_file)
+        else:
+            train, test = _scenario_assign(raw_by_technique[technique], scenario)
         split[technique] = {'train': train, 'test': test}
     return {technique: {'train': pools['train'], 'test': pools['test'], 'tactic': technique_primary_tactic(tactic_map, technique)}
             for (technique, pools) in split.items()}
 
 def get_zoomer_split_scenario_technique_singlelabel(scenario):
-    # same single-label-train / multi-label-test idea as the tactic version: each
-    # instance only trains toward its one "winning" technique (sorted first of its
-    # true technique set), but still appears under EVERY technique it truly has on
-    # the test side, so evaluation is scored against the full real label set.
     tactic_map = load_tactic_map()
     raw_by_technique = discover_technique_files(single_label=False)
 
@@ -181,10 +207,6 @@ def _bucket_files_by_tactic(tactic_map, raw_by_technique):
     return by_tactic
 
 def build_split_scenario_tactic(scenario):
-    # tactic-level counterpart of build_split_scenario -- classes are tactics (14 of them)
-    # instead of techniques (92), so each class gets far more training examples. Same
-    # keep-every-class, filter-separately rule as the technique version: every tactic stays
-    # in `split` even with 0 train samples, so no test step is ever hidden.
     tactic_map = load_tactic_map()
     raw_by_technique = discover_technique_files(single_label=False)
     by_tactic = _bucket_files_by_tactic(tactic_map, raw_by_technique)
@@ -198,12 +220,6 @@ def get_zoomer_split_scenario_tactic(scenario):
     return build_split_scenario_tactic(scenario)
 
 def build_split_scenario_tactic_singlelabel(scenario):
-    # TRAIN side: single-label -- each instance only trains toward its one "winning"
-    # tactic (sorted first of its full tactic set), same rule as the technique-level
-    # single-label split, so an episode never needs the sequential multi-label path.
-    # TEST side: multi-label -- an instance still appears under EVERY tactic it truly
-    # has, so evaluation is scored honestly against its full real label set, not just
-    # whichever one tactic happened to win training.
     tactic_map = load_tactic_map()
     raw_by_technique = discover_technique_files(single_label=False)
     by_tactic_multi = _bucket_files_by_tactic(tactic_map, raw_by_technique)
@@ -270,6 +286,42 @@ def classes_for_scenario_split(split, min_train_samples=MIN_TRAIN_SAMPLES_SCENAR
     dropped = sorted(t for t in split if len(split[t]['train']) < min_train_samples)
     if dropped:
         print('  Excluded from training (fewer than {} training examples): {}'.format(min_train_samples, dropped))
+    return classes
+
+CAM_LDS_TECHNIQUE_SCOPE = [
+    'T1003', 'T1016', 'T1018', 'T1021', 'T1033', 'T1036',
+    'T1041', 'T1046', 'T1053', 'T1056', 'T1057',
+    'T1059', 'T1070', 'T1071', 'T1072', 'T1078',
+    'T1082', 'T1083', 'T1098', 'T1105', 'T1110',
+    'T1115', 'T1176', 'T1201', 'T1205', 'T1218', 'T1219',
+    'T1222', 'T1543', 'T1546', 'T1547', 'T1548', 'T1556',
+    'T1564', 'T1566', 'T1574',
+    'T1039', 'T1040', 'T1120', 'T1133', 'T1136', 'T1190', 'T1213', 'T1486', 'T1497',
+    'T1204', 'T1595',
+    'T1590', 'T1591',
+]
+
+CAM_LDS_TECHNIQUE_SCOPE_MIN4 = [
+    'T1003', 'T1018', 'T1021', 'T1033', 'T1036', 'T1053', 'T1056', 'T1057',
+    'T1059', 'T1070', 'T1072', 'T1078', 'T1082', 'T1083', 'T1105', 'T1110',
+    'T1115', 'T1176', 'T1204', 'T1219', 'T1222', 'T1543', 'T1546', 'T1548',
+    'T1564', 'T1574',
+]
+
+def classes_for_fixed_scope(split, scope=CAM_LDS_TECHNIQUE_SCOPE):
+    """Use the CAM-LDS side's fixed technique scope directly, instead of re-deriving
+    scope from this split's own post-holdout training counts -- guarantees the same
+    technique classes are trained/tested on both sides, for a true apples-to-apples
+    comparison, even if a technique ends up thin (e.g. only 1-2 training examples)
+    after this particular scenario/run-group is held out."""
+    classes = sorted(t for t in scope if t in split)
+    missing = sorted(t for t in scope if t not in split)
+    if missing:
+        print('  In CAM-LDS scope but not found in this split at all: {}'.format(missing))
+    thin = sorted(t for t in classes if len(split[t]['train']) < MIN_TRAIN_SAMPLES_SCENARIO)
+    if thin:
+        print('  Thin (fewer than {} training examples after this holdout, kept anyway to match CAM-LDS scope): {}'.format(
+            MIN_TRAIN_SAMPLES_SCENARIO, ', '.join('{}={}'.format(t, len(split[t]['train'])) for t in thin)))
     return classes
 
 def get_zoomer_split_singlelabel_matched(seed):

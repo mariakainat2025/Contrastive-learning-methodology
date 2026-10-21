@@ -1,0 +1,16 @@
+TACTIC_IDS = {
+    'collection':            'TA0009',
+    'command_and_control':   'TA0011',
+    'credential_access':     'TA0006',
+    'defense_impairment':    'TA0112',
+    'discovery':             'TA0007',
+    'execution':             'TA0002',
+    'exfiltration':          'TA0010',
+    'impact':                'TA0040',
+    'initial_access':        'TA0001',
+    'lateral_movement':      'TA0008',
+    'persistence':           'TA0003',
+    'privilege_escalation':  'TA0004',
+    'reconnaissance':        'TA0043',
+    'stealth':               'TA0005',
+}

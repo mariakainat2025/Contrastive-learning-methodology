@@ -1,9 +1,3 @@
-"""
-Re-runs ONLY the test side of Test_TTP_Recognition_Multilabel.py for seeds 0/1/2, using
-the already-trained checkpoints -- no retraining needed, since the tactic-derivation fix
-(technique score now counts toward ALL its real tactics, not just the alphabetically-first
-one) is entirely in test-time scoring, and training never touched tactics at all.
-"""
 import json
 import os
 

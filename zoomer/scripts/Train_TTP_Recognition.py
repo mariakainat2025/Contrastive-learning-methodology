@@ -6,7 +6,10 @@ import torch
 import torch.nn.functional as F
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, K_SHOT, instance_from_filename
-from create_data_split import get_zoomer_split, get_zoomer_split_scenario, classes_for_scenario_split
+from create_data_split import (
+    get_zoomer_split, get_zoomer_split_scenario, classes_for_scenario_split,
+    classes_for_fixed_scope,
+)
 from discretize_features import ALL_DIMS, fit_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 IN_DIM = 126
@@ -83,8 +86,11 @@ def run_episode(model, cache, split, classes, rng, device):
     prototypes = []
     query_embeds = []
     query_labels = []
-    for (class_idx, technique) in enumerate(classes):
+    class_idx = 0
+    for technique in classes:
         pool = list(split[technique]['train'])
+        if not pool:
+            continue
         rng.shuffle(pool)
         (support_size, query_size) = support_and_query_size(len(pool))
         support = pool[:support_size]
@@ -94,6 +100,7 @@ def run_episode(model, cache, split, classes, rng, device):
         for (_, path) in remaining:
             query_embeds.append(embed_graph(model, cache, path, device))
             query_labels.append(class_idx)
+        class_idx += 1
     prototypes = torch.stack(prototypes)
     query_embeds = torch.stack(query_embeds)
     query_labels = torch.tensor(query_labels, device=device)
@@ -104,23 +111,29 @@ def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     logits = -dists
     return F.cross_entropy(logits, query_labels)
 
-def main(seed, scenario=None, run_tag=None):
+def main(seed, scenario=None, test_file=None, run_tag=None, fixed_scope=False):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    held_out = test_file or scenario
     if run_tag is None:
-        run_tag = 'scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed)
-    if scenario:
-        print('Scenario held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(scenario, seed, device))
+        run_tag = test_file if test_file else ('scenario{}'.format(scenario) if scenario else 'seed{}'.format(seed))
+    if held_out:
+        print('Held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(held_out, seed, device))
     else:
         print('Seed: {}  Device: {}'.format(seed, device))
     torch.manual_seed(seed)
 
-    split = get_zoomer_split_scenario(scenario, single_label=True) if scenario else get_zoomer_split(seed)
-    classes = classes_for_scenario_split(split) if scenario else sorted(split.keys())
+    split = get_zoomer_split_scenario(scenario, single_label=True, test_file=test_file) if held_out else get_zoomer_split(seed)
+    if held_out:
+        classes = classes_for_fixed_scope(split) if fixed_scope else classes_for_scenario_split(split)
+    elif fixed_scope:
+        classes = classes_for_fixed_scope(split)
+    else:
+        classes = sorted(split.keys())
     print('Training classes (techniques): {}'.format(len(classes)))
     for t in classes:
         print('  {:14s} train={} test={}'.format(t, len(split[t]['train']), len(split[t]['test'])))
     print_sample_scarcity_summary(split, classes)
-    if scenario:
+    if held_out:
         print_orphaned_test_steps(split, classes)
 
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
@@ -168,7 +181,7 @@ def main(seed, scenario=None, run_tag=None):
     final_state = best_state if best_state is not None else model.state_dict()
     out_path = checkpoint_path(run_tag)
     torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'scenario': scenario,
-                'run_tag': run_tag, 'wide_in_dim': wide_in_dim}, out_path)
+                'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim}, out_path)
     print('Saved -> {}'.format(out_path))
     return out_path
 
@@ -178,6 +191,16 @@ if __name__ == '__main__':
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--scenario', type=str, default=None,
                      help='Hold out this whole scenario (e.g. "4") instead of a random split.')
+    ap.add_argument('--test-file', type=str, default=None,
+                     help='Hold out only instances whose step id CONTAINS this substring '
+                          '(e.g. "2_rootkit" or "6_macro_binary"), instead of the whole numbered '
+                          'scenario -- mirrors CAM-LDS\'s --test-file exactly. Takes priority over '
+                          '--scenario if both are passed.')
     ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--fixed-scope', action='store_true',
+                     help="Use CAM-LDS's own fixed technique scope directly (same list the "
+                          "multilabel side uses) -- trains the exact same technique classes as "
+                          "CAM-LDS, for a true side-by-side comparison.")
     args = ap.parse_args()
-    main(args.seed, scenario=args.scenario, run_tag=args.run_tag)
+    main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=args.run_tag,
+         fixed_scope=args.fixed_scope)

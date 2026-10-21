@@ -4,9 +4,9 @@ import os
 import sys
 from networkx.readwrite import json_graph
 GRAPHS_DIR = '/csse/research/contructive-learning/CAM-LDS/graphs'
-_CAM_LDS_SCRIPTS = '/csse/research/contructive-learning/CAM-LDS/scripts'
-if _CAM_LDS_SCRIPTS not in sys.path:
-    sys.path.insert(0, _CAM_LDS_SCRIPTS)
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
 from parse_audit import RARE_EDGE_TYPES
 
 def discover_edge_types(graphs_dir=GRAPHS_DIR):

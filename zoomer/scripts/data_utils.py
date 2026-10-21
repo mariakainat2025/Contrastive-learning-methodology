@@ -4,7 +4,8 @@ from Deep_Model import graph_to_tensors
 from Feature_Initialization import load_graph
 from discretize_features import discretize_vector, raw_vector_for_graph
 from cross_product import hwide_pre_projection
-FOLDER_TACTIC_MAP_PATH = '/csse/research/contructive-learning/CAM-LDS/scripts/folder_tactic_map.json'
+import os
+FOLDER_TACTIC_MAP_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'folder_tactic_map.json')
 K_SHOT = 3
 
 def wide_vector_for_graph(G, bins, masks):
@@ -24,11 +25,16 @@ def load_tactic_map():
     with open(FOLDER_TACTIC_MAP_PATH) as f:
         return json.load(f)
 
+def base_technique(technique):
+    """Collapse a raw sub-technique id (e.g. 'T1078-002') to its base technique ('T1078')."""
+    return technique.split('-')[0]
+
 def technique_tactics(tactic_map, technique):
+    target = base_technique(technique)
     tactics = set()
-    prefix = technique + '/'
     for (key, tacs) in tactic_map.items():
-        if key.startswith(prefix):
+        key_technique = key.split('/', 1)[0]
+        if base_technique(key_technique) == target:
             tactics.update(tacs)
     return tactics
 

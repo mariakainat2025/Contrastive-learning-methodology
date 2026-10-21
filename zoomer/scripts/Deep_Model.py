@@ -33,6 +33,21 @@ class GATLayer(nn.Module):
             heads.append(F.elu(head_fc(agg)))
         return torch.cat(heads, dim=-1)
 
+class AttentionPool(nn.Module):
+    """Learned readout: instead of averaging every node equally, score each
+    node's importance and take a weighted sum. Lets the model emphasize the
+    principal executor node over generic auxiliary nodes (files, sockets,
+    etc.) that dilute the signal under plain mean pooling."""
+
+    def __init__(self, in_dim):
+        super().__init__()
+        self.score_fc = nn.Linear(in_dim, 1)
+
+    def forward(self, h):
+        scores = self.score_fc(h).squeeze(-1)
+        weights = torch.softmax(scores, dim=0)
+        return (weights.unsqueeze(-1) * h).sum(dim=0)
+
 class DeepModel(nn.Module):
 
     def __init__(self, in_dim, hidden_dim=32, n_layers=2, n_heads=4):
@@ -41,11 +56,12 @@ class DeepModel(nn.Module):
         self.layers.append(GATLayer(in_dim, hidden_dim, n_heads))
         for _ in range(n_layers - 1):
             self.layers.append(GATLayer(hidden_dim * n_heads, hidden_dim, n_heads))
+        self.pool = AttentionPool(hidden_dim * n_heads)
 
     def forward(self, h, adjacency):
         for layer in self.layers:
             h = layer(h, adjacency)
-        return h.mean(dim=0)
+        return self.pool(h)
 
 def graph_to_tensors(G):
     feats = node_features(G)

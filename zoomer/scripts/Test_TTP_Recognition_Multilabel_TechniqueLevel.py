@@ -1,20 +1,3 @@
-"""
-Same trained ZOOMER multilabel model as Test_TTP_Recognition_Multilabel.py, but scored
-and ranked directly at TECHNIQUE level (LRAP/AUPR computed over the 16 technique classes
-themselves) instead of collapsing predictions up to the 9 tactics. This is a separate
-script, not a modification of the original, so the tactic-level evaluation stays intact
-and comparable to what's already in the results/PDF.
-
-Built to give a technique-vs-technique comparison against the CAM-LDS technique matcher
-(CAM-LDS/technique/). One scope note: ZOOMER keeps all 16 technique classes distinct here
-(T1059-000 and T1059-004 are NOT merged) -- ZOOMER's per-technique prototypes come from
-the Deep+Wide graph model, not from MITRE template text, so it has no reason to merge
-them. The CAM-LDS technique matcher does merge those two (see TECHNIQUE_MERGE in
-train_camlds_matcher_technique.py) because it uses one shared MITRE template for both.
-So a technique-level comparison table will have a 16-vs-15 class mismatch on that one
-pair -- worth handling explicitly (e.g. merge ZOOMER's two down for the comparison, or
-footnote it) when building the joint table, not something this script resolves itself.
-"""
 import sys
 import numpy as np
 import torch

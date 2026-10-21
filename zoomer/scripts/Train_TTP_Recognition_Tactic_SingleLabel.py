@@ -104,9 +104,6 @@ def print_tactic_training_summary(split, classes):
     print()
 
 def run_episode(model, cache, split, classes, rng, device):
-    # train side is single-label by construction (each instance only lives under its
-    # one winning tactic's train pool), so a graph can never be drawn as a query point
-    # for more than one class here -- this plain batched path is all that ever runs
     prototypes = []
     query_embeds = []
     query_labels = []
