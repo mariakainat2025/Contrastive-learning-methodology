@@ -40,9 +40,6 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
 def load_technique_to_tactics():
-    """Technique -> sorted tactic list, built from the same step_tactics.json
-    occurrences (technique+tactics pairs) the training labels come from --
-    independent of any particular step, since a technique's tactic set is fixed."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     technique_to_tactics = {}
@@ -55,8 +52,6 @@ def load_technique_to_tactics():
 
 
 def expand_ranked(ranked_tuples, key_to_labels):
-    """Expand a (label, score)-sorted-desc list to the next level up (e.g. technique
-    -> tactic), keeping only the first (highest-scoring) occurrence of each target label."""
     seen = set()
     out = []
     for label, score in ranked_tuples:

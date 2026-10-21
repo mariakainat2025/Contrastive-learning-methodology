@@ -22,8 +22,6 @@ def classify_target(target):
 
 
 def abstract_node_feature(sequence_lines):
-    """sequence_lines: list of raw event strings like '/usr/sbin/cron openat shadow file.'
-    Returns a dict {node_type: count} over NODE_TYPES, the same length for every sequence."""
     counts = {t: 0 for t in NODE_TYPES}
     for line in sequence_lines:
         parts = line.strip().rstrip('.').split(' ', 2)

@@ -110,8 +110,6 @@ def zoomer_instance_from_filename(filename):
 
 
 def load_zoomer_rows(zoomer_path):
-    """instance -> {tech_top3, tac_top3, stage_top3} (each a [(label, score)] list,
-    labels already converted to the same short codes CAM-LDS's columns use)."""
     with open(zoomer_path) as f:
         d = json.load(f)
     out = {}
@@ -189,9 +187,6 @@ def build_rows(tag, train_counts, zoomer_path=None, zoomer_single_path=None):
 
 
 def compute_train_counts(tag_test_file=None, tag_scenario=None):
-    """Re-derive #train per technique the same way the test script's split does,
-    without importing the heavy train script (torch/transformers) -- pure substring/
-    prefix match over step_tactics.json, mirroring leave_out_split/leave_out_scenario_split."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     counts = {}
@@ -337,8 +332,6 @@ def _level_values(sv_level, la_level, acc_key, lrap_key):
 
 
 def _fmt_cell(value, others, group_divider):
-    """Bold this value if it's the strict max across this metric among every
-    model present (others = that metric's value from each OTHER model row)."""
     text = pct(value)
     if others and value > max(others):
         text = '<strong class="best">{}</strong>'.format(text)
@@ -347,7 +340,6 @@ def _fmt_cell(value, others, group_divider):
 
 
 def _model_row(model_name, row_label, values_by_level, other_values_by_level_list=None):
-    """other_values_by_level_list: list of {level_key: values} dicts, one per other model."""
     others_list = other_values_by_level_list or []
     cells = []
     for i, (_, level_key) in enumerate(LEVELS):

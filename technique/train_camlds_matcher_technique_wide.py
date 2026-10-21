@@ -255,8 +255,6 @@ def encode_one(tokenizer, encoder, text, device):
 
 
 def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
-    """Text embedding (RoBERTa -> log_proj) concatenated with this instance's wide
-    feature vector (ZOOMER's node/edge/IoC counts -> wide_model). One combined vector."""
     text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
     wide_vec = wide_vector_for_step(entry['file'], step_to_path, bins, masks)
     wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)

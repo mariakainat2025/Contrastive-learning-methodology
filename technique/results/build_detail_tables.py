@@ -109,8 +109,6 @@ def best_mark(text, value, max_value):
 
 
 def build_scenario_summary_table(tag, label):
-    """One table for ONE scenario, every model as a row, Technique/Tactic/Stage
-    side by side as column-groups -- the full picture for that scenario alone."""
     out = ['<h3>{}</h3>'.format(esc(label))]
     out.append('<div class="tablewrap"><table class="summarytable">')
     out.append('<thead><tr><th rowspan="2" class="idcol">Model</th><th rowspan="2" class="idcol">N</th>'
@@ -173,9 +171,6 @@ def build_summary_page(runs):
 
 
 def zero_training_techniques(tag):
-    """Pulls the technique IDs out of COVERAGE's 'Techniques in TEST but NOT in
-    TRAINING' block for this tag -- these have no prototype at all, so any step
-    naming one is structurally unwinnable, not a genuine model miss."""
     text = COVERAGE.get(tag, '')
     section = text.split('Techniques in TEST but NOT in TRAINING', 1)
     if len(section) < 2 or section[1].lstrip().startswith(': none'):
