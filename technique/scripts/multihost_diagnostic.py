@@ -40,9 +40,6 @@ os.makedirs(DIAG_GRAPH_DIR, exist_ok=True)
 
 
 def find_hosts_for_step(step):
-    """Every host directory under this step that has a Linux-audit-format
-    audit.log (skips 'attacker' and 'wazuh', which log in different formats
-    and were never candidates for pick_primary_host() in the first place)."""
     step_dir = os.path.join(STEPS_BASE, step)
     hosts = []
     if not os.path.isdir(step_dir):
@@ -55,17 +52,6 @@ def find_hosts_for_step(step):
 
 
 def build_sequence_and_graph_file(audit_path, tactic, technique, step, host):
-    """Parse one host's raw audit.log -> subgraph -> (sentence text, path to a
-    written RAW graph JSON for wide-feature lookup). The written graph is the
-    RAW (pre-generalization) one -- matching what the official pipeline's
-    wide_feature_bridge.py reads from CAM-LDS/graphs/, where IP/path
-    generalization has NOT been applied. Generalization (for the text sentences
-    only) is done on a separate copy so it never contaminates the node names the
-    wide-feature extractor sees -- IP strings replaced with placeholder text like
-    'external network address' fail classify_ip()'s ipaddress.ip_address() parse
-    and silently fall back to 'internal', which previously corrupted internalIP/
-    externalIP (and, via lifted file paths losing their '/run/' etc. prefix,
-    systemFile/otherFile) counts for every multihost diagnostic check."""
     events = parse_audit(audit_path)
     sg = to_subgraph(events, tactic=tactic, attack=technique,
                       description='{} step={} host={}'.format(technique, step, host))
@@ -274,10 +260,6 @@ def glob_safe(d):
 
 
 def guess_tactic_technique(step, technique_merge, base_technique_fn):
-    """step_tactics.json gives techniques+tactics per step but not the folder
-    naming to_subgraph() wants -- any real tactic/technique string works here
-    since it's only used for human-readable description text, never for
-    scoring (scoring uses the trained prototypes, not this label)."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     for row in report:

@@ -35,7 +35,6 @@ TECHNIQUE_MERGE = {}
 
 
 def base_technique(t):
-    """Collapse a raw sub-technique id (e.g. 'T1078-002') to its base technique ('T1078')."""
     return t.split('-')[0]
 
 
@@ -114,11 +113,6 @@ def freeze_lower_layers(model, n_freeze=N_FREEZE):
 
 
 def load_step_techniques():
-    """Returns (step_techniques, step_techniques_all): the first maps each step to
-    only its in-36-scope techniques (used to build training prototypes, unchanged
-    behavior); the second maps each step to EVERY real technique it has, in or out
-    of scope (used so test-time scoring can include steps whose only techniques
-    aren't trainable -- scored as structurally wrong, not silently dropped)."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     step_techniques = {}
@@ -296,11 +290,6 @@ def _looks_like_duplicate(ccmd, chosts, ecmd, ehosts):
 
 
 def build_duplicate_groups(entries):
-    """Clusters entries that are near-duplicate captures of the same underlying
-    action (same attacker command, similar host/audit-log size -- same check used
-    by audit_technique_variants.py this session) so a grouped split can keep every
-    near-duplicate sibling on the same side of the train/test boundary, instead of
-    leaking one sibling into train and its near-twin into test."""
     sigs = []
     for e in entries:
         path = _step_path_for_file(e['file'])
@@ -323,11 +312,6 @@ def build_duplicate_groups(entries):
 
 
 def grouped_stratified_split(entries, test_size=0.2, seed=SEED, min_test_per_technique=1):
-    """Same intent as stratified_split (every technique gets >=1 test example where
-    possible), but splits at the near-duplicate GROUP level instead of the
-    individual-step level, so sibling variants (e.g. 3_ssh_apt-8 / 3_ssh_healthcheck-8
-    / 3_ssh_puppet-8, near-identical captures of the same action) always land
-    together -- eliminates the leakage that inflated sshapt_only_test's numbers."""
     rng = random.Random(seed)
     groups = build_duplicate_groups(entries)
     rng.shuffle(groups)
@@ -367,11 +351,6 @@ def grouped_stratified_split(entries, test_size=0.2, seed=SEED, min_test_per_tec
 
 
 def load_templates(template_dir=None, extra_techniques=None):
-    """Loads template text for every technique in ZOOMER_TECHNIQUES (the native
-    36-scope), plus any additional ids passed via extra_techniques -- e.g. a rare,
-    below-training-sufficiency technique that still has template text on disk
-    (templates_all92 has 78 files total, a superset of the native 36) and genuinely
-    shows up in a test set, so it deserves a zero-shot scoring attempt too."""
     template_dir = template_dir or TEMPLATE_DIR
     files_by_technique = {}
     for fname in sorted(os.listdir(template_dir)):
@@ -400,9 +379,6 @@ def encode_one(tokenizer, encoder, text, device):
 
 
 def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
-    """Text embedding (RoBERTa -> log_proj), optionally concatenated with this
-    instance's wide feature vector (ZOOMER's node/edge/IoC counts -> wide_model).
-    wide_model=None -> text-only embedding, no wide features at all (ablation)."""
     text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
     if wide_model is None:
         return text_embed

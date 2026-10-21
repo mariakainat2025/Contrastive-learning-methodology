@@ -44,16 +44,6 @@ ZOOMER_SCOPE_MIN4 = [
 
 
 def load_technique_to_tactics(restrict_to_scope=True):
-    """Technique -> sorted tactic list, built from the same step_tactics.json
-    occurrences (technique+tactics pairs) the training labels come from --
-    independent of any particular step, since a technique's tactic set is fixed.
-
-    restrict_to_scope=True (default): only the 36 in-scope techniques -- used to
-    expand a PREDICTION ranking (which only ever contains in-scope techniques
-    anyway). restrict_to_scope=False: every real technique -- used to derive true
-    tactic/stage ground truth for a step, including steps whose only technique is
-    out of scope (no prototype, but still a real label that should count as a
-    true tactic/stage, same as CAM-LDS's own true_techniques now does)."""
     with open(STEP_TACTICS_PATH) as f:
         report = json.load(f)
     technique_to_tactics = {}
@@ -66,8 +56,6 @@ def load_technique_to_tactics(restrict_to_scope=True):
 
 
 def expand_ranked(ranked_tuples, key_to_labels):
-    """Expand a (label, score)-sorted-desc list to the next level up (e.g. technique
-    -> tactic), keeping only the first (highest-scoring) occurrence of each target label."""
     seen = set()
     out = []
     for label, score in ranked_tuples:
@@ -259,11 +247,6 @@ def compute_aupr(results, all_techniques):
 
 
 def topn_any_all_match(rows, true_key, top_n=3):
-    """Prof-requested pair of metrics, at any level (technique/tactic/stage):
-    ANY-match = this row counts as correct if at least one true label is in
-    the top-n. ALL-match = correct only if every true label is in the top-n.
-    Distinct from the top-k hybrid _top_k_accuracy() already uses elsewhere,
-    which is precision/recall-hybrid, not a plain any/all rule."""
     if not rows:
         return 0.0, 0.0
     n_any, n_all = 0, 0
@@ -278,10 +261,6 @@ def topn_any_all_match(rows, true_key, top_n=3):
 
 
 def row_is_seen(true_techniques, train_tech_counts):
-    """A row counts as 'seen' only if EVERY true technique it has was present
-    at least once in training -- a row with even one zero-shot true technique
-    falls into 'overall' only, since the model had no real chance to learn
-    that label and crediting/blaming it as a fair seen-case would mislead."""
     return all(train_tech_counts.get(t, 0) >= 1 for t in true_techniques)
 
 
@@ -299,9 +278,6 @@ def compute_metrics_block(rows, true_key, top_k_fn, at_n_fn):
 
 
 def build_label_matrices_generic(rows, true_key, all_labels):
-    """Same as build_label_matrices, but generalized to the {true_key, ranked}
-    row shape tactic_rows/stage_rows use (ranked is a list of (label, score)
-    tuples instead of a 'scores' dict keyed by technique)."""
     y_true = np.array([[1 if lbl in r[true_key] else 0 for lbl in all_labels] for r in rows])
     y_score = np.array([[dict(r['ranked']).get(lbl, 0.0) for lbl in all_labels] for r in rows])
     return y_true, y_score

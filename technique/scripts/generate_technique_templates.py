@@ -17,7 +17,6 @@ OUR_TECHNIQUES = [
 
 
 def mitre_id(t):
-    """'T1059-004' -> 'T1059.004' (sub-technique lookup id); 'T1105-000' -> 'T1105' (base technique)."""
     base, sub = t.split('-')
     return base if sub == '000' else '{}.{}'.format(base, sub)
 
