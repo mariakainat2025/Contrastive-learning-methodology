@@ -1,27 +1,5 @@
-"""extract_step_techniques.py
 
-Give it one step id (e.g. "2_cron-15" or "4-16") and it finds every matching
-sequence_*.json file under CAM-LDS/CAM-LDS/sequences/ (a step can live under
-more than one technique/tactic folder if it has multiple true labels), and
-for every event (sentence) in it, finds the single closest gIoC entry in the
-CKD cluster database (meanshift_clustered_phrases.json -- the raw
-"TECHID*****(subject, verb, object)" points, not just the per-cluster
-technique key vectors) via direct cosine similarity, and prints that matched
-gIoC event + its technique + its score. Per event the flow is then exactly:
-
-  1. extract techniques -- top-N closest gIoC matches (--top-keys, default 5)
-  2. techniques -> tactics -- each matched technique's score is added to every
-     tactic it belongs to (tech2tac.txt), then the top-4 tactics by summed
-     score are kept (--top-tactics, default 4)
-  3. tactics -> stage -- those top-4 tactics' scores are summed per stage
-     using ZOOMER's own tactic_to_stage.py vocabulary (mitre_tactic_to_stage.py
-     in this folder), so the stage names match exactly what ZOOMER reports.
-
-Usage:
-  python3 extract_step_techniques.py --step 2_cron-15
-  python3 extract_step_techniques.py --step 4-16 --top-keys 3
-"""
-
+import ast
 import os
 import sys
 import json
@@ -33,26 +11,38 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(THIS_DIR))
 if THIS_DIR not in sys.path:
     sys.path.insert(0, THIS_DIR)
 
-from score_sequence_against_ckd import load_tagger  # noqa: E402
-from score_scenario_against_ckd import sequence_instance_from_filename  # noqa: E402
-from mitre_tactic_to_stage import load_tech2tac, mitre_tactic_to_stage  # noqa: E402
+from score_sequence_against_ckd import load_tagger
+from score_scenario_against_ckd import sequence_instance_from_filename
+from mitre_tactic_to_stage import load_tech2tac, mitre_tactic_to_stage
 
-DEFAULT_SEQUENCES_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'CAM-LDS', 'sequences')
+DEFAULT_SEQUENCES_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'sequences')
 DEFAULT_CLUSTERS_PATH = os.path.join(
     PROJECT_ROOT, 'CAM-LDS', 'knowhow', 'KNOWHOW-seng402', 'meanshift_clustered_phrases.json')
 DEFAULT_TECH2TAC_PATH = os.path.join(
     PROJECT_ROOT, 'CAM-LDS', 'knowhow', 'KNOWHOW-seng402', 'tech2tac.txt')
 
+SCOPE_TECHNIQUES = {
+    'T1003', 'T1016', 'T1018', 'T1021', 'T1033', 'T1036', 'T1041', 'T1046',
+    'T1053', 'T1056', 'T1057', 'T1059', 'T1070', 'T1071', 'T1072', 'T1078',
+    'T1082', 'T1083', 'T1098', 'T1105', 'T1110', 'T1115', 'T1176', 'T1201',
+    'T1205', 'T1218', 'T1219', 'T1222', 'T1543', 'T1546', 'T1547', 'T1548',
+    'T1556', 'T1564', 'T1566', 'T1574', 'T1039', 'T1040', 'T1120', 'T1133',
+    'T1136', 'T1190', 'T1213', 'T1486', 'T1497', 'T1204', 'T1595',
+}
 
-def load_gioc_points(clusters_path, device):
+
+def load_gioc_points(clusters_path, device, scope=SCOPE_TECHNIQUES):
     import torch
     with open(clusters_path, 'r', encoding='utf-8') as f:
         clustered = json.load(f)
 
-    points = []  # list of (technique, phrase_text, vector)
+    points = []
     for cluster in clustered.values():
         for key, vec in cluster['points']:
             technique, _, phrase = key.partition('*****')
+            base = technique.split('.')[0].split('-')[0]
+            if scope is not None and base not in scope:
+                continue
             points.append((technique, phrase, torch.tensor(vec, dtype=torch.float32, device=device)))
     return points
 
@@ -66,6 +56,26 @@ def closest_gioc_events(emb, gioc_points, top_n=3):
         scored.append((technique, phrase, sim))
     scored.sort(key=lambda x: x[2], reverse=True)
     return scored[:top_n]
+
+
+def closest_gioc_technique_scores(emb, gioc_points):
+    """Best (score, matching gIoC phrase) per TECHNIQUE across every one of
+    its gIoC points, for every technique in gioc_points -- not the top-N
+    closest raw points like closest_gioc_events() returns. A technique with
+    hundreds of points (e.g. T1059) can dominate every top-N point list even
+    when a rarer technique's single best point is a closer match for this
+    specific event; truncating to top-N points there would silently drop
+    that rarer technique's real score to 0 for this event. LRAP/AUPR need a
+    genuine score for every candidate technique (missing = true 0), so this
+    keeps all of them."""
+    import torch
+    from torch.nn.functional import cosine_similarity
+    best = {}
+    for technique, phrase, vec in gioc_points:
+        sim = cosine_similarity(emb.unsqueeze(0), vec.unsqueeze(0)).item()
+        if technique not in best or sim > best[technique][0]:
+            best[technique] = (sim, phrase)
+    return best
 
 
 def find_step_files(sequences_dir, step):
@@ -82,13 +92,22 @@ def find_step_files(sequences_dir, step):
 
 
 def techniques_to_top_tactics(tech_matches, tech2tac, top_n=4):
-    """Step 2: sum each matched technique's score into every tactic it
-    belongs to, keep the top-N tactics by summed score."""
-    tac_scores = defaultdict(float)
+    """Step 2: same first-occurrence-wins rule CAM-LDS's own test script uses
+    (expand_ranked in test_camlds_matcher_technique_wide.py) -- walking the
+    technique ranking top-down (tech_matches is assumed pre-sorted, highest
+    score first), a tactic's score is inherited from the FIRST, so
+    highest-scoring, technique that maps to it -- NOT summed across every
+    technique that happens to share it. This keeps the top-ranked technique
+    as the top-ranked tactic too, instead of letting several weaker
+    techniques sharing one tactic out-rank a single strong one."""
+    seen = set()
+    tac_scores = []
     for technique, _phrase, score in tech_matches:
         for tac in tech2tac.get(technique, []):
-            tac_scores[tac] += score
-    return sorted(tac_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
+            if tac not in seen:
+                seen.add(tac)
+                tac_scores.append((tac, score))
+    return sorted(tac_scores, key=lambda x: x[1], reverse=True)[:top_n]
 
 
 def tactics_to_stage_scores(tac_scores):
@@ -114,22 +133,45 @@ def _pair_list(pairs, fmt='{}:{:.2f}'):
     return '; '.join(fmt.format(k, v) for k, v in pairs)
 
 
+def _readable_phrase(phrase):
+    """gIoC phrases are stored as the string form of a (subject, verb,
+    object) tuple, e.g. "('stuxnet', 'access', 'network resources')" --
+    parse that back into real strings and render as subject -> verb ->
+    object instead of raw Python-tuple punctuation."""
+    try:
+        parts = ast.literal_eval(phrase)
+    except (ValueError, SyntaxError):
+        return phrase
+    if not isinstance(parts, tuple):
+        return phrase
+    non_empty = [str(p) for p in parts if p]
+    return ' -> '.join(non_empty) if non_empty else phrase
+
+
 def print_event_table(rows, top_keys):
-    """Two lines per event, so the long technique match text gets the full
-    terminal width instead of being squeezed into a narrow column:
+    """One line per event, then one indented line per matched gIoC point --
+    readable at any --top-keys width, instead of cramming every match onto
+    a single long semicolon-separated line:
       [#] Event: <event text>
-          <technique match line>
+            1. T1234 0.89  subject -> verb -> object
+            2. ...
     """
     idx_width = max((len(str(r[0])) for r in rows), default=1)
-    header = f'[{"#".rjust(idx_width)}] Event  (then: top {top_keys} matched gIoC events, technique:score)'
+    header = f'[{"#".rjust(idx_width)}] Event  (then top {top_keys} matched gIoC points, one per line, most similar first)'
     print(header)
     print('-' * max(len(header), 60))
-    for idx, event, tech_str in rows:
+    indent = ' ' * (idx_width + 3)
+    for idx, event, tech_matches in rows:
         print(f'[{str(idx).rjust(idx_width)}] Event: {event}')
-        print(f'{" " * (idx_width + 3)}{tech_str}')
+        if tech_matches is None:
+            print(f'{indent}(no embeddable words)')
+            continue
+        for rank, (technique, phrase, score) in enumerate(tech_matches, 1):
+            readable = _readable_phrase(phrase)
+            print(f'{indent}{rank:>2}. {technique:<9} {score:.4f}  {readable}')
 
 
-def run(step, sequences_dir=None, top_keys=5, top_tactics=4, score_with_clustering=False,
+def run(step, sequences_dir=None, top_keys=5, top_techniques=6, top_tactics=4, score_with_clustering=False,
         model_path=None, clusters_path=None, cluster_keys_path=None, patterns_path=None, names_path=None,
         tech2tac_path=None):
 
@@ -154,33 +196,42 @@ def run(step, sequences_dir=None, top_keys=5, top_tactics=4, score_with_clusteri
 
         rows = []
         best_score_per_tech = defaultdict(float)
+        best_match_per_tech = {}
+        all_events_per_tech = defaultdict(dict)
+        n_events = 0
 
         for i, text in enumerate(data.get('sequence', [])):
             emb = tagger._encode_string(text)
             if emb is None:
-                rows.append((i, text, '(no embeddable words)'))
+                rows.append((i, text, None))
                 continue
+            n_events += 1
 
-            tech_matches = closest_gioc_events(emb, gioc_points, top_n=top_keys)  # 1. top-4 techniques
+            tech_matches = closest_gioc_events(emb, gioc_points, top_n=top_keys)
+            rows.append((i, text, tech_matches))
 
-            tech_str = '; '.join(f'{t}:{s:.2f} {p}' for t, p, s in tech_matches)
-            rows.append((i, text, tech_str))
-
-            for technique, _phrase, score in tech_matches:
+            for technique, (score, phrase) in closest_gioc_technique_scores(emb, gioc_points).items():
+                all_events_per_tech[technique][i] = (score, phrase)
                 if score > best_score_per_tech[technique]:
                     best_score_per_tech[technique] = score
+                    best_match_per_tech[technique] = (i, text, phrase)
 
         print_event_table(rows, top_keys)
 
-        # bottom of the file: technique -> tactic -> stage, from only the
-        # top-4 techniques (by best score) found across this file's events --
-        # not every distinct technique that ever appeared in any event's top-4
-        ranked_tech = sorted(best_score_per_tech.items(), key=lambda x: x[1], reverse=True)[:top_keys]
+        ranked_tech = sorted(best_score_per_tech.items(), key=lambda x: x[1], reverse=True)[:top_techniques]
         top_tacs = techniques_to_top_tactics(
-            [(t, '', s) for t, s in ranked_tech], tech2tac, top_tactics)          # 2. top-4 tactics
-        stage_scores = tactics_to_stage_scores(top_tacs)                         # 3. stages
+            [(t, '', s) for t, s in ranked_tech], tech2tac, top_tactics)
+        stage_scores = tactics_to_stage_scores(top_tacs)
 
         print(f'Techniques -> {_pair_list(ranked_tech)}')
+        print(f'  (proof: this technique\'s own score in EVERY event of this step -- {n_events} events -- '
+              f'union just keeps the highest of these)')
+        for technique, score in ranked_tech:
+            per_event_str = '; '.join(
+                f'event[{i}]={all_events_per_tech[technique][i][0]:.4f}'
+                for i in sorted(all_events_per_tech[technique]))
+            (best_ev_idx, _ev_text, best_phrase) = best_match_per_tech[technique]
+            print(f'    {technique}: {per_event_str}  -> best=event[{best_ev_idx}] ({score:.2f}) matched gIoC {best_phrase!r}')
         print(f'Tactics    -> {_pair_list(top_tacs)}')
         print(f'Stage(s)   -> {_pair_list(stage_scores)}')
 
@@ -195,6 +246,10 @@ if __name__ == '__main__':
     ap.add_argument('--step', required=True, help='step id, e.g. 2_cron-15 or 4-16')
     ap.add_argument('--sequences-dir', default=None)
     ap.add_argument('--top-keys', type=int, default=5, help='how many techniques to extract per event (step 1)')
+    ap.add_argument('--top-techniques', type=int, default=6,
+                     help='how many techniques survive (by best score) into the tactic/stage rollup -- '
+                          'kept wider than top-tactics so a handful of techniques sharing few tactics '
+                          'still leaves enough distinct tactics to reach top-tactics')
     ap.add_argument('--top-tactics', type=int, default=4, help='how many top tactics to keep per event (step 2)')
     ap.add_argument('-c', '--score-with-clustering', action='store_true')
     ap.add_argument('--model', default=None)
@@ -204,5 +259,6 @@ if __name__ == '__main__':
     ap.add_argument('--names', default=None)
     ap.add_argument('--tech2tac', default=None)
     args = ap.parse_args()
-    run(args.step, args.sequences_dir, args.top_keys, args.top_tactics, args.score_with_clustering,
-        args.model, args.clusters, args.cluster_keys, args.patterns, args.names, args.tech2tac)
+    run(args.step, args.sequences_dir, args.top_keys, args.top_techniques, args.top_tactics,
+        args.score_with_clustering, args.model, args.clusters, args.cluster_keys, args.patterns,
+        args.names, args.tech2tac)

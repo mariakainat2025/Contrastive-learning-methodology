@@ -1,34 +1,3 @@
-"""score_sequence_against_ckd.py
-
-Scores CAM-LDS sequence file(s) against the same gIoC cluster database
-(meanshift_clustered_phrases.json / meanshift_cluster_key_vectors.json) used
-by benigntag_paral_gpu.py to score the benign dataset -- same model, same
-clusters, same similarity scoring, just applied to CAM-LDS's own sequence
-sentences directly instead of raw DARPA log lines (these sentences are
-already clean subject-verb-object text, e.g.
-"/usr/bin/zmcontroller connect internal network address.", so no log parsing
-step is needed first).
-
-Input: a sequence_*.json file like
-  CAM-LDS/CAM-LDS/sequences/collection/T1005-000/sequence_2_cron-15_videoserver.json
-  { "tactic": ..., "technique": ..., "step": ..., "host": ...,
-    "n_triples": N, "sequence": ["sentence 1", "sentence 2", ...] }
-
-Two modes:
-  --file <one sequence file>          score just that file
-  --scan-dir <dir> --scenarios 2,3,4,6,7   score every sequence file under
-                                            that dir whose filename matches
-                                            sequence_<scenario>_* or
-                                            sequence_<scenario>-* (scenarios
-                                            4 and 7 use a hyphen, 2/3/6 use
-                                            an underscore)
-
-Output: a sequence_*_ckd_scored.json next to each input file (original
-fields + a "scored" list with index/text/tech_scores/anomaly_score per
-sentence), and in --scan-dir mode also one combined
-ckd_scenario_summary.tsv with one row per file: tactic, technique, step,
-host, n_triples, max_anomaly_score, mean_anomaly_score.
-"""
 
 import os
 import re
@@ -41,7 +10,7 @@ KNOWHOW_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'knowhow', 'KNOWHOW-seng402'
 if KNOWHOW_DIR not in sys.path:
     sys.path.insert(0, KNOWHOW_DIR)
 
-from knowhow.benigntag_paral_gpu import TaggerGPU  # noqa: E402
+from knowhow.benigntag_paral_gpu import TaggerGPU
 
 
 def load_tagger(model_path=None, clusters_path=None, cluster_keys_path=None,

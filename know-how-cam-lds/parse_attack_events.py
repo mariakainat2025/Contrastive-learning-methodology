@@ -1,28 +1,3 @@
-"""parse_attack_events.py
-
-Converts a raw, event-only CDM18 attack log (no Subject/FileObject/NetFlowObject
-entity records of its own -- just Event lines, each carrying a ground-truth
-"label":"benign"/"malicious" field) into two tab-separated files:
-
-  edges_<tag>.txt            srcId  srcType  dstId  dstType  edgeType  timestamp
-                             (lean format, feeds straight into
-                              knowhow's benigntag_paral_gpu.py)
-
-  edges_<tag>_readable.txt   srcId  srcName  srcType  dstId  dstName  dstType
-                             edgeType  timestamp  label
-                             (human-readable, for manual inspection)
-
-Because the attack file has no entity records, srcType/dstType/srcName/dstName
-can't be discovered from the file itself -- they're looked up from the
-existing types.json / names.json built from the full ta1-theia-e3-official-1r1
-parse (the attack window's UUIDs come from the same host/dataset, so they're
-already in there).
-
-Also writes a sidecar labels file (same row order as the edges files) with
-just the per-event ground-truth label, since benigntag_paral_gpu.py's scored
-output doesn't carry it through -- needed later to evaluate detections
-against the threshold.
-"""
 
 import os
 import re
@@ -36,7 +11,7 @@ if PROJECT_ROOT not in sys.path:
 
 from scripts.config import (
     OUTPUT_PARSED,
-    pattern_type, pattern_time,
+    pattern_uuid, pattern_type, pattern_time,
     pattern_src, pattern_dst1, pattern_dst2,
 )
 
@@ -77,10 +52,12 @@ def run(input_file, output_dir, types_path=None, names_path=None, tag=None):
             if 'com.bbn.tc.schema.avro.cdm18.Event' not in line:
                 continue
 
+            uuid_match  = pattern_uuid.findall(line)
             etype_match = pattern_type.findall(line)
             ts_match    = pattern_time.findall(line)
-            if not etype_match or not ts_match:
+            if not uuid_match or not etype_match or not ts_match:
                 continue
+            eventUuid = uuid_match[0]
             edgeType = etype_match[0]
             try:
                 timestamp = int(ts_match[0].strip())
@@ -118,8 +95,8 @@ def run(input_file, output_dir, types_path=None, names_path=None, tag=None):
                     dName = id_nodename_map.get(d, 'N/A')
                     fedges.write('{}\t{}\t{}\t{}\t{}\t{}\n'.format(
                         srcId, srcType, d, dType, edgeType, timestamp))
-                    freadable.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(
-                        srcId, srcName, srcType, d, dName, dType, edgeType, timestamp, label))
+                    freadable.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(
+                        eventUuid, srcId, srcName, srcType, edgeType, d, dType, dName))
                     flabels.write(label + '\n')
                     n_edges += 1
 

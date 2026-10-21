@@ -1,34 +1,3 @@
-"""ckd_tag_edges.py
-
-Ports the CKD (keyword-dictionary) technique/tactic/stage mapping from
-sean_1's alert_generate.py onto our own edges files (the output of
-parse_attack_events.py / simplify_names.py), instead of requiring a
-pre-built .dot graph with sysdig-style edge attributes.
-
-Same algorithm as alert_generate.py:
-  1. For each edge, build one lowercase text blob from edgeType + src name
-     + dst name (using the simplified name when available, since that's
-     already cleaner than sean's ad hoc path/IP string replacements).
-  2. For every technique in tech_dic (CKD keyword dictionary), count how
-     many of its keywords appear as substrings in that text. Keep the top 5
-     techniques by hit count.
-  3. Map each kept technique to its tactic(s) via tech2tac.txt, summing
-     hit-count scores per tactic. Keep the top 3 tactics.
-  4. Map each kept tactic to its stage via tac2stage.txt, summing scores
-     per stage. Keep the top 4 stages -- these become the edge's
-     stage_name / stage_score columns.
-  5. For every node (by srcId), aggregate the stage scores of its outgoing
-     edges and take the highest-scoring stage as that node's dominant
-     stage -- same rule alert_generate.py uses to label graph nodes.
-
-Input edges file columns (either form produced by this project):
-  9 cols  (edges_<tag>_readable.txt):
-      srcId srcName srcType dstId dstName dstType edgeType timestamp label
-  11 cols (edges_<tag>_simplified.txt):
-      srcId srcName srcNameSimplified srcType
-      dstId dstName dstNameSimplified dstType
-      edgeType timestamp label
-"""
 
 import os
 import re

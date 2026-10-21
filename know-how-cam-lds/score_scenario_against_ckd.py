@@ -1,25 +1,3 @@
-"""score_scenario_against_ckd.py
-
-Give it one scenario number (e.g. 4) and it selects exactly the same steps
-ZOOMER would hold out as that scenario's test set -- reusing ZOOMER's own
-instance_from_filename() and its scenario-prefix rule directly from
-CAM-LDS/zoomer/scripts/data_utils.py and create_data_split.py, so "scenario 4"
-means the same thing here as it does in the ZOOMER comparison -- then pulls
-each selected step's sentences straight from CAM-LDS/CAM-LDS/sequences/ and
-scores every one against the CKD gIoC cluster database (same model + clusters
-benigntag_paral_gpu.py uses for the benign threshold run).
-
-ZOOMER's rule (create_data_split.py, _scenario_assign): a file belongs to
-scenario N's test set if instance_from_filename(filename) starts with
-"N_" or "N-". ZOOMER applies that to graph_*.json filenames under
-CAM-LDS/graphs/; here the same rule is applied to sequence_*.json filenames
-under CAM-LDS/CAM-LDS/sequences/ instead (same instance naming scheme, just a
-different file prefix to strip).
-
-Usage:
-  python3 score_scenario_against_ckd.py --scenario 4
-  python3 score_scenario_against_ckd.py --scenario 2 --sequences-dir /path/to/sequences
-"""
 
 import os
 import re
@@ -29,9 +7,6 @@ import argparse
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Kept in sync with CAM-LDS/zoomer/scripts/data_utils.py's KNOWN_HOSTS -- copied
-# instead of imported so this file's scenario-matching doesn't pull in zoomer's
-# (torch-dependent) data_utils module just for one constant.
 KNOWN_HOSTS = ('attacker', 'inetfw', 'videoserver', 'wazuh', 'reposerver', 'client',
                'corpdns', 'linuxshare', 'docker-log', 'docker', 'adminpc')
 
@@ -39,9 +14,9 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 if THIS_DIR not in sys.path:
     sys.path.insert(0, THIS_DIR)
 
-from score_sequence_against_ckd import load_tagger, score_sequence_file, write_scored_file  # noqa: E402
+from score_sequence_against_ckd import load_tagger, score_sequence_file, write_scored_file
 
-DEFAULT_SEQUENCES_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'CAM-LDS', 'sequences')
+DEFAULT_SEQUENCES_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'sequences')
 
 
 def sequence_instance_from_filename(filename):

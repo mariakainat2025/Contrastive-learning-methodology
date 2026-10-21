@@ -1,26 +1,3 @@
-"""simplify_names.py
-
-Takes a *_readable.txt edges file (produced by parse_attack_events.py:
-srcId  srcName  srcType  dstId  dstName  dstType  edgeType  timestamp  label)
-and adds a simplified version of each FILE and NetFlowObject name, reusing the
-knowhow pipeline's own normalization rules instead of re-deriving them:
-
-  - FILE_OBJECT_* names  -> sub_filepath() from CAM-LDS/knowhow (Table II of
-    the knowhow paper: collapses a path like
-    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.22 into "x86_64-linux-gnu
-    library file").
-  - NetFlowObject names  -> _is_internal_ip(), ported from sean_1's legacy
-    benigntag_paral_gpu.py. Our NetFlow node names are built by
-    parse_provenance.py as "<localAddr>_<localPort>_<remoteAddr>_<remotePort>",
-    so each address half is classified separately as an internal (RFC1918) or
-    external network address.
-  - SUBJECT_PROCESS names are left as-is -- they're executable paths/cmdlines,
-    not something either rule applies to.
-
-Output adds two columns (srcNameSimplified, dstNameSimplified) rather than
-replacing the originals, so the raw and simplified forms can be compared side
-by side.
-"""
 
 import os
 import sys
@@ -32,7 +9,7 @@ KNOWHOW_DIR = os.path.join(PROJECT_ROOT, 'CAM-LDS', 'knowhow', 'KNOWHOW-seng402'
 if KNOWHOW_DIR not in sys.path:
     sys.path.insert(0, KNOWHOW_DIR)
 
-from knowhow.tools import sub_filepath  # noqa: E402
+from knowhow.tools import sub_filepath
 
 
 def _is_internal_ip(ip):
