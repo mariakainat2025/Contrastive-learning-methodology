@@ -31,12 +31,6 @@ def embed_graph(model, cache, path, device):
 MAX_QUERY_PER_CLASS = 2
 
 def support_and_query_size(train_count):
-    """Support = K_SHOT (3), always. Query = whatever's left, capped at
-    MAX_QUERY_PER_CLASS (2): 1 if only 1 remains, 2 if 2 or more remain --
-    never uses ALL of a rich class's leftovers (our per-technique counts
-    range from 1 to 16+ after a scenario holdout, very unlike the paper's
-    fairly even ~5-6-per-class data, so an uncapped query would let a rich
-    class dominate a given episode's compute even with per-class-mean loss)."""
     support_size = min(K_SHOT, max(1, train_count - 1))
     query_size = min(MAX_QUERY_PER_CLASS, train_count - support_size)
     return (support_size, query_size)
@@ -70,9 +64,6 @@ def print_sample_scarcity_summary(split, classes):
     print()
 
 def print_orphaned_test_steps(split, classes):
-    """Test steps where every true technique got excluded from training -- these will
-    still be scored (nothing is hidden), but can only ever come out wrong since no
-    prototype exists for any of their real labels."""
     classes_set = set(classes)
     step_techniques = {}
     for (technique, pools) in split.items():
@@ -140,16 +131,6 @@ def run_episode(model, cache, split, classes, rng, device):
     return (prototypes, single_items, multi_items)
 
 def run_full_batch(model, cache, split, classes, device):
-    """Full-batch alternative to run_episode(): every available training example
-    for every class is embedded and used, instead of a random K_SHOT=3 support /
-    2-query subsample reshuffled each episode. Each class's prototype is the mean
-    of ALL its training examples; the loss for a given example uses a leave-one-
-    out prototype for its own true class (mean of the OTHER examples, so the
-    example never trivially matches itself) against the FULL prototypes of every
-    other class as distractors. Multi-label graphs are still handled with the
-    same per-label exemption as masked_single_label_loss (a graph's other true
-    labels are masked out of the distractor set, not pushed away from).
-    Returns a single scalar loss covering every training example exactly once."""
     class_paths = {t: [path for (_, path) in split[t]['train']] for t in classes if split[t]['train']}
     kept_classes = [t for t in classes if t in class_paths]
     all_paths = sorted({p for paths in class_paths.values() for p in paths})
@@ -191,11 +172,6 @@ def run_full_batch(model, cache, split, classes, device):
 
 
 def ttp_recognition_loss(prototypes, query_embeds, query_labels):
-    """Per-class-mean cross-entropy: every class's query batch is averaged on
-    its own first, then those per-class averages are averaged together -- so a
-    class with many leftover query samples doesn't dominate the gradient over
-    a class with only 1 or 2 (our per-technique sample counts vary a lot after
-    a scenario holdout, unlike the paper's fairly even ~5-6-per-class data)."""
     dists = torch.cdist(query_embeds, prototypes) ** 2
     logits = -dists
     per_example_loss = F.cross_entropy(logits, query_labels, reduction='none')
@@ -205,9 +181,6 @@ def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     return torch.stack(class_means).mean()
 
 def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
-    """Cross-entropy of one query embedding against a subset of prototypes: the true
-    class plus every class NOT in exempt_idxs. exempt_idxs holds this same graph's
-    OTHER true labels, which must never be pushed away from as if they were wrong."""
     n = prototypes.shape[0]
     keep = [i for i in range(n) if i == true_idx or i not in exempt_idxs]
     sub_protos = prototypes[torch.tensor(keep, device=embed.device)]

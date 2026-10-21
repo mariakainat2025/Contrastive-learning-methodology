@@ -21,11 +21,6 @@ from stage_accuracy import (stage_top_k_accuracy, stage_accuracy_at_n_true,
                              is_correct, classify)
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
-    """ZOOMER-only stage scoring: a stage's score is the BEST (max) of its tactics'
-    scores, not the sum. This guarantees the stage holding the single best-scoring
-    tactic overall always wins at the stage level too -- sum (CAM-LDS's method,
-    left untouched in tactic_to_stage.py) can lose that race just by having to add
-    a weaker second or third tactic on top."""
     stage_scores = {}
     for (tactic, score) in tactic_scores.items():
         stage = TACTIC_TO_STAGE.get(tactic)
@@ -167,9 +162,6 @@ def print_stage_results_table(stage_rows, max_stages=3):
     return n_wrong
 
 def topn_any_all_match(rows, true_key, top_n=3):
-    """ANY-match = row counts as correct if >=1 true label is in the top-n.
-    ALL-match = correct only if every true label is in the top-n. Same rule
-    CAM-LDS's test script uses, for a direct side-by-side comparison."""
     if not rows:
         return 0.0, 0.0
     n_any, n_all = 0, 0
@@ -184,8 +176,6 @@ def topn_any_all_match(rows, true_key, top_n=3):
 
 
 def row_is_seen(true_techniques, train_tech_counts):
-    """A row counts as 'seen' only if EVERY true technique it has was present
-    at least once in training -- same rule CAM-LDS's test script uses."""
     return all(train_tech_counts.get(t, 0) >= 1 for t in true_techniques)
 
 

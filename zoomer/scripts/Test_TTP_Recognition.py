@@ -32,15 +32,6 @@ def sid(stage):
     return STAGE_ABBREV.get(stage, stage)
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
-    """ZOOMER-only stage scoring: a stage's score is the BEST (max) of its tactics'
-    scores, not the sum. tactic_to_stage.py's own stage_scores_from_tactic_scores()
-    sums instead -- fine for CAM-LDS's softmax-probability scores, but these are
-    negative distances, so summing 2-3 tactics into one stage (every stage except
-    "Move Laterally", which has exactly one contributing tactic) systematically
-    drags that stage's score down regardless of true relevance, letting "Move
-    Laterally" win almost every row by default. Same fix already applied on the
-    multilabel side (see stage_scores_from_tactic_scores_max in
-    Test_TTP_Recognition_Multilabel.py)."""
     stage_scores = {}
     for (tactic, score) in tactic_scores.items():
         stage = TACTIC_TO_STAGE.get(tactic)
@@ -51,9 +42,6 @@ def stage_scores_from_tactic_scores_max(tactic_scores):
     return stage_scores
 
 def topn_any_all_match(rows, true_key, top_n=3):
-    """ANY-match = row counts as correct if >=1 true label is in the top-n.
-    ALL-match = correct only if every true label is in the top-n. Same rule
-    CAM-LDS's test script uses, for a direct side-by-side comparison."""
     if not rows:
         return 0.0, 0.0
     n_any, n_all = 0, 0
@@ -67,10 +55,6 @@ def topn_any_all_match(rows, true_key, top_n=3):
     return n_any / len(rows), n_all / len(rows)
 
 def row_is_seen(true_techniques, train_tech_counts):
-    """A row counts as 'seen' only if EVERY true technique it has was present
-    at least once in training -- only counting techniques actually in the
-    trainable scope (train_tech_counts is pre-filtered to `classes`), so an
-    out-of-scope technique with stray raw samples elsewhere never counts."""
     return all(train_tech_counts.get(t, 0) >= 1 for t in true_techniques)
 
 def filter_rows_by_mask(rows, mask):

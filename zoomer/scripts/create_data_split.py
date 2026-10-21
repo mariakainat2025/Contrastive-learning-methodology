@@ -278,10 +278,6 @@ def get_zoomer_split_tactic(seed):
     return build_split_tactic(seed=seed)
 
 def classes_for_scenario_split(split, min_train_samples=MIN_TRAIN_SAMPLES_SCENARIO):
-    """Which techniques actually get a trained prototype -- >= min_train_samples
-    training examples left after holding out the scenario. Techniques below that
-    stay in `split` (their test steps still get scored, just against prototypes
-    they were never trained on -- shown honestly as wrong, not hidden)."""
     classes = sorted(t for t in split if len(split[t]['train']) >= min_train_samples)
     dropped = sorted(t for t in split if len(split[t]['train']) < min_train_samples)
     if dropped:
@@ -309,11 +305,6 @@ CAM_LDS_TECHNIQUE_SCOPE_MIN4 = [
 ]
 
 def classes_for_fixed_scope(split, scope=CAM_LDS_TECHNIQUE_SCOPE):
-    """Use the CAM-LDS side's fixed technique scope directly, instead of re-deriving
-    scope from this split's own post-holdout training counts -- guarantees the same
-    technique classes are trained/tested on both sides, for a true apples-to-apples
-    comparison, even if a technique ends up thin (e.g. only 1-2 training examples)
-    after this particular scenario/run-group is held out."""
     classes = sorted(t for t in scope if t in split)
     missing = sorted(t for t in scope if t not in split)
     if missing:

@@ -34,10 +34,6 @@ class GATLayer(nn.Module):
         return torch.cat(heads, dim=-1)
 
 class AttentionPool(nn.Module):
-    """Learned readout: instead of averaging every node equally, score each
-    node's importance and take a weighted sum. Lets the model emphasize the
-    principal executor node over generic auxiliary nodes (files, sockets,
-    etc.) that dilute the signal under plain mean pooling."""
 
     def __init__(self, in_dim):
         super().__init__()

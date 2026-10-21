@@ -19,11 +19,6 @@ from stage_accuracy import (stage_top_k_accuracy, stage_accuracy_at_n_true,
                              tactic_top_k_accuracy, tactic_accuracy_at_n_true)
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
-    """ZOOMER-only stage scoring: a stage's score is the BEST (max) of its tactics'
-    scores, not the sum. This guarantees the stage holding the single best-scoring
-    tactic overall always wins at the stage level too -- sum (CAM-LDS's method,
-    left untouched in tactic_to_stage.py) can lose that race just by having to add
-    a weaker second or third tactic on top."""
     stage_scores = {}
     for (tactic, score) in tactic_scores.items():
         stage = TACTIC_TO_STAGE.get(tactic)

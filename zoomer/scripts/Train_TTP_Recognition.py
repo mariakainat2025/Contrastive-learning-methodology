@@ -65,9 +65,6 @@ def print_sample_scarcity_summary(split, classes):
     print()
 
 def print_orphaned_test_steps(split, classes):
-    """Test steps where every true technique got excluded from training -- these will
-    still be scored (nothing is hidden), but can only ever come out wrong since no
-    prototype exists for any of their real labels."""
     classes_set = set(classes)
     step_techniques = {}
     for (technique, pools) in split.items():

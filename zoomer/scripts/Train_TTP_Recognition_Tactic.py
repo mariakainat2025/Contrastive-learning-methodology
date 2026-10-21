@@ -62,9 +62,6 @@ def print_sample_scarcity_summary(split, classes):
     print()
 
 def print_orphaned_test_steps(split, classes):
-    """Test steps where every true tactic got excluded from training -- these will
-    still be scored (nothing is hidden), but can only ever come out wrong since no
-    prototype exists for any of their real labels."""
     classes_set = set(classes)
     step_tactics = {}
     for (tactic, pools) in split.items():
@@ -133,9 +130,6 @@ def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     return F.cross_entropy(logits, query_labels)
 
 def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
-    """Cross-entropy of one query embedding against a subset of prototypes: the true
-    class plus every class NOT in exempt_idxs. exempt_idxs holds this same graph's
-    OTHER true labels, which must never be pushed away from as if they were wrong."""
     n = prototypes.shape[0]
     keep = [i for i in range(n) if i == true_idx or i not in exempt_idxs]
     sub_protos = prototypes[torch.tensor(keep, device=embed.device)]

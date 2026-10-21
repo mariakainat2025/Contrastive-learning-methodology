@@ -26,7 +26,6 @@ def load_tactic_map():
         return json.load(f)
 
 def base_technique(technique):
-    """Collapse a raw sub-technique id (e.g. 'T1078-002') to its base technique ('T1078')."""
     return technique.split('-')[0]
 
 def technique_tactics(tactic_map, technique):

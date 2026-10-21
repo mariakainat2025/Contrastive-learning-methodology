@@ -19,8 +19,6 @@ from stage_accuracy import (stage_top_k_accuracy, stage_accuracy_at_n_true,
                              tactic_top_k_accuracy, tactic_accuracy_at_n_true)
 
 def stage_scores_from_tactic_scores_max(tactic_scores):
-    """Same max-based stage scoring as the multi-label-train tactic script -- a
-    stage's score is the best of its tactics' scores, not the sum."""
     stage_scores = {}
     for (tactic, score) in tactic_scores.items():
         stage = TACTIC_TO_STAGE.get(tactic)
