@@ -90,19 +90,20 @@ def load_step_ground_truth(step_names):
     return true_techniques, true_tactics
 
 
-def predict_step(tagger, gioc_points, fpath):
+def score_step(tagger, gioc_points, fpath):
     with open(fpath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    best_score = defaultdict(float)
+    n_events = len(data.get('sequence', []))
+    scores_by_tech = defaultdict(list)
     for text in data.get('sequence', []):
         emb = tagger._encode_string(text)
         if emb is None:
             continue
         for technique, (score, _phrase) in closest_gioc_technique_scores(emb, gioc_points).items():
             tech = base_technique(technique)
-            if score > best_score[tech]:
-                best_score[tech] = score
-    return sorted(best_score.items(), key=lambda kv: kv[1], reverse=True)
+            scores_by_tech[tech].append(score)
+    avg_ranked = sorted(((t, sum(s) / len(s)) for t, s in scores_by_tech.items()), key=lambda kv: kv[1], reverse=True)
+    return avg_ranked, n_events
 
 
 def step_sort_key(step_name):
@@ -195,25 +196,163 @@ def compute_metrics_block(rows, top_n):
 
 def print_level_table(level_name, rows, top_n, label_fn=None):
     label_fn = label_fn or (lambda x: x)
+    has_extra = bool(rows) and 'train' in rows[0]
     col_file, col_true, col_score = 22, 30, 16
+    col_train, col_evt = 8, 8
     print()
     print(f'── {level_name} Results (top-{top_n}) ──')
-    header = f'{"#":<4}{"File":<{col_file}}{"True":<{col_true}}' + ''.join(f'{("#%d" % (i+1)):<{col_score}}' for i in range(top_n)) + 'Found   Verdict'
+    extra_header = f'{"#train":<{col_train}}{"#events":<{col_evt}}' if has_extra else ''
+    header = f'{"#":<4}{"File":<{col_file}}{"True":<{col_true}}{extra_header}' + ''.join(f'{("#%d" % (i+1)):<{col_score}}' for i in range(top_n)) + 'Found   Verdict'
     print(header)
     print('-' * len(header))
     counts = defaultdict(int)
     for i, r in enumerate(rows, 1):
         kept = r['ranked'][:top_n]
         true_str = ','.join(sorted(label_fn(t) for t in r['true']))[:col_true - 1]
+        extra = f'{(",".join(str(c) for c in r["train"])):<{col_train}}{r["n_events"]:<{col_evt}}' if has_extra else ''
         cols = ''.join(f'{(f"{label_fn(lbl)} {score:.2f}"):<{col_score}}' for lbl, score in kept)
         cols += ' ' * (col_score * (top_n - len(kept)))
         found = len({lbl for lbl, _ in kept} & r['true'])
         verdict = r['verdict'] or '-'
         counts[verdict] += 1
-        print(f'{i:<4}{r["file"]:<{col_file}}{true_str:<{col_true}}{cols}{found}/{len(r["true"]):<4}  {verdict}')
+        print(f'{i:<4}{r["file"]:<{col_file}}{true_str:<{col_true}}{extra}{cols}{found}/{len(r["true"]):<4}  {verdict}')
     n = len(rows)
     print(f'Correct: {counts["correct"]}/{n}   Partial: {counts["partial"]}/{n}   Wrong: {counts["wrong"]}/{n}')
     return counts
+
+
+def ranked_to_json(rows, label_key):
+    return [{'file': r['file'], f'true_{label_key}s': sorted(r['true']),
+              'ranked': [{label_key: lbl, 'score': score} for lbl, score in r['ranked']]} for r in rows]
+
+
+def evaluate_method(method_label, by_step, step_ranked, train_tech_counts, true_techniques, true_tactics_gt,
+                     tech2tac_camlds, tactic_to_stage_list):
+    technique_rows, tactic_rows, stage_rows = [], [], []
+    for step in sorted(by_step.keys(), key=step_sort_key):
+        technique_ranked, n_events = step_ranked[step]
+        true_tech = true_techniques.get(step, set())
+        top_tech = {t for t, _ in technique_ranked[:3]}
+        technique_rows.append({'file': step, 'true': true_tech, 'ranked': technique_ranked,
+                                'verdict': classify(true_tech, top_tech, 3), 'n_events': n_events,
+                                'train': [train_tech_counts.get(t, 0) for t in sorted(true_tech)]})
+
+        tactic_ranked = expand_ranked(technique_ranked, tech2tac_camlds)
+        true_tac = true_tactics_gt.get(step, set())
+        top_tac = {t for t, _ in tactic_ranked[:3]}
+        tactic_rows.append({'file': step, 'true': true_tac, 'ranked': tactic_ranked,
+                             'verdict': classify(true_tac, top_tac, 3), 'n_events': n_events})
+
+        stage_ranked = expand_ranked(tactic_ranked, tactic_to_stage_list)
+        true_stg = {TACTIC_TO_STAGE[t] for t in true_tac if t in TACTIC_TO_STAGE}
+        top_stg = {s for s, _ in stage_ranked[:4]}
+        stage_rows.append({'file': step, 'true': true_stg, 'ranked': stage_ranked,
+                            'verdict': classify(true_stg, top_stg, 4)})
+
+    print_level_table(f'{method_label} Technique', technique_rows, 3)
+    print_level_table(f'{method_label} Tactic', tactic_rows, 3, label_fn=tid)
+    print_level_table(f'{method_label} Stage', stage_rows, 4, label_fn=sid)
+
+    all_techs = sorted({t for r in technique_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
+    all_tacs = sorted({t for r in tactic_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
+    all_stages = sorted({t for r in stage_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
+
+    tech_acc = top_k_accuracy(technique_rows, 'true')
+    tac_acc = top_k_accuracy(tactic_rows, 'true')
+    stg_acc = top_k_accuracy(stage_rows, 'true')
+    tech_at_n = accuracy_at_n_true(technique_rows, 'true')
+    tac_at_n = accuracy_at_n_true(tactic_rows, 'true')
+    stg_at_n = accuracy_at_n_true(stage_rows, 'true')
+    tech_lrap, tech_aupr = lrap_aupr(technique_rows, 'true', all_techs)
+    tac_lrap, tac_aupr = lrap_aupr(tactic_rows, 'true', all_tacs)
+    stg_lrap, stg_aupr = lrap_aupr(stage_rows, 'true', all_stages)
+
+    tech_top3_any, tech_top3_all = topn_any_all_match(technique_rows, 3)
+    tac_top3_any, tac_top3_all = topn_any_all_match(tactic_rows, 3)
+    stg_top3_any, stg_top3_all = topn_any_all_match(stage_rows, 4)
+
+    print()
+    print(f'── Accuracy [{method_label}] (CKD, technique -> tactic -> stage) ──')
+    print(f'Technique Accuracy   top-1: {tech_acc[1]*100:.1f}%   top-3: {tech_acc[3]*100:.1f}%   at-n: {tech_at_n*100:.1f}%')
+    print(f'Tactic Accuracy      top-1: {tac_acc[1]*100:.1f}%   top-3: {tac_acc[3]*100:.1f}%   at-n: {tac_at_n*100:.1f}%')
+    print(f'Stage Accuracy       top-1: {stg_acc[1]*100:.1f}%   top-3: {stg_acc[3]*100:.1f}%   at-n: {stg_at_n*100:.1f}%')
+    print()
+    print(f'Technique LRAP: {tech_lrap*100:.1f}%   AUPR: {tech_aupr*100:.1f}%')
+    print(f'Tactic    LRAP: {tac_lrap*100:.1f}%   AUPR: {tac_aupr*100:.1f}%')
+    print(f'Stage     LRAP: {stg_lrap*100:.1f}%   AUPR: {stg_aupr*100:.1f}%')
+
+    seen_mask = [row_is_seen(r['true'], train_tech_counts) for r in technique_rows]
+    n_seen = sum(seen_mask)
+    seen_technique_rows = filter_rows_by_mask(technique_rows, seen_mask)
+    seen_tactic_rows = filter_rows_by_mask(tactic_rows, seen_mask)
+    seen_stage_rows = filter_rows_by_mask(stage_rows, seen_mask)
+
+    seen_tech = compute_metrics_block(seen_technique_rows, 3)
+    seen_tac = compute_metrics_block(seen_tactic_rows, 3)
+    seen_stg = compute_metrics_block(seen_stage_rows, 4)
+
+    overall_tech = (tech_acc[1], tech_at_n, tech_top3_any, tech_top3_all)
+    overall_tac = (tac_acc[1], tac_at_n, tac_top3_any, tac_top3_all)
+    overall_stg = (stg_acc[1], stg_at_n, stg_top3_any, stg_top3_all)
+
+    print()
+    print(f'── Seen (trained on every true label) vs Overall [{method_label}] ──')
+    print(f'"Seen" = every true label for that step has >=1 gIoC point in the database (n={n_seen}/{len(by_step)} steps).')
+    print()
+    row_fmt = '{:<22}{:>9}{:>9}{:>13}{:>13}'
+    print(row_fmt.format('', 'top-1', 'at-n', 'top-3-any', 'top-3-all'))
+    print('Technique')
+    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_tech]))
+    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_tech]))
+    print('Tactic')
+    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_tac]))
+    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_tac]))
+    print('Stage')
+    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_stg]))
+    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_stg]))
+
+    seen_lrap_tech, seen_aupr_tech = lrap_aupr(seen_technique_rows, 'true', all_techs)
+    seen_lrap_tac, seen_aupr_tac = lrap_aupr(seen_tactic_rows, 'true', all_tacs)
+    seen_lrap_stg, seen_aupr_stg = lrap_aupr(seen_stage_rows, 'true', all_stages)
+
+    lrap_fmt = '{:<22}{:>9}{:>9}'
+    print()
+    print(f'── LRAP / AUPR: Seen vs Overall [{method_label}] ──')
+    print(lrap_fmt.format('', 'LRAP', 'AUPR'))
+    print('Technique')
+    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_tech*100:.1f}%', f'{seen_aupr_tech*100:.1f}%'))
+    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{tech_lrap*100:.1f}%', f'{tech_aupr*100:.1f}%'))
+    print('Tactic')
+    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_tac*100:.1f}%', f'{seen_aupr_tac*100:.1f}%'))
+    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{tac_lrap*100:.1f}%', f'{tac_aupr*100:.1f}%'))
+    print('Stage')
+    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_stg*100:.1f}%', f'{seen_aupr_stg*100:.1f}%'))
+    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{stg_lrap*100:.1f}%', f'{stg_aupr*100:.1f}%'))
+
+    return {
+        'method': method_label, 'n_total': len(by_step),
+        'tech_acc_top1': tech_acc[1], 'tech_acc_top3': tech_acc[3], 'tech_acc_at_n': tech_at_n,
+        'tac_acc_top1': tac_acc[1], 'tac_acc_top3': tac_acc[3], 'tac_acc_at_n': tac_at_n,
+        'stage_acc_top1': stg_acc[1], 'stage_acc_top3': stg_acc[3], 'stage_acc_at_n': stg_at_n,
+        'lrap': tac_lrap, 'aupr': tac_aupr,
+        'tech_top3_any': tech_top3_any, 'tech_top3_all': tech_top3_all,
+        'tac_top3_any': tac_top3_any, 'tac_top3_all': tac_top3_all,
+        'stage_top3_any': stg_top3_any, 'stage_top3_all': stg_top3_all,
+        'n_seen': n_seen,
+        'seen_vs_overall': {
+            'technique': {'seen': seen_tech, 'overall': overall_tech},
+            'tactic': {'seen': seen_tac, 'overall': overall_tac},
+            'stage': {'seen': seen_stg, 'overall': overall_stg},
+        },
+        'lrap_aupr_seen_vs_overall': {
+            'technique': {'seen': [seen_lrap_tech, seen_aupr_tech], 'overall': [tech_lrap, tech_aupr]},
+            'tactic': {'seen': [seen_lrap_tac, seen_aupr_tac], 'overall': [tac_lrap, tac_aupr]},
+            'stage': {'seen': [seen_lrap_stg, seen_aupr_stg], 'overall': [stg_lrap, stg_aupr]},
+        },
+        'technique_results': ranked_to_json(technique_rows, 'technique'),
+        'tactic_results': ranked_to_json(tactic_rows, 'tactic'),
+        'stage_results': ranked_to_json(stage_rows, 'stage'),
+    }
 
 
 def run(scenario, sequences_dir=None, model_path=None, clusters_path=None,
@@ -240,137 +379,18 @@ def run(scenario, sequences_dir=None, model_path=None, clusters_path=None,
 
     true_techniques, true_tactics_gt = load_step_ground_truth(by_step.keys())
 
-    technique_rows, tactic_rows, stage_rows = [], [], []
-    for i, (step, fpath) in enumerate(sorted(by_step.items(), key=lambda kv: step_sort_key(kv[0])), 1):
-        technique_ranked = predict_step(tagger, gioc_points, fpath)
-        true_tech = true_techniques.get(step, set())
-        top_tech = {t for t, _ in technique_ranked[:3]}
-        technique_rows.append({'file': step, 'true': true_tech, 'ranked': technique_ranked,
-                                'verdict': classify(true_tech, top_tech, 3)})
-
-        tactic_ranked = expand_ranked(technique_ranked, tech2tac_camlds)
-        true_tac = true_tactics_gt.get(step, set())
-        top_tac = {t for t, _ in tactic_ranked[:3]}
-        tactic_rows.append({'file': step, 'true': true_tac, 'ranked': tactic_ranked,
-                             'verdict': classify(true_tac, top_tac, 3)})
-
-        stage_ranked = expand_ranked(tactic_ranked, tactic_to_stage_list)
-        true_stg = {TACTIC_TO_STAGE[t] for t in true_tac if t in TACTIC_TO_STAGE}
-        top_stg = {s for s, _ in stage_ranked[:4]}
-        stage_rows.append({'file': step, 'true': true_stg, 'ranked': stage_ranked,
-                            'verdict': classify(true_stg, top_stg, 4)})
-
+    step_avg = {}
+    sorted_steps = sorted(by_step.items(), key=lambda kv: step_sort_key(kv[0]))
+    for i, (step, fpath) in enumerate(sorted_steps, 1):
+        avg_ranked, n_events = score_step(tagger, gioc_points, fpath)
+        step_avg[step] = (avg_ranked, n_events)
         if i % 10 == 0 or i == len(by_step):
             print(f'  scored {i:,}/{len(by_step):,} steps')
 
-    print_level_table('Technique', technique_rows, 3)
-    print_level_table('Tactic', tactic_rows, 3, label_fn=tid)
-    print_level_table('Stage', stage_rows, 4, label_fn=sid)
+    out = evaluate_method('AVG', by_step, step_avg, train_tech_counts, true_techniques, true_tactics_gt,
+                           tech2tac_camlds, tactic_to_stage_list)
 
-    all_techs = sorted({t for r in technique_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
-    all_tacs = sorted({t for r in tactic_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
-    all_stages = sorted({t for r in stage_rows for t in (r['true'] | {x for x, _ in r['ranked']})})
-
-    tech_acc = top_k_accuracy(technique_rows, 'true')
-    tac_acc = top_k_accuracy(tactic_rows, 'true')
-    stg_acc = top_k_accuracy(stage_rows, 'true')
-    tech_at_n = accuracy_at_n_true(technique_rows, 'true')
-    tac_at_n = accuracy_at_n_true(tactic_rows, 'true')
-    stg_at_n = accuracy_at_n_true(stage_rows, 'true')
-    tech_lrap, tech_aupr = lrap_aupr(technique_rows, 'true', all_techs)
-    tac_lrap, tac_aupr = lrap_aupr(tactic_rows, 'true', all_tacs)
-    stg_lrap, stg_aupr = lrap_aupr(stage_rows, 'true', all_stages)
-
-    tech_top3_any, tech_top3_all = topn_any_all_match(technique_rows, 3)
-    tac_top3_any, tac_top3_all = topn_any_all_match(tactic_rows, 3)
-    stg_top3_any, stg_top3_all = topn_any_all_match(stage_rows, 4)
-
-    print()
-    print('── Accuracy (CKD, technique -> tactic -> stage) ──')
-    print(f'Technique Accuracy   top-1: {tech_acc[1]*100:.1f}%   top-3: {tech_acc[3]*100:.1f}%   at-n: {tech_at_n*100:.1f}%')
-    print(f'Tactic Accuracy      top-1: {tac_acc[1]*100:.1f}%   top-3: {tac_acc[3]*100:.1f}%   at-n: {tac_at_n*100:.1f}%')
-    print(f'Stage Accuracy       top-1: {stg_acc[1]*100:.1f}%   top-3: {stg_acc[3]*100:.1f}%   at-n: {stg_at_n*100:.1f}%')
-    print()
-    print(f'Technique LRAP: {tech_lrap*100:.1f}%   AUPR: {tech_aupr*100:.1f}%')
-    print(f'Tactic    LRAP: {tac_lrap*100:.1f}%   AUPR: {tac_aupr*100:.1f}%')
-    print(f'Stage     LRAP: {stg_lrap*100:.1f}%   AUPR: {stg_aupr*100:.1f}%')
-
-    seen_mask = [row_is_seen(r['true'], train_tech_counts) for r in technique_rows]
-    n_seen = sum(seen_mask)
-    seen_technique_rows = filter_rows_by_mask(technique_rows, seen_mask)
-    seen_tactic_rows = filter_rows_by_mask(tactic_rows, seen_mask)
-    seen_stage_rows = filter_rows_by_mask(stage_rows, seen_mask)
-
-    seen_tech = compute_metrics_block(seen_technique_rows, 3)
-    seen_tac = compute_metrics_block(seen_tactic_rows, 3)
-    seen_stg = compute_metrics_block(seen_stage_rows, 4)
-
-    overall_tech = (tech_acc[1], tech_at_n, tech_top3_any, tech_top3_all)
-    overall_tac = (tac_acc[1], tac_at_n, tac_top3_any, tac_top3_all)
-    overall_stg = (stg_acc[1], stg_at_n, stg_top3_any, stg_top3_all)
-
-    print()
-    print('── Seen (trained on every true label) vs Overall ──')
-    print(f'"Seen" = every true label for that step has >=1 gIoC point in the database (n={n_seen}/{len(by_step)} steps).')
-    print()
-    row_fmt = '{:<22}{:>9}{:>9}{:>13}{:>13}'
-    print(row_fmt.format('', 'top-1', 'at-n', 'top-3-any', 'top-3-all'))
-    print('Technique')
-    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_tech]))
-    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_tech]))
-    print('Tactic')
-    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_tac]))
-    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_tac]))
-    print('Stage')
-    print(row_fmt.format(f'    Seen ({n_seen})', *[f'{v*100:.1f}%' for v in seen_stg]))
-    print(row_fmt.format(f'    Overall ({len(by_step)})', *[f'{v*100:.1f}%' for v in overall_stg]))
-
-    seen_lrap_tech, seen_aupr_tech = lrap_aupr(seen_technique_rows, 'true', all_techs)
-    seen_lrap_tac, seen_aupr_tac = lrap_aupr(seen_tactic_rows, 'true', all_tacs)
-    seen_lrap_stg, seen_aupr_stg = lrap_aupr(seen_stage_rows, 'true', all_stages)
-
-    lrap_fmt = '{:<22}{:>9}{:>9}'
-    print()
-    print('── LRAP / AUPR: Seen vs Overall ──')
-    print(lrap_fmt.format('', 'LRAP', 'AUPR'))
-    print('Technique')
-    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_tech*100:.1f}%', f'{seen_aupr_tech*100:.1f}%'))
-    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{tech_lrap*100:.1f}%', f'{tech_aupr*100:.1f}%'))
-    print('Tactic')
-    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_tac*100:.1f}%', f'{seen_aupr_tac*100:.1f}%'))
-    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{tac_lrap*100:.1f}%', f'{tac_aupr*100:.1f}%'))
-    print('Stage')
-    print(lrap_fmt.format(f'    Seen ({n_seen})', f'{seen_lrap_stg*100:.1f}%', f'{seen_aupr_stg*100:.1f}%'))
-    print(lrap_fmt.format(f'    Overall ({len(by_step)})', f'{stg_lrap*100:.1f}%', f'{stg_aupr*100:.1f}%'))
-
-    def ranked_to_json(rows, label_key):
-        return [{'file': r['file'], f'true_{label_key}s': sorted(r['true']),
-                  'ranked': [{label_key: lbl, 'score': score} for lbl, score in r['ranked']]} for r in rows]
-
-    out = {
-        'scenario': scenario, 'n_total': len(by_step),
-        'tech_acc_top1': tech_acc[1], 'tech_acc_top3': tech_acc[3], 'tech_acc_at_n': tech_at_n,
-        'tac_acc_top1': tac_acc[1], 'tac_acc_top3': tac_acc[3], 'tac_acc_at_n': tac_at_n,
-        'stage_acc_top1': stg_acc[1], 'stage_acc_top3': stg_acc[3], 'stage_acc_at_n': stg_at_n,
-        'lrap': tac_lrap, 'aupr': tac_aupr,
-        'tech_top3_any': tech_top3_any, 'tech_top3_all': tech_top3_all,
-        'tac_top3_any': tac_top3_any, 'tac_top3_all': tac_top3_all,
-        'stage_top3_any': stg_top3_any, 'stage_top3_all': stg_top3_all,
-        'n_seen': n_seen,
-        'seen_vs_overall': {
-            'technique': {'seen': seen_tech, 'overall': overall_tech},
-            'tactic': {'seen': seen_tac, 'overall': overall_tac},
-            'stage': {'seen': seen_stg, 'overall': overall_stg},
-        },
-        'lrap_aupr_seen_vs_overall': {
-            'technique': {'seen': [seen_lrap_tech, seen_aupr_tech], 'overall': [tech_lrap, tech_aupr]},
-            'tactic': {'seen': [seen_lrap_tac, seen_aupr_tac], 'overall': [tac_lrap, tac_aupr]},
-            'stage': {'seen': [seen_lrap_stg, seen_aupr_stg], 'overall': [stg_lrap, stg_aupr]},
-        },
-        'technique_results': ranked_to_json(technique_rows, 'technique'),
-        'tactic_results': ranked_to_json(tactic_rows, 'tactic'),
-        'stage_results': ranked_to_json(stage_rows, 'stage'),
-    }
+    out['scenario'] = scenario
     os.makedirs(RESULTS_DIR, exist_ok=True)
     out_path = os.path.join(RESULTS_DIR, f'ckd_test_results_{run_tag or scenario}.json')
     with open(out_path, 'w', encoding='utf-8') as f:
