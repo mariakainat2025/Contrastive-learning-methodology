@@ -71,6 +71,7 @@ class WideModel(nn.Module):
 if __name__ == '__main__':
     import json
     from Feature_Initialization import GRAPHS_DIR
+    from cross_product import DEFAULT_K as CROSS_PRODUCT_K
 
     wide_cache_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'cache', 'wide_features')
 
@@ -80,7 +81,8 @@ if __name__ == '__main__':
 
     x = wide_input_vector(fp, wide_cache_dir, GRAPHS_DIR)
     print('Graph:', fp)
-    print('Wide input vector length (226 h_cat + 64 cross-product):', len(x))
+    print('Wide input vector length ({} h_cat + {} cross-product):'.format(
+        len(x) - CROSS_PRODUCT_K, CROSS_PRODUCT_K), len(x))
 
     model = WideModel(in_dim=len(x))
     h_wide = model(torch.tensor(x, dtype=torch.float32))

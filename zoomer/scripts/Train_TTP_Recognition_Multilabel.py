@@ -11,8 +11,13 @@ from create_data_split import (
     classes_for_scenario_split, classes_for_fixed_scope,
     CAM_LDS_TECHNIQUE_SCOPE_MIN4,
 )
-from discretize_features import ALL_DIMS, fit_bins
+from discretize_features import ALL_DIMS, fit_bins, NODE_EDGE_DIMS, fit_node_edge_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
+
+WIDE_DIMS_FNS = {
+    'all': (ALL_DIMS, fit_bins),
+    'node_edge': (NODE_EDGE_DIMS, fit_node_edge_bins),
+}
 IN_DIM = 126
 N_EPISODES = 2000
 LR = 0.001
@@ -20,6 +25,12 @@ LOG_EVERY = 500
 PATIENCE = 4
 MIN_DELTA = 0.001
 CHECKPOINT_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/checkpoints'
+
+def header(title):
+    print()
+    print('-' * 70)
+    print('  {}'.format(title))
+    print('-' * 70)
 
 def checkpoint_path(run_tag):
     return os.path.join(CHECKPOINT_DIR, 'ttp_recognition_multilabel_{}.pt'.format(run_tag))
@@ -189,7 +200,7 @@ def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
     target = torch.tensor([keep.index(true_idx)], device=embed.device)
     return F.cross_entropy(logits, target)
 
-def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=None, fixed_scope=False, fixed_scope_min4=False, full_batch=False):
+def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=None, fixed_scope=False, fixed_scope_min4=False, full_batch=False, wide_features='all'):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -200,6 +211,7 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
         print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
     torch.manual_seed(seed)
 
+    header('Stage 1/7: Construction -- discover graphs/*/*/*.json, split train/test')
     split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file) if held_out else get_zoomer_split_multilabel(seed)
     if held_out:
         if fixed_scope_min4:
@@ -224,14 +236,18 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
         print_technique_training_summary(split, classes)
         print_orphaned_test_steps(split, classes)
 
+    header('Stage 2/7: Embedding (Wide tower setup) -- bin fitting + cross-product masks')
+    (wide_dims, fit_fn) = WIDE_DIMS_FNS[wide_features]
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
-    print('Fitting k-means bins on {} training graphs (seed={})...'.format(len(train_paths), seed))
-    bins = fit_bins(train_paths)
-    h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
+    print('Fitting k-means bins on {} training graphs (seed={}) -- feature set: {}...'.format(
+        len(train_paths), seed, wide_features))
+    bins = fit_fn(train_paths)
+    h_cat_dim = sum(len(bins[dim]) for dim in wide_dims)
     masks = generate_masks(h_cat_dim, seed=seed)
     wide_in_dim = h_cat_dim + CROSS_PRODUCT_K
     print('h_cat dim: {}  wide input dim (h_cat + cross-product): {}'.format(h_cat_dim, wide_in_dim))
 
+    header('Stage 3/7: Embedding (Deep+Wide model construction) -- TSGModel')
     model = TSGModel(deep_in_dim=IN_DIM, wide_in_dim=wide_in_dim).to(device)
     deep_out_dim = model.deep_model.layers[-1].head_fc[0].out_features * model.deep_model.layers[-1].n_heads
     wide_out_dim = model.wide_model.linear.out_features
@@ -239,13 +255,14 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
         deep_out_dim, wide_out_dim, wide_out_dim + deep_out_dim))
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    cache = GraphTensorCache(bins, masks)
+    cache = GraphTensorCache(bins, masks, wide_features=wide_features)
     rng = random.Random(seed)
     best_loss = float('inf')
     best_state = None
     stale_windows = 0
     recent_losses = []
     unit = 'epoch' if full_batch else 'episode'
+    header('Stage 4/7: Training -- episodic prototypical network ({} {}s)'.format(N_EPISODES, unit))
     for episode in range(1, N_EPISODES + 1):
         if full_batch:
             loss = run_full_batch(model, cache, split, classes, device)
@@ -295,7 +312,8 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
     final_state = best_state if best_state is not None else model.state_dict()
     out_path = checkpoint_path(run_tag)
     torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'scenario': scenario,
-                'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim}, out_path)
+                'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim,
+                'wide_features': wide_features}, out_path)
     print('Saved -> {}'.format(out_path))
     return out_path
 
@@ -327,6 +345,10 @@ if __name__ == '__main__':
                           'support / 2-query subsample reshuffled each episode -- prototypes are '
                           'the mean of ALL training examples for a class, loss is leave-one-out. '
                           'No subsampling randomness; needs more GPU memory per step.')
+    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge'],
+                     help='Which wide feature groups to use. "all" = node + edge + IoC counts '
+                          '(default). "node_edge" = drop the IoC-count feature group, keep only '
+                          'node-type and edge-type counts.')
     args = ap.parse_args()
     run_tag = args.run_tag
     held_out_label = args.test_file or args.scenario
@@ -341,4 +363,5 @@ if __name__ == '__main__':
             run_tag = (run_tag or held_out_label) + '_fullbatch'
     main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=run_tag,
          min_train_samples=args.min_train_samples, fixed_scope=args.fixed_scope,
-         fixed_scope_min4=args.fixed_scope_min4, full_batch=args.full_batch)
+         fixed_scope_min4=args.fixed_scope_min4, full_batch=args.full_batch,
+         wide_features=args.wide_features)

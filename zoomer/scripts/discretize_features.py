@@ -11,7 +11,7 @@ DATA_SPLIT_PATH = os.path.join(SCRIPTS_DIR, 'data_split_output.json')
 BINS_PATH = os.path.join(SCRIPTS_DIR, 'discretization_bins.json')
 
 ALL_DIMS = HNODE_DIMS + EDGE_TYPE_DIMS + IOC_DIMS
-assert len(ALL_DIMS) == 83
+assert len(ALL_DIMS) == 93
 
 DEFAULT_K = 4
 
@@ -31,6 +31,45 @@ def load_raw_vector(graph_path):
     with open(graph_path) as f:
         G = load_graph(json.load(f))
     return raw_vector_for_graph(G)
+
+NODE_EDGE_DIMS = HNODE_DIMS + EDGE_TYPE_DIMS
+
+def raw_node_edge_vector_for_graph(G):
+    node_counts = node_abstract_counts(G)
+    edge_counts = edge_type_counts(G)
+    merged = {}
+    merged.update(node_counts)
+    merged.update(edge_counts)
+    return [merged[dim] for dim in NODE_EDGE_DIMS]
+
+def load_raw_node_edge_vector(graph_path):
+    with open(graph_path) as f:
+        G = load_graph(json.load(f))
+    return raw_node_edge_vector_for_graph(G)
+
+def fit_node_edge_bins(train_paths, k=DEFAULT_K):
+    from sklearn.cluster import KMeans
+    import numpy as np
+
+    vectors = [load_raw_node_edge_vector(p) for p in train_paths]
+
+    bins = {}
+    for (i, dim) in enumerate(NODE_EDGE_DIMS):
+        values = np.array([v[i] for v in vectors], dtype=float).reshape(-1, 1)
+        n_distinct = len(set(values.flatten().tolist()))
+        this_k = min(k, n_distinct) if n_distinct > 0 else 1
+        km = KMeans(n_clusters=this_k, n_init=10, random_state=0).fit(values)
+        centers = sorted(round(c[0], 6) for c in km.cluster_centers_)
+        bins[dim] = centers
+    return bins
+
+def discretize_node_edge_vector(raw_vector, bins):
+    h_cat = []
+    for (i, dim) in enumerate(NODE_EDGE_DIMS):
+        centers = bins[dim]
+        idx = _bucket_index(raw_vector[i], centers)
+        h_cat.extend(1 if j == idx else 0 for j in range(len(centers)))
+    return h_cat
 
 def _train_graph_paths():
     with open(DATA_SPLIT_PATH) as f:
@@ -86,7 +125,7 @@ if __name__ == '__main__':
 
     dim_sizes = {dim: len(centers) for (dim, centers) in bins.items()}
     total_hcat_dim = sum(dim_sizes.values())
-    print('h_cat total dimensionality:', total_hcat_dim, '(from 83 raw dims)')
+    print('h_cat total dimensionality:', total_hcat_dim, '(from {} raw dims)'.format(len(ALL_DIMS)))
     print()
     print('Dimensions where k had to be reduced below {} (low variance in training data):'.format(DEFAULT_K))
     for (dim, k) in dim_sizes.items():

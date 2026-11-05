@@ -1,7 +1,8 @@
 import torch
 import torch.nn.functional as F
+from torch.utils.checkpoint import checkpoint
 
-from config import MAX_LEN, STRIDE
+from config import MAX_LEN, STRIDE, ROBERTA_MODEL
 
 
 def embed_text(model, tokenizer, input_ids, attention_mask, device,
@@ -74,19 +75,55 @@ def embed_text(model, tokenizer, input_ids, attention_mask, device,
                 all_chunks.append((chunk_ids, chunk_mask))
                 chunk_meta.append(orig_idx)
 
+        def _chunk_forward(c_ids, c_mask):
+            return model(input_ids=c_ids, attention_mask=c_mask, return_dict=True).last_hidden_state
+
         cls_per_orig = {}
         CHUNK_BATCH = 32
         for cb_start in range(0, len(all_chunks), CHUNK_BATCH):
             cb_end  = min(cb_start + CHUNK_BATCH, len(all_chunks))
             c_ids   = torch.stack([c[0] for c in all_chunks[cb_start:cb_end]]).to(device)
             c_mask  = torch.stack([c[1] for c in all_chunks[cb_start:cb_end]]).to(device)
-            c_out   = model(input_ids=c_ids, attention_mask=c_mask, return_dict=True)
+            if torch.is_grad_enabled():
+                last_hidden_state = checkpoint(_chunk_forward, c_ids, c_mask, use_reentrant=False)
+            else:
+                last_hidden_state = _chunk_forward(c_ids, c_mask)
             for i, orig_idx in enumerate(chunk_meta[cb_start:cb_end]):
                 mask_exp = c_mask[i].unsqueeze(-1).float()
-                chunk_emb = (c_out.last_hidden_state[i] * mask_exp).sum(0) / mask_exp.sum().clamp(min=1)
+                chunk_emb = (last_hidden_state[i] * mask_exp).sum(0) / mask_exp.sum().clamp(min=1)
                 cls_per_orig.setdefault(orig_idx, []).append(chunk_emb)
 
         for orig_idx, cls_list in cls_per_orig.items():
             sentence_embeddings[orig_idx] = torch.stack(cls_list).mean(0)
 
     return torch.stack(sentence_embeddings)
+
+
+if __name__ == '__main__':
+    import argparse
+    import json
+
+    from transformers import RobertaTokenizer, RobertaModel
+
+    ap = argparse.ArgumentParser(description='Embed one real sequence file with RoBERTa, standalone '
+                                               '(no training loop) -- demonstrates the real Logs Embedding step.')
+    ap.add_argument('--file', required=True, help='a sequence_*.json file (has a "sequence" list field)')
+    args = ap.parse_args()
+
+    with open(args.file) as f:
+        seq = json.load(f)
+    text = ' '.join(seq['sequence'])
+    print('step:', seq['step'], '| n_events:', len(seq['sequence']))
+    print('text (first 200 chars):', text[:200])
+
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    tokenizer = RobertaTokenizer.from_pretrained(ROBERTA_MODEL)
+    model = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device).eval()
+
+    enc = tokenizer(text, padding=False, truncation=False, return_tensors='pt')
+    rlen = int(enc['attention_mask'][0].sum())
+    ids = enc['input_ids'][0][:rlen].unsqueeze(0).to(device)
+    mask = enc['attention_mask'][0][:rlen].unsqueeze(0).to(device)
+    with torch.no_grad():
+        h_text = embed_text(model, tokenizer, ids, mask, device, truncate=False, max_chunks=200)
+    print('h_text (RoBERTa sentence embedding):', tuple(h_text.shape))

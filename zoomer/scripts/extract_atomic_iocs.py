@@ -10,7 +10,8 @@ ENTERPRISE_ATTACK_PATH = os.path.join(ATOMIC_RED_TEAM_DIR, 'atomic_red_team', 'e
 OUT_PATH = os.path.join(SCRIPTS_DIR, 'atomic_iocs.json')
 
 OUR_TACTICS = {'collection', 'command_and_control', 'credential_access', 'discovery',
-               'execution', 'initial_access', 'persistence', 'privilege_escalation', 'stealth'}
+               'execution', 'initial_access', 'persistence', 'privilege_escalation', 'stealth',
+               'lateral_movement', 'defense_impairment', 'reconnaissance', 'impact', 'exfiltration'}
 
 TACTIC_RENAME = {'defense-evasion': 'stealth'}
 

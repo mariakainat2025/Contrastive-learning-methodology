@@ -9,13 +9,6 @@ import Train_TTP_Recognition_Multilabel as train_mod
 import Test_TTP_Recognition_Multilabel as test_mod
 
 
-def header(title):
-    print()
-    print('=' * 70)
-    print('  {}'.format(title))
-    print('=' * 70)
-
-
 def main():
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -35,6 +28,9 @@ def main():
                           'e.g. --run 3_ssh_apt. Training/scoring still cover the full scenario.')
     ap.add_argument('--skip-train', action='store_true', help='Skip training, test an existing checkpoint.')
     ap.add_argument('--skip-test', action='store_true', help='Skip testing (train only).')
+    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge'],
+                     help='Which wide feature groups to use. "all" = node + edge + IoC counts '
+                          '(default). "node_edge" = drop the IoC-count feature group.')
     args = ap.parse_args()
 
     run_tag = args.run_tag
@@ -45,14 +41,14 @@ def main():
             run_tag = 'scenario{}_min{}'.format(args.scenario, args.min_train_samples)
 
     if not args.skip_train:
-        header('Step 1/2: Training (ZOOMER graph + wide features, technique prototypes)')
         train_mod.main(args.seed, scenario=args.scenario, run_tag=run_tag,
-                        min_train_samples=args.min_train_samples, fixed_scope=args.fixed_scope)
+                        min_train_samples=args.min_train_samples, fixed_scope=args.fixed_scope,
+                        wide_features=args.wide_features)
 
     if not args.skip_test:
-        header('Step 2/2: Testing (technique / tactic / stage accuracy)')
         test_mod.main(args.seed, scenario=args.scenario, run_tag=run_tag,
-                       run_filter=args.run, fixed_scope=args.fixed_scope)
+                       run_filter=args.run, fixed_scope=args.fixed_scope,
+                       wide_features=args.wide_features)
 
 
 if __name__ == '__main__':

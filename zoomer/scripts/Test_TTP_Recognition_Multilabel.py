@@ -8,9 +8,14 @@ from sklearn.metrics import average_precision_score, label_ranking_average_preci
 from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics, technique_tactics
 from create_data_split import get_zoomer_split_multilabel, get_zoomer_split_scenario_multilabel
-from discretize_features import ALL_DIMS, fit_bins
+from discretize_features import ALL_DIMS, fit_bins, NODE_EDGE_DIMS, fit_node_edge_bins
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
-from Train_TTP_Recognition_Multilabel import IN_DIM, checkpoint_path
+from Train_TTP_Recognition_Multilabel import IN_DIM, checkpoint_path, header
+
+WIDE_DIMS_FNS = {
+    'all': (ALL_DIMS, fit_bins),
+    'node_edge': (NODE_EDGE_DIMS, fit_node_edge_bins),
+}
 
 RESULTS_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/results'
 from tactic_ids import TACTIC_IDS
@@ -233,7 +238,8 @@ def print_technique_training_summary(split, classes):
     print('Skip steps ({}): {}'.format(len(skip_steps), ', '.join(skip_steps)))
     print()
 
-def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_filter=None, fixed_scope=False):
+def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_filter=None, fixed_scope=False,
+         wide_features=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -245,19 +251,24 @@ def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_fi
             print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
         if run_filter:
             print('  (reporting headline metrics only for run group: {} -- full scenario still trained/scored)'.format(run_filter))
+    header('Stage 5/7: Matching -- load trained checkpoint, rebuild bins/masks')
     ckpt = torch.load(checkpoint_path(run_tag), map_location=device)
     classes = ckpt['classes']
     model = TSGModel(deep_in_dim=IN_DIM, wide_in_dim=ckpt['wide_in_dim']).to(device)
     model.load_state_dict(ckpt['model'])
     model.eval()
 
+    ckpt_wide_features = wide_features or ckpt.get('wide_features', 'all')
+    (wide_dims, fit_fn) = WIDE_DIMS_FNS[ckpt_wide_features]
+
     split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file) if held_out else get_zoomer_split_multilabel(seed)
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
-    bins = fit_bins(train_paths)
-    h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
+    bins = fit_fn(train_paths)
+    h_cat_dim = sum(len(bins[dim]) for dim in wide_dims)
     masks = generate_masks(h_cat_dim, seed=seed)
-    cache = GraphTensorCache(bins, masks)
+    cache = GraphTensorCache(bins, masks, wide_features=ckpt_wide_features)
 
+    header('Stage 6/7: Matching -- build final prototypes (avg of ALL train samples per class)')
     tactic_map = load_tactic_map()
     prototypes, classes = build_final_prototypes(model, cache, split, classes, device)
     class_tactics_all = {t: technique_tactics(tactic_map, t) for t in classes}
@@ -318,6 +329,7 @@ def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_fi
     n_correct_tech = sum(1 for r in display_rows if r['pred_technique'] in r['true_techniques'])
     n_correct_tac = sum(1 for r in display_rows if class_tactics_all[r['pred_technique']] & r['true_tactics'])
     if verbose:
+        header('Stage 7/7: Scoring -- technique / tactic / stage accuracy')
         n_wrong_tech = print_technique_results_table(rows, len(classes))
         n_wrong_top3_tac = print_tactic_results_table(tactic_rows, len(all_tactics))
         n_wrong_stage = print_stage_results_table(stage_rows)
@@ -489,10 +501,13 @@ if __name__ == '__main__':
                      help='Score against CAM-LDS\'s fixed 36 base-technique scope (must match how the '
                           'checkpoint was trained with --fixed-scope) -- drops true techniques outside '
                           'that scope instead of scoring them as unwinnable misses.')
+    ap.add_argument('--wide-features', type=str, default=None, choices=['all', 'node_edge'],
+                     help='Override which wide feature groups to refit/use at test time. Default: '
+                          'inherit whatever the checkpoint was trained with.')
     args = ap.parse_args()
     run_tag = args.run_tag
     held_out_label = args.test_file or args.scenario
     if run_tag is None and held_out_label and args.fixed_scope:
         run_tag = '{}_camldsscope'.format(held_out_label)
     main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=run_tag,
-         run_filter=args.run, fixed_scope=args.fixed_scope)
+         run_filter=args.run, fixed_scope=args.fixed_scope, wide_features=args.wide_features)

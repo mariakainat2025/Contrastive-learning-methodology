@@ -5,10 +5,11 @@ SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 ATOMIC_IOCS_PATH = os.path.join(SCRIPTS_DIR, 'atomic_iocs.json')
 
 OUR_TACTICS = ('collection', 'command_and_control', 'credential_access', 'discovery',
-               'execution', 'initial_access', 'persistence', 'privilege_escalation', 'stealth')
+               'execution', 'initial_access', 'persistence', 'privilege_escalation', 'stealth',
+               'lateral_movement', 'defense_impairment', 'reconnaissance', 'impact', 'exfiltration')
 
 IOC_DIMS = tuple(f'{tactic}_{kind}' for tactic in OUR_TACTICS for kind in ('file', 'ip'))
-assert len(IOC_DIMS) == 18
+assert len(IOC_DIMS) == 28
 
 def load_knowledge_base():
     with open(ATOMIC_IOCS_PATH) as f:

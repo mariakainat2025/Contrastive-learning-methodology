@@ -1,4 +1,3 @@
-
 import os
 import sys
 
@@ -55,6 +54,7 @@ def main():
     ap.add_argument('--n-freeze', type=int, default=train_mod.N_FREEZE,
                      help='How many of RoBERTa\'s 12 layers to freeze (lower = more trainable capacity).')
     ap.add_argument('--dropout', type=float, default=train_mod.DROPOUT)
+    ap.add_argument('--n-epochs', type=int, default=train_mod.N_EPOCHS)
     ap.add_argument('--zoomer-scope', action='store_true',
                      help="Train on ZOOMER's 26-technique min4 scope instead of CAM-LDS's native "
                           '36-technique one, for a 100%% identical training set between the two models. '
@@ -74,14 +74,10 @@ def main():
                      help='Text-only embedding, no ZOOMER wide (node/edge/IoC count) features '
                           'concatenated in at all -- an ablation to check whether the wide features '
                           'are helping or hurting, independent of the text side.')
-    ap.add_argument('--loss', dest='loss_fn', choices=['contrastive', 'asl'], default='contrastive',
-                     help="'contrastive' (default) = the existing prototype/logsumexp loss. "
-                          "'asl' = Asymmetric Loss for Multi-Label Classification -- independent "
-                          'per-class sigmoid with asymmetric focal weighting, built for severe '
-                          'per-sample positive/negative imbalance.')
-    ap.add_argument('--asl-gamma-pos', type=float, default=1.0, help='ASL positive focusing exponent.')
-    ap.add_argument('--asl-gamma-neg', type=float, default=4.0, help='ASL negative focusing exponent.')
-    ap.add_argument('--asl-clip', type=float, default=0.05, help='ASL negative probability-shift margin.')
+    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge'],
+                     help='Which wide feature groups to use (ignored if --no-wide). "all" = node + '
+                          'edge + IoC counts (default). "node_edge" = drop the IoC-count feature '
+                          'group, keep only node-type and edge-type counts.')
     ap.add_argument('--run', type=str, default=None, dest='run_filter',
                      help='Only report test steps whose filename contains this substring, e.g. "ssh_apt" -- '
                           'narrows what gets PRINTED/scored in the final table, not what the model trains '
@@ -104,15 +100,15 @@ def main():
             run_tag = args.test_file
 
     if not args.skip_labels:
-        header('Step 1/4: Refreshing technique/tactic ground-truth labels (step_tactics.json)')
+        header('Stage 1/4: Refreshing technique/tactic ground-truth labels (step_tactics.json)')
         step_tactic_lookup.main()
 
     if not args.skip_templates:
-        header('Step 2/4: Generating technique templates')
+        header('Stage 2/4: Generating technique templates')
         generate_technique_templates.main()
 
     if not args.skip_train:
-        header('Step 3/4: Training (text + wide features, technique prototypes)')
+        header('Stage 3/4: Training (text + wide features, technique prototypes)')
         train_mod.run_contrastive_train(
             test_file_match=args.test_file, test_scenario=args.test_scenario,
             k_per_technique=args.k_per_technique,
@@ -122,21 +118,19 @@ def main():
             class_reweight=args.class_reweight, reweight_cap=args.reweight_cap,
             sequences_dir=args.sequences_dir,
             lr=args.lr, full_batch=args.full_batch, patience=args.patience,
-            n_freeze=args.n_freeze, dropout=args.dropout,
-            zoomer_scope=args.zoomer_scope, use_wide=args.use_wide,
-            loss_fn=args.loss_fn, asl_gamma_pos=args.asl_gamma_pos,
-            asl_gamma_neg=args.asl_gamma_neg, asl_clip=args.asl_clip,
+            n_freeze=args.n_freeze, dropout=args.dropout, n_epochs=args.n_epochs,
+            zoomer_scope=args.zoomer_scope, use_wide=args.use_wide, wide_features=args.wide_features,
             grouped_split=args.grouped_split,
         )
 
     if not args.skip_test:
-        header('Step 4/4: Testing (technique / tactic / stage accuracy)')
+        header('Stage 4/4: Testing (technique / tactic / stage accuracy)')
         test_mod.run(
             test_file_match=args.test_file, test_scenario=args.test_scenario, temp=args.temp,
             test_size=args.test_size, split_seed=args.split_seed, run_tag=run_tag,
             template_dir=args.template_dir, sequences_dir=args.sequences_dir,
             zoomer_scope=args.test_zoomer_scope, strict_native=args.strict_native,
-            run_filter=args.run_filter,
+            run_filter=args.run_filter, wide_features=args.wide_features,
         )
 
 

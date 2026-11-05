@@ -5,9 +5,9 @@ import random
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 MASKS_PATH = os.path.join(SCRIPTS_DIR, 'cross_product_masks.json')
 
-DEFAULT_K = 64
+DEFAULT_K = 30
 DEFAULT_SEED = 0
-DEFAULT_P = 0.01
+DEFAULT_P = 0.005
 
 def generate_masks(d, k=DEFAULT_K, p=DEFAULT_P, seed=DEFAULT_SEED):
     rng = random.Random(seed)
@@ -63,11 +63,11 @@ if __name__ == '__main__':
                 n_constant += 1
 
         avg_selected = sum(sum(m) for m in masks) / len(masks)
-        print('p={:<5} avg slots/mask={:6.1f}  useless features (constant across all 116 graphs, 0 or 1): {}/{}'.format(
-            p, avg_selected, n_constant, DEFAULT_K))
+        print('p={:<5} avg slots/mask={:6.1f}  useless features (constant across all {} graphs, 0 or 1): {}/{}'.format(
+            p, avg_selected, len(graph_paths), n_constant, DEFAULT_K))
 
     print()
-    print('Committing final masks with p={} (see DEFAULT_P comment for why)...'.format(DEFAULT_P))
+    print('Committing final masks with p={} (lowest useless-feature count among the values tried above)...'.format(DEFAULT_P))
     final_masks = generate_masks(d, k=DEFAULT_K, p=DEFAULT_P)
     save_masks(final_masks)
     print('Saved {} masks (d={}) -> {}'.format(len(final_masks), d, MASKS_PATH))
