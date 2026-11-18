@@ -9,12 +9,14 @@ from Deep_Wide_Model import TSGModel
 from data_utils import GraphTensorCache, instance_from_filename, load_tactic_map, instance_tactics, technique_tactics
 from create_data_split import get_zoomer_split_multilabel, get_zoomer_split_scenario_multilabel
 from discretize_features import ALL_DIMS, fit_bins, NODE_EDGE_DIMS, fit_node_edge_bins
+from discretize_features_v2 import ALL_DIMS as ALL_DIMS_V2, fit_bins as fit_bins_v2
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 from Train_TTP_Recognition_Multilabel import IN_DIM, checkpoint_path, header
 
 WIDE_DIMS_FNS = {
     'all': (ALL_DIMS, fit_bins),
     'node_edge': (NODE_EDGE_DIMS, fit_node_edge_bins),
+    'v2': (ALL_DIMS_V2, fit_bins_v2),
 }
 
 RESULTS_DIR = '/csse/research/contructive-learning/CAM-LDS/zoomer/results'
@@ -239,7 +241,7 @@ def print_technique_training_summary(split, classes):
     print()
 
 def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_filter=None, fixed_scope=False,
-         wide_features=None):
+         wide_features=None, exclude_from_training=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -261,7 +263,7 @@ def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, run_fi
     ckpt_wide_features = wide_features or ckpt.get('wide_features', 'all')
     (wide_dims, fit_fn) = WIDE_DIMS_FNS[ckpt_wide_features]
 
-    split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file) if held_out else get_zoomer_split_multilabel(seed)
+    split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file, exclude_from_training=exclude_from_training) if held_out else get_zoomer_split_multilabel(seed)
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     bins = fit_fn(train_paths)
     h_cat_dim = sum(len(bins[dim]) for dim in wide_dims)
@@ -501,13 +503,20 @@ if __name__ == '__main__':
                      help='Score against CAM-LDS\'s fixed 36 base-technique scope (must match how the '
                           'checkpoint was trained with --fixed-scope) -- drops true techniques outside '
                           'that scope instead of scoring them as unwinnable misses.')
-    ap.add_argument('--wide-features', type=str, default=None, choices=['all', 'node_edge'],
+    ap.add_argument('--wide-features', type=str, default=None, choices=['all', 'node_edge', 'v2'],
                      help='Override which wide feature groups to refit/use at test time. Default: '
                           'inherit whatever the checkpoint was trained with.')
+    ap.add_argument('--exclude-from-training', type=str, default=None,
+                     help='Must match what the checkpoint was trained with -- comma-separated exact '
+                          'step-ids excluded from training (bins/prototypes are rebuilt from train data '
+                          'here too, so this has to mirror the training-time value).')
     args = ap.parse_args()
     run_tag = args.run_tag
     held_out_label = args.test_file or args.scenario
     if run_tag is None and held_out_label and args.fixed_scope:
         run_tag = '{}_camldsscope'.format(held_out_label)
+    exclude_from_training = set(s.strip() for s in args.exclude_from_training.split(',') if s.strip()) \
+        if args.exclude_from_training else None
     main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=run_tag,
-         run_filter=args.run, fixed_scope=args.fixed_scope, wide_features=args.wide_features)
+         run_filter=args.run, fixed_scope=args.fixed_scope, wide_features=args.wide_features,
+         exclude_from_training=exclude_from_training)

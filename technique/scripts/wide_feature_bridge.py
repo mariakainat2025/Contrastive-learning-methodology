@@ -5,8 +5,8 @@ import sys
 
 from data_utils import instance_from_filename
 
-for _name in ('discretize_features', 'cross_product', 'abstract_node',
-              'edge_feature', 'ioc_feature', 'Feature_Initialization'):
+for _name in ('discretize_features', 'discretize_features_v2', 'cross_product', 'abstract_node',
+              'abstract_node_v2', 'edge_feature', 'ioc_feature', 'Feature_Initialization'):
     sys.modules.pop(_name, None)
 
 TECHNIQUE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +18,10 @@ from discretize_features import (
     ALL_DIMS, NODE_EDGE_DIMS, fit_bins, fit_node_edge_bins,
     load_raw_vector, load_raw_node_edge_vector,
     discretize_vector, discretize_node_edge_vector, _bucket_index,
+)
+from discretize_features_v2 import (
+    ALL_DIMS as ALL_DIMS_V2, fit_bins as fit_bins_v2,
+    load_raw_vector as load_raw_vector_v2, discretize_vector as discretize_vector_v2,
 )
 from cross_product import generate_masks, hwide_pre_projection, DEFAULT_K as CROSS_PRODUCT_K
 from abstract_node import HNODE_DIMS, node_abstract_counts
@@ -115,13 +119,45 @@ def fit_wide_bins_and_masks(train_steps, step_to_path, seed):
     return bins, masks, wide_dim
 
 
+_wide_vector_cache = {}
+
+
 def wide_vector_for_step(step, step_to_path, bins, masks):
+    if step in _wide_vector_cache:
+        return _wide_vector_cache[step]
     graph_path = step_to_path.get(step)
     if graph_path is None:
         raise KeyError('No graph file found for step {!r}'.format(step))
     raw = load_raw_vector(graph_path)
     h_cat = discretize_vector(raw, bins)
-    return hwide_pre_projection(h_cat, masks)
+    result = hwide_pre_projection(h_cat, masks)
+    _wide_vector_cache[step] = result
+    return result
+
+
+def fit_wide_bins_and_masks_v2(train_steps, step_to_path, seed):
+    train_paths = sorted({step_to_path[s] for s in train_steps if s in step_to_path})
+    bins = fit_bins_v2(train_paths)
+    h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS_V2)
+    masks = generate_masks(h_cat_dim, seed=seed)
+    wide_dim = h_cat_dim + CROSS_PRODUCT_K
+    return bins, masks, wide_dim
+
+
+_wide_vector_cache_v2 = {}
+
+
+def wide_vector_for_step_v2(step, step_to_path, bins, masks):
+    if step in _wide_vector_cache_v2:
+        return _wide_vector_cache_v2[step]
+    graph_path = step_to_path.get(step)
+    if graph_path is None:
+        raise KeyError('No graph file found for step {!r}'.format(step))
+    raw = load_raw_vector_v2(graph_path)
+    h_cat = discretize_vector_v2(raw, bins)
+    result = hwide_pre_projection(h_cat, masks)
+    _wide_vector_cache_v2[step] = result
+    return result
 
 
 if __name__ == '__main__':

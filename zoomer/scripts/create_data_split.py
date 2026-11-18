@@ -33,11 +33,11 @@ def discover_technique_files(single_label=True):
 
     technique_to_instances = defaultdict(list)
     for (inst, techs) in instance_to_techniques.items():
-        for t in techs:
+        for t in sorted(techs):
             technique_to_instances[t].append(inst)
 
     assigned = {}
-    for technique in sorted(technique_to_instances, key=lambda t: len(technique_to_instances[t])):
+    for technique in sorted(technique_to_instances, key=lambda t: (len(technique_to_instances[t]), t)):
         claimed = 0
         for inst in sorted(technique_to_instances[technique]):
             if claimed >= MIN_TRAIN_SAMPLES:
@@ -129,7 +129,7 @@ def get_zoomer_split_multilabel(seed):
 
 MIN_TRAIN_SAMPLES_SCENARIO = 2
 
-def _scenario_assign(files_dict, scenario):
+def _scenario_assign(files_dict, scenario, exclude_from_training=None):
     scenario = str(scenario)
     prefix_us = scenario + '_'
     prefix_hy = scenario + '-'
@@ -137,42 +137,52 @@ def _scenario_assign(files_dict, scenario):
     for (filename, path) in files_dict.items():
         instance = instance_from_filename(filename)
         is_test = instance.startswith(prefix_us) or instance.startswith(prefix_hy)
-        (test if is_test else train).append((filename, path))
+        if is_test:
+            test.append((filename, path))
+        elif exclude_from_training and instance in exclude_from_training:
+            continue
+        else:
+            train.append((filename, path))
     return train, test
 
-def _file_match_assign(files_dict, match_substr):
+def _file_match_assign(files_dict, match_substr, exclude_from_training=None):
     train, test = [], []
     for (filename, path) in files_dict.items():
         instance = instance_from_filename(filename)
-        (test if match_substr in instance else train).append((filename, path))
+        if match_substr in instance:
+            test.append((filename, path))
+        elif exclude_from_training and instance in exclude_from_training:
+            continue
+        else:
+            train.append((filename, path))
     return train, test
 
-def build_split_scenario(scenario, single_label=True, test_file=None):
+def build_split_scenario(scenario, single_label=True, test_file=None, exclude_from_training=None):
     by_technique = discover_technique_files(single_label=single_label)
     split = {}
     for technique in sorted(by_technique):
         if test_file:
-            train, test = _file_match_assign(by_technique[technique], test_file)
+            train, test = _file_match_assign(by_technique[technique], test_file, exclude_from_training=exclude_from_training)
         else:
-            train, test = _scenario_assign(by_technique[technique], scenario)
+            train, test = _scenario_assign(by_technique[technique], scenario, exclude_from_training=exclude_from_training)
         split[technique] = {'train': train, 'test': test}
     return split
 
-def get_zoomer_split_scenario(scenario, single_label=True, test_file=None):
+def get_zoomer_split_scenario(scenario, single_label=True, test_file=None, exclude_from_training=None):
     tactic_map = load_tactic_map()
-    split = build_split_scenario(scenario, single_label=single_label, test_file=test_file)
+    split = build_split_scenario(scenario, single_label=single_label, test_file=test_file, exclude_from_training=exclude_from_training)
     return {technique: {'train': pools['train'], 'test': pools['test'], 'tactic': technique_primary_tactic(tactic_map, technique)}
             for (technique, pools) in split.items()}
 
-def get_zoomer_split_scenario_multilabel(scenario, test_file=None):
+def get_zoomer_split_scenario_multilabel(scenario, test_file=None, exclude_from_training=None):
     tactic_map = load_tactic_map()
     raw_by_technique = discover_technique_files(single_label=False)
     split = {}
     for technique in sorted(raw_by_technique):
         if test_file:
-            train, test = _file_match_assign(raw_by_technique[technique], test_file)
+            train, test = _file_match_assign(raw_by_technique[technique], test_file, exclude_from_training=exclude_from_training)
         else:
-            train, test = _scenario_assign(raw_by_technique[technique], scenario)
+            train, test = _scenario_assign(raw_by_technique[technique], scenario, exclude_from_training=exclude_from_training)
         split[technique] = {'train': train, 'test': test}
     return {technique: {'train': pools['train'], 'test': pools['test'], 'tactic': technique_primary_tactic(tactic_map, technique)}
             for (technique, pools) in split.items()}

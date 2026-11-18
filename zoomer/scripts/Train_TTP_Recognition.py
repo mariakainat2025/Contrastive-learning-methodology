@@ -108,7 +108,7 @@ def ttp_recognition_loss(prototypes, query_embeds, query_labels):
     logits = -dists
     return F.cross_entropy(logits, query_labels)
 
-def main(seed, scenario=None, test_file=None, run_tag=None, fixed_scope=False):
+def main(seed, scenario=None, test_file=None, run_tag=None, fixed_scope=False, exclude_from_training=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -117,9 +117,11 @@ def main(seed, scenario=None, test_file=None, run_tag=None, fixed_scope=False):
         print('Held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(held_out, seed, device))
     else:
         print('Seed: {}  Device: {}'.format(seed, device))
+    if exclude_from_training:
+        print('Excluding {} step(s) from training: {}'.format(len(exclude_from_training), sorted(exclude_from_training)))
     torch.manual_seed(seed)
 
-    split = get_zoomer_split_scenario(scenario, single_label=True, test_file=test_file) if held_out else get_zoomer_split(seed)
+    split = get_zoomer_split_scenario(scenario, single_label=True, test_file=test_file, exclude_from_training=exclude_from_training) if held_out else get_zoomer_split(seed)
     if held_out:
         classes = classes_for_fixed_scope(split) if fixed_scope else classes_for_scenario_split(split)
     elif fixed_scope:
@@ -178,7 +180,8 @@ def main(seed, scenario=None, test_file=None, run_tag=None, fixed_scope=False):
     final_state = best_state if best_state is not None else model.state_dict()
     out_path = checkpoint_path(run_tag)
     torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'scenario': scenario,
-                'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim}, out_path)
+                'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim,
+                'exclude_from_training': exclude_from_training}, out_path)
     print('Saved -> {}'.format(out_path))
     return out_path
 
@@ -198,6 +201,11 @@ if __name__ == '__main__':
                      help="Use CAM-LDS's own fixed technique scope directly (same list the "
                           "multilabel side uses) -- trains the exact same technique classes as "
                           "CAM-LDS, for a true side-by-side comparison.")
+    ap.add_argument('--exclude-from-training', type=str, default=None,
+                     help='Comma-separated exact step-ids (e.g. "6_macro_cron-2,6_macro_cron-3") to '
+                          'drop from the training set on top of the normal --test-file/--scenario holdout.')
     args = ap.parse_args()
+    exclude_from_training = set(s.strip() for s in args.exclude_from_training.split(',') if s.strip()) \
+        if args.exclude_from_training else None
     main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=args.run_tag,
-         fixed_scope=args.fixed_scope)
+         fixed_scope=args.fixed_scope, exclude_from_training=exclude_from_training)

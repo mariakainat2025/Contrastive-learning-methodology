@@ -17,8 +17,18 @@ if TECHNIQUE_DIR not in sys.path:
 
 from config import ROBERTA_MODEL
 from encoder_utils import embed_text
-from prototype_multilabel_loss import multilabel_prototype_loss, uniformity_loss, asymmetric_loss
-from wide_feature_bridge import build_step_to_graph_path, fit_wide_bins_and_masks, wide_vector_for_step
+from prototype_multilabel_loss import multilabel_prototype_loss, uniformity_loss
+from wide_feature_bridge import (
+    build_step_to_graph_path, fit_wide_bins_and_masks, wide_vector_for_step,
+    fit_node_edge_bins_and_masks, node_edge_vector_for_step,
+    fit_wide_bins_and_masks_v2, wide_vector_for_step_v2,
+)
+
+WIDE_FEATURE_FNS = {
+    'all': (fit_wide_bins_and_masks, wide_vector_for_step),
+    'node_edge': (fit_node_edge_bins_and_masks, node_edge_vector_for_step),
+    'v2': (fit_wide_bins_and_masks_v2, wide_vector_for_step_v2),
+}
 
 CAM_LDS_DIR       = '/csse/research/contructive-learning/CAM-LDS'
 SEQUENCES_DIR     = os.path.join(CAM_LDS_DIR, 'sequences')
@@ -378,11 +388,12 @@ def encode_one(tokenizer, encoder, text, device):
     return embed_text(encoder, tokenizer, ids, mask, device, truncate=False, max_chunks=MAX_CHUNKS).squeeze(0)
 
 
-def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
+def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device,
+                              vector_fn=wide_vector_for_step):
     text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
     if wide_model is None:
         return text_embed
-    wide_vec = wide_vector_for_step(entry['file'], step_to_path, bins, masks)
+    wide_vec = vector_fn(entry['file'], step_to_path, bins, masks)
     wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)
     wide_embed = wide_model(wide_t)
     return torch.cat([text_embed, wide_embed], dim=-1)
@@ -418,9 +429,8 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
                            test_size=0.2, split_seed=SEED, run_tag=None, template_dir=None,
                            stratified=True, lambda_uniform=LAMBDA_UNIFORM, class_reweight=False, reweight_cap=3.0,
                            sequences_dir=None, lr=LR, full_batch=False, n_freeze=N_FREEZE, dropout=DROPOUT,
-                           zoomer_scope=False, use_wide=True,
-                           loss_fn='contrastive', asl_gamma_pos=1.0, asl_gamma_neg=4.0, asl_clip=0.05,
-                           grouped_split=False):
+                           zoomer_scope=False, use_wide=True, wide_features='all',
+                           grouped_split=False, resume_from=None, freeze_template_encoder=False):
     device = torch.device('cuda')
     print('  Device   : {}'.format(device))
     print()
@@ -511,13 +521,16 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     print('  Templates: {} (dir={})'.format(', '.join(sorted(templates.keys())), template_dir or TEMPLATE_DIR))
 
     if use_wide:
-        print('  Fitting wide-feature bins/masks on this seed\'s training instances (ZOOMER\'s own pipeline)...')
+        fit_fn, vector_fn = WIDE_FEATURE_FNS[wide_features]
+        print('  Fitting wide-feature bins/masks on this seed\'s training instances (ZOOMER\'s own pipeline) '
+              '-- feature set: {}...'.format(wide_features))
         step_to_path = build_step_to_graph_path()
         train_steps = [e['file'] for e in train_entries if e['techniques']]
-        bins, masks, wide_dim = fit_wide_bins_and_masks(train_steps, step_to_path, seed=split_seed)
+        bins, masks, wide_dim = fit_fn(train_steps, step_to_path, seed=split_seed)
         print('  wide_dim={} (raw h_cat + cross-product, before the {}-dim wide projection)'.format(wide_dim, WIDE_DIM_OUT))
     else:
         step_to_path, bins, masks, wide_dim = None, None, None, 0
+        vector_fn = None
         print('  --no-wide: text-only embedding, skipping wide-feature bin fitting entirely.')
     print()
 
@@ -529,9 +542,16 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     seq_encoder.train()
 
     tmpl_encoder = RobertaModel.from_pretrained(ROBERTA_MODEL).to(device)
-    freeze_lower_layers(tmpl_encoder, n_freeze=n_freeze)
-    tmpl_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
-    tmpl_encoder.train()
+    if freeze_template_encoder:
+        for p in tmpl_encoder.parameters():
+            p.requires_grad = False
+        tmpl_encoder.eval()
+        print('  Template encoder: FULLY FROZEN (pretrained RoBERTa, untrained -- only text_proj adapts, '
+              'mirroring template=knowhow\'s fixed FastText + one trainable adapter)')
+    else:
+        freeze_lower_layers(tmpl_encoder, n_freeze=n_freeze)
+        tmpl_encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
+        tmpl_encoder.train()
     combined_dim = COMBINED_DIM if use_wide else PROJ_DIM
     text_proj = ProjectionNetwork(EMB_DIM, combined_dim, dropout).to(device)
 
@@ -558,6 +578,23 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
     no_improve = 0
     best_state = None
     history    = []
+    start_epoch = 1
+
+    if resume_from:
+        print('  Resuming from checkpoint: {}'.format(resume_from))
+        ckpt = torch.load(resume_from, map_location=device, weights_only=False)
+        seq_encoder.load_state_dict(ckpt['seq_encoder'])
+        tmpl_encoder.load_state_dict(ckpt['tmpl_encoder'])
+        log_proj.load_state_dict(ckpt['log_proj'])
+        text_proj.load_state_dict(ckpt['text_proj'])
+        if use_wide and ckpt.get('wide_model'):
+            wide_model.load_state_dict(ckpt['wide_model'])
+        with torch.no_grad():
+            logit_scale.copy_(ckpt['logit_scale'])
+        history   = list(ckpt.get('history', []))
+        best_loss = ckpt.get('best_loss', float('inf'))
+        start_epoch = (history[-1]['epoch'] + 1) if history else 1
+        print('  Resumed at epoch {} (best_loss so far={:.6f})'.format(start_epoch, best_loss))
 
     train_start = time.time()
     if full_batch:
@@ -568,17 +605,13 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
         steps_per_epoch = max(1, -(-len(train_entries) // batch_size))
     print('  Training  epochs={} lr={} dropout={} patience={} batch_size={} full_batch={} n_freeze={}'.format(
         n_epochs, lr, dropout, patience, batch_size, full_batch, n_freeze))
-    if loss_fn == 'asl':
-        print('  Loss function: Asymmetric Loss (gamma_pos={} gamma_neg={} clip={})'.format(
-            asl_gamma_pos, asl_gamma_neg, asl_clip))
-    else:
-        print('  Loss function: contrastive multilabel_prototype_loss (default)')
+    print('  Loss function: contrastive multilabel_prototype_loss (default)')
     print('  Start time: {}'.format(time.strftime('%Y-%m-%d %H:%M:%S')))
     print()
 
     train_pos_mask = build_pos_mask(train_entries, all_techniques, technique_to_col).to(device)
     technique_pools = build_technique_pools(train_entries, all_techniques)
-    for epoch in range(1, n_epochs + 1):
+    for epoch in range(start_epoch, n_epochs + 1):
         epoch_start = time.time()
         seq_encoder.train(); tmpl_encoder.train(); log_proj.train(); text_proj.train()
         if use_wide:
@@ -599,17 +632,13 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
             with torch.amp.autocast('cuda'):
                 z = torch.stack([
                     encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, e,
-                                              step_to_path, bins, masks, device)
+                                              step_to_path, bins, masks, device, vector_fn=vector_fn)
                     for e in batch_entries
                 ])
                 prototypes = text_proj(torch.stack(
                     [encode_one(tokenizer, tmpl_encoder, templates[t], device) for t in all_techniques]))
-                if loss_fn == 'asl':
-                    main_loss = asymmetric_loss(z, prototypes, pos_mask_batch, logit_scale,
-                                                 gamma_pos=asl_gamma_pos, gamma_neg=asl_gamma_neg, clip=asl_clip)
-                else:
-                    main_loss = multilabel_prototype_loss(z, prototypes, pos_mask_batch, logit_scale,
-                                                           class_weights=class_weights)
+                main_loss = multilabel_prototype_loss(z, prototypes, pos_mask_batch, logit_scale,
+                                                       class_weights=class_weights)
                 loss = main_loss + lambda_uniform * uniformity_loss(z)
             scaler.scale(loss).backward()
             scaler.step(optimizer)
@@ -684,7 +713,7 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
                 'full_batch': full_batch,
                 'zoomer_scope': zoomer_scope,
                 'use_wide': use_wide,
-                'loss_fn': loss_fn,
+                'wide_features': wide_features,
             }, ckpt_path)
             print('  [checkpoint] {} saved (best_loss={:.6f})'.format(ckpt_name, best_loss))
 
@@ -735,7 +764,7 @@ def run_contrastive_train(n_epochs=N_EPOCHS, test_file_match=None, test_scenario
         'full_batch': full_batch,
         'zoomer_scope': zoomer_scope,
         'use_wide': use_wide,
-        'loss_fn': loss_fn,
+        'wide_features': wide_features,
     }, model_path)
 
     hist_path = os.path.join(RESULTS_DIR, 'train_history_camlds_technique_wide_{}.json'.format(run_tag))
@@ -759,6 +788,11 @@ if __name__ == '__main__':
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--resume-from', type=str, default=None,
+                     help='Path to a periodic epoch checkpoint (e.g. '
+                          'checkpoints/camlds_technique_wide_<tag>_epoch30.pt) to resume training from, '
+                          'continuing the epoch count and loss history instead of starting over at epoch 1. '
+                          'Optimizer momentum is not restored (not saved in the checkpoint), only model weights.')
     ap.add_argument('--template-dir', type=str, default=None)
     ap.add_argument('--no-stratified', dest='stratified', action='store_false')
     ap.add_argument('--lambda-uniform', type=float, default=LAMBDA_UNIFORM)
@@ -790,15 +824,10 @@ if __name__ == '__main__':
                      help='Text-only embedding, no ZOOMER wide (node/edge/IoC count) features '
                           'concatenated in at all -- an ablation to check whether the wide features '
                           'are helping or hurting, independent of the text side.')
-    ap.add_argument('--loss', dest='loss_fn', choices=['contrastive', 'asl'], default='contrastive',
-                     help="'contrastive' (default) = the existing prototype/logsumexp loss. "
-                          "'asl' = Asymmetric Loss for Multi-Label Classification (Ben-Baruch et al. "
-                          '2021) -- independent per-class sigmoid with asymmetric focal weighting, '
-                          'built for severe per-sample positive/negative imbalance. Default stays '
-                          "'contrastive' so omitting this flag reproduces the original behavior exactly.")
-    ap.add_argument('--asl-gamma-pos', type=float, default=1.0, help='ASL positive focusing exponent.')
-    ap.add_argument('--asl-gamma-neg', type=float, default=4.0, help='ASL negative focusing exponent.')
-    ap.add_argument('--asl-clip', type=float, default=0.05, help='ASL negative probability-shift margin.')
+    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge', 'v2'],
+                     help='Which wide feature groups to use (ignored if --no-wide). "all" = node + '
+                          'edge + IoC counts (default). "node_edge" = drop the IoC-count feature '
+                          'group, keep only node-type and edge-type counts.')
     args = ap.parse_args()
 
     if args.max_chunks is not None:
@@ -820,6 +849,4 @@ if __name__ == '__main__':
                            lr=args.lr, full_batch=args.full_batch, patience=args.patience,
                            n_freeze=args.n_freeze, dropout=args.dropout, n_epochs=args.n_epochs,
                            sequences_dir=args.sequences_dir, zoomer_scope=args.zoomer_scope,
-                           use_wide=args.use_wide, loss_fn=args.loss_fn,
-                           asl_gamma_pos=args.asl_gamma_pos, asl_gamma_neg=args.asl_gamma_neg,
-                           asl_clip=args.asl_clip)
+                           use_wide=args.use_wide, wide_features=args.wide_features, resume_from=args.resume_from)

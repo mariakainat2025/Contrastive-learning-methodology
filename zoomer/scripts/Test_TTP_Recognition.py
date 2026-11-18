@@ -183,7 +183,7 @@ def print_stage_results_table(stage_rows, max_stages=4):
         print(header_fmt.format(i, fname, true_str, *cols, found_str, 'WRONG' if wrong else '', missing_str))
     return n_wrong
 
-def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True):
+def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True, exclude_from_training=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -199,7 +199,7 @@ def main(seed, scenario=None, test_file=None, run_tag=None, verbose=True):
     model.load_state_dict(ckpt['model'])
     model.eval()
 
-    split = get_zoomer_split_scenario(scenario, single_label=True, test_file=test_file) if held_out else get_zoomer_split(seed)
+    split = get_zoomer_split_scenario(scenario, single_label=True, test_file=test_file, exclude_from_training=exclude_from_training) if held_out else get_zoomer_split(seed)
     train_paths = sorted({path for t in classes for (_, path) in split[t]['train']})
     bins = fit_bins(train_paths)
     h_cat_dim = sum(len(bins[dim]) for dim in ALL_DIMS)
@@ -441,5 +441,12 @@ if __name__ == '__main__':
                      help='Test against the checkpoint trained with --test-file (e.g. "2_rootkit"). '
                           'Takes priority over --scenario if both are passed.')
     ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--exclude-from-training', type=str, default=None,
+                     help='Must match what the checkpoint was trained with -- comma-separated exact '
+                          'step-ids excluded from training (bins/prototypes are rebuilt from train data '
+                          'here too, so this has to mirror the training-time value).')
     args = ap.parse_args()
-    main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=args.run_tag)
+    exclude_from_training = set(s.strip() for s in args.exclude_from_training.split(',') if s.strip()) \
+        if args.exclude_from_training else None
+    main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=args.run_tag,
+         exclude_from_training=exclude_from_training)

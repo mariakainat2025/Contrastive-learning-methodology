@@ -21,7 +21,17 @@ from train_camlds_matcher_technique_wide import (
     encode_one, ProjectionNetwork, WideModel, SEED, MAX_CHUNKS, WIDE_DIM_OUT,
     TECHNIQUE_MERGE, ZOOMER_TECHNIQUES, STEP_TACTICS_PATH, base_technique, TEMPLATE_DIR,
 )
-from wide_feature_bridge import build_step_to_graph_path, fit_wide_bins_and_masks, wide_vector_for_step
+from wide_feature_bridge import (
+    build_step_to_graph_path, fit_wide_bins_and_masks, wide_vector_for_step,
+    fit_node_edge_bins_and_masks, node_edge_vector_for_step,
+    fit_wide_bins_and_masks_v2, wide_vector_for_step_v2,
+)
+
+WIDE_FEATURE_FNS = {
+    'all': (fit_wide_bins_and_masks, wide_vector_for_step),
+    'node_edge': (fit_node_edge_bins_and_masks, node_edge_vector_for_step),
+    'v2': (fit_wide_bins_and_masks_v2, wide_vector_for_step_v2),
+}
 from tactic_to_stage import STAGE_ORDER, TACTIC_TO_STAGE, tactics_to_stages
 from stage_accuracy import (
     stage_top_k_accuracy, stage_accuracy_at_n_true,
@@ -192,12 +202,13 @@ def print_stage_results_table(stage_rows, files, max_stages=3):
     return n_wrong
 
 
-def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device):
+def encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, entry, step_to_path, bins, masks, device,
+                              vector_fn=wide_vector_for_step):
     with torch.no_grad():
         text_embed = log_proj(encode_one(tokenizer, seq_encoder, entry['sequence'], device).unsqueeze(0)).squeeze(0)
         if wide_model is None:
             return text_embed.cpu()
-        wide_vec = wide_vector_for_step(entry['file'], step_to_path, bins, masks)
+        wide_vec = vector_fn(entry['file'], step_to_path, bins, masks)
         wide_t = torch.tensor(wide_vec, dtype=torch.float32, device=device)
         wide_embed = wide_model(wide_t)
         return torch.cat([text_embed, wide_embed], dim=-1).cpu()
@@ -370,7 +381,7 @@ def print_table(results, all_techniques, top_n=3, train_tech_counts=None):
 
 def run(test_file_match=None, test_scenario=None, temp=0.07, test_size=0.2, split_seed=SEED, run_tag=None,
         template_dir=None, sequences_dir=None, run_filter=None, zoomer_scope=False,
-        strict_native=True, candidate_cap=None):
+        strict_native=True, candidate_cap=None, wide_features=None, checkpoint_path=None):
     device = torch.device('cuda')
     print('  Device: {}'.format(device))
 
@@ -382,7 +393,8 @@ def run(test_file_match=None, test_scenario=None, temp=0.07, test_size=0.2, spli
         else:
             run_tag = 'seed{}'.format(split_seed)
 
-    ckpt_path = os.path.join(MODEL_DIR, 'camlds_technique_wide_matcher_{}.pt'.format(run_tag))
+    ckpt_path = checkpoint_path or os.path.join(
+        MODEL_DIR, 'camlds_technique_wide_matcher_{}.pt'.format(run_tag))
     if not os.path.exists(ckpt_path):
         print('  ERROR: model not found at {}'.format(ckpt_path))
         print('  Run train_camlds_matcher_technique_wide.py --run-tag {} first.'.format(run_tag))
@@ -558,19 +570,23 @@ def run(test_file_match=None, test_scenario=None, temp=0.07, test_size=0.2, spli
         len(stages_test_not_train), ' ' + str(stages_test_not_train) if stages_test_not_train else ''))
 
     if ckpt_use_wide:
-        print('\n  Refitting wide-feature bins/masks on this seed\'s training instances (same recipe as training)...')
+        ckpt_wide_features = wide_features or ckpt.get('wide_features', 'all')
+        fit_fn, vector_fn = WIDE_FEATURE_FNS[ckpt_wide_features]
+        print('\n  Refitting wide-feature bins/masks on this seed\'s training instances (same recipe as '
+              'training) -- feature set: {}...'.format(ckpt_wide_features))
         step_to_path = build_step_to_graph_path()
         train_steps = [e['file'] for e in train_entries if e['techniques']]
-        bins, masks, wide_dim_check = fit_wide_bins_and_masks(train_steps, step_to_path, seed=ckpt_split_seed)
+        bins, masks, wide_dim_check = fit_fn(train_steps, step_to_path, seed=ckpt_split_seed)
         if wide_dim_check != wide_dim_raw:
             print('  WARNING: refit wide_dim={} does not match checkpoint wide_dim={} -- '
                   'sequences_dir or split may not match training exactly.'.format(wide_dim_check, wide_dim_raw))
     else:
         step_to_path, bins, masks = None, None, None
+        vector_fn = wide_vector_for_step
 
     print('\n  Encoding test sequences (text{}, combined)...'.format(' + wide' if ckpt_use_wide else '-only'))
     seq_embs = [encode_sequence_combined(tokenizer, seq_encoder, log_proj, wide_model, e,
-                                          step_to_path, bins, masks, device)
+                                          step_to_path, bins, masks, device, vector_fn=vector_fn)
                 for e in test_entries]
     seq_embs = [F.normalize(z, dim=-1) for z in seq_embs]
 
@@ -723,6 +739,9 @@ def run(test_file_match=None, test_scenario=None, temp=0.07, test_size=0.2, spli
     }
 
     results_tag = run_tag
+    if checkpoint_path:
+        epoch_match = re.search(r'epoch(\d+)', os.path.basename(checkpoint_path))
+        results_tag += '_at-epoch{}'.format(epoch_match.group(1)) if epoch_match else '_at-custom-ckpt'
     if zoomer_scope:
         results_tag += '_zoomerscope'
     if not strict_native:
@@ -745,8 +764,16 @@ if __name__ == '__main__':
     ap.add_argument('--test-size', type=float, default=0.2)
     ap.add_argument('--split-seed', type=int, default=SEED)
     ap.add_argument('--run-tag', type=str, default=None)
+    ap.add_argument('--checkpoint-path', type=str, default=None,
+                     help='Test against a SPECIFIC checkpoint file instead of the final one -- '
+                          'e.g. checkpoints/camlds_technique_wide_<run-tag>_epoch100.pt, to see '
+                          'how results looked partway through training. Still uses --run-tag to '
+                          'know which split/templates/sequences to re-load.')
     ap.add_argument('--template-dir', type=str, default=None)
     ap.add_argument('--sequences-dir', type=str, default=None)
+    ap.add_argument('--wide-features', type=str, default=None, choices=['all', 'node_edge', 'v2'],
+                     help='Override which wide feature groups to refit/use at test time. Default: '
+                          'inherit whatever the checkpoint was trained with.')
     ap.add_argument('--run', type=str, default=None, dest='run_filter',
                      help='Only show test steps whose filename contains this substring, e.g. "ssh_apt".')
     ap.add_argument('--zoomer-scope', action='store_true',
@@ -771,4 +798,5 @@ if __name__ == '__main__':
     run(test_file_match=args.test_file, test_scenario=args.test_scenario, temp=args.temp, test_size=args.test_size,
         split_seed=args.split_seed, run_tag=run_tag,
         template_dir=args.template_dir, sequences_dir=args.sequences_dir, run_filter=args.run_filter,
-        zoomer_scope=args.zoomer_scope, strict_native=args.strict_native)
+        zoomer_scope=args.zoomer_scope, strict_native=args.strict_native, wide_features=args.wide_features,
+        checkpoint_path=args.checkpoint_path)

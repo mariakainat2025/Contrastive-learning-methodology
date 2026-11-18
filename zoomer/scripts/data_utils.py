@@ -6,6 +6,9 @@ from discretize_features import (
     discretize_vector, raw_vector_for_graph,
     discretize_node_edge_vector, raw_node_edge_vector_for_graph,
 )
+from discretize_features_v2 import (
+    discretize_vector as discretize_vector_v2, raw_vector_for_graph as raw_vector_for_graph_v2,
+)
 from cross_product import hwide_pre_projection
 import os
 FOLDER_TACTIC_MAP_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'folder_tactic_map.json')
@@ -14,6 +17,7 @@ K_SHOT = 3
 WIDE_FEATURE_FNS = {
     'all': (raw_vector_for_graph, discretize_vector),
     'node_edge': (raw_node_edge_vector_for_graph, discretize_node_edge_vector),
+    'v2': (raw_vector_for_graph_v2, discretize_vector_v2),
 }
 
 def wide_vector_for_graph(G, bins, masks, wide_features='all'):

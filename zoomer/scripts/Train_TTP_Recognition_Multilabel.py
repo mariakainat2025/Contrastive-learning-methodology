@@ -12,11 +12,13 @@ from create_data_split import (
     CAM_LDS_TECHNIQUE_SCOPE_MIN4,
 )
 from discretize_features import ALL_DIMS, fit_bins, NODE_EDGE_DIMS, fit_node_edge_bins
+from discretize_features_v2 import ALL_DIMS as ALL_DIMS_V2, fit_bins as fit_bins_v2
 from cross_product import generate_masks, DEFAULT_K as CROSS_PRODUCT_K
 
 WIDE_DIMS_FNS = {
     'all': (ALL_DIMS, fit_bins),
     'node_edge': (NODE_EDGE_DIMS, fit_node_edge_bins),
+    'v2': (ALL_DIMS_V2, fit_bins_v2),
 }
 IN_DIM = 126
 N_EPISODES = 2000
@@ -200,7 +202,7 @@ def masked_single_label_loss(embed, prototypes, true_idx, exempt_idxs):
     target = torch.tensor([keep.index(true_idx)], device=embed.device)
     return F.cross_entropy(logits, target)
 
-def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=None, fixed_scope=False, fixed_scope_min4=False, full_batch=False, wide_features='all'):
+def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=None, fixed_scope=False, fixed_scope_min4=False, full_batch=False, wide_features='all', exclude_from_training=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     held_out = test_file or scenario
     if run_tag is None:
@@ -209,10 +211,12 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
         print('[multilabel] Held out: {}  Seed (bins/masks RNG): {}  Device: {}'.format(held_out, seed, device))
     else:
         print('[multilabel] Seed: {}  Device: {}'.format(seed, device))
+    if exclude_from_training:
+        print('[multilabel] Excluding {} step(s) from training: {}'.format(len(exclude_from_training), sorted(exclude_from_training)))
     torch.manual_seed(seed)
 
     header('Stage 1/7: Construction -- discover graphs/*/*/*.json, split train/test')
-    split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file) if held_out else get_zoomer_split_multilabel(seed)
+    split = get_zoomer_split_scenario_multilabel(scenario, test_file=test_file, exclude_from_training=exclude_from_training) if held_out else get_zoomer_split_multilabel(seed)
     if held_out:
         if fixed_scope_min4:
             classes = classes_for_fixed_scope(split, scope=CAM_LDS_TECHNIQUE_SCOPE_MIN4)
@@ -313,7 +317,7 @@ def main(seed, scenario=None, test_file=None, run_tag=None, min_train_samples=No
     out_path = checkpoint_path(run_tag)
     torch.save({'model': final_state, 'classes': classes, 'seed': seed, 'scenario': scenario,
                 'test_file': test_file, 'run_tag': run_tag, 'wide_in_dim': wide_in_dim,
-                'wide_features': wide_features}, out_path)
+                'wide_features': wide_features, 'exclude_from_training': exclude_from_training}, out_path)
     print('Saved -> {}'.format(out_path))
     return out_path
 
@@ -345,10 +349,13 @@ if __name__ == '__main__':
                           'support / 2-query subsample reshuffled each episode -- prototypes are '
                           'the mean of ALL training examples for a class, loss is leave-one-out. '
                           'No subsampling randomness; needs more GPU memory per step.')
-    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge'],
+    ap.add_argument('--wide-features', type=str, default='all', choices=['all', 'node_edge', 'v2'],
                      help='Which wide feature groups to use. "all" = node + edge + IoC counts '
                           '(default). "node_edge" = drop the IoC-count feature group, keep only '
                           'node-type and edge-type counts.')
+    ap.add_argument('--exclude-from-training', type=str, default=None,
+                     help='Comma-separated exact step-ids (e.g. "6_macro_cron-2,6_macro_cron-3") to '
+                          'drop from the training set on top of the normal --test-file/--scenario holdout.')
     args = ap.parse_args()
     run_tag = args.run_tag
     held_out_label = args.test_file or args.scenario
@@ -361,7 +368,9 @@ if __name__ == '__main__':
             run_tag = '{}_min{}'.format(held_out_label, args.min_train_samples)
         if args.full_batch:
             run_tag = (run_tag or held_out_label) + '_fullbatch'
+    exclude_from_training = set(s.strip() for s in args.exclude_from_training.split(',') if s.strip()) \
+        if args.exclude_from_training else None
     main(args.seed, scenario=args.scenario, test_file=args.test_file, run_tag=run_tag,
          min_train_samples=args.min_train_samples, fixed_scope=args.fixed_scope,
          fixed_scope_min4=args.fixed_scope_min4, full_batch=args.full_batch,
-         wide_features=args.wide_features)
+         wide_features=args.wide_features, exclude_from_training=exclude_from_training)
